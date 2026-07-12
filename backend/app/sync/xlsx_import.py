@@ -93,6 +93,25 @@ def _row_to_resource(
     return cast(Resource, schema_cls(**data))
 
 
+def _save_resource_with_unique_name(
+    resource: Resource,
+    seen_filenames: set[str],
+) -> None:
+    from app.services.resource_store import save_resource
+
+    base_name = f"{resource.id:04d}-{resource.model_folder}"
+    if base_name not in seen_filenames:
+        seen_filenames.add(base_name)
+        save_resource(resource)
+        return
+
+    suffix = 2
+    while f"{base_name}-{suffix}" in seen_filenames:
+        suffix += 1
+    seen_filenames.add(f"{base_name}-{suffix}")
+    save_resource(resource, filename_suffix=str(suffix))
+
+
 def import_xlsx(
     input_path: Path,
     resource_type: str,
@@ -110,6 +129,8 @@ def import_xlsx(
     updated = 0
     errors: list[dict[str, Any]] = []
     resources: list[Resource] = []
+    seen_filenames: set[str] = set()
+    last_model_folder: str | None = None
 
     for row_idx, row in enumerate(
         sheet.iter_rows(min_row=data_start_row, values_only=True), start=data_start_row
@@ -122,22 +143,41 @@ def import_xlsx(
 
         id_value = _parse_number(row[mapping["fields"]["id"]]) if "id" in mapping["fields"] else None
         model_folder_col = mapping["fields"].get("model_folder")
-        model_folder_value = (
+        raw_model_folder = (
             str(row[model_folder_col]).strip()
             if model_folder_col is not None and model_folder_col < len(row) and row[model_folder_col]
             else ""
         )
 
-        if id_value is None or not model_folder_value:
+        if id_value is None:
+            # 当前行没有 ID，无法构成独立资源；保留 model_folder 供后续合并单元格行继承
+            if raw_model_folder:
+                last_model_folder = raw_model_folder
             continue
 
+        model_folder_value = raw_model_folder or last_model_folder
+        if not model_folder_value:
+            errors.append(
+                {
+                    "row": row_idx,
+                    "error": f"id={id_value} 缺少 model_folder，且无法从上方合并单元格继承",
+                }
+            )
+            continue
+
+        last_model_folder = model_folder_value
+
+        # 将继承得到的 model_folder 回填到行数据中，避免 Pydantic 校验失败
+        row_list = list(row)
+        if model_folder_col is not None and model_folder_col < len(row_list):
+            row_list[model_folder_col] = model_folder_value
+        enriched_row = tuple(row_list)
+
         try:
-            resource = _row_to_resource(row, mapping)
+            resource = _row_to_resource(enriched_row, mapping)
             resources.append(resource)
             if not dry_run:
-                from app.services.resource_store import save_resource
-
-                save_resource(resource)
+                _save_resource_with_unique_name(resource, seen_filenames)
             created += 1
         except Exception as exc:  # noqa: BLE001
             errors.append({"row": row_idx, "error": str(exc)})

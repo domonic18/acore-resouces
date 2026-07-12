@@ -91,11 +91,13 @@ def list_resources(resource_type: str | None = None) -> list[Resource]:
     return results
 
 
-def save_resource(resource: Resource) -> Path:
+def save_resource(resource: Resource, *, filename_suffix: str | None = None) -> Path:
     _ensure_dirs()
     data = resource.model_dump(exclude_none=False)
     data.pop("resource_type", None)
     path = _yaml_path(resource.resource_type, resource.id, resource.model_folder)
+    if filename_suffix:
+        path = path.with_name(f"{path.stem}-{filename_suffix}{path.suffix}")
     _save_yaml(path, data)
     _update_registry()
     _sync_to_sqlite(resource)

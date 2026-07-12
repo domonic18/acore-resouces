@@ -1,9 +1,9 @@
 {
   "version": "1.0",
   "counts": {
-    "mounts": 311,
-    "pets": 98,
-    "npcs": 219
+    "mounts": 312,
+    "pets": 107,
+    "npcs": 226
   },
   "mounts": [
     {
@@ -985,6 +985,14 @@
     {
       "id": 183,
       "name": "黑色斗猪",
+      "model_folder": "GiantBoar霜原野猪",
+      "file": "data/resources/mounts/0183-GiantBoar霜原野猪-2.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 183,
+      "name": "石牙斗猪",
       "model_folder": "GiantBoar霜原野猪",
       "file": "data/resources/mounts/0183-GiantBoar霜原野猪.yaml",
       "debug_passed": false,
@@ -2545,6 +2553,30 @@
       "added": false
     },
     {
+      "id": 7,
+      "name": "babyfox小绿狐宠物",
+      "model_folder": "babyfox小绿狐宠物",
+      "file": "data/resources/pets/0007-babyfox小绿狐宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 8,
+      "name": "babyfox小绿狐宠物",
+      "model_folder": "babyfox小绿狐宠物",
+      "file": "data/resources/pets/0008-babyfox小绿狐宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 9,
+      "name": "babyfox小绿狐宠物",
+      "model_folder": "babyfox小绿狐宠物",
+      "file": "data/resources/pets/0009-babyfox小绿狐宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
       "id": 10,
       "name": "babyhippo小河马宠物",
       "model_folder": "babyhippo小河马宠物",
@@ -2565,6 +2597,14 @@
       "name": "babymoonkin小鹌鹑宠物",
       "model_folder": "babymoonkin小鹌鹑宠物",
       "file": "data/resources/pets/0012-babymoonkin小鹌鹑宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 13,
+      "name": "babymoonkin小鹌鹑宠物",
+      "model_folder": "babymoonkin小鹌鹑宠物",
+      "file": "data/resources/pets/0013-babymoonkin小鹌鹑宠物.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -2761,6 +2801,14 @@
       "added": false
     },
     {
+      "id": 38,
+      "name": "corgi2贵宾犬宠物",
+      "model_folder": "corgi2贵宾犬宠物",
+      "file": "data/resources/pets/0038-corgi2贵宾犬宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
       "id": 39,
       "name": "cornpet小萝卜宠物",
       "model_folder": "cornpet小萝卜宠物",
@@ -2797,6 +2845,22 @@
       "name": "DeepSeaCrab绿螃蟹宠物",
       "model_folder": "DeepSeaCrab绿螃蟹宠物",
       "file": "data/resources/pets/0043-DeepSeaCrab绿螃蟹宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 44,
+      "name": "DeepSeaCrab绿螃蟹宠物",
+      "model_folder": "DeepSeaCrab绿螃蟹宠物",
+      "file": "data/resources/pets/0044-DeepSeaCrab绿螃蟹宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 45,
+      "name": "DeepSeaCrab绿螃蟹宠物",
+      "model_folder": "DeepSeaCrab绿螃蟹宠物",
+      "file": "data/resources/pets/0045-DeepSeaCrab绿螃蟹宠物.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -2897,6 +2961,14 @@
       "added": false
     },
     {
+      "id": 58,
+      "name": "firespiritsmall魔人娃娃宠物",
+      "model_folder": "firespiritsmall魔人娃娃宠物",
+      "file": "data/resources/pets/0058-firespiritsmall魔人娃娃宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
       "id": 59,
       "name": "FoxPet紫色狐狸宠物",
       "model_folder": "FoxPet紫色狐狸宠物",
@@ -2909,6 +2981,14 @@
       "name": "FrostwolfPup哈士奇宠物",
       "model_folder": "FrostwolfPup哈士奇宠物",
       "file": "data/resources/pets/0060-FrostwolfPup哈士奇宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 61,
+      "name": "FrostwolfPup哈士奇宠物",
+      "model_folder": "FrostwolfPup哈士奇宠物",
+      "file": "data/resources/pets/0061-FrostwolfPup哈士奇宠物.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -3387,6 +3467,14 @@
       "added": false
     },
     {
+      "id": 14,
+      "name": "arcaneconstruct电磁怪NPC",
+      "model_folder": "arcaneconstruct电磁怪NPC",
+      "file": "data/resources/npcs/0014-arcaneconstruct电磁怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
       "id": 15,
       "name": "archon天使执政官NPC",
       "model_folder": "archon天使执政官NPC",
@@ -3439,6 +3527,14 @@
       "name": "blackrockbrute兽人NPC",
       "model_folder": "blackrockbrute兽人NPC",
       "file": "data/resources/npcs/0021-blackrockbrute兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 22,
+      "name": "blackrockbrute兽人NPC",
+      "model_folder": "blackrockbrute兽人NPC",
+      "file": "data/resources/npcs/0022-blackrockbrute兽人NPC.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -3607,6 +3703,30 @@
       "name": "crystallinemonster绿魔怪NPC",
       "model_folder": "crystallinemonster绿魔怪NPC",
       "file": "data/resources/npcs/0043-crystallinemonster绿魔怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 44,
+      "name": "crystallinemonster绿魔怪NPC",
+      "model_folder": "crystallinemonster绿魔怪NPC",
+      "file": "data/resources/npcs/0044-crystallinemonster绿魔怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 45,
+      "name": "crystallinemonster绿魔怪NPC",
+      "model_folder": "crystallinemonster绿魔怪NPC",
+      "file": "data/resources/npcs/0045-crystallinemonster绿魔怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 46,
+      "name": "crystallinemonster绿魔怪NPC",
+      "model_folder": "crystallinemonster绿魔怪NPC",
+      "file": "data/resources/npcs/0046-crystallinemonster绿魔怪NPC.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -3927,6 +4047,22 @@
       "name": "forestsprite红眼树人NPC",
       "model_folder": "forestsprite红眼树人NPC",
       "file": "data/resources/npcs/0086-forestsprite红眼树人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 87,
+      "name": "forestsprite红眼树人NPC",
+      "model_folder": "forestsprite红眼树人NPC",
+      "file": "data/resources/npcs/0087-forestsprite红眼树人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 88,
+      "name": "forestsprite红眼树人NPC",
+      "model_folder": "forestsprite红眼树人NPC",
+      "file": "data/resources/npcs/0088-forestsprite红眼树人NPC.yaml",
       "debug_passed": false,
       "added": false
     },

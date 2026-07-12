@@ -9,7 +9,7 @@ class ResourceMixin:
     __abstract__ = True
 
     id = Column(Integer, primary_key=True)
-    model_folder = Column(String, nullable=False, index=True, unique=True)
+    model_folder = Column(String, nullable=False, index=True)
     preview_image = Column(String, nullable=True)
     debug_passed = Column(Boolean, default=False)
     added = Column(Boolean, default=False)
