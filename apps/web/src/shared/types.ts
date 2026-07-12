@@ -26,7 +26,7 @@ export interface DbInfo {
 
 export interface Resource {
   id: number;
-  resource_type: 'mount' | 'pet' | 'npc';
+  resource_type: "mount" | "pet" | "npc";
   model_folder: string;
   name: string;
   preview_image: string | null;

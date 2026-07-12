@@ -1,24 +1,42 @@
-import { apiGetJson } from '@/shared/api';
-import type { PaginatedResources, Resource, ResourceAssets, ModelPreview } from '@/shared/types';
+import { apiGetJson } from "@/shared/api";
+import type {
+  PaginatedResources,
+  Resource,
+  ResourceAssets,
+  ModelPreview,
+} from "@/shared/types";
 
 export function listResources(
   resourceType: string,
-  params: { search?: string; added?: boolean; debug_passed?: boolean; page?: number; page_size?: number },
+  params: {
+    search?: string;
+    added?: boolean;
+    debug_passed?: boolean;
+    page?: number;
+    page_size?: number;
+  },
 ): Promise<PaginatedResources> {
   const query = new URLSearchParams();
-  if (params.search) query.set('search', params.search);
-  if (params.added !== undefined) query.set('added', String(params.added));
-  if (params.debug_passed !== undefined) query.set('debug_passed', String(params.debug_passed));
-  if (params.page) query.set('page', String(params.page));
-  if (params.page_size) query.set('page_size', String(params.page_size));
+  if (params.search) query.set("search", params.search);
+  if (params.added !== undefined) query.set("added", String(params.added));
+  if (params.debug_passed !== undefined)
+    query.set("debug_passed", String(params.debug_passed));
+  if (params.page) query.set("page", String(params.page));
+  if (params.page_size) query.set("page_size", String(params.page_size));
   return apiGetJson(`/api/resources/${resourceType}?${query.toString()}`);
 }
 
-export function getResource(resourceType: string, id: number): Promise<Resource> {
+export function getResource(
+  resourceType: string,
+  id: number,
+): Promise<Resource> {
   return apiGetJson(`/api/resources/${resourceType}/${id}`);
 }
 
-export function getResourceAssets(resourceType: string, id: number): Promise<ResourceAssets> {
+export function getResourceAssets(
+  resourceType: string,
+  id: number,
+): Promise<ResourceAssets> {
   return apiGetJson(`/api/resources/${resourceType}/${id}/assets`);
 }
 
@@ -27,8 +45,10 @@ export function getModelPreview(
   resourceType?: string,
 ): Promise<ModelPreview> {
   const query = new URLSearchParams();
-  if (resourceType) query.set('resource_type', resourceType);
-  return apiGetJson(`/api/preview/model/${encodeURIComponent(modelFolder)}?${query.toString()}`);
+  if (resourceType) query.set("resource_type", resourceType);
+  return apiGetJson(
+    `/api/preview/model/${encodeURIComponent(modelFolder)}?${query.toString()}`,
+  );
 }
 
 export function getBlpPreviewUrl(path: string, size?: number): string {
@@ -44,4 +64,31 @@ export function getIconPreviewUrl(iconName: string, size?: number): string {
     return `/api/preview/icon/${encodeURIComponent(iconName)}?size=${size}`;
   }
   return `/api/preview/icon/${encodeURIComponent(iconName)}`;
+}
+
+export function getResourceCount(resourceType: string): Promise<number> {
+  return listResources(resourceType, { page_size: 1 }).then((res) => res.total);
+}
+
+export async function fetchAllResources(
+  resourceType: "all" | "mount" | "pet" | "npc",
+): Promise<Resource[]> {
+  const types =
+    resourceType === "all" ? ["mount", "pet", "npc"] : [resourceType];
+  const all: Resource[] = [];
+  await Promise.all(
+    types.map(async (type) => {
+      const items: Resource[] = [];
+      let page = 1;
+      while (true) {
+        const res = await listResources(type, { page, page_size: 100 });
+        items.push(...res.items);
+        if (res.items.length < res.page_size) break;
+        page += 1;
+        if (page > 100) break;
+      }
+      all.push(...items);
+    }),
+  );
+  return all.sort((a, b) => b.id - a.id);
 }

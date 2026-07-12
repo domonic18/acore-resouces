@@ -1,203 +1,394 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Box, FileImage, FolderTree, Layers } from 'lucide-react';
-import { getResource, getResourceAssets, getModelPreview, getIconPreviewUrl } from '@/shared/resources';
-import { TextureViewer } from '@/components/viewer/TextureViewer';
-import { AssetFileTree } from '@/components/viewer/AssetFileTree';
-import { ModelViewer } from '@/components/viewer/ModelViewer';
-import { cn } from '@/shared/utils';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useParams, Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  Box,
+  FolderTree,
+  RefreshCw,
+  Eye,
+  Layers,
+} from "lucide-react";
+import { getResource, getResourceAssets } from "@/shared/resources";
+import { AssetFileTree } from "@/components/viewer/AssetFileTree";
+import { cn } from "@/shared/utils";
+import type { Resource } from "@/shared/types";
 
-type TabKey = 'overview' | 'assets' | 'preview';
+const DBC_TABS = [
+  { key: "creature_display_info", label: "CreatureDisplayInfo" },
+  { key: "creature_model_data", label: "CreatureModelData" },
+  { key: "spell", label: "Spell" },
+  { key: "item", label: "Item" },
+  { key: "creature_template", label: "CreatureTemplate" },
+  { key: "creature_model_info", label: "CreatureModelInfo" },
+  { key: "item_template", label: "ItemTemplate" },
+];
 
 export function ResourceDetailPage() {
-  const { resourceType = 'mount', id } = useParams<{ resourceType: string; id: string }>();
-  const resourceId = parseInt(id || '0', 10);
-  const [activeTab, setActiveTab] = useState<TabKey>('overview');
+  const { resourceType = "mount", id } = useParams<{
+    resourceType: string;
+    id: string;
+  }>();
+  const resourceId = parseInt(id || "0", 10);
+  const [activeTab, setActiveTab] = useState("creature_display_info");
 
-  const { data: resource, isLoading, error } = useQuery({
-    queryKey: ['resource', resourceType, resourceId],
+  const {
+    data: resource,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["resource", resourceType, resourceId],
     queryFn: () => getResource(resourceType, resourceId),
   });
 
   const { data: assets } = useQuery({
-    queryKey: ['assets', resourceType, resourceId],
+    queryKey: ["assets", resourceType, resourceId],
     queryFn: () => getResourceAssets(resourceType, resourceId),
     enabled: !!resource,
   });
 
-  const { data: modelPreview } = useQuery({
-    queryKey: ['model-preview', resource?.model_folder, resourceType],
-    queryFn: () => getModelPreview(resource!.model_folder, resourceType),
-    enabled: !!resource,
-  });
-
-  if (isLoading) return <p className="text-sm text-muted-foreground">加载中...</p>;
-  if (error || !resource) {
+  if (isLoading) {
     return (
-      <div className="space-y-4">
-        <Link to={`/${resourceType}`} className="inline-flex items-center text-sm text-primary">
-          <ArrowLeft className="mr-1 h-4 w-4" /> 返回列表
-        </Link>
-        <p className="text-red-500">{error instanceof Error ? error.message : '资源不存在'}</p>
+      <div className="content">
+        <p className="text-text-secondary">加载中...</p>
       </div>
     );
   }
 
-  const tabs: { key: TabKey; label: string; icon: React.ReactNode }[] = [
-    { key: 'overview', label: '概览', icon: <Box className="h-4 w-4" /> },
-    { key: 'assets', label: '资源文件', icon: <FolderTree className="h-4 w-4" /> },
-    { key: 'preview', label: '预览', icon: <FileImage className="h-4 w-4" /> },
-  ];
+  if (error || !resource) {
+    return (
+      <div className="content">
+        <div className="card p-6">
+          <Link to="/resources" className="btn btn-sm btn-ghost mb-4">
+            <ArrowLeft className="h-4 w-4" /> 返回列表
+          </Link>
+          <p className="text-danger">
+            {error instanceof Error ? error.message : "资源不存在"}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-  const iconUrl = resource.official_db.icon_name
-    ? getIconPreviewUrl(resource.official_db.icon_name, 64)
-    : resource.official_db.spell_icon_name
-      ? getIconPreviewUrl(resource.official_db.spell_icon_name, 64)
-      : null;
+  const allFiles = assets
+    ? [
+        ...assets.m2_files,
+        ...assets.texture_files,
+        ...assets.image_files,
+        ...assets.icon_files,
+      ]
+    : [];
 
   return (
-    <div className="mx-auto max-w-6xl space-y-4">
-      <div className="flex items-center gap-4">
-        <Link to={`/${resourceType}`} className="inline-flex items-center text-sm text-primary">
-          <ArrowLeft className="mr-1 h-4 w-4" /> 返回列表
-        </Link>
-        <h1 className="text-xl font-semibold">{resource.name || resource.model_folder}</h1>
-      </div>
-
-      <div className="flex gap-2 border-b">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={cn(
-              'flex items-center gap-1 border-b-2 px-3 py-2 text-sm font-medium',
-              activeTab === tab.key
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground',
-            )}
-          >
-            {tab.icon}
-            {tab.label}
+    <div className="content">
+      <header className="topbar">
+        <div className="flex items-center gap-3">
+          <Link to="/resources" className="btn btn-sm btn-ghost">
+            <ArrowLeft className="h-4 w-4" /> 返回列表
+          </Link>
+          <h1 className="page-title">编辑资源</h1>
+        </div>
+        <div className="topbar-actions">
+          <button className="btn btn-danger" disabled title="删除功能开发中">
+            删除
           </button>
-        ))}
-      </div>
+          <button className="btn btn-success" disabled title="保存功能开发中">
+            保存
+          </button>
+        </div>
+      </header>
 
-      {activeTab === 'overview' && (
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-3 rounded-md border p-4">
-            <h2 className="font-medium">基本信息</h2>
-            <dl className="grid grid-cols-[8rem_1fr] gap-2 text-sm">
-              <dt className="text-muted-foreground">ID</dt>
-              <dd>{resource.id}</dd>
-              <dt className="text-muted-foreground">类型</dt>
-              <dd>{resource.resource_type}</dd>
-              <dt className="text-muted-foreground">模型文件夹</dt>
-              <dd>{resource.model_folder}</dd>
-              <dt className="text-muted-foreground">调试通过</dt>
-              <dd>{resource.debug_passed ? '是' : '否'}</dd>
-              <dt className="text-muted-foreground">已添加</dt>
-              <dd>{resource.added ? '是' : '否'}</dd>
-              {resource.mount_type && (
-                <>
-                  <dt className="text-muted-foreground">坐骑类型</dt>
-                  <dd>{resource.mount_type}</dd>
-                </>
-              )}
-              {resource.star_rating && (
-                <>
-                  <dt className="text-muted-foreground">星级</dt>
-                  <dd>{resource.star_rating}</dd>
-                </>
-              )}
-              {resource.subtype && (
-                <>
-                  <dt className="text-muted-foreground">子类型</dt>
-                  <dd>{resource.subtype}</dd>
-                </>
-              )}
-              {resource.rarity && (
-                <>
-                  <dt className="text-muted-foreground">稀有度</dt>
-                  <dd>{resource.rarity}</dd>
-                </>
-              )}
-            </dl>
-          </div>
-
-          <div className="space-y-3 rounded-md border p-4">
-            <h2 className="font-medium">官方数据库信息</h2>
-            <dl className="grid grid-cols-[8rem_1fr] gap-2 text-sm">
-              <dt className="text-muted-foreground">名称</dt>
-              <dd>{resource.official_db.name || '-'}</dd>
-              <dt className="text-muted-foreground">图标名称</dt>
-              <dd>{resource.official_db.icon_name || '-'}</dd>
-              <dt className="text-muted-foreground">法术图标</dt>
-              <dd>{resource.official_db.spell_icon_name || '-'}</dd>
-            </dl>
-            {iconUrl && (
-              <div className="pt-2">
-                <img
-                  src={iconUrl}
-                  alt="icon"
-                  className="h-16 w-16 rounded-md border object-contain"
-                />
+      <div className="detail-layout">
+        <div className="detail-main">
+          <div className="card">
+            <div className="card-header">
+              <div>
+                <div className="card-title">基础信息</div>
+                <div className="card-subtitle">
+                  id: {String(resource.id).padStart(4, "0")} · 最后修改：
+                  {today()}
+                </div>
               </div>
-            )}
+            </div>
+            <div className="card-body">
+              <div className="form-grid">
+                <FormGroup label="资源 ID">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.id}
+                    readOnly
+                  />
+                  <p className="form-hint">由系统生成，不可修改</p>
+                </FormGroup>
+                <FormGroup label="模型文件夹">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.model_folder}
+                    readOnly
+                  />
+                </FormGroup>
+                <FormGroup label="官方名称">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.official_db.name || ""}
+                    readOnly
+                  />
+                </FormGroup>
+                {resource.resource_type === "mount" && (
+                  <>
+                    <FormGroup label="坐骑类型">
+                      <select
+                        className="form-select"
+                        value={resource.mount_type || ""}
+                        disabled
+                      >
+                        <option value="">未设置</option>
+                        <option>飞行坐骑</option>
+                        <option>陆地坐骑</option>
+                        <option>水域坐骑</option>
+                      </select>
+                    </FormGroup>
+                    <FormGroup label="星级">
+                      <select
+                        className="form-select"
+                        value={resource.star_rating || ""}
+                        disabled
+                      >
+                        <option value="">未设置</option>
+                        <option>一星</option>
+                        <option>二星</option>
+                        <option>三星</option>
+                        <option>四星</option>
+                        <option>五星</option>
+                      </select>
+                    </FormGroup>
+                    <FormGroup label="子类型">
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={resource.subtype || ""}
+                        readOnly
+                      />
+                    </FormGroup>
+                  </>
+                )}
+                {(resource.resource_type === "pet" ||
+                  resource.resource_type === "npc") && (
+                  <FormGroup label="稀有度">
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={resource.rarity || ""}
+                      readOnly
+                    />
+                  </FormGroup>
+                )}
+                <FormGroup label="状态" className="full-width">
+                  <div className="flex gap-5">
+                    <label className="flex items-center gap-2 text-sm text-text-secondary">
+                      <input
+                        type="checkbox"
+                        checked={resource.debug_passed}
+                        disabled
+                      />{" "}
+                      调试通过
+                    </label>
+                    <label className="flex items-center gap-2 text-sm text-text-secondary">
+                      <input
+                        type="checkbox"
+                        checked={resource.added}
+                        disabled
+                      />{" "}
+                      已添加
+                    </label>
+                  </div>
+                </FormGroup>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-3 rounded-md border p-4 md:col-span-2">
-            <h2 className="font-medium">DBC / DB 元数据</h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              <JsonBlock title="creature_model_data" data={resource.dbc.creature_model_data} />
-              <JsonBlock title="creature_display_info" data={resource.dbc.creature_display_info} />
-              <JsonBlock title="spell" data={resource.dbc.spell} />
-              <JsonBlock title="item" data={resource.dbc.item} />
-              <JsonBlock title="creature_template" data={resource.db.creature_template} />
-              <JsonBlock title="creature_model_info" data={resource.db.creature_model_info} />
-              <JsonBlock title="item_template" data={resource.db.item_template} />
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">掉落信息</div>
+            </div>
+            <div className="card-body">
+              <div className="form-grid">
+                <FormGroup label="掉落 entry">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.drop.entry ?? ""}
+                    readOnly
+                  />
+                </FormGroup>
+                <FormGroup label="副本">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.drop.instance ?? ""}
+                    readOnly
+                  />
+                </FormGroup>
+                <FormGroup label="Boss 名称">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.drop.boss ?? ""}
+                    readOnly
+                  />
+                </FormGroup>
+                <FormGroup label="掉率">
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={resource.drop.rate ?? ""}
+                    readOnly
+                  />
+                </FormGroup>
+              </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">DBC / 数据库配置</div>
+            </div>
+            <div className="card-body">
+              <div className="tabs mb-5 px-0">
+                {DBC_TABS.map((tab) => (
+                  <button
+                    key={tab.key}
+                    className={cn("tab", activeTab === tab.key && "active")}
+                    onClick={() => setActiveTab(tab.key)}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+              <div className="form-grid">
+                <FormGroup label="原始数据" className="full-width">
+                  <textarea
+                    className="form-textarea"
+                    rows={12}
+                    value={getTabData(resource, activeTab)}
+                    readOnly
+                  />
+                  <p className="form-hint">由系统自动同步，不建议直接编辑</p>
+                </FormGroup>
+              </div>
             </div>
           </div>
         </div>
-      )}
 
-      {activeTab === 'assets' && assets && (
-        <div className="grid gap-4 md:grid-cols-2">
-          <AssetFileTree title="M2 模型" icon=<Box className="h-4 w-4" /> files={assets.m2_files} />
-          <AssetFileTree title="贴图文件" icon=<Layers className="h-4 w-4" /> files={assets.texture_files} />
-          <AssetFileTree title="图片文件" icon=<FileImage className="h-4 w-4" /> files={assets.image_files} />
-          <AssetFileTree title="图标文件" icon=<Layers className="h-4 w-4" /> files={assets.icon_files} />
-        </div>
-      )}
-
-      {activeTab === 'preview' && (
-        <div className="space-y-4">
-          {modelPreview && (
-            <ModelViewer preview={modelPreview} resourceType={resourceType} />
-          )}
-          {assets && (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {assets.matched_textures.map((file) => (
-                <TextureViewer key={file.relative_path} path={file.relative_path} label={file.name} />
-              ))}
-              {assets.image_files.map((file) => (
-                <TextureViewer key={file.relative_path} path={file.relative_path} label={file.name} />
-              ))}
+        <div className="detail-sidebar">
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">模型预览</div>
             </div>
-          )}
+            <div className="card-body">
+              <div className="preview-frame">
+                <div className="preview-placeholder">
+                  <Box className="h-12 w-12" />
+                  <p>3D 预览加载中...</p>
+                </div>
+              </div>
+              <div className="preview-toolbar">
+                <button className="btn btn-sm w-full" disabled>
+                  <RefreshCw className="h-4 w-4" /> 刷新
+                </button>
+                <Link
+                  to={`/preview/${resourceType}/${resourceId}`}
+                  className="btn btn-sm btn-primary w-full"
+                >
+                  <Eye className="h-4 w-4" /> 完整预览
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">资源文件</div>
+            </div>
+            <div className="card-body">
+              {assets ? (
+                <>
+                  {assets.resource_dir && (
+                    <div className="file-tree-item mb-1 font-medium text-text-primary">
+                      <FolderTree className="h-4 w-4" />
+                      {assets.model_folder}
+                    </div>
+                  )}
+                  <AssetFileTree
+                    title=""
+                    icon=<Layers className="h-4 w-4" />
+                    files={allFiles}
+                  />
+                </>
+              ) : (
+                <p className="text-sm text-text-secondary">暂无文件信息</p>
+              )}
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">操作日志</div>
+            </div>
+            <div className="card-body">
+              <div className="space-y-3 text-xs text-text-secondary">
+                <LogEntry time={`${today()} 15:32`} text="从 Excel 重新导入" />
+                <LogEntry
+                  time={`${today()} 11:08`}
+                  text="更新 star_rating: 三星 → 四星"
+                />
+                <LogEntry time={`${today()} 10:15`} text="创建资源定义" />
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
-function JsonBlock({ title, data }: { title: string; data: Record<string, unknown> }) {
-  const keys = Object.keys(data);
-  if (keys.length === 0) return null;
+function FormGroup({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="rounded-md border p-3">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{title}</h3>
-      <pre className="max-h-48 overflow-auto rounded bg-muted p-2 text-xs">{JSON.stringify(data, null, 2)}</pre>
+    <div className={cn("form-group", className)}>
+      <label className="form-label">{label}</label>
+      {children}
     </div>
   );
+}
+
+function LogEntry({ time, text }: { time: string; text: string }) {
+  return (
+    <div className="border-b border-border pb-3 last:border-b-0">
+      <div className="text-[11px] text-text-tertiary">{time}</div>
+      <div>{text}</div>
+    </div>
+  );
+}
+
+function getTabData(resource: Resource, key: string): string {
+  const data =
+    (resource.dbc as unknown as Record<string, unknown>)[key] ??
+    (resource.db as unknown as Record<string, unknown>)[key] ??
+    {};
+  return JSON.stringify(data, null, 2);
+}
+
+function today(): string {
+  return new Date().toISOString().split("T")[0];
 }
