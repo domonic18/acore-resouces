@@ -18,6 +18,9 @@ Desktop.ini
 *.swo
 *~
 
+# Excel 源文件（大文件，通过 Release/网盘分发）
+*.xlsx
+
 # 压缩包/备份
 *.zip
 *.rar
