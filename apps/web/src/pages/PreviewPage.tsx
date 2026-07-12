@@ -13,6 +13,8 @@ import {
   getResource,
   getResourceAssets,
   getModelPreview,
+  getFilePreviewUrl,
+  getBlpPreviewUrl,
 } from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { TextureViewer } from "@/components/viewer/TextureViewer";
@@ -28,6 +30,7 @@ export function PreviewPage() {
   const [selectedTexture, setSelectedTexture] = useState<AssetFile | null>(
     null,
   );
+  const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
 
   const {
     data: resource,
@@ -90,8 +93,9 @@ export function PreviewPage() {
   }
 
   const textures = assets
-    ? [...assets.matched_textures, ...assets.image_files]
+    ? [...assets.matched_textures, ...assets.texture_files]
     : [];
+  const imageFiles = assets ? assets.image_files : [];
   const metaEntries = modelPreview?.metadata
     ? Object.entries(modelPreview.metadata)
     : [];
@@ -161,9 +165,15 @@ export function PreviewPage() {
           </div>
         </div>
 
-        {/* Center: 3D Viewer */}
+        {/* Center: Image / 3D Viewer */}
         <div className="viewer-panel">
-          {modelPreview ? (
+          {imageFiles.length > 0 ? (
+            <ImageViewer
+              files={imageFiles}
+              selected={selectedImage}
+              onSelect={setSelectedImage}
+            />
+          ) : modelPreview ? (
             <ModelViewer preview={modelPreview} resourceType={resourceType} />
           ) : (
             <div className="viewer-canvas">
@@ -245,6 +255,63 @@ export function PreviewPage() {
       </div>
     </div>
   );
+}
+
+function ImageViewer({
+  files,
+  selected,
+  onSelect,
+}: {
+  files: AssetFile[];
+  selected: AssetFile | null;
+  onSelect: (file: AssetFile) => void;
+}) {
+  const current = selected ?? files[0];
+
+  return (
+    <>
+      <div className="viewer-canvas">
+        <img
+          src={filePreviewUrl(current)}
+          alt={current.name}
+          className="relative z-10 max-h-full max-w-full rounded-md object-contain"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      </div>
+      <div className="viewer-toolbar flex-wrap">
+        {files.map((file) => (
+          <button
+            key={file.relative_path}
+            type="button"
+            onClick={() => onSelect(file)}
+            className={`h-12 w-12 shrink-0 overflow-hidden rounded-md border object-cover transition-all ${
+              current.relative_path === file.relative_path
+                ? "border-accent"
+                : "border-border hover:border-border-hover"
+            }`}
+          >
+            <img
+              src={filePreviewUrl(file)}
+              alt={file.name}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function filePreviewUrl(file: AssetFile): string {
+  if (file.file_type === "blp") {
+    return getBlpPreviewUrl(file.relative_path, 512);
+  }
+  return getFilePreviewUrl(file.relative_path);
 }
 
 function formatMetaValue(value: unknown): string {

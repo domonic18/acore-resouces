@@ -19,11 +19,13 @@ services:
       - ./workspace:/app/workspace
       - ./imports:/app/imports
       - ./patches:/app/patches
+      - ./backend/app:/app/app
+      - ./apps/web/dist:/app/app/static
     networks:
       - acore-resources-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3

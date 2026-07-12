@@ -66,6 +66,10 @@ export function getIconPreviewUrl(iconName: string, size?: number): string {
   return `/api/preview/icon/${encodeURIComponent(iconName)}`;
 }
 
+export function getFilePreviewUrl(path: string): string {
+  return `/api/preview/file/${encodeURIComponent(path)}`;
+}
+
 export function getResourceCount(resourceType: string): Promise<number> {
   return listResources(resourceType, { page_size: 1 }).then((res) => res.total);
 }

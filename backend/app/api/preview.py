@@ -56,6 +56,28 @@ def preview_blp(
     return FileResponse(cache_path, media_type="image/webp")
 
 
+@router.get("/file/{path:path}")
+def preview_file(path: str) -> FileResponse:
+    """预览任意原始资源文件（图片、GIF 等），按相对路径返回。"""
+    source_path = _resolve_source_path(path)
+    if not source_path.exists():
+        raise HTTPException(status_code=404, detail=f"文件不存在：{path}")
+
+    media_type = _guess_media_type(source_path.suffix)
+    return FileResponse(source_path, media_type=media_type)
+
+
+def _guess_media_type(suffix: str) -> str | None:
+    mapping = {
+        ".png": "image/png",
+        ".gif": "image/gif",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+    }
+    return mapping.get(suffix.lower())
+
+
 @router.get("/icon/{icon_name}")
 def preview_icon(
     icon_name: str,

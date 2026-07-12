@@ -9,10 +9,15 @@ import {
   Eye,
   Layers,
 } from "lucide-react";
-import { getResource, getResourceAssets } from "@/shared/resources";
+import {
+  getResource,
+  getResourceAssets,
+  getBlpPreviewUrl,
+  getFilePreviewUrl,
+} from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { cn } from "@/shared/utils";
-import type { Resource } from "@/shared/types";
+import type { AssetFile, Resource } from "@/shared/types";
 
 const DBC_TABS = [
   { key: "creature_display_info", label: "CreatureDisplayInfo" },
@@ -31,6 +36,7 @@ export function ResourceDetailPage() {
   }>();
   const resourceId = parseInt(id || "0", 10);
   const [activeTab, setActiveTab] = useState("creature_display_info");
+  const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
 
   const {
     data: resource,
@@ -289,12 +295,19 @@ export function ResourceDetailPage() {
               <div className="card-title">模型预览</div>
             </div>
             <div className="card-body">
-              <div className="preview-frame">
-                <div className="preview-placeholder">
-                  <Box className="h-12 w-12" />
-                  <p>3D 预览加载中...</p>
-                </div>
-              </div>
+              <ImageGallery
+                files={
+                  assets
+                    ? [
+                        ...assets.image_files,
+                        ...assets.matched_textures,
+                        ...assets.icon_files,
+                      ]
+                    : []
+                }
+                selected={selectedImage}
+                onSelect={setSelectedImage}
+              />
               <div className="preview-toolbar">
                 <button className="btn btn-sm w-full" disabled>
                   <RefreshCw className="h-4 w-4" /> 刷新
@@ -379,6 +392,74 @@ function LogEntry({ time, text }: { time: string; text: string }) {
       <div>{text}</div>
     </div>
   );
+}
+
+function ImageGallery({
+  files,
+  selected,
+  onSelect,
+}: {
+  files: AssetFile[];
+  selected: AssetFile | null;
+  onSelect: (file: AssetFile) => void;
+}) {
+  if (files.length === 0) {
+    return (
+      <div className="preview-frame">
+        <div className="preview-placeholder">
+          <Box className="h-12 w-12" />
+          <p>未找到模型图片</p>
+        </div>
+      </div>
+    );
+  }
+
+  const current = selected ?? files[0];
+
+  return (
+    <div>
+      <div className="preview-frame">
+        <img
+          src={filePreviewUrl(current)}
+          alt={current.name}
+          className="relative z-10 max-h-full max-w-full rounded-md object-contain"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      </div>
+      <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+        {files.map((file) => (
+          <button
+            key={file.relative_path}
+            type="button"
+            onClick={() => onSelect(file)}
+            className={`h-14 w-14 shrink-0 overflow-hidden rounded-md border object-cover transition-all ${
+              current.relative_path === file.relative_path
+                ? "border-accent"
+                : "border-border hover:border-border-hover"
+            }`}
+          >
+            <img
+              src={filePreviewUrl(file)}
+              alt={file.name}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function filePreviewUrl(file: AssetFile): string {
+  if (file.file_type === "blp") {
+    return getBlpPreviewUrl(file.relative_path, 512);
+  }
+  return getFilePreviewUrl(file.relative_path);
 }
 
 function getTabData(resource: Resource, key: string): string {
