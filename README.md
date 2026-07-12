@@ -15,7 +15,7 @@ acore-resouce/
 ├── npcs/                  # NPC 预览图（PNG / GIF）
 ├── pets/                  # 宠物预览图（PNG / GIF）
 ├── icons/                 # 游戏图标（BLP / TXT 索引）
-└── .vscode/               # VS Code 工作区配置
+└── .vscode/               # VS Code 本地配置（不纳入 Git）
 ```
 
 ## 核心数据文件
