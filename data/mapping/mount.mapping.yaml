@@ -2,6 +2,8 @@ sheet: "坐骑列表"
 header_row: 2
 data_start_row: 3
 resource_type: "mount"
+id_source: "row"
+required_field: "mount_type"
 fields:
   id: 0
   model_folder: 1

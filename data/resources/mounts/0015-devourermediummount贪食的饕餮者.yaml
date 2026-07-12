@@ -1,0 +1,35 @@
+id: 15
+model_folder: devourermediummount贪食的饕餮者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 贪食的饕餮者
+  spell_icon_name: inv_devourermediummount
+  icon_name: inv_devourermediummount
+dbc:
+  creature_model_data:
+    id: 4012
+    flags: 2
+    model_name: creature\devourermediummount\devourermediummount.m2
+  creature_display_info:
+    id: 140012
+    model_id: 4012
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140012
+    name: 贪食的饕餮者
+    modelid1: 140012
+  creature_model_info:
+    display_id: 140012
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 怪物

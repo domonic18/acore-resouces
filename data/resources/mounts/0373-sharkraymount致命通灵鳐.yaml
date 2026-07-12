@@ -1,0 +1,34 @@
+id: 373
+model_folder: sharkraymount致命通灵鳐
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 破镣者海波鳐
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104369
+    flags: 2
+  creature_display_info:
+    id: 140369
+    model_id: 104369
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140369
+    name: 破镣者海波鳐
+    modelid1: 140369
+  creature_model_info:
+    display_id: 140369
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 鳐

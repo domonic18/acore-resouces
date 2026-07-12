@@ -1,0 +1,35 @@
+id: 276
+model_folder: MonkMount玄武虎坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 班禄，大宗师的伙伴
+  spell_icon_name: inv_monkmount
+  icon_name: inv_monkmount
+dbc:
+  creature_model_data:
+    id: 104272
+    flags: 2
+    model_name: creature\MonkMount\monkmount.m2
+  creature_display_info:
+    id: 140272
+    model_id: 104272
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140272
+    name: 班禄，大宗师的伙伴
+    modelid1: 140272
+  creature_model_info:
+    display_id: 140272
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 虎

@@ -1,0 +1,34 @@
+id: 409
+model_folder: TalbukDraenor银鬃塔布羊
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 驯养的银鬃塔布羊
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104405
+    flags: 2
+  creature_display_info:
+    id: 140405
+    model_id: 104405
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140405
+    name: 驯养的银鬃塔布羊
+    modelid1: 140405
+  creature_model_info:
+    display_id: 140405
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 羊

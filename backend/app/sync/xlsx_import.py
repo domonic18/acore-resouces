@@ -132,16 +132,35 @@ def import_xlsx(
     seen_filenames: set[str] = set()
     last_model_folder: str | None = None
 
+    id_source = mapping.get("id_source", "column")
+    id_col = mapping["fields"].get("id")
+    required_field = mapping.get("required_field")
+    required_col = mapping["fields"].get(required_field) if required_field else None
+
     for row_idx, row in enumerate(
         sheet.iter_rows(min_row=data_start_row, values_only=True), start=data_start_row
     ):
         if limit is not None and created >= limit:
             break
 
-        if not row or all(cell is None for cell in row):
+        if not row:
             continue
 
-        id_value = _parse_number(row[mapping["fields"]["id"]]) if "id" in mapping["fields"] else None
+        if all(cell is None for cell in row):
+            continue
+
+        if required_col is not None:
+            required_value = row[required_col] if required_col < len(row) else None
+            if required_value is None or (isinstance(required_value, str) and not required_value.strip()):
+                continue
+
+        if id_source == "row":
+            id_value: int | float | None = row_idx
+        elif id_col is not None:
+            id_value = _parse_number(row[id_col]) if id_col < len(row) else None
+        else:
+            id_value = None
+
         model_folder_col = mapping["fields"].get("model_folder")
         raw_model_folder = (
             str(row[model_folder_col]).strip()
@@ -167,8 +186,10 @@ def import_xlsx(
 
         last_model_folder = model_folder_value
 
-        # 将继承得到的 model_folder 回填到行数据中，避免 Pydantic 校验失败
+        # 将 ID 与继承得到的 model_folder 回填到行数据中，避免 Pydantic 校验失败
         row_list = list(row)
+        if id_col is not None and id_col < len(row_list):
+            row_list[id_col] = id_value
         if model_folder_col is not None and model_folder_col < len(row_list):
             row_list[model_folder_col] = model_folder_value
         enriched_row = tuple(row_list)

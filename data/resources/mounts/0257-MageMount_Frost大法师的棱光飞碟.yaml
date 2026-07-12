@@ -1,0 +1,35 @@
+id: 257
+model_folder: MageMount_Frost大法师的棱光飞碟
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 21212
+  instance: 毒蛇神殿
+  boss: 瓦丝琪
+  rate: 0.02
+official_db:
+  name: 大法师的棱光飞碟
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104253
+    flags: 2
+    model_name: creature\MageMount_Frost\magemount_frost.m2
+  creature_display_info:
+    id: 140253
+    model_id: 104253
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140253
+    name: 大法师的棱光飞碟
+    modelid1: 140253
+  creature_model_info:
+    display_id: 140253
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 五星
+subtype: 机械

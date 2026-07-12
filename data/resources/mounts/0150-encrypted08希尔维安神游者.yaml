@@ -1,0 +1,35 @@
+id: 150
+model_folder: encrypted08希尔维安神游者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 24850
+  instance: 太阳之井高地
+  boss: 卡雷苟斯
+  rate: 0.02
+official_db:
+  name: 希尔维安神游者
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104145
+    flags: 2
+    model_name: creature\encrypted08\encrypted08.m2
+  creature_display_info:
+    id: 140145
+    model_id: 104145
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140145
+    name: 希尔维安神游者
+    modelid1: 140145
+  creature_model_info:
+    display_id: 140145
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

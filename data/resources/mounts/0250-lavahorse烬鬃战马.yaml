@@ -1,0 +1,35 @@
+id: 250
+model_folder: lavahorse烬鬃战马
+preview_image: null
+debug_passed: false
+added: true
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 烬鬃战马
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104246
+    flags: 2
+    model_name: creature\lavahorse\lavahorse.m2
+  creature_display_info:
+    id: 140246
+    model_id: 104246
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140246
+    name: 烬鬃战马
+    modelid1: 140246
+  creature_model_info:
+    display_id: 140246
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 马

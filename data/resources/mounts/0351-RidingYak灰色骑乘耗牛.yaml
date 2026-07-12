@@ -1,0 +1,35 @@
+id: 351
+model_folder: RidingYak灰色骑乘耗牛
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 11501
+  instance: 厄运之槌(北)
+  boss: 戈多克大王
+  rate: 0.01
+official_db:
+  name: 金色骑乘牦牛
+  spell_icon_name: ability_mount_yakmountbrown
+  icon_name: ability_mount_yakmountbrown
+dbc:
+  creature_model_data:
+    id: 104347
+    flags: 2
+    model_name: creature\RidingYak\ridingyak.m2
+  creature_display_info:
+    id: 140347
+    model_id: 104347
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140347
+    name: 金色骑乘牦牛
+    modelid1: 140347
+  creature_model_info:
+    display_id: 140347
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 牦牛

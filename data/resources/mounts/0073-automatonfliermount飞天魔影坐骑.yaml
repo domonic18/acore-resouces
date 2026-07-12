@@ -1,0 +1,35 @@
+id: 73
+model_folder: automatonfliermount飞天魔影坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 17225
+  instance: 卡拉赞
+  boss: 夜之魇
+  rate: 0.03
+official_db:
+  name: 高风暗鬃狮
+  spell_icon_name: inv_wingedlion2mount_dark
+  icon_name: inv_wingedlion2mount_dark
+dbc:
+  creature_model_data:
+    id: 104068
+    flags: 2
+    model_name: creature\automatonfliermount\automatonfliermount.m2
+  creature_display_info:
+    id: 140068
+    model_id: 104068
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140068
+    name: 高风暗鬃狮
+    modelid1: 140068
+  creature_model_info:
+    display_id: 140068
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 狮

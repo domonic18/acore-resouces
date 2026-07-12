@@ -1,0 +1,35 @@
+id: 163
+model_folder: Felhound3_Fire_Mount安托兰灼焦恶犬
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 17257
+  instance: 玛瑟里顿的巢穴
+  boss: 玛瑟里顿
+  rate: 0.03
+official_db:
+  name: 安托兰灼焦恶犬
+  spell_icon_name: inv_felhound3_shadow_fire
+  icon_name: inv_felhound3_shadow_fire
+dbc:
+  creature_model_data:
+    id: 104158
+    flags: 2
+    model_name: creature\felhound3_fire_mount\felhound3_fire_mount.m2
+  creature_display_info:
+    id: 140158
+    model_id: 104158
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140158
+    name: 安托兰灼焦恶犬
+    modelid1: 140158
+  creature_model_info:
+    display_id: 140158
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 怪物

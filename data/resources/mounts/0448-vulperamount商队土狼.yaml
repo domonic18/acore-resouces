@@ -1,0 +1,34 @@
+id: 448
+model_folder: vulperamount商队土狼
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 商队土狼
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104444
+    flags: 2
+  creature_display_info:
+    id: 140444
+    model_id: 104444
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140444
+    name: 商队土狼
+    modelid1: 140444
+  creature_model_info:
+    display_id: 140444
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 狼

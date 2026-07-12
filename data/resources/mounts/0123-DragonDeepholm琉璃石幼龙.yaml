@@ -1,0 +1,35 @@
+id: 123
+model_folder: DragonDeepholm琉璃石幼龙
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 25315
+  instance: 太阳之井高地
+  boss: 基尔加丹
+  rate: 0.02
+official_db:
+  name: 沙石幼龙
+  spell_icon_name: inv_misc_stonedragonorange
+  icon_name: inv_alchemy_potion_06
+dbc:
+  creature_model_data:
+    id: 104118
+    flags: 2
+    model_name: creature\DragonDeepholm\DragonDeepholmMount.M2
+  creature_display_info:
+    id: 140118
+    model_id: 104118
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140118
+    name: 沙石幼龙
+    modelid1: 140118
+  creature_model_info:
+    display_id: 140118
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 龙

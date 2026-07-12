@@ -1,0 +1,35 @@
+id: 14
+model_folder: basilisk2老鳄鱼坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 7273
+  instance: 祖尔法拉克
+  boss: 加兹瑞拉
+  rate: 0.01
+official_db:
+  name: 拳手的健壮蜥蜴
+  spell_icon_name: inv_basaliskmount
+  icon_name: inv_basaliskmount
+dbc:
+  creature_model_data:
+    id: 4011
+    flags: 2
+    model_name: creature\basiliskmount\basiliskmount.m2
+  creature_display_info:
+    id: 140011
+    model_id: 4011
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140011
+    name: 拳手的健壮蜥蜴
+    modelid1: 140011
+  creature_model_info:
+    display_id: 140011
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 鳄鱼

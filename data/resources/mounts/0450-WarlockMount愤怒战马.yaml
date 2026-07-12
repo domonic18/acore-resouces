@@ -1,0 +1,35 @@
+id: 450
+model_folder: WarlockMount愤怒战马
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 185169
+  instance: 地狱火城墙(英雄模式)
+  boss: 强化魔铁箱
+  rate: 0.02
+official_db:
+  name: 虚空领主的硫磺愤怒战马
+  spell_icon_name: inv_warlockmountfire
+  icon_name: inv_warlockmountfire
+dbc:
+  creature_model_data:
+    id: 104446
+    flags: 2
+    model_name: creature\WarlockMount\warlockmount.m2
+  creature_display_info:
+    id: 140446
+    model_id: 104446
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140446
+    name: 虚空领主的硫磺愤怒战马
+    modelid1: 140446
+  creature_model_info:
+    display_id: 140446
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 马

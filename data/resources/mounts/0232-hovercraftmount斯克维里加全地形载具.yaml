@@ -1,0 +1,35 @@
+id: 232
+model_folder: hovercraftmount斯克维里加全地形载具
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 17711
+  instance: 影月谷
+  boss: 世界BOSS：末日行者
+  rate: 0.02
+official_db:
+  name: 斯克维里加全地形载具
+  spell_icon_name: inv_hovercraftmount
+  icon_name: inv_hovercraftmount
+dbc:
+  creature_model_data:
+    id: 104228
+    flags: 2
+    model_name: creature\hovercraftmount\hovercraftmount.m2
+  creature_display_info:
+    id: 140228
+    model_id: 104228
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140228
+    name: 斯克维里加全地形载具
+    modelid1: 140228
+  creature_model_info:
+    display_id: 140228
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 机械

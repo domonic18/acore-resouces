@@ -1,0 +1,35 @@
+id: 16
+model_folder: fandralfirescorpion烈焰蝎子坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 12264
+  instance: 熔火之心
+  boss: 沙斯拉尔
+  rate: 0.035
+official_db:
+  name: 烈焰蝎子
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4013
+    flags: 2
+    model_name: creature\fandralfirescorpion\fandralfirescorpion.m2
+  creature_display_info:
+    id: 140013
+    model_id: 4013
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140013
+    name: 烈焰蝎子
+    modelid1: 140013
+  creature_model_info:
+    display_id: 140013
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 蝎子

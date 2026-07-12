@@ -1,0 +1,35 @@
+id: 112
+model_folder: decomposermount幽影镰角虫
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 11518
+  instance: 怒焰裂谷
+  boss: 祈求者耶戈什
+  rate: 0.01
+official_db:
+  name: 幽影镰角虫
+  spell_icon_name: inv_decomposermountblack
+  icon_name: inv_decomposermountblack
+dbc:
+  creature_model_data:
+    id: 104107
+    flags: 2
+    model_name: creature\decomposermount\decomposermount.m2
+  creature_display_info:
+    id: 140107
+    model_id: 104107
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140107
+    name: 幽影镰角虫
+    modelid1: 140107
+  creature_model_info:
+    display_id: 140107
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 虫子

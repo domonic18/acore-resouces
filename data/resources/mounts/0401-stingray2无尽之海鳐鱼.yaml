@@ -1,0 +1,34 @@
+id: 401
+model_folder: stingray2无尽之海鳐鱼
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 暗水鳐鱼
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104397
+    flags: 2
+  creature_display_info:
+    id: 140397
+    model_id: 104397
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140397
+    name: 暗水鳐鱼
+    modelid1: 140397
+  creature_model_info:
+    display_id: 140397
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 鳐鱼

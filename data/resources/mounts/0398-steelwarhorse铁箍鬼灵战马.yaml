@@ -1,0 +1,35 @@
+id: 398
+model_folder: steelwarhorse铁箍鬼灵战马
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 16097
+  instance: 厄运之槌(东)
+  boss: 伊萨利恩
+  rate: 0.01
+official_db:
+  name: 铁箍鬼灵战马
+  spell_icon_name: ability_mount_steelwarhorse
+  icon_name: ability_mount_steelwarhorse
+dbc:
+  creature_model_data:
+    id: 104394
+    flags: 2
+    model_name: creature\steelwarhorse\steelwarhorse.m2
+  creature_display_info:
+    id: 140394
+    model_id: 104394
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140394
+    name: 铁箍鬼灵战马
+    modelid1: 140394
+  creature_model_info:
+    display_id: 140394
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 马

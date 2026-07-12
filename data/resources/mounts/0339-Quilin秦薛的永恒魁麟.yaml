@@ -1,0 +1,34 @@
+id: 339
+model_folder: Quilin秦薛的永恒魁麟
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 秦薛的永恒魁麟
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104335
+    flags: 2
+  creature_display_info:
+    id: 140335
+    model_id: 104335
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140335
+    name: 秦薛的永恒魁麟
+    modelid1: 140335
+  creature_model_info:
+    display_id: 140335
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 狮子

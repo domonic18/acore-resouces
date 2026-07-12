@@ -1,0 +1,34 @@
+id: 107
+model_folder: deathwargmount碎愿者加尔贡
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 地穴加尔贡
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104102
+    flags: 2
+  creature_display_info:
+    id: 140102
+    model_id: 104102
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140102
+    name: 地穴加尔贡
+    modelid1: 140102
+  creature_model_info:
+    display_id: 140102
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 熊

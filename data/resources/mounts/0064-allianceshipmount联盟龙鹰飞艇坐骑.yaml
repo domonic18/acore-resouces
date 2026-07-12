@@ -1,0 +1,34 @@
+id: 64
+model_folder: allianceshipmount联盟龙鹰飞艇坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 暴风城逐天战机
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104059
+    flags: 2
+  creature_display_info:
+    id: 140059
+    model_id: 104059
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140059
+    name: 暴风城逐天战机
+    modelid1: 140059
+  creature_model_info:
+    display_id: 140059
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 五星
+subtype: 机械

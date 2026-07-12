@@ -1,0 +1,35 @@
+id: 100
+model_folder: DarkPhoenix暗色凤凰
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 19514
+  instance: 风暴要塞
+  boss: 奥
+  rate: 0.02
+official_db:
+  name: 暗色凤凰
+  spell_icon_name: inv_mount_darkphoenixa
+  icon_name: inv_mount_darkphoenixa
+dbc:
+  creature_model_data:
+    id: 104095
+    flags: 2
+    model_name: creature\DarkPhoenix\darkphoenixmount.m2
+  creature_display_info:
+    id: 140095
+    model_id: 104095
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140095
+    name: 暗色凤凰
+    modelid1: 140095
+  creature_model_info:
+    display_id: 140095
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 凤凰

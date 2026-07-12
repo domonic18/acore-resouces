@@ -1,0 +1,34 @@
+id: 222
+model_folder: hordezeppelinmount部落飞艇
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 奥格瑞玛拦截飞艇
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104218
+    flags: 2
+  creature_display_info:
+    id: 140218
+    model_id: 104218
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140218
+    name: 奥格瑞玛拦截飞艇
+    modelid1: 140218
+  creature_model_info:
+    display_id: 140218
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 五星
+subtype: 飞艇

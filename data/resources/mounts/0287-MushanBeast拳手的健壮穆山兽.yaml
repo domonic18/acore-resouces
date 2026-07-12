@@ -9,25 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: 拳手的健壮穆山兽
+  name: 炮舰之子
   spell_icon_name: null
   icon_name: null
 dbc:
   creature_model_data:
-    id: 104281
+    id: 104283
     flags: 2
   creature_display_info:
-    id: 140281
-    model_id: 104281
+    id: 140283
+    model_id: 104283
   spell: {}
   item: {}
 db:
   creature_template:
-    entry: 9140281
-    name: 拳手的健壮穆山兽
-    modelid1: 140281
+    entry: 9140283
+    name: 炮舰之子
+    modelid1: 140283
   creature_model_info:
-    display_id: 140281
+    display_id: 140283
   item_template: {}
 mount_type: 陆地坐骑
 star_rating: 三星

@@ -1,0 +1,35 @@
+id: 375
+model_folder: sharkraymount致命通灵鳐
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 20266
+  instance: 法力陵墓(英雄模式)
+  boss: 节点亲王沙法尔
+  rate: 0.02
+official_db:
+  name: 柔光法力鳐
+  spell_icon_name: inv_manaraymount_blue
+  icon_name: inv_manaraymount_blue
+dbc:
+  creature_model_data:
+    id: 104371
+    flags: 2
+    model_name: creature\sharkraymount\sharkraymount.m2
+  creature_display_info:
+    id: 140371
+    model_id: 104371
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140371
+    name: 柔光法力鳐
+    modelid1: 140371
+  creature_model_info:
+    display_id: 140371
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 鳐

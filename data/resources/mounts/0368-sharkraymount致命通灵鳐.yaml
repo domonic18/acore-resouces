@@ -1,0 +1,35 @@
+id: 368
+model_folder: sharkraymount致命通灵鳐
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 20633
+  instance: 蒸汽地窟(英雄模式)
+  boss: 督军卡利瑟里斯
+  rate: 0.02
+official_db:
+  name: 艾萨莉膨水鳐
+  spell_icon_name: inv_sharkraymount_4
+  icon_name: inv_sharkraymount_4
+dbc:
+  creature_model_data:
+    id: 104364
+    flags: 2
+    model_name: creature\sharkraymount\sharkraymount.m2
+  creature_display_info:
+    id: 140364
+    model_id: 104364
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140364
+    name: 艾萨莉膨水鳐
+    modelid1: 140364
+  creature_model_info:
+    display_id: 140364
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 鳐

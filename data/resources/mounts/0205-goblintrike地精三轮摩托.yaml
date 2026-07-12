@@ -1,0 +1,34 @@
+id: 205
+model_folder: goblintrike地精三轮摩托
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 地精三轮摩托涡轮增压型
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104200
+    flags: 2
+  creature_display_info:
+    id: 140200
+    model_id: 104200
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140200
+    name: 地精三轮摩托涡轮增压型
+    modelid1: 140200
+  creature_model_info:
+    display_id: 140200
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 机械

@@ -1,0 +1,34 @@
+id: 246
+model_folder: jailerhoundmount回廊潜行猎犬
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 回廊潜行猎犬
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104242
+    flags: 2
+  creature_display_info:
+    id: 140242
+    model_id: 104242
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140242
+    name: 回廊潜行猎犬
+    modelid1: 140242
+  creature_model_info:
+    display_id: 140242
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 犬

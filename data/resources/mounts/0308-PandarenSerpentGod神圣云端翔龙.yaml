@@ -1,0 +1,35 @@
+id: 308
+model_folder: PandarenSerpentGod神圣云端翔龙
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 25038
+  instance: 太阳之井高地
+  boss: 菲米丝
+  rate: 0.03
+official_db:
+  name: 神圣金色云端翔龙
+  spell_icon_name: inv_pandarenserpentgodmount_gold
+  icon_name: inv_pandarenserpentgodmount_gold
+dbc:
+  creature_model_data:
+    id: 104304
+    flags: 2
+    model_name: creature\pandarenserpentgod\pandarenserpentgodmount.m2
+  creature_display_info:
+    id: 140304
+    model_id: 104304
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140304
+    name: 神圣金色云端翔龙
+    modelid1: 140304
+  creature_model_info:
+    display_id: 140304
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 翔龙

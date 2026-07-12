@@ -1,0 +1,34 @@
+id: 464
+model_folder: zandalaritriceratops犍牛坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 翡翠原始恐角龙缰绳
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104460
+    flags: 2
+  creature_display_info:
+    id: 140460
+    model_id: 104460
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140460
+    name: 翡翠原始恐角龙缰绳
+    modelid1: 140460
+  creature_model_info:
+    display_id: 140460
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 牛

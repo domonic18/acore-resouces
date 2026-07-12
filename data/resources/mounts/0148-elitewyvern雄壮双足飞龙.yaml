@@ -1,0 +1,35 @@
+id: 148
+model_folder: elitewyvern雄壮双足飞龙
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 15688
+  instance: 卡拉赞
+  boss: 特雷斯坦·邪蹄
+  rate: 0.03
+official_db:
+  name: 重装双足飞龙
+  spell_icon_name: inv_misc_elitewyvernarmored
+  icon_name: inv_misc_elitewyvernarmored
+dbc:
+  creature_model_data:
+    id: 104143
+    flags: 2
+    model_name: creature\elitewyvern\elitewyvernarmored.m2
+  creature_display_info:
+    id: 140143
+    model_id: 104143
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140143
+    name: 重装双足飞龙
+    modelid1: 140143
+  creature_model_info:
+    display_id: 140143
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 双足飞龙

@@ -1,0 +1,35 @@
+id: 33
+model_folder: dhmount2屠魔者的破邪尖啸者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 屠魔者的破邪尖啸者
+  spell_icon_name: inv_dhmount
+  icon_name: inv_dhmount
+dbc:
+  creature_model_data:
+    id: 4030
+    flags: 2
+    model_name: creature\dhmount2\dhmount2.m2
+  creature_display_info:
+    id: 140030
+    model_id: 4030
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140030
+    name: 屠魔者的破邪尖啸者
+    modelid1: 140030
+  creature_model_info:
+    display_id: 140030
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 怪物

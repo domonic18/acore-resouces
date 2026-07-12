@@ -2,33 +2,34 @@ id: 183
 model_folder: GiantBoar霜原野猪
 preview_image: null
 debug_passed: false
-added: false
+added: true
 drop:
   entry: null
   instance: null
   boss: null
   rate: null
 official_db:
-  name: 石牙斗猪
-  spell_icon_name: null
-  icon_name: null
+  name: 钢鬃地狱野猪
+  spell_icon_name: inv_giantboarmount_brown
+  icon_name: inv_giantboarmount_brown
 dbc:
   creature_model_data:
-    id: 4009
+    id: 104178
     flags: 2
     model_name: creature\GiantBoar\giantboarmount.m2
   creature_display_info:
-    id: 140009
-    model_id: 4009
+    id: 140178
+    model_id: 104178
   spell: {}
   item: {}
 db:
   creature_template:
-    entry: 9140009
-    modelid1: 140009
+    entry: 9140178
+    name: 钢鬃地狱野猪
+    modelid1: 140178
   creature_model_info:
-    display_id: 140009
+    display_id: 140178
   item_template: {}
 mount_type: 陆地坐骑
-star_rating: 三星
+star_rating: 二星
 subtype: 猪

@@ -1,0 +1,34 @@
+id: 92
+model_folder: chimera2钢铁碎天兽
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 阴森绽翼兽
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104087
+    flags: 2
+  creature_display_info:
+    id: 140087
+    model_id: 104087
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140087
+    name: 阴森绽翼兽
+    modelid1: 140087
+  creature_model_info:
+    display_id: 140087
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

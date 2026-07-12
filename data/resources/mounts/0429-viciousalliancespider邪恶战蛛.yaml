@@ -1,0 +1,34 @@
+id: 429
+model_folder: viciousalliancespider邪恶战蛛
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 邪恶战蛛
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104425
+    flags: 2
+  creature_display_info:
+    id: 140425
+    model_id: 104425
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140425
+    name: 邪恶战蛛
+    modelid1: 140425
+  creature_model_info:
+    display_id: 140425
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 蜘蛛

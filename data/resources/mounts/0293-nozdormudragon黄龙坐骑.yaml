@@ -1,0 +1,34 @@
+id: 293
+model_folder: nozdormudragon黄龙坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: null
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104289
+    flags: 2
+  creature_display_info:
+    id: 140289
+    model_id: 104289
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140289
+    name: 0
+    modelid1: 140289
+  creature_model_info:
+    display_id: 140289
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

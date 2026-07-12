@@ -1,0 +1,35 @@
+id: 88
+model_folder: Camel骑乘骆驼
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 7358
+  instance: 剃刀高地
+  boss: 寒冰之王亚门纳尔
+  rate: 0.01
+official_db:
+  name: 棕色骑乘骆驼
+  spell_icon_name: ability_mount_camel_brown
+  icon_name: ability_mount_camel_brown
+dbc:
+  creature_model_data:
+    id: 104083
+    flags: 2
+    model_name: creature\Camel\CamelMount.M2
+  creature_display_info:
+    id: 140083
+    model_id: 104083
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140083
+    name: 棕色骑乘骆驼
+    modelid1: 140083
+  creature_model_info:
+    display_id: 140083
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 骆驼

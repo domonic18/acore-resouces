@@ -1,0 +1,34 @@
+id: 465
+model_folder: zeppelinmount暗月飞船
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 暗月飞船
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104461
+    flags: 2
+  creature_display_info:
+    id: 140461
+    model_id: 104461
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140461
+    name: 暗月飞船
+    modelid1: 140461
+  creature_model_info:
+    display_id: 140461
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 机械

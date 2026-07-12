@@ -1,0 +1,34 @@
+id: 306
+model_folder: PandarenSerpentGod神圣云端翔龙
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 玉蕾，青龙之女
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104302
+    flags: 2
+  creature_display_info:
+    id: 140302
+    model_id: 104302
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140302
+    name: 玉蕾，青龙之女
+    modelid1: 140302
+  creature_model_info:
+    display_id: 140302
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 翔龙

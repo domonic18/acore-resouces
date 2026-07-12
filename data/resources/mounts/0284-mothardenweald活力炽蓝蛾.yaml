@@ -9,25 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: 活力炽蓝蛾
+  name: 暮舞炽蓝蛾
   spell_icon_name: null
   icon_name: null
 dbc:
   creature_model_data:
-    id: 104278
+    id: 104280
     flags: 2
   creature_display_info:
-    id: 140278
-    model_id: 104278
+    id: 140280
+    model_id: 104280
   spell: {}
   item: {}
 db:
   creature_template:
-    entry: 9140278
-    name: 活力炽蓝蛾
-    modelid1: 140278
+    entry: 9140280
+    name: 暮舞炽蓝蛾
+    modelid1: 140280
   creature_model_info:
-    display_id: 140278
+    display_id: 140280
   item_template: {}
 mount_type: 飞行坐骑
 star_rating: 三星

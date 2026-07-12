@@ -1,0 +1,34 @@
+id: 98
+model_folder: Crane骑乘仙鹤
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 天蓝骑乘仙鹤
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104093
+    flags: 2
+  creature_display_info:
+    id: 140093
+    model_id: 104093
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140093
+    name: 天蓝骑乘仙鹤
+    modelid1: 140093
+  creature_model_info:
+    display_id: 140093
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 仙鹤

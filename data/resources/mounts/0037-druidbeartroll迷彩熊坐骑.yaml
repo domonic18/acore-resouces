@@ -1,0 +1,34 @@
+id: 37
+model_folder: druidbeartroll迷彩熊坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 迷彩熊
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4034
+    flags: 2
+    model_name: creature\druidbeartroll\druidbeartrollepic.m2
+  creature_display_info:
+    id: 140034
+    model_id: 4034
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140034
+    modelid1: 140034
+  creature_model_info:
+    display_id: 140034
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: null
+subtype: 熊

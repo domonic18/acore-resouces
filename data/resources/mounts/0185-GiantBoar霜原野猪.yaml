@@ -1,0 +1,34 @@
+id: 185
+model_folder: GiantBoar霜原野猪
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 巨型灰牙野猪
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104180
+    flags: 2
+  creature_display_info:
+    id: 140180
+    model_id: 104180
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140180
+    name: 巨型灰牙野猪
+    modelid1: 140180
+  creature_model_info:
+    display_id: 140180
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 猪

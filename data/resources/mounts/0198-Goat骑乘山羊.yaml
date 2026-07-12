@@ -1,0 +1,35 @@
+id: 198
+model_folder: Goat骑乘山羊
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 7800
+  instance: 诺莫瑞根
+  boss: 机械师瑟玛普拉格
+  rate: 0.01
+official_db:
+  name: 黑色骑乘山羊
+  spell_icon_name: ability_mount_goatmountblack
+  icon_name: ability_mount_goatmountblack
+dbc:
+  creature_model_data:
+    id: 104193
+    flags: 2
+    model_name: creature\Goat\goatmount.m2
+  creature_display_info:
+    id: 140193
+    model_id: 104193
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140193
+    name: 黑色骑乘山羊
+    modelid1: 140193
+  creature_model_info:
+    display_id: 140193
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 羊

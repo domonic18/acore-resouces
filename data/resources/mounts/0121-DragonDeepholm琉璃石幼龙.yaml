@@ -1,0 +1,35 @@
+id: 121
+model_folder: DragonDeepholm琉璃石幼龙
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 20531
+  instance: 旧希尔斯布莱德丘陵(英雄模式)
+  boss: 时空猎手
+  rate: 0.02
+official_db:
+  name: 磷光石幼龙
+  spell_icon_name: inv_misc_stonedragonpurple
+  icon_name: inv_misc_stonedragonpurple
+dbc:
+  creature_model_data:
+    id: 104116
+    flags: 2
+    model_name: creature\DragonDeepholm\DragonDeepholmMount.M2
+  creature_display_info:
+    id: 140116
+    model_id: 104116
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140116
+    name: 磷光石幼龙
+    modelid1: 140116
+  creature_model_info:
+    display_id: 140116
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

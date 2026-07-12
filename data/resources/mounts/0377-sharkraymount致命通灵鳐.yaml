@@ -1,0 +1,35 @@
+id: 377
+model_folder: sharkraymount致命通灵鳐
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 20184
+  instance: 幽暗沼泽(英雄模式)
+  boss: 黑色阔步者
+  rate: 0.02
+official_db:
+  name: 荧光法力鳐
+  spell_icon_name: inv_manaraymount_orange
+  icon_name: inv_manaraymount_orange
+dbc:
+  creature_model_data:
+    id: 104373
+    flags: 2
+    model_name: creature\sharkraymount\sharkraymount.m2
+  creature_display_info:
+    id: 140373
+    model_id: 104373
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140373
+    name: 荧光法力鳐
+    modelid1: 140373
+  creature_model_info:
+    display_id: 140373
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 鳐

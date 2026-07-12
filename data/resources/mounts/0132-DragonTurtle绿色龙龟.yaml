@@ -1,0 +1,35 @@
+id: 132
+model_folder: DragonTurtle绿色龙龟
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 21214
+  instance: 毒蛇神殿
+  boss: 深水领主卡拉瑟雷斯
+  rate: 0.03
+official_db:
+  name: 巨型黑色龙龟
+  spell_icon_name: ability_mount_pandaranmountepicblack
+  icon_name: ability_mount_pandaranmountepicblack
+dbc:
+  creature_model_data:
+    id: 104127
+    flags: 2
+    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.M2
+  creature_display_info:
+    id: 140127
+    model_id: 104127
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140127
+    name: 巨型黑色龙龟
+    modelid1: 140127
+  creature_model_info:
+    display_id: 140127
+  item_template: {}
+mount_type: 水上坐骑
+star_rating: 二星
+subtype: 乌龟

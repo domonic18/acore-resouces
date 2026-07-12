@@ -1,34 +1,33 @@
 id: 270
 model_folder: mechacycle锈废漂移者
 preview_image: null
-debug_passed: true
-added: true
+debug_passed: false
+added: false
 drop:
-  entry: 18728
-  instance: 地狱火半岛
-  boss: 世界BOSS：末日领主卡扎克
-  rate: 0.02
+  entry: null
+  instance: null
+  boss: null
+  rate: null
 official_db:
   name: 锈废漂移者
-  spell_icon_name: inv_mechacyclejunk
-  icon_name: inv_mechacyclejunk
+  spell_icon_name: null
+  icon_name: null
 dbc:
   creature_model_data:
-    id: 104264
+    id: 104266
     flags: 2
-    model_name: creature\mechacycle\mechacycle.m2
   creature_display_info:
-    id: 140264
-    model_id: 104264
+    id: 140266
+    model_id: 104266
   spell: {}
   item: {}
 db:
   creature_template:
-    entry: 9140264
+    entry: 9140266
     name: 锈废漂移者
-    modelid1: 140264
+    modelid1: 140266
   creature_model_info:
-    display_id: 140264
+    display_id: 140266
   item_template: {}
 mount_type: 陆地坐骑
 star_rating: 四星

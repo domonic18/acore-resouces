@@ -1,0 +1,35 @@
+id: 147
+model_folder: elitewyvern雄壮双足飞龙
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 18607
+  instance: 鲜血熔炉(英雄模式)
+  boss: 击碎者克里丹
+  rate: 0.02
+official_db:
+  name: 雄壮双足飞龙
+  spell_icon_name: inv_misc_elitewyvern
+  icon_name: inv_misc_elitewyvern
+dbc:
+  creature_model_data:
+    id: 104142
+    flags: 2
+    model_name: creature\elitewyvern\elitewyvern.m2
+  creature_display_info:
+    id: 140142
+    model_id: 104142
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140142
+    name: 雄壮双足飞龙
+    modelid1: 140142
+  creature_model_info:
+    display_id: 140142
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 双足飞龙

@@ -1,0 +1,34 @@
+id: 136
+model_folder: DragonTurtle绿色龙龟
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 巨型紫色龙龟
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104131
+    flags: 2
+  creature_display_info:
+    id: 140131
+    model_id: 104131
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140131
+    name: 巨型紫色龙龟
+    modelid1: 140131
+  creature_model_info:
+    display_id: 140131
+  item_template: {}
+mount_type: 水上坐骑
+star_rating: 二星
+subtype: 乌龟

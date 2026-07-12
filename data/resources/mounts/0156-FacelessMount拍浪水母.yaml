@@ -1,0 +1,34 @@
+id: 156
+model_folder: FacelessMount拍浪水母
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 深海水母
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104151
+    flags: 2
+  creature_display_info:
+    id: 140151
+    model_id: 104151
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140151
+    name: 深海水母
+    modelid1: 140151
+  creature_model_info:
+    display_id: 140151
+  item_template: {}
+mount_type: 水上坐骑
+star_rating: 二星
+subtype: 水母
