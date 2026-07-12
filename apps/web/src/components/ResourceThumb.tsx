@@ -1,12 +1,7 @@
 import { useState } from "react";
-import { getBlpPreviewUrl, getIconPreviewUrl } from "@/shared/resources";
+import { Image } from "lucide-react";
+import { getIconPreviewUrl } from "@/shared/resources";
 import type { Resource } from "@/shared/types";
-
-const TYPE_EMOJI: Record<string, string> = {
-  mount: "🐎",
-  pet: "🐾",
-  npc: "🧙",
-};
 
 export function ResourceThumb({
   resource,
@@ -17,19 +12,14 @@ export function ResourceThumb({
 }) {
   const [imageError, setImageError] = useState(false);
 
-  let src: string | null = null;
-  if (resource.preview_image && !imageError) {
-    src = getBlpPreviewUrl(resource.preview_image, size);
-  } else if (resource.official_db.icon_name && !imageError) {
-    src = getIconPreviewUrl(resource.official_db.icon_name, size);
-  } else if (resource.official_db.spell_icon_name && !imageError) {
-    src = getIconPreviewUrl(resource.official_db.spell_icon_name, size);
-  }
+  const iconName =
+    resource.official_db.icon_name || resource.official_db.spell_icon_name;
+  const src = iconName && !imageError ? getIconPreviewUrl(iconName, size) : null;
 
   return (
     <div
       className="resource-thumb"
-      style={{ width: size, height: size, fontSize: size * 0.45 }}
+      style={{ width: size, height: size }}
     >
       {src ? (
         <img
@@ -39,7 +29,7 @@ export function ResourceThumb({
           onError={() => setImageError(true)}
         />
       ) : (
-        <span>{TYPE_EMOJI[resource.resource_type] || "📦"}</span>
+        <Image className="h-5 w-5 text-text-tertiary" />
       )}
     </div>
   );
