@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Node.js
+node_modules/
+dist/
+*.tsbuildinfo
+
+# 运行时数据（通过 volumes 挂载，不进入镜像）
+sources/
+imports/
+assets/
+workspace/
+patches/
+data/
+
+# Excel 大文件
+*.xlsx
+
+# IDE / OS
+.vscode/
+.DS_Store
+*.log
+*.tmp
