@@ -10,6 +10,8 @@ services:
     container_name: acore-resources-web
     ports:
       - "8080:8000"
+    environment:
+      - PROJECT_ROOT=/app
     volumes:
       - ./sources:/app/sources
       - ./data:/app/data
@@ -39,6 +41,8 @@ services:
   #   container_name: acore-resources-backend
   #   ports:
   #     - "8000:8000"
+  #   environment:
+  #     - PROJECT_ROOT=/app
   #   volumes:
   #     - ./sources:/app/sources
   #     - ./data:/app/data
