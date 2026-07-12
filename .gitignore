@@ -21,6 +21,13 @@ Desktop.ini
 # Excel 源文件（大文件，通过 Release/网盘分发）
 *.xlsx
 
+# 原始资源目录（大文件，不入 Git）
+/sources/
+/imports/
+
+# 运行时生成的缓存（可重新生成，不入 Git）
+/assets/
+
 # 压缩包/备份
 *.zip
 *.rar

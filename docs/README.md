@@ -11,7 +11,11 @@ docs/
 ├── arch/                           # 架构文档：描述“怎么做”
 │   ├── 01整体架构设计.md
 │   ├── 02数据存储设计.md
-│   └── 03Agent交互架构.md
+│   ├── 03Agent交互架构.md
+│   ├── 04模型与贴图渲染架构.md
+│   └── 05测试策略.md
+├── references/                     # 参考资料
+│   └── 06资源DBC与SQL实现参考.md
 └── README.md                       # 本文件
 ```
 
@@ -23,6 +27,9 @@ docs/
 | 系统的技术选型、模块划分、部署架构 | [`arch/01整体架构设计.md`](./arch/01整体架构设计.md) |
 | 数据模型、字段映射、数据库表结构 | [`arch/02数据存储设计.md`](./arch/02数据存储设计.md) |
 | Agent 如何读取和操作资源、CLI 接口设计 | [`arch/03Agent交互架构.md`](./arch/03Agent交互架构.md) |
+| `.m2`/`.blp` 渲染与 3D 预览方案 | [`arch/04模型与贴图渲染架构.md`](./arch/04模型与贴图渲染架构.md) |
+| 测试分层、fixtures、CI 流程 | [`arch/05测试策略.md`](./arch/05测试策略.md) |
+| 坐骑/宠物/NPC 所需的 DBC 文件、字段与 SQL 实现清单 | [`references/06资源DBC与SQL实现参考.md`](./references/06资源DBC与SQL实现参考.md) |
 
 ## 相关项目
 
