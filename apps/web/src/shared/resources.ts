@@ -1,4 +1,4 @@
-import { apiGetJson } from "@/shared/api";
+import { apiFetch, apiGetJson } from "@/shared/api";
 import type {
   PaginatedResources,
   Resource,
@@ -95,4 +95,20 @@ export async function fetchAllResources(
     }),
   );
   return all.sort((a, b) => b.id - a.id);
+}
+
+export async function getAllIcons(): Promise<string[]> {
+  return apiGetJson("/api/preview/icons");
+}
+
+export async function updateResourceIcon(
+  resourceType: string,
+  id: number,
+  iconName: string,
+): Promise<Resource> {
+  return apiFetch(`/api/resources/${resourceType}/${id}/icon`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ icon_name: iconName }),
+  }).then((res) => res.json() as Promise<Resource>);
 }

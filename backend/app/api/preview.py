@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse
 from app.core.config import settings
 from app.preview.asset_resolver import resolve_resource_dir
 from app.preview.converter_client import convert_m2_to_gltf
-from app.preview.icon_index import find_icon_path
+from app.preview.icon_index import find_icon_path, refresh_icon_index
 from app.preview.m2_reader import m2_metadata_to_dict, read_m2_metadata
 from app.preview.thumbnail_cache import get_or_create_thumbnail
 
@@ -97,6 +97,12 @@ def preview_icon(
         raise HTTPException(status_code=422, detail=f"无法解码图标：{exc}") from exc
 
     return FileResponse(cache_path, media_type="image/webp")
+
+
+@router.get("/icons")
+def list_icons() -> list[str]:
+    """返回所有可用的图标名称列表。"""
+    return sorted(refresh_icon_index().keys())
 
 
 @router.get("/model/{model_folder:path}")

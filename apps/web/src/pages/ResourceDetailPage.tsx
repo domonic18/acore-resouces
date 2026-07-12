@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -8,12 +8,16 @@ import {
   RefreshCw,
   Eye,
   Layers,
+  Save,
 } from "lucide-react";
 import {
   getResource,
   getResourceAssets,
   getBlpPreviewUrl,
   getFilePreviewUrl,
+  getAllIcons,
+  getIconPreviewUrl,
+  updateResourceIcon,
 } from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { cn } from "@/shared/utils";
@@ -35,6 +39,7 @@ export function ResourceDetailPage() {
     id: string;
   }>();
   const resourceId = parseInt(id || "0", 10);
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("creature_display_info");
   const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
 
@@ -51,6 +56,40 @@ export function ResourceDetailPage() {
     queryKey: ["assets", resourceType, resourceId],
     queryFn: () => getResourceAssets(resourceType, resourceId),
     enabled: !!resource,
+  });
+
+  const { data: iconNames = [] } = useQuery({
+    queryKey: ["icons"],
+    queryFn: getAllIcons,
+    enabled: !!resource,
+  });
+
+  const [selectedIcon, setSelectedIcon] = useState(
+    resource?.official_db.icon_name ||
+      resource?.official_db.spell_icon_name ||
+      "",
+  );
+
+  useEffect(() => {
+    setSelectedIcon(
+      resource?.official_db.icon_name ||
+        resource?.official_db.spell_icon_name ||
+        "",
+    );
+  }, [
+    resource?.official_db.icon_name,
+    resource?.official_db.spell_icon_name,
+  ]);
+
+  const iconMutation = useMutation({
+    mutationFn: (iconName: string) =>
+      updateResourceIcon(resourceType, resourceId, iconName),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["resource", resourceType, resourceId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["resources-all"] });
+    },
   });
 
   if (isLoading) {
@@ -319,6 +358,65 @@ export function ResourceDetailPage() {
                   <Eye className="h-4 w-4" /> 完整预览
                 </Link>
               </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">图标配置</div>
+            </div>
+            <div className="card-body space-y-4">
+              <div className="flex items-center justify-center rounded-md border border-border bg-bg-surface p-4">
+                {selectedIcon ? (
+                  <img
+                    src={getIconPreviewUrl(selectedIcon, 128)}
+                    alt={selectedIcon}
+                    className="h-24 w-24 object-contain"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display =
+                        "none";
+                    }}
+                  />
+                ) : (
+                  <Box className="h-12 w-12 text-text-tertiary" />
+                )}
+              </div>
+              <div>
+                <label className="form-label">图标名称</label>
+                <input
+                  list="icon-options"
+                  type="text"
+                  className="form-input"
+                  value={selectedIcon}
+                  onChange={(e) => setSelectedIcon(e.target.value)}
+                  placeholder="输入或选择图标"
+                />
+                <datalist id="icon-options">
+                  {iconNames.map((name) => (
+                    <option key={name} value={name} />
+                  ))}
+                </datalist>
+              </div>
+              <button
+                className="btn btn-primary w-full"
+                disabled={
+                  !selectedIcon ||
+                  selectedIcon ===
+                    (resource.official_db.icon_name ||
+                      resource.official_db.spell_icon_name)
+                }
+                onClick={() => iconMutation.mutate(selectedIcon)}
+              >
+                <Save className="h-4 w-4" />
+                {iconMutation.isPending ? "保存中..." : "保存图标"}
+              </button>
+              {iconMutation.isError && (
+                <p className="text-xs text-danger">
+                  {iconMutation.error instanceof Error
+                    ? iconMutation.error.message
+                    : "保存失败"}
+                </p>
+              )}
             </div>
           </div>
 

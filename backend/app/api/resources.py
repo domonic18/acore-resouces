@@ -4,13 +4,18 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Body, HTTPException, Query
+from pydantic import BaseModel
 
 from app.preview.asset_resolver import resolve_resource_assets
 from app.schemas.resource import Resource
-from app.services.resource_store import list_resources, load_resource
+from app.services.resource_store import list_resources, load_resource, save_resource
 
 router = APIRouter(prefix="/api/resources", tags=["resources"])
+
+
+class IconUpdateRequest(BaseModel):
+    icon_name: str
 
 
 def _resource_to_dict(resource: Resource) -> dict[str, Any]:
@@ -70,6 +75,25 @@ def get_resource_endpoint(
             status_code=404,
             detail=f"未找到 {resource_type} ID={resource_id}",
         )
+    return _resource_to_dict(resource)
+
+
+@router.put("/{resource_type}/{resource_id}/icon")
+def update_resource_icon(
+    resource_type: str,
+    resource_id: int,
+    body: IconUpdateRequest,
+) -> dict[str, Any]:
+    """更新资源的图标字段。"""
+    resource = load_resource(resource_type, resource_id)
+    if not resource:
+        raise HTTPException(
+            status_code=404,
+            detail=f"未找到 {resource_type} ID={resource_id}",
+        )
+    resource.official_db.icon_name = body.icon_name
+    resource.official_db.spell_icon_name = body.icon_name
+    save_resource(resource)
     return _resource_to_dict(resource)
 
 
