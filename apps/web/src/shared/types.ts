@@ -46,6 +46,8 @@ export interface Resource {
 
 export interface ResourceUpdate {
   name?: string | null;
+  icon_name?: string | null;
+  spell_icon_name?: string | null;
   mount_type?: string | null;
   star_rating?: string | null;
   subtype?: string | null;

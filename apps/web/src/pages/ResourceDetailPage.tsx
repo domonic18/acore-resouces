@@ -17,7 +17,6 @@ import {
   getFilePreviewUrl,
   getAllIcons,
   getIconPreviewUrl,
-  updateResourceIcon,
   updateResource,
 } from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
@@ -101,33 +100,15 @@ export function ResourceDetailPage() {
     if (resource) setForm(buildForm(resource));
   }, [resource]);
 
-  const [selectedIcon, setSelectedIcon] = useState(
-    resource?.official_db.icon_name ||
-      resource?.official_db.spell_icon_name ||
-      "",
+  const [itemIcon, setItemIcon] = useState(resource?.official_db.icon_name || "");
+  const [spellIcon, setSpellIcon] = useState(
+    resource?.official_db.spell_icon_name || "",
   );
 
   useEffect(() => {
-    setSelectedIcon(
-      resource?.official_db.icon_name ||
-        resource?.official_db.spell_icon_name ||
-        "",
-    );
-  }, [
-    resource?.official_db.icon_name,
-    resource?.official_db.spell_icon_name,
-  ]);
-
-  const iconMutation = useMutation({
-    mutationFn: (iconName: string) =>
-      updateResourceIcon(resourceType, resourceId, iconName),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["resource", resourceType, resourceId],
-      });
-      queryClient.invalidateQueries({ queryKey: ["resources-all"] });
-    },
-  });
+    setItemIcon(resource?.official_db.icon_name || "");
+    setSpellIcon(resource?.official_db.spell_icon_name || "");
+  }, [resource?.official_db.icon_name, resource?.official_db.spell_icon_name]);
 
   const updateMutation = useMutation({
     mutationFn: (update: ResourceUpdate) =>
@@ -144,6 +125,14 @@ export function ResourceDetailPage() {
     if (!resource) return false;
     return JSON.stringify(form) !== JSON.stringify(buildForm(resource));
   }, [form, resource]);
+
+  const iconChanged = useMemo(() => {
+    if (!resource) return false;
+    return (
+      itemIcon !== (resource.official_db.icon_name || "") ||
+      spellIcon !== (resource.official_db.spell_icon_name || "")
+    );
+  }, [itemIcon, spellIcon, resource]);
 
   const updateField = <K extends keyof FormState>(
     key: K,
@@ -198,6 +187,18 @@ export function ResourceDetailPage() {
     updateMutation.mutate(update);
   };
 
+  const handleSaveIcons = () => {
+    if (!resource) return;
+    const update: ResourceUpdate = {};
+    if (itemIcon !== (resource.official_db.icon_name || "")) {
+      update.icon_name = itemIcon || null;
+    }
+    if (spellIcon !== (resource.official_db.spell_icon_name || "")) {
+      update.spell_icon_name = spellIcon || null;
+    }
+    updateMutation.mutate(update);
+  };
+
   if (isLoading) {
     return (
       <div className="content">
@@ -229,6 +230,8 @@ export function ResourceDetailPage() {
         ...assets.icon_files,
       ]
     : [];
+
+  const isMount = resource.resource_type === "mount";
 
   return (
     <div className="content">
@@ -301,7 +304,7 @@ export function ResourceDetailPage() {
                     onChange={(e) => updateField("name", e.target.value)}
                   />
                 </FormGroup>
-                {resource.resource_type === "mount" && (
+                {isMount && (
                   <>
                     <FormGroup label="坐骑类型">
                       <select
@@ -343,8 +346,7 @@ export function ResourceDetailPage() {
                     </FormGroup>
                   </>
                 )}
-                {(resource.resource_type === "pet" ||
-                  resource.resource_type === "npc") && (
+                {!isMount && (
                   <FormGroup label="稀有度">
                     <input
                       type="text"
@@ -491,60 +493,41 @@ export function ResourceDetailPage() {
 
           <div className="card">
             <div className="card-header">
-              <div className="card-title">图标配置</div>
+              <div className="card-title">{isMount ? "图标配置" : "图标"}</div>
             </div>
-            <div className="card-body space-y-4">
-              <div className="flex items-center justify-center rounded-md border border-border bg-bg-surface p-4">
-                {selectedIcon ? (
-                  <img
-                    src={getIconPreviewUrl(selectedIcon, 128)}
-                    alt={selectedIcon}
-                    className="h-24 w-24 object-contain"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display =
-                        "none";
-                    }}
+            <div className="card-body space-y-5">
+              {isMount && (
+                <>
+                  <IconEditor
+                    label="Item 图标"
+                    value={itemIcon}
+                    iconNames={iconNames}
+                    onChange={setItemIcon}
                   />
-                ) : (
-                  <Box className="h-12 w-12 text-text-tertiary" />
-                )}
-              </div>
-              <div>
-                <label className="form-label">图标名称</label>
-                <input
-                  list="icon-options"
-                  type="text"
-                  className="form-input"
-                  value={selectedIcon}
-                  onChange={(e) => setSelectedIcon(e.target.value)}
-                  placeholder="输入或选择图标"
+                  <IconEditor
+                    label="Spell 图标"
+                    value={spellIcon}
+                    iconNames={iconNames}
+                    onChange={setSpellIcon}
+                  />
+                </>
+              )}
+              {!isMount && (
+                <IconEditor
+                  label="图标名称"
+                  value={itemIcon}
+                  iconNames={iconNames}
+                  onChange={setItemIcon}
                 />
-                <datalist id="icon-options">
-                  {iconNames.map((name) => (
-                    <option key={name} value={name} />
-                  ))}
-                </datalist>
-              </div>
+              )}
               <button
                 className="btn btn-primary w-full"
-                disabled={
-                  !selectedIcon ||
-                  selectedIcon ===
-                    (resource.official_db.icon_name ||
-                      resource.official_db.spell_icon_name)
-                }
-                onClick={() => iconMutation.mutate(selectedIcon)}
+                disabled={!iconChanged || updateMutation.isPending}
+                onClick={handleSaveIcons}
               >
                 <Save className="h-4 w-4" />
-                {iconMutation.isPending ? "保存中..." : "保存图标"}
+                {updateMutation.isPending ? "保存中..." : "保存图标"}
               </button>
-              {iconMutation.isError && (
-                <p className="text-xs text-danger">
-                  {iconMutation.error instanceof Error
-                    ? iconMutation.error.message
-                    : "保存失败"}
-                </p>
-              )}
             </div>
           </div>
 
@@ -588,6 +571,55 @@ export function ResourceDetailPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IconEditor({
+  label,
+  value,
+  iconNames,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  iconNames: string[];
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-4">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface">
+          {value ? (
+            <img
+              src={getIconPreviewUrl(value, 96)}
+              alt={value}
+              className="h-12 w-12 object-contain"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
+          ) : (
+            <Box className="h-8 w-8 text-text-tertiary" />
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          <label className="form-label">{label}</label>
+          <input
+            list="icon-options"
+            type="text"
+            className="form-input"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="输入或选择图标"
+          />
+          <datalist id="icon-options">
+            {iconNames.map((name) => (
+              <option key={name} value={name} />
+            ))}
+          </datalist>
         </div>
       </div>
     </div>
