@@ -32,6 +32,8 @@ export interface Resource {
   preview_image: string | null;
   debug_passed: boolean;
   added: boolean;
+  created_at: string | null;
+  updated_at: string | null;
   drop: DropInfo;
   official_db: OfficialDbInfo;
   dbc: DbcInfo;

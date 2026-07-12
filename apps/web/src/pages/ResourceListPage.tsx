@@ -1,7 +1,15 @@
 import { useMemo, useState } from "react";
 import { useQuery, useQueries } from "@tanstack/react-query";
 import { useSearchParams, Link } from "react-router-dom";
-import { Search, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Search,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
 import { fetchAllResources, getResourceCount } from "@/shared/resources";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { cn } from "@/shared/utils";
@@ -22,6 +30,19 @@ const STATUS_OPTIONS = [
   { value: "not_added", label: "未添加" },
 ];
 
+type SortKey =
+  | "id"
+  | "resource"
+  | "resource_type"
+  | "tier"
+  | "drop"
+  | "created_at"
+  | "updated_at";
+type SortOrder = "asc" | "desc";
+
+const DEFAULT_SORT: SortKey = "updated_at";
+const DEFAULT_ORDER: SortOrder = "desc";
+
 export function ResourceListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const typeParam =
@@ -32,6 +53,9 @@ export function ResourceListPage() {
   const [searchInput, setSearchInput] = useState(
     searchParams.get("search") || "",
   );
+
+  const sortKey = (searchParams.get("sort") as SortKey) || DEFAULT_SORT;
+  const sortOrder = (searchParams.get("order") as SortOrder) || DEFAULT_ORDER;
 
   const counts = useQueries({
     queries: TYPES.slice(1).map((t) => ({
@@ -88,11 +112,15 @@ export function ResourceListPage() {
     return items;
   }, [allItems, searchParams]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const sorted = useMemo(() => {
+    return sortResources(filtered, sortKey, sortOrder);
+  }, [filtered, sortKey, sortOrder]);
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
   const currentItems = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page]);
+    return sorted.slice(start, start + pageSize);
+  }, [sorted, page]);
 
   const updateParam = (key: string, value: string) => {
     const next = new URLSearchParams(searchParams);
@@ -106,6 +134,18 @@ export function ResourceListPage() {
   };
 
   const applySearch = () => updateParam("search", searchInput);
+
+  const setSort = (key: SortKey) => {
+    const next = new URLSearchParams(searchParams);
+    if (key === sortKey) {
+      next.set("order", sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      next.set("sort", key);
+      next.set("order", DEFAULT_ORDER);
+    }
+    next.set("page", "1");
+    setSearchParams(next);
+  };
 
   const countMap: Record<string, number> = {
     mount: counts[0].data ?? 0,
@@ -239,11 +279,49 @@ export function ResourceListPage() {
                     <th style={{ width: 40 }}>
                       <input type="checkbox" />
                     </th>
-                    <th>资源</th>
-                    <th>类型</th>
-                    <th>星级/稀有度</th>
-                    <th>掉落来源</th>
+                    <SortHeader
+                      label="资源"
+                      active={sortKey === "resource"}
+                      order={sortOrder}
+                      onClick={() => setSort("resource")}
+                    />
+                    <SortHeader
+                      label="ID"
+                      active={sortKey === "id"}
+                      order={sortOrder}
+                      onClick={() => setSort("id")}
+                    />
+                    <SortHeader
+                      label="类型"
+                      active={sortKey === "resource_type"}
+                      order={sortOrder}
+                      onClick={() => setSort("resource_type")}
+                    />
+                    <SortHeader
+                      label="星级/稀有度"
+                      active={sortKey === "tier"}
+                      order={sortOrder}
+                      onClick={() => setSort("tier")}
+                    />
+                    <SortHeader
+                      label="掉落来源"
+                      active={sortKey === "drop"}
+                      order={sortOrder}
+                      onClick={() => setSort("drop")}
+                    />
                     <th>状态</th>
+                    <SortHeader
+                      label="添加时间"
+                      active={sortKey === "created_at"}
+                      order={sortOrder}
+                      onClick={() => setSort("created_at")}
+                    />
+                    <SortHeader
+                      label="修改时间"
+                      active={sortKey === "updated_at"}
+                      order={sortOrder}
+                      onClick={() => setSort("updated_at")}
+                    />
                     <th style={{ textAlign: "right" }}>操作</th>
                   </tr>
                 </thead>
@@ -270,6 +348,7 @@ export function ResourceListPage() {
                           </div>
                         </Link>
                       </td>
+                      <td>{String(resource.id).padStart(4, "0")}</td>
                       <td>
                         <TypeBadge resource={resource} />
                       </td>
@@ -277,6 +356,12 @@ export function ResourceListPage() {
                       <td>{formatDrop(resource.drop)}</td>
                       <td>
                         <StatusBadge resource={resource} />
+                      </td>
+                      <td className="text-text-secondary">
+                        {formatDateTime(resource.created_at)}
+                      </td>
+                      <td className="text-text-secondary">
+                        {formatDateTime(resource.updated_at)}
                       </td>
                       <td style={{ textAlign: "right" }}>
                         <Link
@@ -297,7 +382,7 @@ export function ResourceListPage() {
                   {currentItems.length === 0 && (
                     <tr>
                       <td
-                        colSpan={7}
+                        colSpan={10}
                         className="py-8 text-center text-text-secondary"
                       >
                         暂无资源
@@ -310,9 +395,9 @@ export function ResourceListPage() {
 
             <div className="pagination">
               <div>
-                显示 {filtered.length > 0 ? (page - 1) * pageSize + 1 : 0}-
-                {Math.min(page * pageSize, filtered.length)} 条，共{" "}
-                {filtered.length} 条
+                显示 {sorted.length > 0 ? (page - 1) * pageSize + 1 : 0}-
+                {Math.min(page * pageSize, sorted.length)} 条，共{" "}
+                {sorted.length} 条
               </div>
               <div className="page-nav">
                 <button
@@ -356,6 +441,32 @@ export function ResourceListPage() {
   );
 }
 
+function SortHeader({
+  label,
+  active,
+  order,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  order: SortOrder;
+  onClick: () => void;
+}) {
+  const Icon = active ? (order === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
+  return (
+    <th
+      onClick={onClick}
+      className="cursor-pointer select-none whitespace-nowrap"
+      title="点击排序"
+    >
+      <span className="inline-flex items-center gap-1">
+        {label}
+        <Icon className="h-3.5 w-3.5 text-text-tertiary" />
+      </span>
+    </th>
+  );
+}
+
 function TypeBadge({ resource }: { resource: Resource }) {
   const config: Record<string, { label: string; className: string }> = {
     mount: { label: resource.mount_type || "坐骑", className: "badge-blue" },
@@ -392,6 +503,60 @@ function formatDrop(drop: Resource["drop"]) {
   if (drop.instance) parts.push(drop.instance);
   if (drop.boss) parts.push(drop.boss);
   return parts.length > 0 ? parts.join(" · ") : "—";
+}
+
+function formatDateTime(iso: string | null): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function sortResources(
+  items: Resource[],
+  key: SortKey,
+  order: SortOrder,
+): Resource[] {
+  const sorted = [...items].sort((a, b) => {
+    let comparison = 0;
+    switch (key) {
+      case "id":
+        comparison = a.id - b.id;
+        break;
+      case "resource":
+        comparison = (a.name || a.model_folder).localeCompare(
+          b.name || b.model_folder,
+        );
+        break;
+      case "resource_type":
+        comparison = a.resource_type.localeCompare(b.resource_type);
+        break;
+      case "tier":
+        comparison = (a.star_rating || a.rarity || "").localeCompare(
+          b.star_rating || b.rarity || "",
+        );
+        break;
+      case "drop":
+        comparison = formatDrop(a.drop).localeCompare(formatDrop(b.drop));
+        break;
+      case "created_at":
+        comparison =
+          new Date(a.created_at || 0).getTime() -
+          new Date(b.created_at || 0).getTime();
+        break;
+      case "updated_at":
+        comparison =
+          new Date(a.updated_at || 0).getTime() -
+          new Date(b.updated_at || 0).getTime();
+        break;
+    }
+    return comparison;
+  });
+  return order === "asc" ? sorted : sorted.reverse();
 }
 
 function pageButtons(total: number, current: number): (number | "...")[] {

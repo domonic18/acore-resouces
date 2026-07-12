@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, cast
 
@@ -26,6 +27,23 @@ TYPE_TO_DIR = {
     "pet": "pets",
     "npc": "npcs",
 }
+
+
+def _file_timestamps(path: Path) -> tuple[datetime | None, datetime | None]:
+    """从文件系统读取资源的创建时间与修改时间。
+
+    创建时间优先使用 st_birthtime；在 Linux 等不支持的环境中回退到 st_ctime。
+    返回 (created_at, updated_at) 的 UTC 时间。
+    """
+    try:
+        stat = path.stat()
+        created = getattr(stat, "st_birthtime", stat.st_ctime)
+        return (
+            datetime.fromtimestamp(created, tz=timezone.utc),
+            datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc),
+        )
+    except OSError:
+        return None, None
 
 
 def _ensure_dirs() -> None:
@@ -69,6 +87,7 @@ def load_resource(resource_type: str, resource_id: int) -> Resource | None:
     dir_path = settings.resources_dir / plural
     for path in dir_path.glob(f"{resource_id:04d}-*.yaml"):
         data = _load_yaml(path)
+        data["created_at"], data["updated_at"] = _file_timestamps(path)
         _, schema_cls = RESOURCE_TYPE_MAP.get(plural, (None, None))
         if schema_cls:
             return cast(Resource, schema_cls(**data))
@@ -87,6 +106,7 @@ def list_resources(resource_type: str | None = None) -> list[Resource]:
         dir_path = settings.resources_dir / plural
         for path in sorted(dir_path.glob("*.yaml")):
             data = _load_yaml(path)
+            data["created_at"], data["updated_at"] = _file_timestamps(path)
             results.append(cast(Resource, schema_cls(**data)))
     return results
 
@@ -95,6 +115,8 @@ def save_resource(resource: Resource, *, filename_suffix: str | None = None) -> 
     _ensure_dirs()
     data = resource.model_dump(exclude_none=False)
     data.pop("resource_type", None)
+    data.pop("created_at", None)
+    data.pop("updated_at", None)
     path = _yaml_path(resource.resource_type, resource.id, resource.model_folder)
     if filename_suffix:
         path = path.with_name(f"{path.stem}-{filename_suffix}{path.suffix}")
@@ -159,6 +181,8 @@ def _sync_to_sqlite(resource: Resource) -> None:
         model_cls, _ = RESOURCE_TYPE_MAP[plural]
         data = resource.model_dump(exclude_none=False)
         data.pop("resource_type", None)
+        data.pop("created_at", None)
+        data.pop("updated_at", None)
         existing = db.query(model_cls).filter(model_cls.id == resource.id).first()
         if existing:
             existing.model_folder = resource.model_folder  # type: ignore[assignment]
@@ -211,6 +235,8 @@ def sync_all_to_sqlite() -> None:
                 obj = schema_cls(**data)
                 data_dump = obj.model_dump(exclude_none=False)
                 data_dump.pop("resource_type", None)
+                data_dump.pop("created_at", None)
+                data_dump.pop("updated_at", None)
                 kwargs: dict[str, Any] = {
                     "id": obj.id,
                     "model_folder": obj.model_folder,
