@@ -1,6 +1,6 @@
 # 文档目录
 
-本目录存放 `acore-resouce` 资源管理系统的需求与设计方案，参考 SquadSight 的文档组织方式，分为 **需求（requirement）**、**架构（arch）** 两大类。
+本目录存放 `acore-resouces` 资源管理系统的需求与设计方案，参考 SquadSight 的文档组织方式，分为 **需求（requirement）**、**架构（arch）** 两大类。
 
 ## 文档结构
 

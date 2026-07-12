@@ -17,7 +17,7 @@
 1. **优先编辑文本/文档**：对 `.md`、`.txt`、`.json` 的修改可以立即执行并提交。
 2. **谨慎处理 `.xlsx`**：
    - 读取/修改前确认文件路径正确。
-   - 修改后必须通过 Git 提交并打标签（如用户要求“版本创建”）。
+   - `.xlsx` 文件体积大，**不纳入 Git**；修改后如需记录版本，应通过资源定义文件（YAML/JSON）或 Git 标签管理元数据变更。
    - 避免同时修改多个大文件，除非确有必要。
 3. **路径一致性**：如果新增或重命名了图片目录，应同步更新对应 `.xlsx` 中引用的路径或文件名。
 4. **忽略本地配置**：`.vscode/`、`.DS_Store`、macOS 资源分叉等不应进入版本控制。
@@ -28,12 +28,13 @@
 # 查看仓库状态
 git status
 
-# 提交文档或数据更新
-git add README.md CLAUDE.md *.xlsx
+# 提交文档或资源定义文件更新
+# 注意：*.xlsx 已不纳入 Git，不要 add *.xlsx
+git add README.md CLAUDE.md docs/ data/resources/
 git commit -m "更新说明：xxx"
 
-# 为 xlsx 数据快照创建版本标签
-git tag -a v1.0.0 -m "NPC/宠物/坐骑列表 v1.0.0"
+# 为资源数据快照创建版本标签
+git tag -a v1.0.0 -m "NPC/宠物/坐骑资源 v1.0.0"
 
 # 查看标签列表
 git tag -l

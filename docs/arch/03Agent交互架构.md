@@ -15,7 +15,7 @@
 ### 2.1 资源文件路径约定
 
 ```
-acore-resouce/
+acore-resouces/
 ├── data/
 │   ├── resources/              # 单资源 YAML 文件
 │   │   ├── mounts/

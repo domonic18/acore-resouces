@@ -5,15 +5,16 @@
 ## 目录结构
 
 ```
-acore-resouce/
+acore-resouces/
 ├── README.md              # 本文件
 ├── CLAUDE.md              # Claude Code 工作说明
-├── NPC列表.xlsx           # NPC 资源清单（模型、动画、预览图索引）
-├── 宠物列表.xlsx          # 宠物资源清单
-├── 坐骑列表.xlsx          # 坐骑资源清单
-├── mounts/                # 坐骑预览图（PNG / GIF）
-├── npcs/                  # NPC 预览图（PNG / GIF）
-├── pets/                  # 宠物预览图（PNG / GIF）
+├── docs/                  # 项目文档（需求、架构设计）
+├── NPC列表.xlsx           # NPC 资源清单（模型、动画、预览图索引）【不纳入 Git】
+├── 宠物列表.xlsx          # 宠物资源清单【不纳入 Git】
+├── 坐骑列表.xlsx          # 坐骑资源清单【不纳入 Git】
+├── mounts/                # 坐骑预览图（PNG / GIF）【不纳入 Git】
+├── npcs/                  # NPC 预览图（PNG / GIF）【不纳入 Git】
+├── pets/                  # 宠物预览图（PNG / GIF）【不纳入 Git】
 ├── icons/                 # 游戏图标（BLP / TXT 索引）
 └── .vscode/               # VS Code 本地配置（不纳入 Git）
 ```
@@ -26,7 +27,7 @@ acore-resouce/
 | `宠物列表.xlsx` | 宠物名称、模型路径、预览图等元数据 | ~140 MB |
 | `坐骑列表.xlsx` | 坐骑名称、模型路径、预览图等元数据 | ~153 MB |
 
-这些 `.xlsx` 文件是项目的主要数据源，已纳入 Git 版本管理。每次重大更新后，请通过 Git 标签（tag）为列表文件打版本号。
+这些 `.xlsx` 文件是项目的主要数据源，**不纳入 Git 版本管理**（体积超过 GitHub 单文件限制），后续通过 Release/网盘分发。每次重大更新后，请通过 Git 标签（tag）为资源数据快照打版本号。
 
 ## 资源目录说明
 
@@ -54,5 +55,5 @@ git tag -a v1.0.0 -m "初始版本：NPC/宠物/坐骑列表 v1.0.0"
 
 ## 注意事项
 
-- 本项目中的 `.xlsx` 文件体积较大，本地 Git 仓库可直接管理；若后续需要推送到 GitHub/GitLab 等托管平台，建议启用 [Git LFS](https://git-lfs.com/)。
+- 本项目中的 `.xlsx` 文件体积较大，不纳入 Git；若需版本管理可考虑本地备份或 Git LFS。
 - 资源图片为游戏相关素材，仅供学习、研究和本地化开发使用。
