@@ -34,6 +34,10 @@ class ResourceUpdateRequest(BaseModel):
     subtype: str | None = None
     rarity: str | None = None
     drop: DropUpdate | None = None
+    dbc_item: dict[str, Any] | None = None
+    dbc_spell: dict[str, Any] | None = None
+    db_item_template: dict[str, Any] | None = None
+    db_creature_template: dict[str, Any] | None = None
     debug_passed: bool | None = None
     added: bool | None = None
 
@@ -135,6 +139,14 @@ def update_resource_endpoint(
             resource.drop.boss = body.drop.boss
         if "rate" in body.drop.model_fields_set:
             resource.drop.rate = body.drop.rate
+    if "dbc_item" in body.model_fields_set:
+        resource.dbc.item = body.dbc_item or {}
+    if "dbc_spell" in body.model_fields_set:
+        resource.dbc.spell = body.dbc_spell or {}
+    if "db_item_template" in body.model_fields_set:
+        resource.db.item_template = body.db_item_template or {}
+    if "db_creature_template" in body.model_fields_set:
+        resource.db.creature_template = body.db_creature_template or {}
     if "debug_passed" in body.model_fields_set:
         resource.debug_passed = body.debug_passed or False
     if "added" in body.model_fields_set:

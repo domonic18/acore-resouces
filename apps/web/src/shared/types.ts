@@ -53,6 +53,10 @@ export interface ResourceUpdate {
   subtype?: string | null;
   rarity?: string | null;
   drop?: Partial<DropInfo>;
+  dbc_item?: Record<string, unknown>;
+  dbc_spell?: Record<string, unknown>;
+  db_item_template?: Record<string, unknown>;
+  db_creature_template?: Record<string, unknown>;
   debug_passed?: boolean;
   added?: boolean;
 }
