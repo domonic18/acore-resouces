@@ -15,12 +15,7 @@ from app.core.config import settings
 from app.preview.asset_resolver import resolve_resource_dir
 
 DEFAULT_CONVERTER_BINARY = (
-    settings.project_root
-    / "tools"
-    / "model-converter"
-    / "target"
-    / "release"
-    / "model-converter"
+    settings.project_root / "tools" / "model-converter" / "target" / "release" / "model-converter"
 )
 
 

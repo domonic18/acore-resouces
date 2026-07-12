@@ -151,7 +151,9 @@ def import_xlsx(
 
         if required_col is not None:
             required_value = row[required_col] if required_col < len(row) else None
-            if required_value is None or (isinstance(required_value, str) and not required_value.strip()):
+            if required_value is None or (
+                isinstance(required_value, str) and not required_value.strip()
+            ):
                 continue
 
         if id_source == "row":
@@ -164,7 +166,9 @@ def import_xlsx(
         model_folder_col = mapping["fields"].get("model_folder")
         raw_model_folder = (
             str(row[model_folder_col]).strip()
-            if model_folder_col is not None and model_folder_col < len(row) and row[model_folder_col]
+            if model_folder_col is not None
+            and model_folder_col < len(row)
+            and row[model_folder_col]
             else ""
         )
 
