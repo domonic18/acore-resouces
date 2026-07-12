@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -18,10 +18,11 @@ import {
   getAllIcons,
   getIconPreviewUrl,
   updateResourceIcon,
+  updateResource,
 } from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { cn } from "@/shared/utils";
-import type { AssetFile, Resource } from "@/shared/types";
+import type { AssetFile, Resource, ResourceUpdate } from "@/shared/types";
 
 const DBC_TABS = [
   { key: "creature_display_info", label: "CreatureDisplayInfo" },
@@ -32,6 +33,36 @@ const DBC_TABS = [
   { key: "creature_model_info", label: "CreatureModelInfo" },
   { key: "item_template", label: "ItemTemplate" },
 ];
+
+interface FormState {
+  name: string;
+  mount_type: string;
+  star_rating: string;
+  subtype: string;
+  rarity: string;
+  drop_entry: string | number;
+  drop_instance: string;
+  drop_boss: string;
+  drop_rate: string | number;
+  debug_passed: boolean;
+  added: boolean;
+}
+
+function buildForm(resource?: Resource): FormState {
+  return {
+    name: resource?.official_db.name || resource?.name || "",
+    mount_type: resource?.mount_type || "",
+    star_rating: resource?.star_rating || "",
+    subtype: resource?.subtype || "",
+    rarity: resource?.rarity || "",
+    drop_entry: resource?.drop.entry ?? "",
+    drop_instance: resource?.drop.instance ?? "",
+    drop_boss: resource?.drop.boss ?? "",
+    drop_rate: resource?.drop.rate ?? "",
+    debug_passed: resource?.debug_passed ?? false,
+    added: resource?.added ?? false,
+  };
+}
 
 export function ResourceDetailPage() {
   const { resourceType = "mount", id } = useParams<{
@@ -64,6 +95,12 @@ export function ResourceDetailPage() {
     enabled: !!resource,
   });
 
+  const [form, setForm] = useState<FormState>(() => buildForm(resource));
+
+  useEffect(() => {
+    if (resource) setForm(buildForm(resource));
+  }, [resource]);
+
   const [selectedIcon, setSelectedIcon] = useState(
     resource?.official_db.icon_name ||
       resource?.official_db.spell_icon_name ||
@@ -91,6 +128,75 @@ export function ResourceDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["resources-all"] });
     },
   });
+
+  const updateMutation = useMutation({
+    mutationFn: (update: ResourceUpdate) =>
+      updateResource(resourceType, resourceId, update),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["resource", resourceType, resourceId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["resources-all"] });
+    },
+  });
+
+  const hasChanges = useMemo(() => {
+    if (!resource) return false;
+    return JSON.stringify(form) !== JSON.stringify(buildForm(resource));
+  }, [form, resource]);
+
+  const updateField = <K extends keyof FormState>(
+    key: K,
+    value: FormState[K],
+  ) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSave = () => {
+    if (!resource) return;
+    const update: ResourceUpdate = {};
+    const baseline = buildForm(resource);
+
+    if (form.name !== baseline.name) {
+      update.name = form.name || null;
+    }
+    if (form.mount_type !== baseline.mount_type) {
+      update.mount_type = form.mount_type || null;
+    }
+    if (form.star_rating !== baseline.star_rating) {
+      update.star_rating = form.star_rating || null;
+    }
+    if (form.subtype !== baseline.subtype) {
+      update.subtype = form.subtype || null;
+    }
+    if (form.rarity !== baseline.rarity) {
+      update.rarity = form.rarity || null;
+    }
+    if (
+      form.debug_passed !== baseline.debug_passed ||
+      form.added !== baseline.added
+    ) {
+      update.debug_passed = form.debug_passed;
+      update.added = form.added;
+    }
+
+    const dropUpdate: ResourceUpdate["drop"] = {};
+    const entry = normalizeInt(form.drop_entry);
+    if (entry !== resource.drop.entry) dropUpdate.entry = entry;
+    const rate = normalizeFloat(form.drop_rate);
+    if (rate !== resource.drop.rate) dropUpdate.rate = rate;
+    if (form.drop_instance !== (resource.drop.instance ?? "")) {
+      dropUpdate.instance = form.drop_instance || null;
+    }
+    if (form.drop_boss !== (resource.drop.boss ?? "")) {
+      dropUpdate.boss = form.drop_boss || null;
+    }
+    if (Object.keys(dropUpdate).length > 0) {
+      update.drop = dropUpdate;
+    }
+
+    updateMutation.mutate(update);
+  };
 
   if (isLoading) {
     return (
@@ -137,11 +243,24 @@ export function ResourceDetailPage() {
           <button className="btn btn-danger" disabled title="删除功能开发中">
             删除
           </button>
-          <button className="btn btn-success" disabled title="保存功能开发中">
-            保存
+          <button
+            className="btn btn-success"
+            disabled={!hasChanges || updateMutation.isPending}
+            onClick={handleSave}
+          >
+            <Save className="h-4 w-4" />
+            {updateMutation.isPending ? "保存中..." : "保存"}
           </button>
         </div>
       </header>
+
+      {updateMutation.isError && (
+        <div className="mb-4 rounded-md border border-danger/30 bg-danger/10 px-4 py-2 text-sm text-danger">
+          {updateMutation.error instanceof Error
+            ? updateMutation.error.message
+            : "保存失败"}
+        </div>
+      )}
 
       <div className="detail-layout">
         <div className="detail-main">
@@ -151,7 +270,7 @@ export function ResourceDetailPage() {
                 <div className="card-title">基础信息</div>
                 <div className="card-subtitle">
                   id: {String(resource.id).padStart(4, "0")} · 最后修改：
-                  {today()}
+                  {formatDateTime(resource.updated_at)}
                 </div>
               </div>
             </div>
@@ -178,8 +297,8 @@ export function ResourceDetailPage() {
                   <input
                     type="text"
                     className="form-input"
-                    value={resource.official_db.name || ""}
-                    readOnly
+                    value={form.name}
+                    onChange={(e) => updateField("name", e.target.value)}
                   />
                 </FormGroup>
                 {resource.resource_type === "mount" && (
@@ -187,8 +306,10 @@ export function ResourceDetailPage() {
                     <FormGroup label="坐骑类型">
                       <select
                         className="form-select"
-                        value={resource.mount_type || ""}
-                        disabled
+                        value={form.mount_type}
+                        onChange={(e) =>
+                          updateField("mount_type", e.target.value)
+                        }
                       >
                         <option value="">未设置</option>
                         <option>飞行坐骑</option>
@@ -199,8 +320,10 @@ export function ResourceDetailPage() {
                     <FormGroup label="星级">
                       <select
                         className="form-select"
-                        value={resource.star_rating || ""}
-                        disabled
+                        value={form.star_rating}
+                        onChange={(e) =>
+                          updateField("star_rating", e.target.value)
+                        }
                       >
                         <option value="">未设置</option>
                         <option>一星</option>
@@ -214,8 +337,8 @@ export function ResourceDetailPage() {
                       <input
                         type="text"
                         className="form-input"
-                        value={resource.subtype || ""}
-                        readOnly
+                        value={form.subtype}
+                        onChange={(e) => updateField("subtype", e.target.value)}
                       />
                     </FormGroup>
                   </>
@@ -226,8 +349,8 @@ export function ResourceDetailPage() {
                     <input
                       type="text"
                       className="form-input"
-                      value={resource.rarity || ""}
-                      readOnly
+                      value={form.rarity}
+                      onChange={(e) => updateField("rarity", e.target.value)}
                     />
                   </FormGroup>
                 )}
@@ -236,16 +359,18 @@ export function ResourceDetailPage() {
                     <label className="flex items-center gap-2 text-sm text-text-secondary">
                       <input
                         type="checkbox"
-                        checked={resource.debug_passed}
-                        disabled
+                        checked={form.debug_passed}
+                        onChange={(e) =>
+                          updateField("debug_passed", e.target.checked)
+                        }
                       />{" "}
                       调试通过
                     </label>
                     <label className="flex items-center gap-2 text-sm text-text-secondary">
                       <input
                         type="checkbox"
-                        checked={resource.added}
-                        disabled
+                        checked={form.added}
+                        onChange={(e) => updateField("added", e.target.checked)}
                       />{" "}
                       已添加
                     </label>
@@ -263,34 +388,37 @@ export function ResourceDetailPage() {
               <div className="form-grid">
                 <FormGroup label="掉落 entry">
                   <input
-                    type="text"
+                    type="number"
                     className="form-input"
-                    value={resource.drop.entry ?? ""}
-                    readOnly
+                    value={form.drop_entry}
+                    onChange={(e) => updateField("drop_entry", e.target.value)}
                   />
                 </FormGroup>
                 <FormGroup label="副本">
                   <input
                     type="text"
                     className="form-input"
-                    value={resource.drop.instance ?? ""}
-                    readOnly
+                    value={form.drop_instance}
+                    onChange={(e) =>
+                      updateField("drop_instance", e.target.value)
+                    }
                   />
                 </FormGroup>
                 <FormGroup label="Boss 名称">
                   <input
                     type="text"
                     className="form-input"
-                    value={resource.drop.boss ?? ""}
-                    readOnly
+                    value={form.drop_boss}
+                    onChange={(e) => updateField("drop_boss", e.target.value)}
                   />
                 </FormGroup>
                 <FormGroup label="掉率">
                   <input
-                    type="text"
+                    type="number"
+                    step="0.0001"
                     className="form-input"
-                    value={resource.drop.rate ?? ""}
-                    readOnly
+                    value={form.drop_rate}
+                    onChange={(e) => updateField("drop_rate", e.target.value)}
                   />
                 </FormGroup>
               </div>
@@ -570,4 +698,27 @@ function getTabData(resource: Resource, key: string): string {
 
 function today(): string {
   return new Date().toISOString().split("T")[0];
+}
+
+function formatDateTime(iso: string | null): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function normalizeInt(value: string | number): number | null {
+  if (value === "" || value === null || value === undefined) return null;
+  const n = typeof value === "number" ? value : parseInt(value, 10);
+  return Number.isNaN(n) ? null : n;
+}
+
+function normalizeFloat(value: string | number): number | null {
+  if (value === "" || value === null || value === undefined) return null;
+  const n = typeof value === "number" ? value : parseFloat(value);
+  return Number.isNaN(n) ? null : n;
 }

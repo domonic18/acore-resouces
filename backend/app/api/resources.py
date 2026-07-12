@@ -18,6 +18,24 @@ class IconUpdateRequest(BaseModel):
     icon_name: str
 
 
+class DropUpdate(BaseModel):
+    entry: int | None = None
+    instance: str | None = None
+    boss: str | None = None
+    rate: float | None = None
+
+
+class ResourceUpdateRequest(BaseModel):
+    name: str | None = None
+    mount_type: str | None = None
+    star_rating: str | None = None
+    subtype: str | None = None
+    rarity: str | None = None
+    drop: DropUpdate | None = None
+    debug_passed: bool | None = None
+    added: bool | None = None
+
+
 def _resource_to_dict(resource: Resource) -> dict[str, Any]:
     data = resource.model_dump()
     data["name"] = resource.official_db.name or resource.model_folder
@@ -75,6 +93,48 @@ def get_resource_endpoint(
             status_code=404,
             detail=f"未找到 {resource_type} ID={resource_id}",
         )
+    return _resource_to_dict(resource)
+
+
+@router.put("/{resource_type}/{resource_id}")
+def update_resource_endpoint(
+    resource_type: str,
+    resource_id: int,
+    body: ResourceUpdateRequest,
+) -> dict[str, Any]:
+    """更新资源基础字段。"""
+    resource = load_resource(resource_type, resource_id)
+    if not resource:
+        raise HTTPException(
+            status_code=404,
+            detail=f"未找到 {resource_type} ID={resource_id}",
+        )
+
+    if "name" in body.model_fields_set:
+        resource.official_db.name = body.name
+    if "mount_type" in body.model_fields_set and resource.resource_type == "mount":
+        resource.mount_type = body.mount_type
+    if "star_rating" in body.model_fields_set and resource.resource_type == "mount":
+        resource.star_rating = body.star_rating
+    if "subtype" in body.model_fields_set and resource.resource_type == "mount":
+        resource.subtype = body.subtype
+    if "rarity" in body.model_fields_set and resource.resource_type in ("pet", "npc"):
+        resource.rarity = body.rarity
+    if "drop" in body.model_fields_set and body.drop is not None:
+        if "entry" in body.drop.model_fields_set:
+            resource.drop.entry = body.drop.entry
+        if "instance" in body.drop.model_fields_set:
+            resource.drop.instance = body.drop.instance
+        if "boss" in body.drop.model_fields_set:
+            resource.drop.boss = body.drop.boss
+        if "rate" in body.drop.model_fields_set:
+            resource.drop.rate = body.drop.rate
+    if "debug_passed" in body.model_fields_set:
+        resource.debug_passed = body.debug_passed or False
+    if "added" in body.model_fields_set:
+        resource.added = body.added or False
+
+    save_resource(resource)
     return _resource_to_dict(resource)
 
 

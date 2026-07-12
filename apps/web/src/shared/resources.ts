@@ -3,6 +3,7 @@ import type {
   PaginatedResources,
   Resource,
   ResourceAssets,
+  ResourceUpdate,
   ModelPreview,
 } from "@/shared/types";
 
@@ -110,5 +111,17 @@ export async function updateResourceIcon(
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ icon_name: iconName }),
+  }).then((res) => res.json() as Promise<Resource>);
+}
+
+export async function updateResource(
+  resourceType: string,
+  id: number,
+  update: ResourceUpdate,
+): Promise<Resource> {
+  return apiFetch(`/api/resources/${resourceType}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(update),
   }).then((res) => res.json() as Promise<Resource>);
 }

@@ -44,6 +44,17 @@ export interface Resource {
   rarity?: string | null;
 }
 
+export interface ResourceUpdate {
+  name?: string | null;
+  mount_type?: string | null;
+  star_rating?: string | null;
+  subtype?: string | null;
+  rarity?: string | null;
+  drop?: Partial<DropInfo>;
+  debug_passed?: boolean;
+  added?: boolean;
+}
+
 export interface PaginatedResources {
   total: number;
   page: number;
