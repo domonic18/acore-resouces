@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>acore-resouces — 资源管理系统</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mark">A</div>
+        <div>
+          <div class="logo-text">acore-resouces</div>
+          <div class="logo-version">AzerothCore 资源管理</div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">主菜单</div>
+        <a href="index.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          仪表盘
+        </a>
+        <a href="resources.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          资源列表
+        </a>
+        <a href="import.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          导入资源
+        </a>
+        <a href="export.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出补丁
+        </a>
+        <a href="preview.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          资源预览
+        </a>
+        <div class="nav-label" style="margin-top: 16px">系统</div>
+        <a href="settings.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          设置
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">GM</div>
+          <div class="user-info">
+            <div class="user-name">Game Master</div>
+            <div class="user-role">资源管理员</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title">仪表盘</h1>
+        <div class="topbar-actions">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="搜索资源、ID、模型...">
+          </div>
+          <a href="import.html" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            导入
+          </a>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">🐎</div>
+            <div class="stat-value">461</div>
+            <div class="stat-label">坐骑资源</div>
+            <div class="stat-change">+149 来自合并单元格子行</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">🐾</div>
+            <div class="stat-value">107</div>
+            <div class="stat-label">宠物资源</div>
+            <div class="stat-change">已对齐 Excel</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🧙</div>
+            <div class="stat-value">226</div>
+            <div class="stat-label">NPC 资源</div>
+            <div class="stat-change">已对齐 Excel</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">⚡</div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">待调试资源</div>
+            <div class="stat-change">debug_passed = false</div>
+          </div>
+        </div>
+
+        <!-- Recent Resources -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">最近更新</div>
+              <div class="card-subtitle">过去 24 小时内变更的资源定义</div>
+            </div>
+            <a href="resources.html" class="btn btn-sm">查看全部</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>资源</th>
+                  <th>类型</th>
+                  <th>星级/稀有度</th>
+                  <th>状态</th>
+                  <th>更新时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">🐗</div>
+                      <div>
+                        <div class="resource-name">黑色斗猪</div>
+                        <div class="resource-meta">id: 0182 · GiantBoar霜原野猪</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-blue">坐骑</span></td>
+                  <td>二星</td>
+                  <td><span class="status-dot warning"></span>待添加</td>
+                  <td>10 分钟前</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">🦅</div>
+                      <div>
+                        <div class="resource-name">死亡使者的绽翼兽</div>
+                        <div class="resource-meta">id: 0091 · chimera2钢铁碎天兽</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-blue">坐骑</span></td>
+                  <td>三星</td>
+                  <td><span class="status-dot warning"></span>待添加</td>
+                  <td>25 分钟前</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">🦊</div>
+                      <div>
+                        <div class="resource-name">小绿狐宠物</div>
+                        <div class="resource-meta">id: 0008 · babyfox小绿狐宠物</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-purple">宠物</span></td>
+                  <td>三星</td>
+                  <td><span class="status-dot success"></span>已通过</td>
+                  <td>1 小时前</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">👹</div>
+                      <div>
+                        <div class="resource-name">红眼树人</div>
+                        <div class="resource-meta">id: 0088 · forestsprite红眼树人NPC</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-green">NPC</span></td>
+                  <td>普通</td>
+                  <td><span class="status-dot success"></span>已通过</td>
+                  <td>2 小时前</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">快速操作</div>
+              <div class="card-subtitle">常用工作流入口</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+              <a href="import.html" class="card" style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div class="stat-icon blue" style="margin: 0;">📥</div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">导入 Excel</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">从 xlsx 批量导入资源</div>
+                </div>
+              </a>
+              <a href="export.html" class="card" style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div class="stat-icon purple" style="margin: 0;">📤</div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">导出补丁</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">生成 DBC/SQL 补丁</div>
+                </div>
+              </a>
+              <a href="preview.html" class="card" style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div class="stat-icon green" style="margin: 0;">👁</div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">资源预览</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">查看模型与贴图</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

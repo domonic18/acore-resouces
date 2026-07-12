@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>设置 — acore-resouces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mark">A</div>
+        <div>
+          <div class="logo-text">acore-resouces</div>
+          <div class="logo-version">AzerothCore 资源管理</div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">主菜单</div>
+        <a href="index.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          仪表盘
+        </a>
+        <a href="resources.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          资源列表
+        </a>
+        <a href="import.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          导入资源
+        </a>
+        <a href="export.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出补丁
+        </a>
+        <a href="preview.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          资源预览
+        </a>
+        <div class="nav-label" style="margin-top: 16px">系统</div>
+        <a href="settings.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          设置
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">GM</div>
+          <div class="user-info">
+            <div class="user-name">Game Master</div>
+            <div class="user-role">资源管理员</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title">设置</h1>
+      </header>
+
+      <div class="content">
+        <div class="detail-layout">
+          <div class="detail-main">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">目录配置</div>
+              </div>
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="form-group full-width">
+                    <label class="form-label">原始资源目录 (sources/)</label>
+                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/sources">
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label">导入源目录 (imports/)</label>
+                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/imports">
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label">运行时数据目录 (workspace/)</label>
+                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/workspace">
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label">缩略图缓存目录 (assets/)</label>
+                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/assets">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+              <div class="card-header">
+                <div class="card-title">模型转换工具</div>
+              </div>
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="form-group full-width">
+                    <label class="form-label">转换器路径</label>
+                    <input type="text" class="form-input" value="tools/model-converter/target/release/model-converter">
+                    <div class="form-hint">Rust 封装的 warcraft-rs CLI 路径</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">输出格式</label>
+                    <select class="form-select">
+                      <option selected>glTF (.gltf + .bin)</option>
+                      <option>glB (.glb)</option>
+                      <option>两者都生成</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">贴图格式</label>
+                    <select class="form-select">
+                      <option selected>WebP</option>
+                      <option>PNG</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+              <div class="card-header">
+                <div class="card-title">导出默认配置</div>
+              </div>
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">补丁输出目录</label>
+                    <input type="text" class="form-input" value="patches/">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">默认版本前缀</label>
+                    <input type="text" class="form-input" value="v">
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label">部署脚本</label>
+                    <input type="text" class="form-input" value="scripts/deploy.sh">
+                    <div class="form-hint">导出后人工确认执行的部署脚本路径</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-sidebar">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">系统状态</div>
+              </div>
+              <div class="card-body">
+                <div class="meta-list">
+                  <div class="meta-item">
+                    <span class="meta-label">后端状态</span>
+                    <span class="meta-value" style="color: var(--success);">运行中</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">SQLite 同步</span>
+                    <span class="meta-value" style="color: var(--success);">最新</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">registry.json</span>
+                    <span class="meta-value">794 条资源</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">版本</span>
+                    <span class="meta-value">0.1.0-dev</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">维护操作</div>
+              </div>
+              <div class="card-body">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <button class="btn">重新同步 SQLite</button>
+                  <button class="btn">清理缩略图缓存</button>
+                  <button class="btn">重新生成 registry.json</button>
+                  <button class="btn btn-danger">重置运行时数据</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">保存更改</div>
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" style="width: 100%;">保存设置</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

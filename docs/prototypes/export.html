@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>导出补丁 — acore-resouces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mark">A</div>
+        <div>
+          <div class="logo-text">acore-resouces</div>
+          <div class="logo-version">AzerothCore 资源管理</div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">主菜单</div>
+        <a href="index.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          仪表盘
+        </a>
+        <a href="resources.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          资源列表
+        </a>
+        <a href="import.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          导入资源
+        </a>
+        <a href="export.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出补丁
+        </a>
+        <a href="preview.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          资源预览
+        </a>
+        <div class="nav-label" style="margin-top: 16px">系统</div>
+        <a href="settings.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          设置
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">GM</div>
+          <div class="user-info">
+            <div class="user-name">Game Master</div>
+            <div class="user-role">资源管理员</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title">导出补丁</h1>
+        <div class="topbar-actions">
+          <a href="resources.html" class="btn">返回列表</a>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="detail-layout">
+          <div class="detail-main">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">导出范围</div>
+                  <div class="card-subtitle">选择要生成补丁的资源与输出格式</div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">资源类型</label>
+                    <select class="form-select">
+                      <option selected>全部</option>
+                      <option>坐骑</option>
+                      <option>宠物</option>
+                      <option>NPC</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">导出格式</label>
+                    <select class="form-select">
+                      <option selected>DBC 修改脚本 (Python)</option>
+                      <option>AzerothCore SQL 补丁</option>
+                      <option>两者都导出</option>
+                    </select>
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label">筛选条件</label>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                      <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px;">
+                        <input type="checkbox" checked> 仅调试通过
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px;">
+                        <input type="checkbox" checked> 仅已添加
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px;">
+                        <input type="checkbox"> 包含未验证资源
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label">版本标签</label>
+                    <input type="text" class="form-input" value="v2026.07.12">
+                    <div class="form-hint">导出的补丁文件将以此标签命名目录</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                  <button class="btn btn-lg" style="flex: 1;">预览 Diff</button>
+                  <button class="btn btn-lg btn-primary" style="flex: 1;">生成补丁</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+              <div class="card-header">
+                <div class="card-title">Diff 预览</div>
+              </div>
+              <div class="card-body">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; overflow-x: auto;">
+                  <div style="color: var(--text-tertiary);"># patches/sql/acore-update-mounts-v2026.07.12.sql</div>
+                  <div>
+                    <span style="color: var(--success);">+ INSERT INTO creature_template (entry, modelid1, name, ...) VALUES</span>
+                  </div>
+                  <div>
+                    <span style="color: var(--success);">+   (91009, 80009, '石牙斗猪', ...);</span>
+                  </div>
+                  <div>
+                    <span style="color: var(--success);">+ INSERT INTO creature_template (entry, modelid1, name, ...) VALUES</span>
+                  </div>
+                  <div>
+                    <span style="color: var(--success);">+   (9140177, 80177, '黑色斗猪', ...);</span>
+                  </div>
+                  <div style="color: var(--text-tertiary); margin-top: 12px;"># patches/dbc/mounts-v2026.07.12.py</div>
+                  <div>
+                    <span style="color: var(--success);">+ dbc.CreatureDisplayInfo.add(140009, ...)</span>
+                  </div>
+                  <div>
+                    <span style="color: var(--success);">+ dbc.CreatureDisplayInfo.add(140177, ...)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-sidebar">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">导出统计</div>
+              </div>
+              <div class="card-body">
+                <div class="stats-grid" style="grid-template-columns: 1fr; margin-bottom: 0; gap: 12px;">
+                  <div class="stat-card" style="padding: 16px;">
+                    <div class="stat-value" style="font-size: 24px;">12</div>
+                    <div class="stat-label">待导出坐骑</div>
+                  </div>
+                  <div class="stat-card" style="padding: 16px;">
+                    <div class="stat-value" style="font-size: 24px;">3</div>
+                    <div class="stat-label">待导出宠物</div>
+                  </div>
+                  <div class="stat-card" style="padding: 16px;">
+                    <div class="stat-value" style="font-size: 24px;">5</div>
+                    <div class="stat-label">待导出 NPC</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">历史导出</div>
+              </div>
+              <div class="card-body">
+                <div style="font-size: 13px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                    <div>
+                      <div style="font-weight: 600;">v2026.07.12</div>
+                      <div style="font-size: 11px; color: var(--text-tertiary);">20 个资源 · SQL + DBC</div>
+                    </div>
+                    <button class="btn btn-sm btn-ghost">下载</button>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                    <div>
+                      <div style="font-weight: 600;">v2026.07.10</div>
+                      <div style="font-size: 11px; color: var(--text-tertiary);">15 个资源 · SQL</div>
+                    </div>
+                    <button class="btn btn-sm btn-ghost">下载</button>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                    <div>
+                      <div style="font-weight: 600;">v2026.07.05</div>
+                      <div style="font-size: 11px; color: var(--text-tertiary);">8 个资源 · DBC</div>
+                    </div>
+                    <button class="btn btn-sm btn-ghost">下载</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
