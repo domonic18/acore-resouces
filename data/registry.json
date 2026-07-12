@@ -1,0 +1,5038 @@
+{
+  "version": "1.0",
+  "counts": {
+    "mounts": 311,
+    "pets": 98,
+    "npcs": 219
+  },
+  "mounts": [
+    {
+      "id": 1,
+      "name": "梦光符文牡鹿",
+      "model_folder": "ardenwealdstagmount影叶符文牡鹿",
+      "file": "data/resources/mounts/0001-ardenwealdstagmount影叶符文牡鹿.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 2,
+      "name": "熔火恶犬",
+      "model_folder": "CoreHound2熔火恶犬",
+      "file": "data/resources/mounts/0002-CoreHound2熔火恶犬.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 3,
+      "name": "驯养的冰蹄牛",
+      "model_folder": "ClefthoofDraenor驯养的冰蹄牛",
+      "file": "data/resources/mounts/0003-ClefthoofDraenor驯养的冰蹄牛.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 4,
+      "name": "邪刃豹",
+      "model_folder": "DHMount邪刃豹",
+      "file": "data/resources/mounts/0004-DHMount邪刃豹.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 5,
+      "name": "洛希恩徘徊者",
+      "model_folder": "FoxMount洛希恩徘徊者",
+      "file": "data/resources/mounts/0005-FoxMount洛希恩徘徊者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 6,
+      "name": "咒缚恒龙",
+      "model_folder": "aetherserpentmount咒缚恒龙",
+      "file": "data/resources/mounts/0006-aetherserpentmount咒缚恒龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 7,
+      "name": "勇士的践踏之刃",
+      "model_folder": "alliancechopper勇士的践踏之刃",
+      "file": "data/resources/mounts/0007-alliancechopper勇士的践踏之刃.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 8,
+      "name": "联盟极光战车",
+      "model_folder": "alliancegarrisontank联盟极光战车坐骑",
+      "file": "data/resources/mounts/0008-alliancegarrisontank联盟极光战车坐骑.yaml",
+      "debug_passed": true,
+      "added": false
+    },
+    {
+      "id": 9,
+      "name": "黄金狮王的缰绳",
+      "model_folder": "AllianceLionMount联盟战狮",
+      "file": "data/resources/mounts/0009-AllianceLionMount联盟战狮.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 10,
+      "name": "勇猛的战驹",
+      "model_folder": "AlliancePVPMount勇猛的战驹",
+      "file": "data/resources/mounts/0010-AlliancePVPMount勇猛的战驹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 11,
+      "name": "暴风城逐天战机",
+      "model_folder": "allianceshipmount联盟龙鹰飞艇坐骑",
+      "file": "data/resources/mounts/0011-allianceshipmount联盟龙鹰飞艇坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 12,
+      "name": "铁甲霜爪狼",
+      "model_folder": "alliancewolfmount铁甲霜爪狼",
+      "file": "data/resources/mounts/0012-alliancewolfmount铁甲霜爪狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 13,
+      "name": "茉莉",
+      "model_folder": "alpacamount茉莉",
+      "file": "data/resources/mounts/0013-alpacamount茉莉.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 14,
+      "name": "泰罗佩内",
+      "model_folder": "ancientseaturtlefire熔岩火焰龟坐骑",
+      "file": "data/resources/mounts/0014-ancientseaturtlefire熔岩火焰龟坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 16,
+      "name": "安度因的战马",
+      "model_folder": "anduinhorse联盟战马坐骑",
+      "file": "data/resources/mounts/0016-anduinhorse联盟战马坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 18,
+      "name": "影钩工蜂",
+      "model_folder": "aqirflyingmount影钩工蜂",
+      "file": "data/resources/mounts/0018-aqirflyingmount影钩工蜂.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 19,
+      "name": "恶毒工蜂",
+      "model_folder": "aqirflying恶毒工蜂",
+      "file": "data/resources/mounts/0019-aqirflying恶毒工蜂.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 20,
+      "name": "先知小妖",
+      "model_folder": "aqirprophet先知小妖",
+      "file": "data/resources/mounts/0020-aqirprophet先知小妖.yaml",
+      "debug_passed": true,
+      "added": false
+    },
+    {
+      "id": 21,
+      "name": "红虫",
+      "model_folder": "aqirscarab屎壳郎怪",
+      "file": "data/resources/mounts/0021-aqirscarab屎壳郎怪.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 22,
+      "name": "魔化梦光符文牡鹿",
+      "model_folder": "ardenwealdstagmount2魔化梦光符文牡鹿",
+      "file": "data/resources/mounts/0022-ardenwealdstagmount2魔化梦光符文牡鹿.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 25,
+      "name": "酸液喷射者",
+      "model_folder": "argusfelstalkermount酸液喷射者",
+      "file": "data/resources/mounts/0025-argusfelstalkermount酸液喷射者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 27,
+      "name": "褐色废墟游荡者缰绳",
+      "model_folder": "argustalbukmount褐色废墟游荡者",
+      "file": "data/resources/mounts/0027-argustalbukmount褐色废墟游荡者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 29,
+      "name": "墓穴猎手",
+      "model_folder": "armoredraptor墓穴猎手",
+      "file": "data/resources/mounts/0029-armoredraptor墓穴猎手.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 30,
+      "name": "骨龙",
+      "model_folder": "armoredtrex骨龙坐骑",
+      "file": "data/resources/mounts/0030-armoredtrex骨龙坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 31,
+      "name": "高风暗鬃狮",
+      "model_folder": "automatonfliermount飞天魔影坐骑",
+      "file": "data/resources/mounts/0031-automatonfliermount飞天魔影坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 33,
+      "name": "勇气灵豹",
+      "model_folder": "automatonlionmount勇气灵豹缰绳1",
+      "file": "data/resources/mounts/0033-automatonlionmount勇气灵豹缰绳1.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 36,
+      "name": "联盟狮虎战车",
+      "model_folder": "azeritewarmachinealliance联盟狮虎战车",
+      "file": "data/resources/mounts/0036-azeritewarmachinealliance联盟狮虎战车.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 37,
+      "name": "部落豪猪战车",
+      "model_folder": "azeritewarmachinehorde部落豪猪战车",
+      "file": "data/resources/mounts/0037-azeritewarmachinehorde部落豪猪战车.yaml",
+      "debug_passed": true,
+      "added": false
+    },
+    {
+      "id": 40,
+      "name": "拳手的健壮蜥蜴",
+      "model_folder": "basilisk2老鳄鱼坐骑",
+      "file": "data/resources/mounts/0040-basilisk2老鳄鱼坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 41,
+      "name": "拳手的健壮蜥蜴",
+      "model_folder": "basiliskmount拳手的健壮蜥蜴",
+      "file": "data/resources/mounts/0041-basiliskmount拳手的健壮蜥蜴.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 42,
+      "name": "装甲血翼蝠",
+      "model_folder": "Bat装甲血翼蝠",
+      "file": "data/resources/mounts/0042-Bat装甲血翼蝠.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 43,
+      "name": "暗月跳舞熊",
+      "model_folder": "bearmountalt暗月跳舞熊",
+      "file": "data/resources/mounts/0043-bearmountalt暗月跳舞熊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 44,
+      "name": "阿曼尼斗熊",
+      "model_folder": "BEARMOUNT阿曼尼斗熊",
+      "file": "data/resources/mounts/0044-BEARMOUNT阿曼尼斗熊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 45,
+      "name": "蜜背收割者",
+      "model_folder": "beemount蜜背收割者",
+      "file": "data/resources/mounts/0045-beemount蜜背收割者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 47,
+      "name": "跃泽吮血蛛",
+      "model_folder": "bloodtickmount跃泽吮血蛛",
+      "file": "data/resources/mounts/0047-bloodtickmount跃泽吮血蛛.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 48,
+      "name": "孢林抱齿兽",
+      "model_folder": "bloodtrollfemalebeast_mount孢林抱齿兽",
+      "file": "data/resources/mounts/0048-bloodtrollfemalebeast_mount孢林抱齿兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 49,
+      "name": "血牙蛛茧",
+      "model_folder": "bonespider2蜘蛛坐骑",
+      "file": "data/resources/mounts/0049-bonespider2蜘蛛坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 50,
+      "name": "雄壮商队雷龙",
+      "model_folder": "brontosaurusmount雄壮商队雷龙",
+      "file": "data/resources/mounts/0050-brontosaurusmount雄壮商队雷龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 51,
+      "name": "雄壮商队雷龙的缰绳",
+      "model_folder": "brontosauruspack蛇颈龙坐骑",
+      "file": "data/resources/mounts/0051-brontosauruspack蛇颈龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 53,
+      "name": "丝柔烁光蛾",
+      "model_folder": "butterfly白蝴蝶坐骑",
+      "file": "data/resources/mounts/0053-butterfly白蝴蝶坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 54,
+      "name": "褐色骑乘骆驼缰绳",
+      "model_folder": "camelmount2行脚骆驼坐骑",
+      "file": "data/resources/mounts/0054-camelmount2行脚骆驼坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 55,
+      "name": "白色骑乘骆驼",
+      "model_folder": "Camel骑乘骆驼",
+      "file": "data/resources/mounts/0055-Camel骑乘骆驼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 56,
+      "name": "星光云端翔龙",
+      "model_folder": "CelestialSerpent星光云瑞翔龙",
+      "file": "data/resources/mounts/0056-CelestialSerpent星光云瑞翔龙.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 57,
+      "name": "钢铁碎天兽",
+      "model_folder": "chimera2钢铁碎天兽",
+      "file": "data/resources/mounts/0057-chimera2钢铁碎天兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 58,
+      "name": "灰谷奇美拉",
+      "model_folder": "chimera3mount灰谷奇美拉",
+      "file": "data/resources/mounts/0058-chimera3mount灰谷奇美拉.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 59,
+      "name": "战火梦魇兽",
+      "model_folder": "clockworkhorse战火梦魇兽",
+      "file": "data/resources/mounts/0059-clockworkhorse战火梦魇兽.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 60,
+      "name": "红色筋斗云",
+      "model_folder": "Cloudmount筋斗云",
+      "file": "data/resources/mounts/0060-Cloudmount筋斗云.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 61,
+      "name": "劈背凿孔蟹",
+      "model_folder": "crabmount劈背凿孔蟹",
+      "file": "data/resources/mounts/0061-crabmount劈背凿孔蟹.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 62,
+      "name": "帝王骑乘仙鹤",
+      "model_folder": "crane帝王骑乘仙鹤坐骑",
+      "file": "data/resources/mounts/0062-crane帝王骑乘仙鹤坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 63,
+      "name": "帝王骑乘仙鹤",
+      "model_folder": "Crane骑乘仙鹤",
+      "file": "data/resources/mounts/0063-Crane骑乘仙鹤.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 64,
+      "name": "布鲁斯",
+      "model_folder": "crocoliskmount战犀坐骑",
+      "file": "data/resources/mounts/0064-crocoliskmount战犀坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 65,
+      "name": "熔岩蝎子坐骑",
+      "model_folder": "crystalscorpion熔岩蝎子坐骑",
+      "file": "data/resources/mounts/0065-crystalscorpion熔岩蝎子坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 66,
+      "name": "战缝黑暗犬",
+      "model_folder": "darkhoundmount_draka狼坐骑",
+      "file": "data/resources/mounts/0066-darkhoundmount_draka狼坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 67,
+      "name": "好狗",
+      "model_folder": "darkhoundmount好狗坐骑",
+      "file": "data/resources/mounts/0067-darkhoundmount好狗坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 68,
+      "name": "月狼",
+      "model_folder": "darkmoondirewolfboss月狼坐骑",
+      "file": "data/resources/mounts/0068-darkmoondirewolfboss月狼坐骑.yaml",
+      "debug_passed": true,
+      "added": false
+    },
+    {
+      "id": 69,
+      "name": "暗色凤凰",
+      "model_folder": "DarkPhoenix暗色凤凰",
+      "file": "data/resources/mounts/0069-DarkPhoenix暗色凤凰.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 70,
+      "name": "罪触死亡行者",
+      "model_folder": "deathelementalmount罪触死亡行者",
+      "file": "data/resources/mounts/0070-deathelementalmount罪触死亡行者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 72,
+      "name": "墓碑战斗加尔贡",
+      "model_folder": "deathwargmount2欲望之战斗加尔贡",
+      "file": "data/resources/mounts/0072-deathwargmount2欲望之战斗加尔贡.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 74,
+      "name": "裁决加尔贡",
+      "model_folder": "deathwargmount碎愿者加尔贡",
+      "file": "data/resources/mounts/0074-deathwargmount碎愿者加尔贡.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 75,
+      "name": "粘够",
+      "model_folder": "deathwargmount粘够",
+      "file": "data/resources/mounts/0075-deathwargmount粘够.yaml",
+      "debug_passed": true,
+      "added": false
+    },
+    {
+      "id": 76,
+      "name": "炽炎幼龙的缰绳",
+      "model_folder": "deathwingdungeon死亡飞龙坐骑",
+      "file": "data/resources/mounts/0076-deathwingdungeon死亡飞龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 77,
+      "name": "黑曜石灭世者",
+      "model_folder": "deathwing死亡志龙坐骑",
+      "file": "data/resources/mounts/0077-deathwing死亡志龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 79,
+      "name": "幽影镰角虫",
+      "model_folder": "decomposermount幽影镰角虫",
+      "file": "data/resources/mounts/0079-decomposermount幽影镰角虫.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 80,
+      "name": "贪食的饕餮者",
+      "model_folder": "devourermediummount贪食的饕餮者",
+      "file": "data/resources/mounts/0080-devourermediummount贪食的饕餮者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 81,
+      "name": "末日迷沼飞虫",
+      "model_folder": "devourersmallmount末日迷沼飞虫",
+      "file": "data/resources/mounts/0081-devourersmallmount末日迷沼飞虫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 82,
+      "name": "暴怒的重殴者",
+      "model_folder": "devourerswarmermount吞噬者坐骑",
+      "file": "data/resources/mounts/0082-devourerswarmermount吞噬者坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 83,
+      "name": "屠魔者的破邪尖啸者",
+      "model_folder": "dhmount2屠魔者的破邪尖啸者",
+      "file": "data/resources/mounts/0083-dhmount2屠魔者的破邪尖啸者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 85,
+      "name": "死亡领主的邪嗣征服者",
+      "model_folder": "DKMount死亡领主的邪嗣征服者",
+      "file": "data/resources/mounts/0085-DKMount死亡领主的邪嗣征服者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 86,
+      "name": "戌禅，神圣护卫",
+      "model_folder": "dogmount戌禅，神圣护卫",
+      "file": "data/resources/mounts/0086-dogmount戌禅，神圣护卫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 87,
+      "name": "火焰卡利鸟",
+      "model_folder": "draenorkaliri火乌鸦坐骑",
+      "file": "data/resources/mounts/0087-draenorkaliri火乌鸦坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 88,
+      "name": "艾卓曼德斯的缰绳",
+      "model_folder": "dragonatramedes铁笼坐骑",
+      "file": "data/resources/mounts/0088-dragonatramedes铁笼坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 89,
+      "name": "守护巨龙之心",
+      "model_folder": "DragonChromaticMount守护巨龙之心",
+      "file": "data/resources/mounts/0089-DragonChromaticMount守护巨龙之心.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 91,
+      "name": "火山石幼龙",
+      "model_folder": "DragonDeepholm琉璃石幼龙",
+      "file": "data/resources/mounts/0091-DragonDeepholm琉璃石幼龙.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 93,
+      "name": "红色龙鹰",
+      "model_folder": "DRAGONHAWK阿曼尼龙鹰",
+      "file": "data/resources/mounts/0093-DRAGONHAWK阿曼尼龙鹰.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 98,
+      "name": "北风幼龙",
+      "model_folder": "DragonSkywall东风幼龙",
+      "file": "data/resources/mounts/0098-DragonSkywall东风幼龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 99,
+      "name": "绿色龙龟",
+      "model_folder": "DragonTurtle绿色龙龟",
+      "file": "data/resources/mounts/0099-DragonTurtle绿色龙龟.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 101,
+      "name": "翡翠幼龙",
+      "model_folder": "DRAKEMOUNT邪能幼龙",
+      "file": "data/resources/mounts/0101-DRAKEMOUNT邪能幼龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 102,
+      "name": "腐化恐翼鸦",
+      "model_folder": "DreadRavenWarbird腐化恐翼鸦",
+      "file": "data/resources/mounts/0102-DreadRavenWarbird腐化恐翼鸦.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 103,
+      "name": "海鬃骏马",
+      "model_folder": "dressedhorse海鬃骏马",
+      "file": "data/resources/mounts/0103-dressedhorse海鬃骏马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 105,
+      "name": "灰熊",
+      "model_folder": "druidbear2灰熊坐骑",
+      "file": "data/resources/mounts/0105-druidbear2灰熊坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 106,
+      "name": "鹿角熊",
+      "model_folder": "druidbearhmtauren鹿角熊坐骑",
+      "file": "data/resources/mounts/0106-druidbearhmtauren鹿角熊坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 107,
+      "name": "黄鬃熊",
+      "model_folder": "druidbearkultiran_noarmor黄鬃熊坐骑",
+      "file": "data/resources/mounts/0107-druidbearkultiran_noarmor黄鬃熊坐骑.yaml",
+      "debug_passed": true,
+      "added": false
+    },
+    {
+      "id": 109,
+      "name": "迷彩熊",
+      "model_folder": "druidbeartroll迷彩熊坐骑",
+      "file": "data/resources/mounts/0109-druidbeartroll迷彩熊坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 111,
+      "name": "深蓝恐角熊",
+      "model_folder": "druidbearzandalaritroll_noarmor深蓝恐角熊坐骑",
+      "file": "data/resources/mounts/0111-druidbearzandalaritroll_noarmor深蓝恐角熊坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 112,
+      "name": "恐角熊",
+      "model_folder": "druidbearzandalaritroll恐角熊坐骑",
+      "file": "data/resources/mounts/0112-druidbearzandalaritroll恐角熊坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 113,
+      "name": "武装熊",
+      "model_folder": "DruidBear武装熊坐骑",
+      "file": "data/resources/mounts/0113-DruidBear武装熊坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 114,
+      "name": "绿皮豹",
+      "model_folder": "druidcat2绿皮豹坐骑",
+      "file": "data/resources/mounts/0114-druidcat2绿皮豹坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 119,
+      "name": "拉风豹子",
+      "model_folder": "druidcattroll拉风豹子坐骑",
+      "file": "data/resources/mounts/0119-druidcattroll拉风豹子坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 120,
+      "name": "暗月豹子",
+      "model_folder": "druidcatworgen暗月豹子坐骑",
+      "file": "data/resources/mounts/0120-druidcatworgen暗月豹子坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 126,
+      "name": "钴蓝翼手龙",
+      "model_folder": "druidflightzandalaritroll翼龙坐骑",
+      "file": "data/resources/mounts/0126-druidflightzandalaritroll翼龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 131,
+      "name": "暗皮珠齿象",
+      "model_folder": "elekk暗皮珠齿象",
+      "file": "data/resources/mounts/0131-elekk暗皮珠齿象.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 132,
+      "name": "重装狮鹫",
+      "model_folder": "elitegryphon重装狮鹫",
+      "file": "data/resources/mounts/0132-elitegryphon重装狮鹫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 133,
+      "name": "翡翠角鹰兽",
+      "model_folder": "elitehippogryph翡翠角鹰兽",
+      "file": "data/resources/mounts/0133-elitehippogryph翡翠角鹰兽.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 134,
+      "name": "雄壮双足飞龙",
+      "model_folder": "elitewyvern雄壮双足飞龙",
+      "file": "data/resources/mounts/0134-elitewyvern雄壮双足飞龙.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 135,
+      "name": "清道夫",
+      "model_folder": "encrypted05清道夫",
+      "file": "data/resources/mounts/0135-encrypted05清道夫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 136,
+      "name": "霍格鲁斯，鸿运亥客",
+      "model_folder": "encrypted06霍格鲁斯，鸿运亥客",
+      "file": "data/resources/mounts/0136-encrypted06霍格鲁斯，鸿运亥客.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 137,
+      "name": "希尔维安神游者",
+      "model_folder": "encrypted08希尔维安神游者",
+      "file": "data/resources/mounts/0137-encrypted08希尔维安神游者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 138,
+      "name": "狡狐魔使",
+      "model_folder": "encrypted09狡狐魔使",
+      "file": "data/resources/mounts/0138-encrypted09狡狐魔使.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 141,
+      "name": "大理石暴风之爪",
+      "model_folder": "encrypted21大理石暴风之爪",
+      "file": "data/resources/mounts/0141-encrypted21大理石暴风之爪.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 142,
+      "name": "大理石雷霆之翼",
+      "model_folder": "encrypted22大理石雷霆之翼",
+      "file": "data/resources/mounts/0142-encrypted22大理石雷霆之翼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 146,
+      "name": "尼奥罗萨全视者",
+      "model_folder": "eyeballjellyfishmount尼奥罗萨全视者",
+      "file": "data/resources/mounts/0146-eyeballjellyfishmount尼奥罗萨全视者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 147,
+      "name": "拍浪水母",
+      "model_folder": "FacelessMount拍浪水母",
+      "file": "data/resources/mounts/0147-FacelessMount拍浪水母.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 149,
+      "name": "魔法灵龙",
+      "model_folder": "FaerieDragonMount魔法灵龙",
+      "file": "data/resources/mounts/0149-FaerieDragonMount魔法灵龙.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 150,
+      "name": "雪羽猎龙",
+      "model_folder": "falcosauros雪羽猎龙",
+      "file": "data/resources/mounts/0150-falcosauros雪羽猎龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 152,
+      "name": "烈焰蝎子",
+      "model_folder": "fandralfirescorpion烈焰蝎子坐骑",
+      "file": "data/resources/mounts/0152-fandralfirescorpion烈焰蝎子坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 156,
+      "name": "堕落角鹰兽",
+      "model_folder": "FelHippogryph堕落角鹰兽",
+      "file": "data/resources/mounts/0156-FelHippogryph堕落角鹰兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 157,
+      "name": "安托兰灼焦恶犬",
+      "model_folder": "Felhound3_Fire_Mount安托兰灼焦恶犬",
+      "file": "data/resources/mounts/0157-Felhound3_Fire_Mount安托兰灼焦恶犬.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 159,
+      "name": "安托兰阴暗恶犬",
+      "model_folder": "felhound3_shadow_mount安托兰阴暗恶犬",
+      "file": "data/resources/mounts/0159-felhound3_shadow_mount安托兰阴暗恶犬.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 162,
+      "name": "踏血小戈隆",
+      "model_folder": "FelLesserGronn踏血小戈隆",
+      "file": "data/resources/mounts/0162-FelLesserGronn踏血小戈隆.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 164,
+      "name": "魔钢歼灭者",
+      "model_folder": "FelReaverMount魔钢歼灭者",
+      "file": "data/resources/mounts/0164-FelReaverMount魔钢歼灭者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 165,
+      "name": "伊利达雷魔犬",
+      "model_folder": "FelStalkerMount伊利达雷魔犬",
+      "file": "data/resources/mounts/0165-FelStalkerMount伊利达雷魔犬.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 166,
+      "name": "原始火刃豹",
+      "model_folder": "firecatmount原始火刃豹",
+      "file": "data/resources/mounts/0166-firecatmount原始火刃豹.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 167,
+      "name": "堕落火鹰",
+      "model_folder": "FireHawk堕落火鹰",
+      "file": "data/resources/mounts/0167-FireHawk堕落火鹰.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 168,
+      "name": "奥利瑟拉佐尔的烈焰之爪",
+      "model_folder": "FireRavenGodMount奥利瑟拉佐尔的烈焰之爪",
+      "file": "data/resources/mounts/0168-FireRavenGodMount奥利瑟拉佐尔的烈焰之爪.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 169,
+      "name": "深海喂食者",
+      "model_folder": "FishMount深海喂食者",
+      "file": "data/resources/mounts/0169-FishMount深海喂食者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 171,
+      "name": "织魔飞毯",
+      "model_folder": "flyingcarpetmount2织魔飞毯",
+      "file": "data/resources/mounts/0171-flyingcarpetmount2织魔飞毯.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 172,
+      "name": "飞毯",
+      "model_folder": "FLYINGCARPETMOUNT蠕行飞毯",
+      "file": "data/resources/mounts/0172-FLYINGCARPETMOUNT蠕行飞毯.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 173,
+      "name": "黑曜夜之翼",
+      "model_folder": "FlyingPanther黑曜夜之翼",
+      "file": "data/resources/mounts/0173-FlyingPanther黑曜夜之翼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 177,
+      "name": "迅捷祖利安黑豹",
+      "model_folder": "FROSTSABRE迅捷祖利安黑豹",
+      "file": "data/resources/mounts/0177-FROSTSABRE迅捷祖利安黑豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 178,
+      "name": "地火恐狼",
+      "model_folder": "frostwolfhowler地火恐狼",
+      "file": "data/resources/mounts/0178-frostwolfhowler地火恐狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 180,
+      "name": "幽灵军马的颅骨",
+      "model_folder": "ghostlycharger幽灵军马",
+      "file": "data/resources/mounts/0180-ghostlycharger幽灵军马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 181,
+      "name": "艾特洛之魂",
+      "model_folder": "GhostlyMoose大角鹿坐骑",
+      "file": "data/resources/mounts/0181-GhostlyMoose大角鹿坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 183,
+      "name": "黑色斗猪",
+      "model_folder": "GiantBoar霜原野猪",
+      "file": "data/resources/mounts/0183-GiantBoar霜原野猪.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 186,
+      "name": "嗜血恐翼蝠",
+      "model_folder": "giantvampirebatmount嗜血恐翼蝠",
+      "file": "data/resources/mounts/0186-giantvampirebatmount嗜血恐翼蝠.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 187,
+      "name": "地精挖掘机",
+      "model_folder": "gnomerockcuttercreature地精挖掘机",
+      "file": "data/resources/mounts/0187-gnomerockcuttercreature地精挖掘机.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 188,
+      "name": "白色骑乘山羊",
+      "model_folder": "Goat骑乘山羊",
+      "file": "data/resources/mounts/0188-Goat骑乘山羊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 189,
+      "name": "地精岩石挖掘机",
+      "model_folder": "goblinazeriteextractor大机械坐骑",
+      "file": "data/resources/mounts/0189-goblinazeriteextractor大机械坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 190,
+      "name": "机甲大亨MK2型",
+      "model_folder": "goblinheadmech机甲大亨MK2型",
+      "file": "data/resources/mounts/0190-goblinheadmech机甲大亨MK2型.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 191,
+      "name": "地精热气球",
+      "model_folder": "goblinhotairballoonvehicle热气球坐骑",
+      "file": "data/resources/mounts/0191-goblinhotairballoonvehicle热气球坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 192,
+      "name": "地精改装车",
+      "model_folder": "goblinhotrod奢华骷髅跑车坐骑",
+      "file": "data/resources/mounts/0192-goblinhotrod奢华骷髅跑车坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 193,
+      "name": "飞天魔像",
+      "model_folder": "GOBLINSHREDDERMOUNT伐木工坐骑",
+      "file": "data/resources/mounts/0193-GOBLINSHREDDERMOUNT伐木工坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 194,
+      "name": "地精三轮摩托",
+      "model_folder": "goblintrike地精三轮摩托",
+      "file": "data/resources/mounts/0194-goblintrike地精三轮摩托.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 196,
+      "name": "黄金狮王",
+      "model_folder": "GuildCreatures黄金狮王",
+      "file": "data/resources/mounts/0196-GuildCreatures黄金狮王.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 198,
+      "name": "熔岩犬的缰绳",
+      "model_folder": "hellhound熔岩犬坐骑",
+      "file": "data/resources/mounts/0198-hellhound熔岩犬坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 202,
+      "name": "失落已久的角鹰兽",
+      "model_folder": "Hippogryph2失落已久的角鹰兽",
+      "file": "data/resources/mounts/0202-Hippogryph2失落已久的角鹰兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 204,
+      "name": "魔羽角鹰兽",
+      "model_folder": "Hippogryph_Arcane魔羽角鹰兽",
+      "file": "data/resources/mounts/0204-Hippogryph_Arcane魔羽角鹰兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 205,
+      "name": "天蓝淡水兽",
+      "model_folder": "HippoMount淡水兽",
+      "file": "data/resources/mounts/0205-HippoMount淡水兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 208,
+      "name": "跳跳大王",
+      "model_folder": "hoptallus大耗子坐骑",
+      "file": "data/resources/mounts/0208-hoptallus大耗子坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 210,
+      "name": "督军的死亡之轮",
+      "model_folder": "hordechopper督军的死亡之轮",
+      "file": "data/resources/mounts/0210-hordechopper督军的死亡之轮.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 211,
+      "name": "木坦克",
+      "model_folder": "hordegarrisontank木坦克坐骑",
+      "file": "data/resources/mounts/0211-hordegarrisontank木坦克坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 213,
+      "name": "勇猛的战狼",
+      "model_folder": "HordePVPMount勇猛的战狼",
+      "file": "data/resources/mounts/0213-HordePVPMount勇猛的战狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 214,
+      "name": "琥珀巨蝎",
+      "model_folder": "HordeScorpionMount琥珀巨蝎",
+      "file": "data/resources/mounts/0214-HordeScorpionMount琥珀巨蝎.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 215,
+      "name": "奥格瑞玛拦截飞艇",
+      "model_folder": "hordezeppelinmount部落飞艇",
+      "file": "data/resources/mounts/0215-hordezeppelinmount部落飞艇.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 216,
+      "name": "迅捷厄蹄马",
+      "model_folder": "horse2ardenwealdmount迅捷厄蹄马",
+      "file": "data/resources/mounts/0216-horse2ardenwealdmount迅捷厄蹄马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 222,
+      "name": "纯心骏马",
+      "model_folder": "Horse2纯心骏马",
+      "file": "data/resources/mounts/0222-Horse2纯心骏马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 223,
+      "name": "黑马",
+      "model_folder": "Horse2黑马坐骑",
+      "file": "data/resources/mounts/0223-Horse2黑马坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 224,
+      "name": "斑点马",
+      "model_folder": "horse3斑点马坐骑",
+      "file": "data/resources/mounts/0224-horse3斑点马坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 227,
+      "name": "库尔提拉斯军马",
+      "model_folder": "horsekultiran铜爵马",
+      "file": "data/resources/mounts/0227-horsekultiran铜爵马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 231,
+      "name": "斯克维里加全地形载具",
+      "model_folder": "hovercraftmount斯克维里加全地形载具",
+      "file": "data/resources/mounts/0231-hovercraftmount斯克维里加全地形载具.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 232,
+      "name": "锈栓抵抗者",
+      "model_folder": "hunterkillership锈栓抵抗者",
+      "file": "data/resources/mounts/0232-hunterkillership锈栓抵抗者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 233,
+      "name": "狩猎大师的凶猛狼鹰",
+      "model_folder": "huntermount狩猎大师的凶猛狼鹰",
+      "file": "data/resources/mounts/0233-huntermount狩猎大师的凶猛狼鹰.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 234,
+      "name": "战缚军犬",
+      "model_folder": "hyena2mount战缚军犬",
+      "file": "data/resources/mounts/0234-hyena2mount战缚军犬.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 235,
+      "name": "炎狱地狱火",
+      "model_folder": "infernalmount炎狱地狱火",
+      "file": "data/resources/mounts/0235-infernalmount炎狱地狱火.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 236,
+      "name": "永恒时空撕裂者",
+      "model_folder": "InfiniteDragonMount永恒时空撕裂者",
+      "file": "data/resources/mounts/0236-InfiniteDragonMount永恒时空撕裂者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 237,
+      "name": "铁蹄毁灭者",
+      "model_folder": "ironhordeclefthoof铁蹄毁灭者",
+      "file": "data/resources/mounts/0237-ironhordeclefthoof铁蹄毁灭者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 238,
+      "name": "装甲铁牙践踏者",
+      "model_folder": "ironhordeelekk装甲铁牙践踏者",
+      "file": "data/resources/mounts/0238-ironhordeelekk装甲铁牙践踏者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 239,
+      "name": "兽王的战狼",
+      "model_folder": "ironhordewolf兽王的战狼",
+      "file": "data/resources/mounts/0239-ironhordewolf兽王的战狼.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 240,
+      "name": "库卡隆战蝎",
+      "model_folder": "IronJuggernaut库卡隆战蝎",
+      "file": "data/resources/mounts/0240-IronJuggernaut库卡隆战蝎.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 241,
+      "name": "回廊潜行猎犬",
+      "model_folder": "jailerhoundmount回廊潜行猎犬",
+      "file": "data/resources/mounts/0241-jailerhoundmount回廊潜行猎犬.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 243,
+      "name": "加氏灭世机甲",
+      "model_folder": "kezancrowdpummeler_gallywix加氏灭世机甲",
+      "file": "data/resources/mounts/0243-kezancrowdpummeler_gallywix加氏灭世机甲.yaml",
+      "debug_passed": false,
+      "added": true
+    },
+    {
+      "id": 246,
+      "name": "惊恐的科多兽",
+      "model_folder": "kodobeast2mount惊恐的科多兽",
+      "file": "data/resources/mounts/0246-kodobeast2mount惊恐的科多兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 248,
+      "name": "库卡隆战狼",
+      "model_folder": "korkronelitewolf库卡隆战狼",
+      "file": "data/resources/mounts/0248-korkronelitewolf库卡隆战狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 249,
+      "name": "烬鬃战马",
+      "model_folder": "lavahorse烬鬃战马",
+      "file": "data/resources/mounts/0249-lavahorse烬鬃战马.yaml",
+      "debug_passed": false,
+      "added": true
+    },
+    {
+      "id": 252,
+      "name": "踏血小戈隆",
+      "model_folder": "LesserGronn踏血小戈隆",
+      "file": "data/resources/mounts/0252-LesserGronn踏血小戈隆.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 253,
+      "name": "荣耀邪能碾压者",
+      "model_folder": "lightforgedelekk荣耀邪能碾压者",
+      "file": "data/resources/mounts/0253-lightforgedelekk荣耀邪能碾压者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 254,
+      "name": "光铸战争机甲",
+      "model_folder": "lightforgedmechsuit光铸战争机甲",
+      "file": "data/resources/mounts/0254-lightforgedmechsuit光铸战争机甲.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 255,
+      "name": "雷电狼",
+      "model_folder": "lightningworg雷电狼坐骑",
+      "file": "data/resources/mounts/0255-lightningworg雷电狼坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 256,
+      "name": "大法师的棱光飞碟",
+      "model_folder": "MageMount_Frost大法师的棱光飞碟",
+      "file": "data/resources/mounts/0256-MageMount_Frost大法师的棱光飞碟.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 257,
+      "name": "灼背血牙猪",
+      "model_folder": "maldraxxusboarmount灼背血牙猪",
+      "file": "data/resources/mounts/0257-maldraxxusboarmount灼背血牙猪.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 259,
+      "name": "髓牙",
+      "model_folder": "maldraxxusflyermount髓牙",
+      "file": "data/resources/mounts/0259-maldraxxusflyermount髓牙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 262,
+      "name": "荧光法力鳐",
+      "model_folder": "manaraymount鳐鱼缰绳",
+      "file": "data/resources/mounts/0262-manaraymount鳐鱼缰绳.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 266,
+      "name": "黯光刀翼兽",
+      "model_folder": "mawexpansionfliermount扩张飞龙缰绳",
+      "file": "data/resources/mounts/0266-mawexpansionfliermount扩张飞龙缰绳.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 267,
+      "name": "翔天刀翼兽",
+      "model_folder": "mawexpansionflier扩张飞龙坐骑",
+      "file": "data/resources/mounts/0267-mawexpansionflier扩张飞龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 268,
+      "name": "芭美兹拉之链",
+      "model_folder": "mawguardhandmount巴赫麦特之手缰绳",
+      "file": "data/resources/mounts/0268-mawguardhandmount巴赫麦特之手缰绳.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 269,
+      "name": "灵魂羁绊阴郁军马的缰绳",
+      "model_folder": "mawhorsespikes麦林特战马",
+      "file": "data/resources/mounts/0269-mawhorsespikes麦林特战马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 270,
+      "name": "锈废漂移者",
+      "model_folder": "mechacycle锈废漂移者",
+      "file": "data/resources/mounts/0270-mechacycle锈废漂移者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 271,
+      "name": "麦卡贡维和者",
+      "model_folder": "mechagonspidertank麦卡贡维和者",
+      "file": "data/resources/mounts/0271-mechagonspidertank麦卡贡维和者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 272,
+      "name": "奇迹之翼2.0版",
+      "model_folder": "mechanicalparrotmount奇迹之翼2.0版",
+      "file": "data/resources/mounts/0272-mechanicalparrotmount奇迹之翼2.0版.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 274,
+      "name": "X-995型机械猫",
+      "model_folder": "mechanicaltigerX-995型机械猫",
+      "file": "data/resources/mounts/0274-mechanicaltigerX-995型机械猫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 277,
+      "name": "班禄，大宗师的伙伴",
+      "model_folder": "MonkMount玄武虎坐骑",
+      "file": "data/resources/mounts/0277-MonkMount玄武虎坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 279,
+      "name": "林地污染者",
+      "model_folder": "MooseMount2Nightmare林地污染者",
+      "file": "data/resources/mounts/0279-MooseMount2Nightmare林地污染者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 281,
+      "name": "石皮大角鹿",
+      "model_folder": "MooseMount2石皮大角鹿",
+      "file": "data/resources/mounts/0281-MooseMount2石皮大角鹿.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 282,
+      "name": "林地守卫者",
+      "model_folder": "MooseMount林地守卫者",
+      "file": "data/resources/mounts/0282-MooseMount林地守卫者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 283,
+      "name": "丝柔烁光蛾",
+      "model_folder": "mothardenwealdmount丝柔烁光蛾",
+      "file": "data/resources/mounts/0283-mothardenwealdmount丝柔烁光蛾.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 284,
+      "name": "活力炽蓝蛾",
+      "model_folder": "mothardenweald活力炽蓝蛾",
+      "file": "data/resources/mounts/0284-mothardenweald活力炽蓝蛾.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 287,
+      "name": "拳手的健壮穆山兽",
+      "model_folder": "MushanBeast拳手的健壮穆山兽",
+      "file": "data/resources/mounts/0287-MushanBeast拳手的健壮穆山兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 288,
+      "name": "高地符角牛",
+      "model_folder": "muskox牦牛坐骑",
+      "file": "data/resources/mounts/0288-muskox牦牛坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 290,
+      "name": "夜之子魔刃豹",
+      "model_folder": "nbsabermount夜之子魔刃豹",
+      "file": "data/resources/mounts/0290-nbsabermount夜之子魔刃豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 291,
+      "name": "necrodragon鳞龙坐骑",
+      "model_folder": "necrodragon鳞龙坐骑",
+      "file": "data/resources/mounts/0291-necrodragon鳞龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 294,
+      "name": "nightmareroc夜鸦坐骑",
+      "model_folder": "nightmareroc夜鸦坐骑",
+      "file": "data/resources/mounts/0294-nightmareroc夜鸦坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 295,
+      "name": "nightmarespider夜蜘蛛坐骑",
+      "model_folder": "nightmarespider夜蜘蛛坐骑",
+      "file": "data/resources/mounts/0295-nightmarespider夜蜘蛛坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 297,
+      "name": "卡多雷夜刃豹",
+      "model_folder": "nightsaber2mount卡多雷夜刃豹",
+      "file": "data/resources/mounts/0297-nightsaber2mount卡多雷夜刃豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 298,
+      "name": "nozdormudragon黄龙坐骑",
+      "model_folder": "nozdormudragon黄龙坐骑",
+      "file": "data/resources/mounts/0298-nozdormudragon黄龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 299,
+      "name": "恩佐斯的黑蟒",
+      "model_folder": "nzothserpentmount恩佐斯的黑蟒",
+      "file": "data/resources/mounts/0299-nzothserpentmount恩佐斯的黑蟒.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 300,
+      "name": "nzothserpent大毒蛇坐骑",
+      "model_folder": "nzothserpent大毒蛇坐骑",
+      "file": "data/resources/mounts/0300-nzothserpent大毒蛇坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 302,
+      "name": "OnyxPanther黄金宝石豹",
+      "model_folder": "OnyxPanther黄金宝石豹",
+      "file": "data/resources/mounts/0302-OnyxPanther黄金宝石豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 305,
+      "name": "大领主的英勇战马",
+      "model_folder": "PaladinMount大领主的英勇战马",
+      "file": "data/resources/mounts/0305-PaladinMount大领主的英勇战马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 306,
+      "name": "熊猫人风筝",
+      "model_folder": "PandarenKiteMount熊猫人风筝",
+      "file": "data/resources/mounts/0306-PandarenKiteMount熊猫人风筝.yaml",
+      "debug_passed": false,
+      "added": true
+    },
+    {
+      "id": 308,
+      "name": "赤红熊猫人凤凰",
+      "model_folder": "pandarenphoenixmount熊猫人凤凰",
+      "file": "data/resources/mounts/0308-pandarenphoenixmount熊猫人凤凰.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 309,
+      "name": "玉蕾，青龙之女",
+      "model_folder": "PandarenSerpentGod神圣云端翔龙",
+      "file": "data/resources/mounts/0309-PandarenSerpentGod神圣云端翔龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 310,
+      "name": "玛瑙云端翔龙",
+      "model_folder": "PandarenSerpent云端翔龙",
+      "file": "data/resources/mounts/0310-PandarenSerpent云端翔龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 311,
+      "name": "挑战者的作战雪人",
+      "model_folder": "PandarenYetiMount挑战者的作战雪人",
+      "file": "data/resources/mounts/0311-PandarenYetiMount挑战者的作战雪人.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 312,
+      "name": "呱呱鹦鹉",
+      "model_folder": "parrotmount呱呱鹦鹉",
+      "file": "data/resources/mounts/0312-parrotmount呱呱鹦鹉.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 313,
+      "name": "炉石天马",
+      "model_folder": "PegasusMount炉石天马",
+      "file": "data/resources/mounts/0313-PegasusMount炉石天马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 314,
+      "name": "大祭司的光誓寻觅者",
+      "model_folder": "priestmount大祭司的光誓寻觅者",
+      "file": "data/resources/mounts/0314-priestmount大祭司的光誓寻觅者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 315,
+      "name": "ProtoDragon地狱咆哮战龙",
+      "model_folder": "ProtoDragon地狱咆哮战龙",
+      "file": "data/resources/mounts/0315-ProtoDragon地狱咆哮战龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 316,
+      "name": "迦拉卡斯的子嗣",
+      "model_folder": "PROTODRAGON迦拉卡斯的子嗣",
+      "file": "data/resources/mounts/0316-PROTODRAGON迦拉卡斯的子嗣.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 317,
+      "name": "红色始祖幼龙",
+      "model_folder": "protodrakegladiatormount始祖幼龙",
+      "file": "data/resources/mounts/0317-protodrakegladiatormount始祖幼龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 318,
+      "name": "钴蓝翼手龙",
+      "model_folder": "pterrordax2mount钴蓝翼手龙",
+      "file": "data/resources/mounts/0318-pterrordax2mount钴蓝翼手龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 319,
+      "name": "沃顿奈破沙者",
+      "model_folder": "pterrordax2沃顿奈破沙者",
+      "file": "data/resources/mounts/0319-pterrordax2沃顿奈破沙者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 320,
+      "name": "达萨罗破风龙",
+      "model_folder": "pterrordaxloa达萨罗破风龙",
+      "file": "data/resources/mounts/0320-pterrordaxloa达萨罗破风龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 321,
+      "name": "浴火角鹰兽",
+      "model_folder": "pyrogryph浴火角鹰兽",
+      "file": "data/resources/mounts/0321-pyrogryph浴火角鹰兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 322,
+      "name": "皇家魁麟",
+      "model_folder": "Quilin皇家魁麟",
+      "file": "data/resources/mounts/0322-Quilin皇家魁麟.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 323,
+      "name": "秦薛的永恒魁麟",
+      "model_folder": "Quilin秦薛的永恒魁麟",
+      "file": "data/resources/mounts/0323-Quilin秦薛的永恒魁麟.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 324,
+      "name": "勇猛作战迅猛龙",
+      "model_folder": "raptor2勇猛作战迅猛龙",
+      "file": "data/resources/mounts/0324-raptor2勇猛作战迅猛龙.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 325,
+      "name": "raptorloa斩龙坐骑",
+      "model_folder": "raptorloa斩龙坐骑",
+      "file": "data/resources/mounts/0325-raptorloa斩龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 326,
+      "name": "吱吱，狡黠灵兽",
+      "model_folder": "ratmount2吱吱，狡黠灵兽",
+      "file": "data/resources/mounts/0326-ratmount2吱吱，狡黠灵兽.yaml",
+      "debug_passed": false,
+      "added": true
+    },
+    {
+      "id": 327,
+      "name": "骑乘巨鼠",
+      "model_folder": "RatMount骑乘巨鼠",
+      "file": "data/resources/mounts/0327-RatMount骑乘巨鼠.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 329,
+      "name": "狞笑掠夺者",
+      "model_folder": "Ravager2狞笑掠夺者",
+      "file": "data/resources/mounts/0329-Ravager2狞笑掠夺者.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 330,
+      "name": "恐惧渡鸦",
+      "model_folder": "RavenLord恐惧渡鸦",
+      "file": "data/resources/mounts/0330-RavenLord恐惧渡鸦.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 332,
+      "name": "鬼灵座狼",
+      "model_folder": "ridingdirewolfspectral鬼灵座狼",
+      "file": "data/resources/mounts/0332-ridingdirewolfspectral鬼灵座狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 334,
+      "name": "鬼灵战马",
+      "model_folder": "RIDINGHORSE鬼灵战马",
+      "file": "data/resources/mounts/0334-RIDINGHORSE鬼灵战马.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 335,
+      "name": "装甲拉扎什迅猛龙",
+      "model_folder": "RIDINGRAPTOR野蛮迅猛龙",
+      "file": "data/resources/mounts/0335-RIDINGRAPTOR野蛮迅猛龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 336,
+      "name": "灰色骑乘牦牛",
+      "model_folder": "RidingYak灰色骑乘耗牛",
+      "file": "data/resources/mounts/0336-RidingYak灰色骑乘耗牛.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 337,
+      "name": "衰变凯帕铀火箭",
+      "model_folder": "RocketMount3衰变凯帕铀火箭",
+      "file": "data/resources/mounts/0337-RocketMount3衰变凯帕铀火箭.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 338,
+      "name": "对地同步世界旋转器",
+      "model_folder": "RocketMount4对地同步世界旋转器",
+      "file": "data/resources/mounts/0338-RocketMount4对地同步世界旋转器.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 339,
+      "name": "巨型灭爪鹏",
+      "model_folder": "rocmaldraxxusmount巨型灭爪鹏",
+      "file": "data/resources/mounts/0339-rocmaldraxxusmount巨型灭爪鹏.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 340,
+      "name": "暗影之刃的谋杀预兆",
+      "model_folder": "roguemount暗影之刃的谋杀预兆",
+      "file": "data/resources/mounts/0340-roguemount暗影之刃的谋杀预兆.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 341,
+      "name": "秘魔刃豹",
+      "model_folder": "Saber2秘魔刃豹",
+      "file": "data/resources/mounts/0341-Saber2秘魔刃豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 342,
+      "name": "女祭司的月刃豹",
+      "model_folder": "saber3mount女祭司的月刃豹",
+      "file": "data/resources/mounts/0342-saber3mount女祭司的月刃豹.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 344,
+      "name": "瓦丝琪尔海马",
+      "model_folder": "Seahorse瓦丝琪尔海马",
+      "file": "data/resources/mounts/0344-Seahorse瓦丝琪尔海马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 346,
+      "name": "深渊蠕虫",
+      "model_folder": "serpentmount深渊蠕虫",
+      "file": "data/resources/mounts/0346-serpentmount深渊蠕虫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 348,
+      "name": "微光逐星者",
+      "model_folder": "ShadowStalkerPantherMount微光逐星者",
+      "file": "data/resources/mounts/0348-ShadowStalkerPantherMount微光逐星者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 350,
+      "name": "火元素",
+      "model_folder": "shamanmount_fire火元素坐骑",
+      "file": "data/resources/mounts/0350-shamanmount_fire火元素坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 352,
+      "name": "水元素",
+      "model_folder": "shamanmount水元素坐骑",
+      "file": "data/resources/mounts/0352-shamanmount水元素坐骑.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 353,
+      "name": "狂怒风暴图腾",
+      "model_folder": "ShamanMount狂怒风暴图腾",
+      "file": "data/resources/mounts/0353-ShamanMount狂怒风暴图腾.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 354,
+      "name": "致命通灵鳐",
+      "model_folder": "sharkraymount致命通灵鳐",
+      "file": "data/resources/mounts/0354-sharkraymount致命通灵鳐.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 355,
+      "name": "sharkray鳐鱼坐骑",
+      "model_folder": "sharkray鳐鱼坐骑",
+      "file": "data/resources/mounts/0355-sharkray鳐鱼坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 356,
+      "name": "飞天魔像",
+      "model_folder": "Shredder飞天魔像",
+      "file": "data/resources/mounts/0356-Shredder飞天魔像.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 357,
+      "name": "SIBERIANTIGERGOD狮子2",
+      "model_folder": "SIBERIANTIGERGOD狮子2",
+      "file": "data/resources/mounts/0357-SIBERIANTIGERGOD狮子2.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 358,
+      "name": "红色影踪派骑乘虎",
+      "model_folder": "SiberianTiger影踪派骑乘虎",
+      "file": "data/resources/mounts/0358-SiberianTiger影踪派骑乘虎.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 359,
+      "name": "siegeengineer机器人坐骑",
+      "model_folder": "siegeengineer机器人坐骑",
+      "file": "data/resources/mounts/0359-siegeengineer机器人坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 360,
+      "name": "化石迅猛龙",
+      "model_folder": "SkeletalRaptor化石迅猛龙",
+      "file": "data/resources/mounts/0360-SkeletalRaptor化石迅猛龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 362,
+      "name": "邪恶骷髅战马",
+      "model_folder": "SkeletalWarhorse邪恶骷髅战马",
+      "file": "data/resources/mounts/0362-SkeletalWarhorse邪恶骷髅战马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 363,
+      "name": "深瑚毒鳍龙",
+      "model_folder": "snapdragonmount深瑚毒鳍龙",
+      "file": "data/resources/mounts/0363-snapdragonmount深瑚毒鳍龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 365,
+      "name": "带镣铐的乌祖尔",
+      "model_folder": "soulhoundmount带镣铐的乌祖尔",
+      "file": "data/resources/mounts/0365-soulhoundmount带镣铐的乌祖尔.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 366,
+      "name": "soulhound多面体坐骑",
+      "model_folder": "soulhound多面体坐骑",
+      "file": "data/resources/mounts/0366-soulhound多面体坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 367,
+      "name": "spectralgryphon幽灵狮鹫",
+      "model_folder": "spectralgryphon幽灵狮鹫",
+      "file": "data/resources/mounts/0367-spectralgryphon幽灵狮鹫.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 368,
+      "name": "spectralwyvern幽灵驭风者",
+      "model_folder": "spectralwyvern幽灵驭风者",
+      "file": "data/resources/mounts/0368-spectralwyvern幽灵驭风者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 369,
+      "name": "spidercrab红蜘蛛坐骑",
+      "model_folder": "spidercrab红蜘蛛坐骑",
+      "file": "data/resources/mounts/0369-spidercrab红蜘蛛坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 370,
+      "name": "血牙寡妇蛛",
+      "model_folder": "SpiderMount血牙寡妇蛛",
+      "file": "data/resources/mounts/0370-SpiderMount血牙寡妇蛛.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 372,
+      "name": "steamtank公羊战车",
+      "model_folder": "steamtank公羊战车",
+      "file": "data/resources/mounts/0372-steamtank公羊战车.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 373,
+      "name": "铁箍鬼灵战马",
+      "model_folder": "steelwarhorse铁箍鬼灵战马",
+      "file": "data/resources/mounts/0373-steelwarhorse铁箍鬼灵战马.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 374,
+      "name": "steward蓝马",
+      "model_folder": "steward蓝马",
+      "file": "data/resources/mounts/0374-steward蓝马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 375,
+      "name": "无尽之海鳐鱼",
+      "model_folder": "stingray2无尽之海鳐鱼",
+      "file": "data/resources/mounts/0375-stingray2无尽之海鳐鱼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 376,
+      "name": "stormcrowmountbase风暴乌蕥2",
+      "model_folder": "stormcrowmountbase风暴乌蕥2",
+      "file": "data/resources/mounts/0376-stormcrowmountbase风暴乌蕥2.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 377,
+      "name": "日光峰林飞鹰",
+      "model_folder": "STORMCROWMOUNT_Solar日光峰林飞鹰",
+      "file": "data/resources/mounts/0377-STORMCROWMOUNT_Solar日光峰林飞鹰.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 381,
+      "name": "瓦拉加尔风暴之翼幼龙",
+      "model_folder": "StormDragonMount2瓦拉加尔风暴之翼幼龙",
+      "file": "data/resources/mounts/0381-StormDragonMount2瓦拉加尔风暴之翼幼龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 383,
+      "name": "海岛雷鳞龙",
+      "model_folder": "StormDragon海岛雷鳞龙",
+      "file": "data/resources/mounts/0383-StormDragon海岛雷鳞龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 384,
+      "name": "迅捷美酒节赛羊",
+      "model_folder": "stormpikebattlecharger迅捷美酒节赛羊",
+      "file": "data/resources/mounts/0384-stormpikebattlecharger迅捷美酒节赛羊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 385,
+      "name": "奥术师的魔刃豹",
+      "model_folder": "suramarmount奥术师的魔刃豹",
+      "file": "data/resources/mounts/0385-suramarmount奥术师的魔刃豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 386,
+      "name": "追风",
+      "model_folder": "SwiftWindsteed追风",
+      "file": "data/resources/mounts/0386-SwiftWindsteed追风.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 387,
+      "name": "驯养的银鬃塔布羊",
+      "model_folder": "TalbukDraenor银鬃塔布羊",
+      "file": "data/resources/mounts/0387-TalbukDraenor银鬃塔布羊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 388,
+      "name": "threshershark鲨鱼坐骑",
+      "model_folder": "threshershark鲨鱼坐骑",
+      "file": "data/resources/mounts/0388-threshershark鲨鱼坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 389,
+      "name": "季鹍之嗣",
+      "model_folder": "ThunderIsleBird季鹍之嗣",
+      "file": "data/resources/mounts/0389-ThunderIsleBird季鹍之嗣.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 390,
+      "name": "装甲啸天龙",
+      "model_folder": "ThunderPterodactyl装甲啸天龙",
+      "file": "data/resources/mounts/0390-ThunderPterodactyl装甲啸天龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 391,
+      "name": "树栖巨口蟾",
+      "model_folder": "toadardenwealdmount树栖巨口蟾",
+      "file": "data/resources/mounts/0391-toadardenwealdmount树栖巨口蟾.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 392,
+      "name": "情侣沼泽跃蛙",
+      "model_folder": "toadloamount情侣沼泽跃蛙",
+      "file": "data/resources/mounts/0392-toadloamount情侣沼泽跃蛙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 393,
+      "name": "雄壮远足牦牛",
+      "model_folder": "TravelersYak潘达利亚旅行牛",
+      "file": "data/resources/mounts/0393-TravelersYak潘达利亚旅行牛.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 395,
+      "name": "冰蓝原始恐角龙",
+      "model_folder": "Triceratops冰蓝原始恐角龙",
+      "file": "data/resources/mounts/0395-Triceratops冰蓝原始恐角龙.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 396,
+      "name": "赤壳三叶虫",
+      "model_folder": "trilobitemount1壳三叶虫",
+      "file": "data/resources/mounts/0396-trilobitemount1壳三叶虫.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 398,
+      "name": "阿坎迪安战龟",
+      "model_folder": "TurtleMount阿坎迪安战龟",
+      "file": "data/resources/mounts/0398-TurtleMount阿坎迪安战龟.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 399,
+      "name": "泰瑞尔的天使战马",
+      "model_folder": "TyraelMount泰瑞尔的天使战马",
+      "file": "data/resources/mounts/0399-TyraelMount泰瑞尔的天使战马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 401,
+      "name": "邪恶战熊",
+      "model_folder": "viciousalliancebearmount邪恶战熊",
+      "file": "data/resources/mounts/0401-viciousalliancebearmount邪恶战熊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 402,
+      "name": "勇猛的作战淡水兽",
+      "model_folder": "viciousalliancehippo勇猛的作战淡水兽",
+      "file": "data/resources/mounts/0402-viciousalliancehippo勇猛的作战淡水兽.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 404,
+      "name": "邪恶战蛛",
+      "model_folder": "viciousalliancespider邪恶战蛛",
+      "file": "data/resources/mounts/0404-viciousalliancespider邪恶战蛛.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 405,
+      "name": "邪恶战龟",
+      "model_folder": "viciousdragonturtlemount邪恶战龟",
+      "file": "data/resources/mounts/0405-viciousdragonturtlemount邪恶战龟.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 406,
+      "name": "勇猛的战车",
+      "model_folder": "viciousgoblintrike勇猛的战车",
+      "file": "data/resources/mounts/0406-viciousgoblintrike勇猛的战车.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 407,
+      "name": "邪恶战狮",
+      "model_folder": "viciousgoldenking邪恶战狮",
+      "file": "data/resources/mounts/0407-viciousgoldenking邪恶战狮.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 408,
+      "name": "勇猛作战陆行鸟",
+      "model_folder": "vicioushawkstrider勇猛作战陆行鸟",
+      "file": "data/resources/mounts/0408-vicioushawkstrider勇猛作战陆行鸟.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 409,
+      "name": "邪恶战熊",
+      "model_folder": "ViciousHordeBearMount邪恶战熊",
+      "file": "data/resources/mounts/0409-ViciousHordeBearMount邪恶战熊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 410,
+      "name": "勇猛的作战裂蹄牛",
+      "model_folder": "vicioushordeclefthoof勇猛的作战裂蹄牛",
+      "file": "data/resources/mounts/0410-vicioushordeclefthoof勇猛的作战裂蹄牛.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 411,
+      "name": "邪恶战蛛",
+      "model_folder": "vicioushordespider邪恶蜘蛛",
+      "file": "data/resources/mounts/0411-vicioushordespider邪恶蜘蛛.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 412,
+      "name": "勇猛的吉尔尼斯战马",
+      "model_folder": "vicioushorse勇猛的吉尔尼斯战马",
+      "file": "data/resources/mounts/0412-vicioushorse勇猛的吉尔尼斯战马.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 413,
+      "name": "邪恶战蝎",
+      "model_folder": "viciouskorkronannihilator邪恶战蝎",
+      "file": "data/resources/mounts/0413-viciouskorkronannihilator邪恶战蝎.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 414,
+      "name": "勇猛的战蜥",
+      "model_folder": "viciouswarbasiliskalliance勇猛的战蜥",
+      "file": "data/resources/mounts/0414-viciouswarbasiliskalliance勇猛的战蜥.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 416,
+      "name": "勇猛的作战雷象",
+      "model_folder": "viciouswarelekk勇猛的作战雷象",
+      "file": "data/resources/mounts/0416-viciouswarelekk勇猛的作战雷象.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 417,
+      "name": "勇猛的战狐",
+      "model_folder": "viciouswarfoxalliance勇猛的战狐",
+      "file": "data/resources/mounts/0417-viciouswarfoxalliance勇猛的战狐.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 419,
+      "name": "勇猛的科多战兽",
+      "model_folder": "ViciousWarKodo勇猛的科多战兽",
+      "file": "data/resources/mounts/0419-ViciousWarKodo勇猛的科多战兽.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 421,
+      "name": "勇猛的战斗机械陆行鸟",
+      "model_folder": "viciouswarmechanostrider勇猛的战斗机械陆行鸟",
+      "file": "data/resources/mounts/0421-viciouswarmechanostrider勇猛的战斗机械陆行鸟.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 422,
+      "name": "勇猛战羊",
+      "model_folder": "viciouswarram勇猛战羊",
+      "file": "data/resources/mounts/0422-viciouswarram勇猛战羊.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 425,
+      "name": "星怨虚空陆行鸟",
+      "model_folder": "voidelfhawkstridermount陆行鸟",
+      "file": "data/resources/mounts/0425-voidelfhawkstridermount陆行鸟.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 426,
+      "name": "虚空恐魔",
+      "model_folder": "voidterror2双头狗坐骑",
+      "file": "data/resources/mounts/0426-voidterror2双头狗坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 427,
+      "name": "灰白土狼",
+      "model_folder": "vulperamount2灰白土狼",
+      "file": "data/resources/mounts/0427-vulperamount2灰白土狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 428,
+      "name": "商队土狼",
+      "model_folder": "vulperamount商队土狼",
+      "file": "data/resources/mounts/0428-vulperamount商队土狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 429,
+      "name": "泥翼信天翁",
+      "model_folder": "vulturemount泥翼信天翁",
+      "file": "data/resources/mounts/0429-vulturemount泥翼信天翁.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 432,
+      "name": "虚空领主的硫磺愤怒战马",
+      "model_folder": "WarlockMount愤怒战马",
+      "file": "data/resources/mounts/0432-WarlockMount愤怒战马.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 433,
+      "name": "勇猛卡多雷作战刃豹",
+      "model_folder": "WarNightSaberMount勇猛卡多雷作战刃豹",
+      "file": "data/resources/mounts/0433-WarNightSaberMount勇猛卡多雷作战刃豹.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 434,
+      "name": "虚空领主的诅咒愤怒战马",
+      "model_folder": "warriormount愤怒战马1",
+      "file": "data/resources/mounts/0434-warriormount愤怒战马1.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 435,
+      "name": "冰川狂潮",
+      "model_folder": "waterelemental2水元素坐骑",
+      "file": "data/resources/mounts/0435-waterelemental2水元素坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 437,
+      "name": "猩红水黾",
+      "model_folder": "WaterStrider水黾",
+      "file": "data/resources/mounts/0437-WaterStrider水黾.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 438,
+      "name": "whaleshark鲸鲨坐骑",
+      "model_folder": "whaleshark鲸鲨坐骑",
+      "file": "data/resources/mounts/0438-whaleshark鲸鲨坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 439,
+      "name": "柳魔幼兽",
+      "model_folder": "wickerbeastpet恶魔犬2",
+      "file": "data/resources/mounts/0439-wickerbeastpet恶魔犬2.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 443,
+      "name": "飞翼守护者",
+      "model_folder": "WingedLionMount飞翼守护者",
+      "file": "data/resources/mounts/0443-WingedLionMount飞翼守护者.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 445,
+      "name": "装甲霜狼",
+      "model_folder": "WolfDraenor霜狼",
+      "file": "data/resources/mounts/0445-WolfDraenor霜狼.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 446,
+      "name": "纳沙塔尔狼鳗",
+      "model_folder": "wolfeel沃菲尔德坐骑",
+      "file": "data/resources/mounts/0446-wolfeel沃菲尔德坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 453,
+      "name": "火焰耗牛",
+      "model_folder": "yakgod火焰耗牛坐骑",
+      "file": "data/resources/mounts/0453-yakgod火焰耗牛坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 457,
+      "name": "奢华暴掠龙",
+      "model_folder": "zandalaridevilsaur迅猛龙坐骑",
+      "file": "data/resources/mounts/0457-zandalaridevilsaur迅猛龙坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 458,
+      "name": "角龙",
+      "model_folder": "zandalaripaladinmount角龙",
+      "file": "data/resources/mounts/0458-zandalaripaladinmount角龙.yaml",
+      "debug_passed": true,
+      "added": true
+    },
+    {
+      "id": 460,
+      "name": "翡翠原始恐角龙缰绳",
+      "model_folder": "zandalaritriceratops犍牛坐骑",
+      "file": "data/resources/mounts/0460-zandalaritriceratops犍牛坐骑.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 461,
+      "name": "暗月飞船",
+      "model_folder": "zeppelinmount暗月飞船",
+      "file": "data/resources/mounts/0461-zeppelinmount暗月飞船.yaml",
+      "debug_passed": false,
+      "added": false
+    }
+  ],
+  "pets": [
+    {
+      "id": 1,
+      "name": "aetherserpentpet龙宝宝宠物",
+      "model_folder": "aetherserpentpet龙宝宝宠物",
+      "file": "data/resources/pets/0001-aetherserpentpet龙宝宝宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 2,
+      "name": "ancientprotector_pet黄古树宠物",
+      "model_folder": "ancientprotector_pet黄古树宠物",
+      "file": "data/resources/pets/0002-ancientprotector_pet黄古树宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 3,
+      "name": "archonpet执政小妖宠物",
+      "model_folder": "archonpet执政小妖宠物",
+      "file": "data/resources/pets/0003-archonpet执政小妖宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 4,
+      "name": "armadillo穿山甲宠物",
+      "model_folder": "armadillo穿山甲宠物",
+      "file": "data/resources/pets/0004-armadillo穿山甲宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 5,
+      "name": "babydeer梅花鹿宠物",
+      "model_folder": "babydeer梅花鹿宠物",
+      "file": "data/resources/pets/0005-babydeer梅花鹿宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 6,
+      "name": "babyfox小绿狐宠物",
+      "model_folder": "babyfox小绿狐宠物",
+      "file": "data/resources/pets/0006-babyfox小绿狐宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 10,
+      "name": "babyhippo小河马宠物",
+      "model_folder": "babyhippo小河马宠物",
+      "file": "data/resources/pets/0010-babyhippo小河马宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 11,
+      "name": "babykomododragon小龙怪宠物",
+      "model_folder": "babykomododragon小龙怪宠物",
+      "file": "data/resources/pets/0011-babykomododragon小龙怪宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 12,
+      "name": "babymoonkin小鹌鹑宠物",
+      "model_folder": "babymoonkin小鹌鹑宠物",
+      "file": "data/resources/pets/0012-babymoonkin小鹌鹑宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 14,
+      "name": "babymoose小四不像宠物",
+      "model_folder": "babymoose小四不像宠物",
+      "file": "data/resources/pets/0014-babymoose小四不像宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 15,
+      "name": "babymurloc3小鱼人宠物",
+      "model_folder": "babymurloc3小鱼人宠物",
+      "file": "data/resources/pets/0015-babymurloc3小鱼人宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 16,
+      "name": "babynaga小娜迦宠物",
+      "model_folder": "babynaga小娜迦宠物",
+      "file": "data/resources/pets/0016-babynaga小娜迦宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 17,
+      "name": "babypig小猪宠物",
+      "model_folder": "babypig小猪宠物",
+      "file": "data/resources/pets/0017-babypig小猪宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 18,
+      "name": "babyragnoros小螺丝宠物",
+      "model_folder": "babyragnoros小螺丝宠物",
+      "file": "data/resources/pets/0018-babyragnoros小螺丝宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 19,
+      "name": "babyraptor小恐龙宠物",
+      "model_folder": "babyraptor小恐龙宠物",
+      "file": "data/resources/pets/0019-babyraptor小恐龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 20,
+      "name": "babysaurolophus小鸡宠物",
+      "model_folder": "babysaurolophus小鸡宠物",
+      "file": "data/resources/pets/0020-babysaurolophus小鸡宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 21,
+      "name": "babyspidertank小坦克宠物",
+      "model_folder": "babyspidertank小坦克宠物",
+      "file": "data/resources/pets/0021-babyspidertank小坦克宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 22,
+      "name": "babysteward小猫头鹰宠物",
+      "model_folder": "babysteward小猫头鹰宠物",
+      "file": "data/resources/pets/0022-babysteward小猫头鹰宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 23,
+      "name": "babytentacleface小章鱼宠物",
+      "model_folder": "babytentacleface小章鱼宠物",
+      "file": "data/resources/pets/0023-babytentacleface小章鱼宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 24,
+      "name": "babythundercrocodile小河马宠物",
+      "model_folder": "babythundercrocodile小河马宠物",
+      "file": "data/resources/pets/0024-babythundercrocodile小河马宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 25,
+      "name": "babytortollan小龟宠物",
+      "model_folder": "babytortollan小龟宠物",
+      "file": "data/resources/pets/0025-babytortollan小龟宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 26,
+      "name": "babytriceratops小犀牛宠物",
+      "model_folder": "babytriceratops小犀牛宠物",
+      "file": "data/resources/pets/0026-babytriceratops小犀牛宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 27,
+      "name": "babyturtle小龟龟宠物",
+      "model_folder": "babyturtle小龟龟宠物",
+      "file": "data/resources/pets/0027-babyturtle小龟龟宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 28,
+      "name": "babywinston小猩猩宠物",
+      "model_folder": "babywinston小猩猩宠物",
+      "file": "data/resources/pets/0028-babywinston小猩猩宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 29,
+      "name": "banelingpet邪恶虫宠物",
+      "model_folder": "banelingpet邪恶虫宠物",
+      "file": "data/resources/pets/0029-banelingpet邪恶虫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 30,
+      "name": "batdemon蝙蝠怪宠物",
+      "model_folder": "batdemon蝙蝠怪宠物",
+      "file": "data/resources/pets/0030-batdemon蝙蝠怪宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 31,
+      "name": "beecreature小蜜蜂宠物",
+      "model_folder": "beecreature小蜜蜂宠物",
+      "file": "data/resources/pets/0031-beecreature小蜜蜂宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 32,
+      "name": "blingtron2机器娃娃宠物",
+      "model_folder": "blingtron2机器娃娃宠物",
+      "file": "data/resources/pets/0032-blingtron2机器娃娃宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 33,
+      "name": "blingtron金娃娃宠物",
+      "model_folder": "blingtron金娃娃宠物",
+      "file": "data/resources/pets/0033-blingtron金娃娃宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 34,
+      "name": "bloodtrollbeastpet包子虫宠物",
+      "model_folder": "bloodtrollbeastpet包子虫宠物",
+      "file": "data/resources/pets/0034-bloodtrollbeastpet包子虫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 35,
+      "name": "CAT圣诞猫宠物",
+      "model_folder": "CAT圣诞猫宠物",
+      "file": "data/resources/pets/0035-CAT圣诞猫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 36,
+      "name": "chromaticdragonpet小金龙宠物",
+      "model_folder": "chromaticdragonpet小金龙宠物",
+      "file": "data/resources/pets/0036-chromaticdragonpet小金龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 37,
+      "name": "corgi2贵宾犬宠物",
+      "model_folder": "corgi2贵宾犬宠物",
+      "file": "data/resources/pets/0037-corgi2贵宾犬宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 39,
+      "name": "cornpet小萝卜宠物",
+      "model_folder": "cornpet小萝卜宠物",
+      "file": "data/resources/pets/0039-cornpet小萝卜宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 40,
+      "name": "cranegodpet小孔雀宠物",
+      "model_folder": "cranegodpet小孔雀宠物",
+      "file": "data/resources/pets/0040-cranegodpet小孔雀宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 41,
+      "name": "crawlinghandpet邪恶之爪宠物",
+      "model_folder": "crawlinghandpet邪恶之爪宠物",
+      "file": "data/resources/pets/0041-crawlinghandpet邪恶之爪宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 42,
+      "name": "darkphoenixpet紫乌鸦宠物",
+      "model_folder": "darkphoenixpet紫乌鸦宠物",
+      "file": "data/resources/pets/0042-darkphoenixpet紫乌鸦宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 43,
+      "name": "DeepSeaCrab绿螃蟹宠物",
+      "model_folder": "DeepSeaCrab绿螃蟹宠物",
+      "file": "data/resources/pets/0043-DeepSeaCrab绿螃蟹宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 46,
+      "name": "dragonwhelp2小恐龙宠物",
+      "model_folder": "dragonwhelp2小恐龙宠物",
+      "file": "data/resources/pets/0046-dragonwhelp2小恐龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 47,
+      "name": "dragonwhelpcataclysm小死亡之翼宠物",
+      "model_folder": "dragonwhelpcataclysm小死亡之翼宠物",
+      "file": "data/resources/pets/0047-dragonwhelpcataclysm小死亡之翼宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 48,
+      "name": "dragonwhelpelementium骁龙宠物",
+      "model_folder": "dragonwhelpelementium骁龙宠物",
+      "file": "data/resources/pets/0048-dragonwhelpelementium骁龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 49,
+      "name": "dragonwhelpnightmare熔岩龙宠物",
+      "model_folder": "dragonwhelpnightmare熔岩龙宠物",
+      "file": "data/resources/pets/0049-dragonwhelpnightmare熔岩龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 50,
+      "name": "DRAGONWHELP小马沟里斯宠物",
+      "model_folder": "DRAGONWHELP小马沟里斯宠物",
+      "file": "data/resources/pets/0050-DRAGONWHELP小马沟里斯宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 51,
+      "name": "encrypted12小飞龙宠物",
+      "model_folder": "encrypted12小飞龙宠物",
+      "file": "data/resources/pets/0051-encrypted12小飞龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 52,
+      "name": "faeriedragon2变色龙宠物",
+      "model_folder": "faeriedragon2变色龙宠物",
+      "file": "data/resources/pets/0052-faeriedragon2变色龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 53,
+      "name": "felkitten邪能猫宠物",
+      "model_folder": "felkitten邪能猫宠物",
+      "file": "data/resources/pets/0053-felkitten邪能猫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 54,
+      "name": "felstalker魔能犬宠物",
+      "model_folder": "felstalker魔能犬宠物",
+      "file": "data/resources/pets/0054-felstalker魔能犬宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 55,
+      "name": "ferret小猫宠物",
+      "model_folder": "ferret小猫宠物",
+      "file": "data/resources/pets/0055-ferret小猫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 56,
+      "name": "FireKitty小伙猫宠物",
+      "model_folder": "FireKitty小伙猫宠物",
+      "file": "data/resources/pets/0056-FireKitty小伙猫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 57,
+      "name": "firespiritsmall魔人娃娃宠物",
+      "model_folder": "firespiritsmall魔人娃娃宠物",
+      "file": "data/resources/pets/0057-firespiritsmall魔人娃娃宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 59,
+      "name": "FoxPet紫色狐狸宠物",
+      "model_folder": "FoxPet紫色狐狸宠物",
+      "file": "data/resources/pets/0059-FoxPet紫色狐狸宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 60,
+      "name": "FrostwolfPup哈士奇宠物",
+      "model_folder": "FrostwolfPup哈士奇宠物",
+      "file": "data/resources/pets/0060-FrostwolfPup哈士奇宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 62,
+      "name": "hearthstoneelemental小石头人宠物",
+      "model_folder": "hearthstoneelemental小石头人宠物",
+      "file": "data/resources/pets/0062-hearthstoneelemental小石头人宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 63,
+      "name": "hordemurloc持斧鱼人宠物",
+      "model_folder": "hordemurloc持斧鱼人宠物",
+      "file": "data/resources/pets/0063-hordemurloc持斧鱼人宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 64,
+      "name": "marmosetpet绒猴宠物",
+      "model_folder": "marmosetpet绒猴宠物",
+      "file": "data/resources/pets/0064-marmosetpet绒猴宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 65,
+      "name": "mechanicalhandpet机械手宠物",
+      "model_folder": "mechanicalhandpet机械手宠物",
+      "file": "data/resources/pets/0065-mechanicalhandpet机械手宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 66,
+      "name": "mechanicalparrotpet机械鹦鹉宠物",
+      "model_folder": "mechanicalparrotpet机械鹦鹉宠物",
+      "file": "data/resources/pets/0066-mechanicalparrotpet机械鹦鹉宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 67,
+      "name": "mechanicalrabbit机械兔子宠物",
+      "model_folder": "mechanicalrabbit机械兔子宠物",
+      "file": "data/resources/pets/0067-mechanicalrabbit机械兔子宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 68,
+      "name": "moltengiant金色小旺财宠物",
+      "model_folder": "moltengiant金色小旺财宠物",
+      "file": "data/resources/pets/0068-moltengiant金色小旺财宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 69,
+      "name": "monstrouseel电鳗宠物",
+      "model_folder": "monstrouseel电鳗宠物",
+      "file": "data/resources/pets/0069-monstrouseel电鳗宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 70,
+      "name": "mysticmanakitty紫豹子宠物1",
+      "model_folder": "mysticmanakitty紫豹子宠物1",
+      "file": "data/resources/pets/0070-mysticmanakitty紫豹子宠物1.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 71,
+      "name": "pandarenserpentpet翔龙宠物",
+      "model_folder": "pandarenserpentpet翔龙宠物",
+      "file": "data/resources/pets/0071-pandarenserpentpet翔龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 72,
+      "name": "peacock小孔雀宠物",
+      "model_folder": "peacock小孔雀宠物",
+      "file": "data/resources/pets/0072-peacock小孔雀宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 73,
+      "name": "podling小绿菜宠物",
+      "model_folder": "podling小绿菜宠物",
+      "file": "data/resources/pets/0073-podling小绿菜宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 74,
+      "name": "porcupine小刺猬宠物",
+      "model_folder": "porcupine小刺猬宠物",
+      "file": "data/resources/pets/0074-porcupine小刺猬宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 75,
+      "name": "pufferfish2小河豚宠物",
+      "model_folder": "pufferfish2小河豚宠物",
+      "file": "data/resources/pets/0075-pufferfish2小河豚宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 76,
+      "name": "rabbit2小兔子宠物",
+      "model_folder": "rabbit2小兔子宠物",
+      "file": "data/resources/pets/0076-rabbit2小兔子宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 77,
+      "name": "raccoon2小浣熊宠物",
+      "model_folder": "raccoon2小浣熊宠物",
+      "file": "data/resources/pets/0077-raccoon2小浣熊宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 78,
+      "name": "RAPTOR小恐龙宠物",
+      "model_folder": "RAPTOR小恐龙宠物",
+      "file": "data/resources/pets/0078-RAPTOR小恐龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 79,
+      "name": "ravenlordpet小乌鸦宠物",
+      "model_folder": "ravenlordpet小乌鸦宠物",
+      "file": "data/resources/pets/0079-ravenlordpet小乌鸦宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 80,
+      "name": "redbird小鹦鹉宠物",
+      "model_folder": "redbird小鹦鹉宠物",
+      "file": "data/resources/pets/0080-redbird小鹦鹉宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 81,
+      "name": "redpanda小熊猫宠物",
+      "model_folder": "redpanda小熊猫宠物",
+      "file": "data/resources/pets/0081-redpanda小熊猫宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 82,
+      "name": "RobotPet小钢炮宠物",
+      "model_folder": "RobotPet小钢炮宠物",
+      "file": "data/resources/pets/0082-RobotPet小钢炮宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 83,
+      "name": "robot_doberman木头狗宠物",
+      "model_folder": "robot_doberman木头狗宠物",
+      "file": "data/resources/pets/0083-robot_doberman木头狗宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 84,
+      "name": "sandpiper小鸟宠物",
+      "model_folder": "sandpiper小鸟宠物",
+      "file": "data/resources/pets/0084-sandpiper小鸟宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 85,
+      "name": "shadowstalkerpantherpet小紫豹宠物",
+      "model_folder": "shadowstalkerpantherpet小紫豹宠物",
+      "file": "data/resources/pets/0085-shadowstalkerpantherpet小紫豹宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 86,
+      "name": "shapet沙宠物",
+      "model_folder": "shapet沙宠物",
+      "file": "data/resources/pets/0086-shapet沙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 87,
+      "name": "singleturret石像宠物",
+      "model_folder": "singleturret石像宠物",
+      "file": "data/resources/pets/0087-singleturret石像宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 88,
+      "name": "smallgargoyle小石像鬼宠物",
+      "model_folder": "smallgargoyle小石像鬼宠物",
+      "file": "data/resources/pets/0088-smallgargoyle小石像鬼宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 89,
+      "name": "snowkid雪孩子宠物",
+      "model_folder": "snowkid雪孩子宠物",
+      "file": "data/resources/pets/0089-snowkid雪孩子宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 90,
+      "name": "spacegoat太空山羊宠物",
+      "model_folder": "spacegoat太空山羊宠物",
+      "file": "data/resources/pets/0090-spacegoat太空山羊宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 91,
+      "name": "spectralsaberworg2闪电狼宠物",
+      "model_folder": "spectralsaberworg2闪电狼宠物",
+      "file": "data/resources/pets/0091-spectralsaberworg2闪电狼宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 92,
+      "name": "stbernarddogpet哈巴狗宠物",
+      "model_folder": "stbernarddogpet哈巴狗宠物",
+      "file": "data/resources/pets/0092-stbernarddogpet哈巴狗宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 93,
+      "name": "succubus2魅魔宠物",
+      "model_folder": "succubus2魅魔宠物",
+      "file": "data/resources/pets/0093-succubus2魅魔宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 94,
+      "name": "thunderbeaver紫耗子宠物",
+      "model_folder": "thunderbeaver紫耗子宠物",
+      "file": "data/resources/pets/0094-thunderbeaver紫耗子宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 95,
+      "name": "tigergodcubmonk绿老虎宠物",
+      "model_folder": "tigergodcubmonk绿老虎宠物",
+      "file": "data/resources/pets/0095-tigergodcubmonk绿老虎宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 96,
+      "name": "tigergodcub蓝老虎宠物",
+      "model_folder": "tigergodcub蓝老虎宠物",
+      "file": "data/resources/pets/0096-tigergodcub蓝老虎宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 97,
+      "name": "toucan小鹦鹉宠物",
+      "model_folder": "toucan小鹦鹉宠物",
+      "file": "data/resources/pets/0097-toucan小鹦鹉宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 98,
+      "name": "TREASUREGOBLINPET炸弹人宠物",
+      "model_folder": "TREASUREGOBLINPET炸弹人宠物",
+      "file": "data/resources/pets/0098-TREASUREGOBLINPET炸弹人宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 99,
+      "name": "turnippet胡萝卜宠物",
+      "model_folder": "turnippet胡萝卜宠物",
+      "file": "data/resources/pets/0099-turnippet胡萝卜宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 100,
+      "name": "valkiergoldpet飞宝宠物",
+      "model_folder": "valkiergoldpet飞宝宠物",
+      "file": "data/resources/pets/0100-valkiergoldpet飞宝宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 101,
+      "name": "VALKIERPET飞人宠物",
+      "model_folder": "VALKIERPET飞人宠物",
+      "file": "data/resources/pets/0101-VALKIERPET飞人宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 102,
+      "name": "vulperachild小狐狸宠物",
+      "model_folder": "vulperachild小狐狸宠物",
+      "file": "data/resources/pets/0102-vulperachild小狐狸宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 103,
+      "name": "wingedlion2pet翼狮宠物",
+      "model_folder": "wingedlion2pet翼狮宠物",
+      "file": "data/resources/pets/0103-wingedlion2pet翼狮宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 104,
+      "name": "wingedlionpet小翼狮宠物",
+      "model_folder": "wingedlionpet小翼狮宠物",
+      "file": "data/resources/pets/0104-wingedlionpet小翼狮宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 105,
+      "name": "worserobot发条机器人宠物",
+      "model_folder": "worserobot发条机器人宠物",
+      "file": "data/resources/pets/0105-worserobot发条机器人宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 106,
+      "name": "YakGodPet耗牛宠物",
+      "model_folder": "YakGodPet耗牛宠物",
+      "file": "data/resources/pets/0106-YakGodPet耗牛宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 107,
+      "name": "zandalaribabyraptor大嘴龙宠物",
+      "model_folder": "zandalaribabyraptor大嘴龙宠物",
+      "file": "data/resources/pets/0107-zandalaribabyraptor大嘴龙宠物.yaml",
+      "debug_passed": false,
+      "added": false
+    }
+  ],
+  "npcs": [
+    {
+      "id": 1,
+      "name": "agronn兽人猪NPC",
+      "model_folder": "agronn兽人猪NPC",
+      "file": "data/resources/npcs/0001-agronn兽人猪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 2,
+      "name": "airelemental2虚空风暴NPC",
+      "model_folder": "airelemental2虚空风暴NPC",
+      "file": "data/resources/npcs/0002-airelemental2虚空风暴NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 3,
+      "name": "airspiritsmall娃娃NPC",
+      "model_folder": "airspiritsmall娃娃NPC",
+      "file": "data/resources/npcs/0003-airspiritsmall娃娃NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 4,
+      "name": "alakir桑德兰王子NPC",
+      "model_folder": "alakir桑德兰王子NPC",
+      "file": "data/resources/npcs/0004-alakir桑德兰王子NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 5,
+      "name": "ALEXSTRASZA爱斯女王NPC",
+      "model_folder": "ALEXSTRASZA爱斯女王NPC",
+      "file": "data/resources/npcs/0005-ALEXSTRASZA爱斯女王NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 6,
+      "name": "alleria艾拉妹子NPC",
+      "model_folder": "alleria艾拉妹子NPC",
+      "file": "data/resources/npcs/0006-alleria艾拉妹子NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 7,
+      "name": "alliancemurloc联盟鱼人NPC",
+      "model_folder": "alliancemurloc联盟鱼人NPC",
+      "file": "data/resources/npcs/0007-alliancemurloc联盟鱼人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 8,
+      "name": "amanthul宙斯老头NPC",
+      "model_folder": "amanthul宙斯老头NPC",
+      "file": "data/resources/npcs/0008-amanthul宙斯老头NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 9,
+      "name": "ancientkingscouncilwarrior祖阿曼大哥NPC",
+      "model_folder": "ancientkingscouncilwarrior祖阿曼大哥NPC",
+      "file": "data/resources/npcs/0009-ancientkingscouncilwarrior祖阿曼大哥NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 10,
+      "name": "ancientoflorepet古树老头NPC",
+      "model_folder": "ancientoflorepet古树老头NPC",
+      "file": "data/resources/npcs/0010-ancientoflorepet古树老头NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 11,
+      "name": "arbiter仲裁人NPC",
+      "model_folder": "arbiter仲裁人NPC",
+      "file": "data/resources/npcs/0011-arbiter仲裁人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 12,
+      "name": "arcaneanomaly奥秘异常者NPC",
+      "model_folder": "arcaneanomaly奥秘异常者NPC",
+      "file": "data/resources/npcs/0012-arcaneanomaly奥秘异常者NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 13,
+      "name": "arcaneconstruct电磁怪NPC",
+      "model_folder": "arcaneconstruct电磁怪NPC",
+      "file": "data/resources/npcs/0013-arcaneconstruct电磁怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 15,
+      "name": "archon天使执政官NPC",
+      "model_folder": "archon天使执政官NPC",
+      "file": "data/resources/npcs/0015-archon天使执政官NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 16,
+      "name": "avengingangel鸟天使NPC",
+      "model_folder": "avengingangel鸟天使NPC",
+      "file": "data/resources/npcs/0016-avengingangel鸟天使NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 17,
+      "name": "azshara阿萨拉妹子NPC",
+      "model_folder": "azshara阿萨拉妹子NPC",
+      "file": "data/resources/npcs/0017-azshara阿萨拉妹子NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 18,
+      "name": "BaineBloodhoof贝恩血蹄牛NPC",
+      "model_folder": "BaineBloodhoof贝恩血蹄牛NPC",
+      "file": "data/resources/npcs/0018-BaineBloodhoof贝恩血蹄牛NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 19,
+      "name": "bandtaurenmale2乐队老牛NPC",
+      "model_folder": "bandtaurenmale2乐队老牛NPC",
+      "file": "data/resources/npcs/0019-bandtaurenmale2乐队老牛NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 20,
+      "name": "blackhand黑兽人NPC",
+      "model_folder": "blackhand黑兽人NPC",
+      "file": "data/resources/npcs/0020-blackhand黑兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 21,
+      "name": "blackrockbrute兽人NPC",
+      "model_folder": "blackrockbrute兽人NPC",
+      "file": "data/resources/npcs/0021-blackrockbrute兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 23,
+      "name": "bloodgolem血魔机器人NPC",
+      "model_folder": "bloodgolem血魔机器人NPC",
+      "file": "data/resources/npcs/0023-bloodgolem血魔机器人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 24,
+      "name": "bloodtotemtauren血蹄牛NPC",
+      "model_folder": "bloodtotemtauren血蹄牛NPC",
+      "file": "data/resources/npcs/0024-bloodtotemtauren血蹄牛NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 25,
+      "name": "bloodtrollfemaledire双刀牛人NPC",
+      "model_folder": "bloodtrollfemaledire双刀牛人NPC",
+      "file": "data/resources/npcs/0025-bloodtrollfemaledire双刀牛人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 26,
+      "name": "boastfulgruntling部落小哥NPC",
+      "model_folder": "boastfulgruntling部落小哥NPC",
+      "file": "data/resources/npcs/0026-boastfulgruntling部落小哥NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 27,
+      "name": "boastfulsquire联盟小哥NPC",
+      "model_folder": "boastfulsquire联盟小哥NPC",
+      "file": "data/resources/npcs/0027-boastfulsquire联盟小哥NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 28,
+      "name": "bolvar玻尔瓦尔男NPC",
+      "model_folder": "bolvar玻尔瓦尔男NPC",
+      "file": "data/resources/npcs/0028-bolvar玻尔瓦尔男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 29,
+      "name": "botani大圣NPC",
+      "model_folder": "botani大圣NPC",
+      "file": "data/resources/npcs/0029-botani大圣NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 30,
+      "name": "boundairelemental虚空妖NPC",
+      "model_folder": "boundairelemental虚空妖NPC",
+      "file": "data/resources/npcs/0030-boundairelemental虚空妖NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 31,
+      "name": "boundearthelemental虚空魔NPC",
+      "model_folder": "boundearthelemental虚空魔NPC",
+      "file": "data/resources/npcs/0031-boundearthelemental虚空魔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 32,
+      "name": "broker经纪人NPC",
+      "model_folder": "broker经纪人NPC",
+      "file": "data/resources/npcs/0032-broker经纪人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 33,
+      "name": "celestialhuman骨骼NPC",
+      "model_folder": "celestialhuman骨骼NPC",
+      "file": "data/resources/npcs/0033-celestialhuman骨骼NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 34,
+      "name": "cenarius2_nightmare2红塞纳留斯NPC",
+      "model_folder": "cenarius2_nightmare2红塞纳留斯NPC",
+      "file": "data/resources/npcs/0034-cenarius2_nightmare2红塞纳留斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 35,
+      "name": "cenarius2_nightmare3大红塞纳刘斯NPC",
+      "model_folder": "cenarius2_nightmare3大红塞纳刘斯NPC",
+      "file": "data/resources/npcs/0035-cenarius2_nightmare3大红塞纳刘斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 36,
+      "name": "cenarius2塞纳留斯NPC",
+      "model_folder": "cenarius2塞纳留斯NPC",
+      "file": "data/resources/npcs/0036-cenarius2塞纳留斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 37,
+      "name": "chenstormstout熊猫大师NPC",
+      "model_folder": "chenstormstout熊猫大师NPC",
+      "file": "data/resources/npcs/0037-chenstormstout熊猫大师NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 38,
+      "name": "corruptconstruct绿头怪NPC",
+      "model_folder": "corruptconstruct绿头怪NPC",
+      "file": "data/resources/npcs/0038-corruptconstruct绿头怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 39,
+      "name": "councilsentinelboss哨兵首领NPC",
+      "model_folder": "councilsentinelboss哨兵首领NPC",
+      "file": "data/resources/npcs/0039-councilsentinelboss哨兵首领NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 40,
+      "name": "crab2alliance联盟武装蟹NPC",
+      "model_folder": "crab2alliance联盟武装蟹NPC",
+      "file": "data/resources/npcs/0040-crab2alliance联盟武装蟹NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 41,
+      "name": "crab2horde部落武装蟹NPC",
+      "model_folder": "crab2horde部落武装蟹NPC",
+      "file": "data/resources/npcs/0041-crab2horde部落武装蟹NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 42,
+      "name": "crab2pirate海盗蟹NPC",
+      "model_folder": "crab2pirate海盗蟹NPC",
+      "file": "data/resources/npcs/0042-crab2pirate海盗蟹NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 43,
+      "name": "crystallinemonster绿魔怪NPC",
+      "model_folder": "crystallinemonster绿魔怪NPC",
+      "file": "data/resources/npcs/0043-crystallinemonster绿魔怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 47,
+      "name": "darknaaru邪恶传送阵NPC",
+      "model_folder": "darknaaru邪恶传送阵NPC",
+      "file": "data/resources/npcs/0047-darknaaru邪恶传送阵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 48,
+      "name": "deathelemental邪恶虚空NPC",
+      "model_folder": "deathelemental邪恶虚空NPC",
+      "file": "data/resources/npcs/0048-deathelemental邪恶虚空NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 49,
+      "name": "deathwinghuman火男NPC",
+      "model_folder": "deathwinghuman火男NPC",
+      "file": "data/resources/npcs/0049-deathwinghuman火男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 50,
+      "name": "denathrius衰格NPC",
+      "model_folder": "denathrius衰格NPC",
+      "file": "data/resources/npcs/0050-denathrius衰格NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 51,
+      "name": "desertlasherorchid食人花NPC",
+      "model_folder": "desertlasherorchid食人花NPC",
+      "file": "data/resources/npcs/0051-desertlasherorchid食人花NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 52,
+      "name": "dhmaletank咒语男NPC",
+      "model_folder": "dhmaletank咒语男NPC",
+      "file": "data/resources/npcs/0052-dhmaletank咒语男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 53,
+      "name": "dhmurloc蛋刀鱼人NPC",
+      "model_folder": "dhmurloc蛋刀鱼人NPC",
+      "file": "data/resources/npcs/0053-dhmurloc蛋刀鱼人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 54,
+      "name": "diablofetish小妖怪NPC",
+      "model_folder": "diablofetish小妖怪NPC",
+      "file": "data/resources/npcs/0054-diablofetish小妖怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 55,
+      "name": "draeneiconstruct红怪NPC",
+      "model_folder": "draeneiconstruct红怪NPC",
+      "file": "data/resources/npcs/0055-draeneiconstruct红怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 56,
+      "name": "dragonchromatic黄金龙NPC",
+      "model_folder": "dragonchromatic黄金龙NPC",
+      "file": "data/resources/npcs/0056-dragonchromatic黄金龙NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 57,
+      "name": "dragonprince阿伯罕NPC",
+      "model_folder": "dragonprince阿伯罕NPC",
+      "file": "data/resources/npcs/0057-dragonprince阿伯罕NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 58,
+      "name": "drogbarchieftain邪恶老妖NPC",
+      "model_folder": "drogbarchieftain邪恶老妖NPC",
+      "file": "data/resources/npcs/0058-drogbarchieftain邪恶老妖NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 59,
+      "name": "drustmonster骷髅怪NPC",
+      "model_folder": "drustmonster骷髅怪NPC",
+      "file": "data/resources/npcs/0059-drustmonster骷髅怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 60,
+      "name": "drustvarbeastman猪头怪NPC",
+      "model_folder": "drustvarbeastman猪头怪NPC",
+      "file": "data/resources/npcs/0060-drustvarbeastman猪头怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 61,
+      "name": "drustvarhag老巫婆NPC",
+      "model_folder": "drustvarhag老巫婆NPC",
+      "file": "data/resources/npcs/0061-drustvarhag老巫婆NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 62,
+      "name": "durotan兽人酋长NPC",
+      "model_folder": "durotan兽人酋长NPC",
+      "file": "data/resources/npcs/0062-durotan兽人酋长NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 63,
+      "name": "earthspiritsmall地球小精灵NPC",
+      "model_folder": "earthspiritsmall地球小精灵NPC",
+      "file": "data/resources/npcs/0063-earthspiritsmall地球小精灵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 64,
+      "name": "elementalearth2石头人NPC",
+      "model_folder": "elementalearth2石头人NPC",
+      "file": "data/resources/npcs/0064-elementalearth2石头人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 65,
+      "name": "eonar野蛮女NPC",
+      "model_folder": "eonar野蛮女NPC",
+      "file": "data/resources/npcs/0065-eonar野蛮女NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 66,
+      "name": "eredarbrutemalearmored魔能人NPC",
+      "model_folder": "eredarbrutemalearmored魔能人NPC",
+      "file": "data/resources/npcs/0066-eredarbrutemalearmored魔能人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 67,
+      "name": "eredarbrutemale魔法石NPC",
+      "model_folder": "eredarbrutemale魔法石NPC",
+      "file": "data/resources/npcs/0067-eredarbrutemale魔法石NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 68,
+      "name": "ettin双头兄弟NPC",
+      "model_folder": "ettin双头兄弟NPC",
+      "file": "data/resources/npcs/0068-ettin双头兄弟NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 69,
+      "name": "eyeballclam贝壳眼NPC",
+      "model_folder": "eyeballclam贝壳眼NPC",
+      "file": "data/resources/npcs/0069-eyeballclam贝壳眼NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 70,
+      "name": "Eyris鹰鸟人NPC",
+      "model_folder": "Eyris鹰鸟人NPC",
+      "file": "data/resources/npcs/0070-Eyris鹰鸟人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 71,
+      "name": "facelessone2海象人NPC",
+      "model_folder": "facelessone2海象人NPC",
+      "file": "data/resources/npcs/0071-facelessone2海象人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 72,
+      "name": "facelessonecaster2金象人NPC",
+      "model_folder": "facelessonecaster2金象人NPC",
+      "file": "data/resources/npcs/0072-facelessonecaster2金象人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 73,
+      "name": "facelessone_nightmare红海象人NPC",
+      "model_folder": "facelessone_nightmare红海象人NPC",
+      "file": "data/resources/npcs/0073-facelessone_nightmare红海象人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 74,
+      "name": "felkilrogg邪能兽人NPC",
+      "model_folder": "felkilrogg邪能兽人NPC",
+      "file": "data/resources/npcs/0074-felkilrogg邪能兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 75,
+      "name": "felmagnaron邪能老牛NPC",
+      "model_folder": "felmagnaron邪能老牛NPC",
+      "file": "data/resources/npcs/0075-felmagnaron邪能老牛NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 76,
+      "name": "felnightbornemutant2变异人NPC",
+      "model_folder": "felnightbornemutant2变异人NPC",
+      "file": "data/resources/npcs/0076-felnightbornemutant2变异人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 77,
+      "name": "felorcbrute红恶魔NPC",
+      "model_folder": "felorcbrute红恶魔NPC",
+      "file": "data/resources/npcs/0077-felorcbrute红恶魔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 78,
+      "name": "felorcmalehd武装兽人NPC",
+      "model_folder": "felorcmalehd武装兽人NPC",
+      "file": "data/resources/npcs/0078-felorcmalehd武装兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 79,
+      "name": "felreavergolem_reeves地狱使者1NPC",
+      "model_folder": "felreavergolem_reeves地狱使者1NPC",
+      "file": "data/resources/npcs/0079-felreavergolem_reeves地狱使者1NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 80,
+      "name": "felreavergolem地狱使者NPC",
+      "model_folder": "felreavergolem地狱使者NPC",
+      "file": "data/resources/npcs/0080-felreavergolem地狱使者NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 81,
+      "name": "felseagiant2恶棍NPC",
+      "model_folder": "felseagiant2恶棍NPC",
+      "file": "data/resources/npcs/0081-felseagiant2恶棍NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 82,
+      "name": "ferryman恼火老头NPC",
+      "model_folder": "ferryman恼火老头NPC",
+      "file": "data/resources/npcs/0082-ferryman恼火老头NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 83,
+      "name": "fireelemental_kar铠甲火元素NPC",
+      "model_folder": "fireelemental_kar铠甲火元素NPC",
+      "file": "data/resources/npcs/0083-fireelemental_kar铠甲火元素NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 84,
+      "name": "fleshgolem2腐烂人NPC",
+      "model_folder": "fleshgolem2腐烂人NPC",
+      "file": "data/resources/npcs/0084-fleshgolem2腐烂人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 85,
+      "name": "fomor泰山NPC",
+      "model_folder": "fomor泰山NPC",
+      "file": "data/resources/npcs/0085-fomor泰山NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 86,
+      "name": "forestsprite红眼树人NPC",
+      "model_folder": "forestsprite红眼树人NPC",
+      "file": "data/resources/npcs/0086-forestsprite红眼树人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 89,
+      "name": "fungarian蘑菇人NPC",
+      "model_folder": "fungarian蘑菇人NPC",
+      "file": "data/resources/npcs/0089-fungarian蘑菇人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 90,
+      "name": "gallywix2黄怪物史莱克NPC",
+      "model_folder": "gallywix2黄怪物史莱克NPC",
+      "file": "data/resources/npcs/0090-gallywix2黄怪物史莱克NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 91,
+      "name": "gallywix红怪物史莱克NPC",
+      "model_folder": "gallywix红怪物史莱克NPC",
+      "file": "data/resources/npcs/0091-gallywix红怪物史莱克NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 92,
+      "name": "Garrosh2兽人NPC",
+      "model_folder": "Garrosh2兽人NPC",
+      "file": "data/resources/npcs/0092-Garrosh2兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 93,
+      "name": "garroshhulked格柔丝特NPC",
+      "model_folder": "garroshhulked格柔丝特NPC",
+      "file": "data/resources/npcs/0093-garroshhulked格柔丝特NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 94,
+      "name": "gatekeeper守门人NPC",
+      "model_folder": "gatekeeper守门人NPC",
+      "file": "data/resources/npcs/0094-gatekeeper守门人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 95,
+      "name": "genngreymaneworgen2狼人NPC",
+      "model_folder": "genngreymaneworgen2狼人NPC",
+      "file": "data/resources/npcs/0095-genngreymaneworgen2狼人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 96,
+      "name": "genngreymane格雷曼NPC",
+      "model_folder": "genngreymane格雷曼NPC",
+      "file": "data/resources/npcs/0096-genngreymane格雷曼NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 97,
+      "name": "gnomebot2糯米机器人NPC",
+      "model_folder": "gnomebot2糯米机器人NPC",
+      "file": "data/resources/npcs/0097-gnomebot2糯米机器人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 98,
+      "name": "goblinbombbot大铁球NPC",
+      "model_folder": "goblinbombbot大铁球NPC",
+      "file": "data/resources/npcs/0098-goblinbombbot大铁球NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 99,
+      "name": "golddippedmummy金木乃伊NPC",
+      "model_folder": "golddippedmummy金木乃伊NPC",
+      "file": "data/resources/npcs/0099-golddippedmummy金木乃伊NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 100,
+      "name": "golemdwarven石头巨人NPC",
+      "model_folder": "golemdwarven石头巨人NPC",
+      "file": "data/resources/npcs/0100-golemdwarven石头巨人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 101,
+      "name": "GOLEMIRON岩石人NPC",
+      "model_folder": "GOLEMIRON岩石人NPC",
+      "file": "data/resources/npcs/0101-GOLEMIRON岩石人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 102,
+      "name": "golganneth高干巨人NPC",
+      "model_folder": "golganneth高干巨人NPC",
+      "file": "data/resources/npcs/0102-golganneth高干巨人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 103,
+      "name": "goliath绿巨人NPC",
+      "model_folder": "goliath绿巨人NPC",
+      "file": "data/resources/npcs/0103-goliath绿巨人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 104,
+      "name": "goren戈伦NPC",
+      "model_folder": "goren戈伦NPC",
+      "file": "data/resources/npcs/0104-goren戈伦NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 105,
+      "name": "grandmagistrixelisande大人物丽珊德NPC",
+      "model_folder": "grandmagistrixelisande大人物丽珊德NPC",
+      "file": "data/resources/npcs/0105-grandmagistrixelisande大人物丽珊德NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 106,
+      "name": "GraveGolem三头骷髅NPC",
+      "model_folder": "GraveGolem三头骷髅NPC",
+      "file": "data/resources/npcs/0106-GraveGolem三头骷髅NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 107,
+      "name": "greaterbeholder独眼怪NPC",
+      "model_folder": "greaterbeholder独眼怪NPC",
+      "file": "data/resources/npcs/0107-greaterbeholder独眼怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 108,
+      "name": "grommash2老格罗姆NPC",
+      "model_folder": "grommash2老格罗姆NPC",
+      "file": "data/resources/npcs/0108-grommash2老格罗姆NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 109,
+      "name": "grommash青年格罗姆NPC",
+      "model_folder": "grommash青年格罗姆NPC",
+      "file": "data/resources/npcs/0109-grommash青年格罗姆NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 110,
+      "name": "grommloc格罗姆鱼人NPC",
+      "model_folder": "grommloc格罗姆鱼人NPC",
+      "file": "data/resources/npcs/0110-grommloc格罗姆鱼人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 111,
+      "name": "guldan古尔丹1NPC",
+      "model_folder": "guldan古尔丹1NPC",
+      "file": "data/resources/npcs/0111-guldan古尔丹1NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 112,
+      "name": "Guldan古尔丹NPC",
+      "model_folder": "Guldan古尔丹NPC",
+      "file": "data/resources/npcs/0112-Guldan古尔丹NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 113,
+      "name": "harpy2鸟人NPC",
+      "model_folder": "harpy2鸟人NPC",
+      "file": "data/resources/npcs/0113-harpy2鸟人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 114,
+      "name": "harvestgolem2收割机NPC",
+      "model_folder": "harvestgolem2收割机NPC",
+      "file": "data/resources/npcs/0114-harvestgolem2收割机NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 115,
+      "name": "hoppingghost女幽灵NPC",
+      "model_folder": "hoppingghost女幽灵NPC",
+      "file": "data/resources/npcs/0115-hoppingghost女幽灵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 116,
+      "name": "HulkedGuldan愤怒古尔丹NPC",
+      "model_folder": "HulkedGuldan愤怒古尔丹NPC",
+      "file": "data/resources/npcs/0116-HulkedGuldan愤怒古尔丹NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 117,
+      "name": "inquisitor检察官NPC",
+      "model_folder": "inquisitor检察官NPC",
+      "file": "data/resources/npcs/0117-inquisitor检察官NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 118,
+      "name": "jailerrevendreth狱卒复仇NPC",
+      "model_folder": "jailerrevendreth狱卒复仇NPC",
+      "file": "data/resources/npcs/0118-jailerrevendreth狱卒复仇NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 119,
+      "name": "jaina3吉安娜NPC",
+      "model_folder": "jaina3吉安娜NPC",
+      "file": "data/resources/npcs/0119-jaina3吉安娜NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 120,
+      "name": "JAINA吉安娜1NPC",
+      "model_folder": "JAINA吉安娜1NPC",
+      "file": "data/resources/npcs/0120-JAINA吉安娜1NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 121,
+      "name": "karshsteelbendermolten熔化的钢铁兽NPC",
+      "model_folder": "karshsteelbendermolten熔化的钢铁兽NPC",
+      "file": "data/resources/npcs/0121-karshsteelbendermolten熔化的钢铁兽NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 122,
+      "name": "kelpelemental海带人NPC",
+      "model_folder": "kelpelemental海带人NPC",
+      "file": "data/resources/npcs/0122-kelpelemental海带人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 123,
+      "name": "kelthuzadshadowlands凯尔苏扎德NPC",
+      "model_folder": "kelthuzadshadowlands凯尔苏扎德NPC",
+      "file": "data/resources/npcs/0123-kelthuzadshadowlands凯尔苏扎德NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 124,
+      "name": "kingrastakhandeathempowered闪光金达萨NPC",
+      "model_folder": "kingrastakhandeathempowered闪光金达萨NPC",
+      "file": "data/resources/npcs/0124-kingrastakhandeathempowered闪光金达萨NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 125,
+      "name": "kingrastakhan金拉斯NPC",
+      "model_folder": "kingrastakhan金拉斯NPC",
+      "file": "data/resources/npcs/0125-kingrastakhan金拉斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 126,
+      "name": "kingrastakhan金达萨丹NPC",
+      "model_folder": "kingrastakhan金达萨丹NPC",
+      "file": "data/resources/npcs/0126-kingrastakhan金达萨丹NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 127,
+      "name": "kingymiron2金米隆NPC",
+      "model_folder": "kingymiron2金米隆NPC",
+      "file": "data/resources/npcs/0127-kingymiron2金米隆NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 128,
+      "name": "ladywaycrest摩登少女NPC",
+      "model_folder": "ladywaycrest摩登少女NPC",
+      "file": "data/resources/npcs/0128-ladywaycrest摩登少女NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 129,
+      "name": "largeautomaton自动机NPC",
+      "model_folder": "largeautomaton自动机NPC",
+      "file": "data/resources/npcs/0129-largeautomaton自动机NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 130,
+      "name": "lichlord绿毒巫妖NPC",
+      "model_folder": "lichlord绿毒巫妖NPC",
+      "file": "data/resources/npcs/0130-lichlord绿毒巫妖NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 131,
+      "name": "lightningelemental2闪电元素NPC",
+      "model_folder": "lightningelemental2闪电元素NPC",
+      "file": "data/resources/npcs/0131-lightningelemental2闪电元素NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 132,
+      "name": "lorthemar罗瑟姆大人NPC",
+      "model_folder": "lorthemar罗瑟姆大人NPC",
+      "file": "data/resources/npcs/0132-lorthemar罗瑟姆大人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 133,
+      "name": "makrura2龙虾人NPC",
+      "model_folder": "makrura2龙虾人NPC",
+      "file": "data/resources/npcs/0133-makrura2龙虾人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 134,
+      "name": "maldraxxusdraka兽人女NPC",
+      "model_folder": "maldraxxusdraka兽人女NPC",
+      "file": "data/resources/npcs/0134-maldraxxusdraka兽人女NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 135,
+      "name": "malfurionstormrage玛福里奥怒风NPC",
+      "model_folder": "malfurionstormrage玛福里奥怒风NPC",
+      "file": "data/resources/npcs/0135-malfurionstormrage玛福里奥怒风NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 136,
+      "name": "mantidcommander曼蒂德指挥官NPC",
+      "model_folder": "mantidcommander曼蒂德指挥官NPC",
+      "file": "data/resources/npcs/0136-mantidcommander曼蒂德指挥官NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 137,
+      "name": "mantidempress变异螳螂人NPC",
+      "model_folder": "mantidempress变异螳螂人NPC",
+      "file": "data/resources/npcs/0137-mantidempress变异螳螂人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 138,
+      "name": "mantidlord螳螂领主NPC",
+      "model_folder": "mantidlord螳螂领主NPC",
+      "file": "data/resources/npcs/0138-mantidlord螳螂领主NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 139,
+      "name": "mantid螳螂人NPC",
+      "model_folder": "mantid螳螂人NPC",
+      "file": "data/resources/npcs/0139-mantid螳螂人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 140,
+      "name": "mawhand玛哈德NPC",
+      "model_folder": "mawhand玛哈德NPC",
+      "file": "data/resources/npcs/0140-mawhand玛哈德NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 141,
+      "name": "mawinquisitor马文奎斯特NPC",
+      "model_folder": "mawinquisitor马文奎斯特NPC",
+      "file": "data/resources/npcs/0141-mawinquisitor马文奎斯特NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 142,
+      "name": "mawjailer越狱犯NPC",
+      "model_folder": "mawjailer越狱犯NPC",
+      "file": "data/resources/npcs/0142-mawjailer越狱犯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 143,
+      "name": "mawnecromancer大巫师NPC",
+      "model_folder": "mawnecromancer大巫师NPC",
+      "file": "data/resources/npcs/0143-mawnecromancer大巫师NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 144,
+      "name": "mechagonreaver掠夺者机器人NPC",
+      "model_folder": "mechagonreaver掠夺者机器人NPC",
+      "file": "data/resources/npcs/0144-mechagonreaver掠夺者机器人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 145,
+      "name": "mekkatorque_suit梅克卡托克机器人NPC",
+      "model_folder": "mekkatorque_suit梅克卡托克机器人NPC",
+      "file": "data/resources/npcs/0145-mekkatorque_suit梅克卡托克机器人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 146,
+      "name": "minstrel_alliance吟游诗人联盟NPC",
+      "model_folder": "minstrel_alliance吟游诗人联盟NPC",
+      "file": "data/resources/npcs/0146-minstrel_alliance吟游诗人联盟NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 147,
+      "name": "minstrel_horde吟游诗人部落NPC",
+      "model_folder": "minstrel_horde吟游诗人部落NPC",
+      "file": "data/resources/npcs/0147-minstrel_horde吟游诗人部落NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 148,
+      "name": "monkeyking美猴王NPC",
+      "model_folder": "monkeyking美猴王NPC",
+      "file": "data/resources/npcs/0148-monkeyking美猴王NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 149,
+      "name": "mummypet木乃伊NPC",
+      "model_folder": "mummypet木乃伊NPC",
+      "file": "data/resources/npcs/0149-mummypet木乃伊NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 150,
+      "name": "murloc2maria鱼人女NPC",
+      "model_folder": "murloc2maria鱼人女NPC",
+      "file": "data/resources/npcs/0150-murloc2maria鱼人女NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 151,
+      "name": "murloc2shark鱼人男NPC",
+      "model_folder": "murloc2shark鱼人男NPC",
+      "file": "data/resources/npcs/0151-murloc2shark鱼人男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 152,
+      "name": "murloc2鱼人NPC",
+      "model_folder": "murloc2鱼人NPC",
+      "file": "data/resources/npcs/0152-murloc2鱼人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 153,
+      "name": "MURLOC穆洛克NPC",
+      "model_folder": "MURLOC穆洛克NPC",
+      "file": "data/resources/npcs/0153-MURLOC穆洛克NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 154,
+      "name": "Nathanos内桑诺斯NPC",
+      "model_folder": "Nathanos内桑诺斯NPC",
+      "file": "data/resources/npcs/0154-Nathanos内桑诺斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 155,
+      "name": "necromancer2boss亡灵巫师2NPC",
+      "model_folder": "necromancer2boss亡灵巫师2NPC",
+      "file": "data/resources/npcs/0155-necromancer2boss亡灵巫师2NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 156,
+      "name": "nhallish哈利希NPC",
+      "model_folder": "nhallish哈利希NPC",
+      "file": "data/resources/npcs/0156-nhallish哈利希NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 157,
+      "name": "nightborneastronomer夜行天文学家NPC",
+      "model_folder": "nightborneastronomer夜行天文学家NPC",
+      "file": "data/resources/npcs/0157-nightborneastronomer夜行天文学家NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 158,
+      "name": "nightbornebotanist夜间植物学家NPC",
+      "model_folder": "nightbornebotanist夜间植物学家NPC",
+      "file": "data/resources/npcs/0158-nightbornebotanist夜间植物学家NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 159,
+      "name": "nightbornemutant2夜惊梦魇者NPS",
+      "model_folder": "nightbornemutant2夜惊梦魇者NPS",
+      "file": "data/resources/npcs/0159-nightbornemutant2夜惊梦魇者NPS.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 160,
+      "name": "nightbornespellbreaker夜莺NPC",
+      "model_folder": "nightbornespellbreaker夜莺NPC",
+      "file": "data/resources/npcs/0160-nightbornespellbreaker夜莺NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 161,
+      "name": "nightmarekeeper夜行动物饲养员NPC",
+      "model_folder": "nightmarekeeper夜行动物饲养员NPC",
+      "file": "data/resources/npcs/0161-nightmarekeeper夜行动物饲养员NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 162,
+      "name": "norgannon诺加农NPC",
+      "model_folder": "norgannon诺加农NPC",
+      "file": "data/resources/npcs/0162-norgannon诺加农NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 163,
+      "name": "nzothanubisath努比萨斯NPC",
+      "model_folder": "nzothanubisath努比萨斯NPC",
+      "file": "data/resources/npcs/0163-nzothanubisath努比萨斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 164,
+      "name": "nzothanubisath黑无常NPC",
+      "model_folder": "nzothanubisath黑无常NPC",
+      "file": "data/resources/npcs/0164-nzothanubisath黑无常NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 165,
+      "name": "odyn奥丁NPC",
+      "model_folder": "odyn奥丁NPC",
+      "file": "data/resources/npcs/0165-odyn奥丁NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 166,
+      "name": "ogrenecromancer双头食人魔NPC",
+      "model_folder": "ogrenecromancer双头食人魔NPC",
+      "file": "data/resources/npcs/0166-ogrenecromancer双头食人魔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 167,
+      "name": "orcsupersoldier兽人超级士兵NPC",
+      "model_folder": "orcsupersoldier兽人超级士兵NPC",
+      "file": "data/resources/npcs/0167-orcsupersoldier兽人超级士兵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 168,
+      "name": "pigman猪八戒NPC",
+      "model_folder": "pigman猪八戒NPC",
+      "file": "data/resources/npcs/0168-pigman猪八戒NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 169,
+      "name": "piratebaron红海盗NPC",
+      "model_folder": "piratebaron红海盗NPC",
+      "file": "data/resources/npcs/0169-piratebaron红海盗NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 170,
+      "name": "primordialsaurok蜥蜴人NPC",
+      "model_folder": "primordialsaurok蜥蜴人NPC",
+      "file": "data/resources/npcs/0170-primordialsaurok蜥蜴人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 171,
+      "name": "princesstalanji普锐斯NPC",
+      "model_folder": "princesstalanji普锐斯NPC",
+      "file": "data/resources/npcs/0171-princesstalanji普锐斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 172,
+      "name": "satyr2森林之神NPC",
+      "model_folder": "satyr2森林之神NPC",
+      "file": "data/resources/npcs/0172-satyr2森林之神NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 173,
+      "name": "satyr3魔森林之神NPC",
+      "model_folder": "satyr3魔森林之神NPC",
+      "file": "data/resources/npcs/0173-satyr3魔森林之神NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 174,
+      "name": "Saurfang兽人男NPC",
+      "model_folder": "Saurfang兽人男NPC",
+      "file": "data/resources/npcs/0174-Saurfang兽人男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 175,
+      "name": "Saurfang萨鲁法尔NPC",
+      "model_folder": "Saurfang萨鲁法尔NPC",
+      "file": "data/resources/npcs/0175-Saurfang萨鲁法尔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 176,
+      "name": "scourgewarrior中剑骷髅NPC",
+      "model_folder": "scourgewarrior中剑骷髅NPC",
+      "file": "data/resources/npcs/0176-scourgewarrior中剑骷髅NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 177,
+      "name": "seagiant2分离兽人NPC",
+      "model_folder": "seagiant2分离兽人NPC",
+      "file": "data/resources/npcs/0177-seagiant2分离兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 178,
+      "name": "shadowlandssoul_hostile暗影传送阵NPC",
+      "model_folder": "shadowlandssoul_hostile暗影传送阵NPC",
+      "file": "data/resources/npcs/0178-shadowlandssoul_hostile暗影传送阵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 179,
+      "name": "shaman_thrall萨满，萨尔NPC",
+      "model_folder": "shaman_thrall萨满，萨尔NPC",
+      "file": "data/resources/npcs/0179-shaman_thrall萨满，萨尔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 180,
+      "name": "shamedium红鬼NPC",
+      "model_folder": "shamedium红鬼NPC",
+      "file": "data/resources/npcs/0180-shamedium红鬼NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 181,
+      "name": "Shaohao少昊大师NPC",
+      "model_folder": "Shaohao少昊大师NPC",
+      "file": "data/resources/npcs/0181-Shaohao少昊大师NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 182,
+      "name": "shatteredhandorcs兽人绿刀NPC",
+      "model_folder": "shatteredhandorcs兽人绿刀NPC",
+      "file": "data/resources/npcs/0182-shatteredhandorcs兽人绿刀NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 183,
+      "name": "shivanpriestessfire双剑女祭司NPC",
+      "model_folder": "shivanpriestessfire双剑女祭司NPC",
+      "file": "data/resources/npcs/0183-shivanpriestessfire双剑女祭司NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 184,
+      "name": "shivanpriestessfrost暗色双剑女祭司NPC",
+      "model_folder": "shivanpriestessfrost暗色双剑女祭司NPC",
+      "file": "data/resources/npcs/0184-shivanpriestessfrost暗色双剑女祭司NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 185,
+      "name": "shivanpriestessshadow紫女祭司NPC",
+      "model_folder": "shivanpriestessshadow紫女祭司NPC",
+      "file": "data/resources/npcs/0185-shivanpriestessshadow紫女祭司NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 186,
+      "name": "sinstonegolemcathedral红石像NPC",
+      "model_folder": "sinstonegolemcathedral红石像NPC",
+      "file": "data/resources/npcs/0186-sinstonegolemcathedral红石像NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 187,
+      "name": "sinstonegolem金石像NPC",
+      "model_folder": "sinstonegolem金石像NPC",
+      "file": "data/resources/npcs/0187-sinstonegolem金石像NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 188,
+      "name": "skeletaldiretroll骷髅NPC",
+      "model_folder": "skeletaldiretroll骷髅NPC",
+      "file": "data/resources/npcs/0188-skeletaldiretroll骷髅NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 189,
+      "name": "skeletaltrollfungal骨胳NPC",
+      "model_folder": "skeletaltrollfungal骨胳NPC",
+      "file": "data/resources/npcs/0189-skeletaltrollfungal骨胳NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 190,
+      "name": "smallautomaton月光石NPC",
+      "model_folder": "smallautomaton月光石NPC",
+      "file": "data/resources/npcs/0190-smallautomaton月光石NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 191,
+      "name": "sylvanas希瓦娜女王8NPC",
+      "model_folder": "sylvanas希瓦娜女王8NPC",
+      "file": "data/resources/npcs/0191-sylvanas希瓦娜女王8NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 192,
+      "name": "thralldoomplate末日兽人NPC",
+      "model_folder": "thralldoomplate末日兽人NPC",
+      "file": "data/resources/npcs/0192-thralldoomplate末日兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 193,
+      "name": "thralldoomplate绿兽人NPC",
+      "model_folder": "thralldoomplate绿兽人NPC",
+      "file": "data/resources/npcs/0193-thralldoomplate绿兽人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 194,
+      "name": "thrallshadowlands兽人酋长NPC",
+      "model_folder": "thrallshadowlands兽人酋长NPC",
+      "file": "data/resources/npcs/0194-thrallshadowlands兽人酋长NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 195,
+      "name": "thundertroll巨雷怪NPC",
+      "model_folder": "thundertroll巨雷怪NPC",
+      "file": "data/resources/npcs/0195-thundertroll巨雷怪NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 196,
+      "name": "titanfemale2felboss钛魔NPC",
+      "model_folder": "titanfemale2felboss钛魔NPC",
+      "file": "data/resources/npcs/0196-titanfemale2felboss钛魔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 197,
+      "name": "titanracorrupted泰坦酸腐蚀NPC",
+      "model_folder": "titanracorrupted泰坦酸腐蚀NPC",
+      "file": "data/resources/npcs/0197-titanracorrupted泰坦酸腐蚀NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 198,
+      "name": "tortollan龟人NPC",
+      "model_folder": "tortollan龟人NPC",
+      "file": "data/resources/npcs/0198-tortollan龟人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 199,
+      "name": "treebotanist树木学家NPC",
+      "model_folder": "treebotanist树木学家NPC",
+      "file": "data/resources/npcs/0199-treebotanist树木学家NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 200,
+      "name": "trolldirebossliving怪胎NPC",
+      "model_folder": "trolldirebossliving怪胎NPC",
+      "file": "data/resources/npcs/0200-trolldirebossliving怪胎NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 201,
+      "name": "trolllich特洛利希NPC",
+      "model_folder": "trolllich特洛利希NPC",
+      "file": "data/resources/npcs/0201-trolllich特洛利希NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 202,
+      "name": "trollmutant变异体NPC",
+      "model_folder": "trollmutant变异体NPC",
+      "file": "data/resources/npcs/0202-trollmutant变异体NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 203,
+      "name": "trollpriestess女魔头NPC",
+      "model_folder": "trollpriestess女魔头NPC",
+      "file": "data/resources/npcs/0203-trollpriestess女魔头NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 204,
+      "name": "Turalyon植物学杜拉扬NPC",
+      "model_folder": "Turalyon植物学杜拉扬NPC",
+      "file": "data/resources/npcs/0204-Turalyon植物学杜拉扬NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 205,
+      "name": "twilightascendantair星光电男NPC",
+      "model_folder": "twilightascendantair星光电男NPC",
+      "file": "data/resources/npcs/0205-twilightascendantair星光电男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 206,
+      "name": "twillightascendantfire火焰男NPC",
+      "model_folder": "twillightascendantfire火焰男NPC",
+      "file": "data/resources/npcs/0206-twillightascendantfire火焰男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 207,
+      "name": "Tyrande泰兰德·语风NPC",
+      "model_folder": "Tyrande泰兰德·语风NPC",
+      "file": "data/resources/npcs/0207-Tyrande泰兰德·语风NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 208,
+      "name": "valeera瓦雷拉NPC",
+      "model_folder": "valeera瓦雷拉NPC",
+      "file": "data/resources/npcs/0208-valeera瓦雷拉NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 209,
+      "name": "valeera维拉NPC",
+      "model_folder": "valeera维拉NPC",
+      "file": "data/resources/npcs/0209-valeera维拉NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 210,
+      "name": "vampireapothecary吸血鬼药剂师NPC",
+      "model_folder": "vampireapothecary吸血鬼药剂师NPC",
+      "file": "data/resources/npcs/0210-vampireapothecary吸血鬼药剂师NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 211,
+      "name": "velen2维伦NPC",
+      "model_folder": "velen2维伦NPC",
+      "file": "data/resources/npcs/0211-velen2维伦NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 212,
+      "name": "voidbrokenbrute破碎的畜生NPC",
+      "model_folder": "voidbrokenbrute破碎的畜生NPC",
+      "file": "data/resources/npcs/0212-voidbrokenbrute破碎的畜生NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 213,
+      "name": "voljin沃金巨魔NPC",
+      "model_folder": "voljin沃金巨魔NPC",
+      "file": "data/resources/npcs/0213-voljin沃金巨魔NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 214,
+      "name": "vrykulking牛头男NPC",
+      "model_folder": "vrykulking牛头男NPC",
+      "file": "data/resources/npcs/0214-vrykulking牛头男NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 215,
+      "name": "vulperafemalepirate狐人NPC",
+      "model_folder": "vulperafemalepirate狐人NPC",
+      "file": "data/resources/npcs/0215-vulperafemalepirate狐人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 216,
+      "name": "warden监狱长NPC",
+      "model_folder": "warden监狱长NPC",
+      "file": "data/resources/npcs/0216-warden监狱长NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 217,
+      "name": "warlord巨斧牛头人NPC",
+      "model_folder": "warlord巨斧牛头人NPC",
+      "file": "data/resources/npcs/0217-warlord巨斧牛头人NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 218,
+      "name": "waterdragon水龙NPC",
+      "model_folder": "waterdragon水龙NPC",
+      "file": "data/resources/npcs/0218-waterdragon水龙NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 219,
+      "name": "waterspiritsmall水精灵NPC",
+      "model_folder": "waterspiritsmall水精灵NPC",
+      "file": "data/resources/npcs/0219-waterspiritsmall水精灵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 220,
+      "name": "winterqueen温特女王NPC",
+      "model_folder": "winterqueen温特女王NPC",
+      "file": "data/resources/npcs/0220-winterqueen温特女王NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 221,
+      "name": "witch女巫NPC",
+      "model_folder": "witch女巫NPC",
+      "file": "data/resources/npcs/0221-witch女巫NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 222,
+      "name": "wraith游灵NPC",
+      "model_folder": "wraith游灵NPC",
+      "file": "data/resources/npcs/0222-wraith游灵NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 223,
+      "name": "wrathion黑根NPC",
+      "model_folder": "wrathion黑根NPC",
+      "file": "data/resources/npcs/0223-wrathion黑根NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 224,
+      "name": "xavius2沙维乌斯NPC",
+      "model_folder": "xavius2沙维乌斯NPC",
+      "file": "data/resources/npcs/0224-xavius2沙维乌斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 225,
+      "name": "xavius沙威尤斯NPC",
+      "model_folder": "xavius沙威尤斯NPC",
+      "file": "data/resources/npcs/0225-xavius沙威尤斯NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 226,
+      "name": "ysera伊瑟拉NPC",
+      "model_folder": "ysera伊瑟拉NPC",
+      "file": "data/resources/npcs/0226-ysera伊瑟拉NPC.yaml",
+      "debug_passed": false,
+      "added": false
+    }
+  ]
+}

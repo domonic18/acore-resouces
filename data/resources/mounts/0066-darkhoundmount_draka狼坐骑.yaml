@@ -1,0 +1,35 @@
+id: 66
+model_folder: darkhoundmount_draka狼坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 15276
+  instance: 安其拉神殿
+  boss: 维克洛尔大帝
+  rate: 0.035
+official_db:
+  name: 战缝黑暗犬
+  spell_icon_name: inv_darkhoundmount_draka_blue
+  icon_name: inv_darkhoundmount_draka_blue
+dbc:
+  creature_model_data:
+    id: 4026
+    flags: 2
+    model_name: creature\darkhoundmount_draka\darkhoundmount_draka.m2
+  creature_display_info:
+    id: 140026
+    model_id: 4026
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140026
+    name: 战缝黑暗犬
+    modelid1: 140026
+  creature_model_info:
+    display_id: 140026
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 狼

@@ -1,0 +1,35 @@
+id: 337
+model_folder: RocketMount3衰变凯帕铀火箭
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 22898
+  instance: 黑暗神殿
+  boss: 苏普雷姆斯
+  rate: 0.03
+official_db:
+  name: 衰变凯帕铀火箭
+  spell_icon_name: ability_mount_rocketmount3
+  icon_name: ability_mount_rocketmount3
+dbc:
+  creature_model_data:
+    id: 104348
+    flags: 2
+    model_name: creature\RocketMount3\RocketMount3.M2
+  creature_display_info:
+    id: 140348
+    model_id: 104348
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140348
+    name: 衰变凯帕铀火箭
+    modelid1: 140348
+  creature_model_info:
+    display_id: 140348
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 机械

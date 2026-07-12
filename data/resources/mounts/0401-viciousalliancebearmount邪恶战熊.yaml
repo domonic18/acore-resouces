@@ -1,0 +1,34 @@
+id: 401
+model_folder: viciousalliancebearmount邪恶战熊
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 邪恶战熊
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104423
+    flags: 2
+  creature_display_info:
+    id: 140423
+    model_id: 104423
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140423
+    name: 邪恶战熊
+    modelid1: 140423
+  creature_model_info:
+    display_id: 140423
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 熊

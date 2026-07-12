@@ -1,0 +1,34 @@
+id: 321
+model_folder: pyrogryph浴火角鹰兽
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 浴火角鹰兽
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104333
+    flags: 2
+  creature_display_info:
+    id: 140333
+    model_id: 104333
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140333
+    name: 浴火角鹰兽
+    modelid1: 140333
+  creature_model_info:
+    display_id: 140333
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 角鹰兽

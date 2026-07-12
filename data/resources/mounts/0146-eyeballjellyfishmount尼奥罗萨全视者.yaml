@@ -1,0 +1,35 @@
+id: 146
+model_folder: eyeballjellyfishmount尼奥罗萨全视者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 15727
+  instance: 安琪拉神殿
+  boss: 克苏恩
+  rate: 0.035
+official_db:
+  name: 尼奥罗萨全视者
+  spell_icon_name: inv_eyeballjellyfishmount
+  icon_name: inv_eyeballjellyfishmount
+dbc:
+  creature_model_data:
+    id: 4016
+    flags: 2
+    model_name: creature\eyeballjellyfishmount\eyeballjellyfishmount.m2
+  creature_display_info:
+    id: 140016
+    model_id: 4016
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140016
+    name: 尼奥罗萨全视者
+    modelid1: 140016
+  creature_model_info:
+    display_id: 140016
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 怪物

@@ -1,0 +1,34 @@
+id: 47
+model_folder: bloodtickmount跃泽吮血蛛
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 跃泽吮血蛛
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4020
+    flags: 2
+    model_name: creature\bloodabomination\bloodabomination.m2
+  creature_display_info:
+    id: 140020
+    model_id: 4020
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140020
+    modelid1: 140020
+  creature_model_info:
+    display_id: 140020
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 一星
+subtype: 蜘蛛

@@ -1,0 +1,34 @@
+id: 172
+model_folder: FLYINGCARPETMOUNT蠕行飞毯
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 飞毯
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104171
+    flags: 2
+  creature_display_info:
+    id: 140171
+    model_id: 104171
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140171
+    name: 飞毯
+    modelid1: 140171
+  creature_model_info:
+    display_id: 140171
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 飞毯

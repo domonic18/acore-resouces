@@ -1,0 +1,35 @@
+id: 1
+model_folder: ardenwealdstagmount影叶符文牡鹿
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 1853
+  instance: 通灵学院
+  boss: 黑暗院长加丁
+  rate: 0.01
+official_db:
+  name: 梦光符文牡鹿
+  spell_icon_name: inv_ardenwealdstagmount_blue
+  icon_name: inv_ardenwealdstagmount_blue
+dbc:
+  creature_model_data:
+    id: 4000
+    flags: 2
+    model_name: creature\ardenwealdstag\ardenwealdstagmount.m2
+  creature_display_info:
+    id: 140000
+    model_id: 4000
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140000
+    name: 梦光符文牡鹿
+    modelid1: 140000
+  creature_model_info:
+    display_id: 140000
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 鹿

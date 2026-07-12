@@ -1,0 +1,35 @@
+id: 164
+model_folder: FelReaverMount魔钢歼灭者
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 魔钢歼灭者
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104162
+    flags: 2
+    model_name: creature\FelReaverMount\FelReaverMount.m2
+  creature_display_info:
+    id: 140162
+    model_id: 104162
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140162
+    name: 魔钢歼灭者
+    modelid1: 140162
+  creature_model_info:
+    display_id: 140162
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 机械

@@ -1,0 +1,34 @@
+id: 300
+model_folder: nzothserpent大毒蛇坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: null
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104292
+    flags: 2
+  creature_display_info:
+    id: 140292
+    model_id: 104292
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140292
+    name: 0
+    modelid1: 140292
+  creature_model_info:
+    display_id: 140292
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 蛇

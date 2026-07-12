@@ -1,0 +1,35 @@
+id: 288
+model_folder: muskox牦牛坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: null
+  instance: \
+  boss: 安其拉战争物资
+  rate: 0.01
+official_db:
+  name: 高地符角牛
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4047
+    flags: 2
+    model_name: creature\muskox\muskox.m2
+  creature_display_info:
+    id: 140047
+    model_id: 4047
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140047
+    name: 高地符角牛
+    modelid1: 140047
+  creature_model_info:
+    display_id: 140047
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 牦牛

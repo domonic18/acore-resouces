@@ -1,0 +1,35 @@
+id: 62
+model_folder: crane帝王骑乘仙鹤坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 帝王骑乘仙鹤
+  spell_icon_name: ability_mount_cranemountpurple
+  icon_name: ability_mount_cranemountpurple
+dbc:
+  creature_model_data:
+    id: 4024
+    flags: 2
+    model_name: creature\crane\cranemount.m2
+  creature_display_info:
+    id: 140024
+    model_id: 4024
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140024
+    name: 帝王骑乘仙鹤
+    modelid1: 140024
+  creature_model_info:
+    display_id: 140024
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 仙鹤

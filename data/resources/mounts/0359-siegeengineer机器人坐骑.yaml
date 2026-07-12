@@ -1,0 +1,34 @@
+id: 359
+model_folder: siegeengineer机器人坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: null
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104381
+    flags: 2
+  creature_display_info:
+    id: 140381
+    model_id: 104381
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140381
+    name: 0
+    modelid1: 140381
+  creature_model_info:
+    display_id: 140381
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 机械

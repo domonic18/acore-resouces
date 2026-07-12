@@ -1,0 +1,35 @@
+id: 342
+model_folder: saber3mount女祭司的月刃豹
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 22947
+  instance: 黑暗神殿
+  boss: 莎赫拉丝主母
+  rate: 0.03
+official_db:
+  name: 女祭司的月刃豹
+  spell_icon_name: inv_nightsaber2mountwhite
+  icon_name: inv_nightsaber2mountwhite
+dbc:
+  creature_model_data:
+    id: 104358
+    flags: 2
+    model_name: creature\saber3mount\saber3mount.m2
+  creature_display_info:
+    id: 140358
+    model_id: 104358
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140358
+    name: 女祭司的月刃豹
+    modelid1: 140358
+  creature_model_info:
+    display_id: 140358
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 豹子

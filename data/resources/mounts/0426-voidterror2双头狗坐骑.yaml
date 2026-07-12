@@ -1,0 +1,35 @@
+id: 426
+model_folder: voidterror2双头狗坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 虚空恐魔
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104442
+    flags: 2
+    model_name: creature\voidterror2\voidterror2.m2
+  creature_display_info:
+    id: 140442
+    model_id: 104442
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140442
+    name: 虚空恐魔
+    modelid1: 140442
+  creature_model_info:
+    display_id: 140442
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 双头狗

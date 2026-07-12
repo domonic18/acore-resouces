@@ -1,0 +1,35 @@
+id: 181
+model_folder: GhostlyMoose大角鹿坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 艾特洛之魂
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104176
+    flags: 2
+    model_name: creature\GhostlyMoose\ghostlymoosemount.m2
+  creature_display_info:
+    id: 140176
+    model_id: 104176
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140176
+    name: 艾特洛之魂
+    modelid1: 140176
+  creature_model_info:
+    display_id: 140176
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 鹿

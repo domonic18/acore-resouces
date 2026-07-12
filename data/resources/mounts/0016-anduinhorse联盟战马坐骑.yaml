@@ -1,0 +1,34 @@
+id: 16
+model_folder: anduinhorse联盟战马坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 安度因的战马
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104062
+    flags: 2
+  creature_display_info:
+    id: 140062
+    model_id: 104062
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140062
+    name: 安度因的战马
+    modelid1: 140062
+  creature_model_info:
+    display_id: 140062
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 马

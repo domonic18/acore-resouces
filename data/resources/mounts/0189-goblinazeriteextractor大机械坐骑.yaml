@@ -1,0 +1,35 @@
+id: 189
+model_folder: goblinazeriteextractor大机械坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 2748
+  instance: 奥达曼
+  boss: 阿扎达斯
+  rate: 0.01
+official_db:
+  name: 地精岩石挖掘机
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4005
+    flags: 2
+    model_name: creature\goblinazeriteextractor\gnomeazeriteextractor.m2
+  creature_display_info:
+    id: 140005
+    model_id: 4005
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140005
+    name: 地精岩石挖掘机
+    modelid1: 140005
+  creature_model_info:
+    display_id: 140005
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 机械

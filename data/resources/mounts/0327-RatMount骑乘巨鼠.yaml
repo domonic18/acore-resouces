@@ -1,0 +1,35 @@
+id: 327
+model_folder: RatMount骑乘巨鼠
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 4842
+  instance: 剃刀沼泽
+  boss: 唤地者哈穆加
+  rate: 0.01
+official_db:
+  name: 骑乘巨鼠
+  spell_icon_name: inv_ratmount
+  icon_name: inv_ratmount
+dbc:
+  creature_model_data:
+    id: 104340
+    flags: 2
+    model_name: creature\RatMount\RatMount.m2
+  creature_display_info:
+    id: 140340
+    model_id: 104340
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140340
+    name: 骑乘巨鼠
+    modelid1: 140340
+  creature_model_info:
+    display_id: 140340
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 鼠

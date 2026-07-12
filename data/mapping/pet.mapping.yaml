@@ -1,0 +1,23 @@
+sheet: "宠物列表"
+header_row: 2
+data_start_row: 3
+resource_type: "pet"
+fields:
+  id: 0
+  model_folder: 1
+  preview_image: 2
+  rarity: 3
+  debug_passed: 4
+  added: 5
+  "drop.entry": 6
+  "drop.instance": 7
+  "drop.boss": 8
+  "drop.rate": 9
+  "official_db.name": 10
+  "official_db.spell_icon_name": 11
+  "official_db.icon_name": 12
+  "dbc.creature_model_data.id": 13
+  "dbc.creature_model_data.flags": 14
+  "dbc.creature_model_data.model_name": 15
+  "dbc.creature_display_info.id": 16
+  "dbc.creature_display_info.model_id": 17

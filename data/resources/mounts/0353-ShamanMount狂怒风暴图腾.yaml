@@ -1,0 +1,34 @@
+id: 353
+model_folder: ShamanMount狂怒风暴图腾
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 狂怒风暴图腾
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4056
+    flags: 2
+    model_name: creature\shamanmount\shamanmount.m2
+  creature_display_info:
+    id: 140056
+    model_id: 4056
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140056
+    modelid1: 140056
+  creature_model_info:
+    display_id: 140056
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 元素

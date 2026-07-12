@@ -1,0 +1,34 @@
+id: 407
+model_folder: viciousgoldenking邪恶战狮
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 邪恶战狮
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104428
+    flags: 2
+  creature_display_info:
+    id: 140428
+    model_id: 104428
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140428
+    name: 邪恶战狮
+    modelid1: 140428
+  creature_model_info:
+    display_id: 140428
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 狮子

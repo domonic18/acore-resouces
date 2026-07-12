@@ -1,0 +1,35 @@
+id: 238
+model_folder: ironhordeelekk装甲铁牙践踏者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 15275
+  instance: 安其拉神殿
+  boss: 维克尼拉斯大帝
+  rate: 0.035
+official_db:
+  name: 装甲铁牙践踏者
+  spell_icon_name: inv_iron-horde-elekk
+  icon_name: inv_iron-horde-elekk
+dbc:
+  creature_model_data:
+    id: 4043
+    flags: 2
+    model_name: creature\ironhordeelekk\ironhordeelekk.m2
+  creature_display_info:
+    id: 140043
+    model_id: 4043
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140043
+    name: 装甲铁牙践踏者
+    modelid1: 140043
+  creature_model_info:
+    display_id: 140043
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 科多兽

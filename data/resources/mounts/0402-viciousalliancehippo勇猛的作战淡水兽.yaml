@@ -1,0 +1,35 @@
+id: 402
+model_folder: viciousalliancehippo勇猛的作战淡水兽
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 19894
+  instance: 奴隶围栏(英雄模式)
+  boss: 夸格米拉
+  rate: 0.02
+official_db:
+  name: 勇猛的作战淡水兽
+  spell_icon_name: inv_viciousalliancehippo
+  icon_name: inv_viciousalliancehippo
+dbc:
+  creature_model_data:
+    id: 104424
+    flags: 2
+    model_name: creature\viciousalliancehippo\viciousalliancehippo.m2
+  creature_display_info:
+    id: 140424
+    model_id: 104424
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140424
+    name: 勇猛的作战淡水兽
+    modelid1: 140424
+  creature_model_info:
+    display_id: 140424
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 河马

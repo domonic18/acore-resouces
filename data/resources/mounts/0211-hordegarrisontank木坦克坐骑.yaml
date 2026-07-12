@@ -1,0 +1,34 @@
+id: 211
+model_folder: hordegarrisontank木坦克坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 木坦克
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104214
+    flags: 2
+  creature_display_info:
+    id: 140214
+    model_id: 104214
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140214
+    name: 木坦克
+    modelid1: 140214
+  creature_model_info:
+    display_id: 140214
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 机械

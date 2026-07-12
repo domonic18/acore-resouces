@@ -1,0 +1,34 @@
+id: 53
+model_folder: butterfly白蝴蝶坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 丝柔烁光蛾
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104078
+    flags: 2
+  creature_display_info:
+    id: 140078
+    model_id: 104078
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140078
+    name: 丝柔烁光蛾
+    modelid1: 140078
+  creature_model_info:
+    display_id: 140078
+  item_template: {}
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 蝴蝶

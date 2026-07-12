@@ -1,0 +1,35 @@
+id: 391
+model_folder: toadardenwealdmount树栖巨口蟾
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 4829
+  instance: 黑暗深渊
+  boss: 阿库麦尔
+  rate: 0.01
+official_db:
+  name: 树栖巨口蟾
+  spell_icon_name: inv_toadardenwealdmount
+  icon_name: inv_toadardenwealdmount
+dbc:
+  creature_model_data:
+    id: 104412
+    flags: 2
+    model_name: creature\toadardenwealdmount\toadardenwealdmount.m2
+  creature_display_info:
+    id: 140412
+    model_id: 104412
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140412
+    name: 树栖巨口蟾
+    modelid1: 140412
+  creature_model_info:
+    display_id: 140412
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 蟾蜍

@@ -1,0 +1,34 @@
+id: 363
+model_folder: snapdragonmount深瑚毒鳍龙
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 深瑚毒鳍龙
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104384
+    flags: 2
+  creature_display_info:
+    id: 140384
+    model_id: 104384
+  spell: {}
+  item: {}
+db:
+  creature_template:
+    entry: 9140384
+    name: 深瑚毒鳍龙
+    modelid1: 140384
+  creature_model_info:
+    display_id: 140384
+  item_template: {}
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 怪物
