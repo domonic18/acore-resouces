@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+
+# 日志/临时文件
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# 压缩包/备份
+*.zip
+*.rar
+*.7z
+*.bak

@@ -1,0 +1,9 @@
+# Excel 工作簿按二进制文件处理，避免文本 diff
+*.xlsx binary
+
+# 图片与纹理文件
+*.png binary
+*.gif binary
+*.blp binary
+*.jpg binary
+*.jpeg binary
