@@ -1001,36 +1001,44 @@ function IconPickerDialog({
           </p>
         </div>
         <div className="grid flex-1 grid-cols-6 gap-2 overflow-y-auto p-4 sm:grid-cols-8">
-          {filtered.map((name) => {
-            const isSelected = name === selectedValue;
-            return (
-              <button
-                key={name}
-                type="button"
-                onClick={() => onSelect(name)}
-                className={cn(
-                  "flex flex-col items-center gap-1 rounded-md border p-2 transition-colors hover:border-primary hover:bg-bg-hover",
-                  isSelected
-                    ? "border-primary bg-primary/10 ring-1 ring-primary"
-                    : "border-border",
-                )}
-                title={name}
-              >
-                <img
-                  src={getIconPreviewUrl(name, 64)}
-                  alt={name}
-                  className="h-10 w-10 object-contain"
-                  loading="lazy"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
-                />
-                <span className="block max-w-full truncate text-[10px] text-text-secondary">
-                  {name}
-                </span>
-              </button>
-            );
-          })}
+          {filtered.length === 0 ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-12 text-text-secondary">
+              <Box className="mb-3 h-12 w-12" />
+              <p className="text-sm">未找到图标</p>
+              <p className="mt-1 text-xs">请检查 sources/icons 目录是否存在</p>
+            </div>
+          ) : (
+            filtered.map((name) => {
+              const isSelected = name === selectedValue;
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => onSelect(name)}
+                  className={cn(
+                    "flex flex-col items-center gap-1 rounded-md border p-2 transition-colors hover:border-primary hover:bg-bg-hover",
+                    isSelected
+                      ? "border-primary bg-primary/10 ring-1 ring-primary"
+                      : "border-border",
+                  )}
+                  title={name}
+                >
+                  <img
+                    src={getIconPreviewUrl(name, 64)}
+                    alt={name}
+                    className="h-10 w-10 object-contain"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                  <span className="block max-w-full truncate text-[10px] text-text-secondary">
+                    {name}
+                  </span>
+                </button>
+              );
+            })
+          )}
         </div>
       </div>
     </div>

@@ -40,6 +40,13 @@ class IconIndex:
             except OSError:
                 continue
 
+        # 回退：扫描图标目录，确保即使 txt 索引缺失也能列出所有 .blp
+        if ICON_BASE_DIR.exists():
+            for blp_file in ICON_BASE_DIR.glob("*.blp"):
+                name = blp_file.stem
+                if name not in index:
+                    index[name] = blp_file
+
         return index
 
     def refresh(self) -> None:
