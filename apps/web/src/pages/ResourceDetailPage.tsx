@@ -129,7 +129,13 @@ export function ResourceDetailPage() {
     enabled: !!resource,
   });
 
-  const { data: iconNames = [] } = useQuery({
+  const {
+    data: iconNames = [],
+    isLoading: iconsLoading,
+    isError: iconsError,
+    error: iconsErrorObj,
+    refetch: refetchIcons,
+  } = useQuery({
     queryKey: ["icons"],
     queryFn: getAllIcons,
     enabled: !!resource,
@@ -854,11 +860,12 @@ export function ResourceDetailPage() {
           title={pickerTarget === "item" ? "选择 Item 图标" : "选择 Spell 图标"}
           selectedValue={pickerTarget === "item" ? itemIcon : spellIcon}
           iconNames={iconNames}
+          isLoading={iconsLoading}
+          isError={iconsError}
+          error={iconsErrorObj}
           search={pickerSearch}
           onSearch={setPickerSearch}
-          onRefresh={() =>
-            queryClient.invalidateQueries({ queryKey: ["icons"] })
-          }
+          onRefresh={refetchIcons}
           onSelect={(name) => {
             if (pickerTarget === "item") {
               setItemIcon(name);
@@ -953,6 +960,9 @@ function IconPickerDialog({
   title,
   selectedValue,
   iconNames,
+  isLoading,
+  isError,
+  error,
   search,
   onSearch,
   onSelect,
@@ -962,6 +972,9 @@ function IconPickerDialog({
   title: string;
   selectedValue: string;
   iconNames: string[];
+  isLoading?: boolean;
+  isError?: boolean;
+  error?: Error | null;
   search: string;
   onSearch: (value: string) => void;
   onSelect: (name: string) => void;
@@ -1018,7 +1031,29 @@ function IconPickerDialog({
           </p>
         </div>
         <div className="grid flex-1 grid-cols-6 gap-2 overflow-y-auto p-4 sm:grid-cols-8">
-          {filtered.length === 0 ? (
+          {isLoading ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-12 text-text-secondary">
+              <RefreshCw className="mb-3 h-8 w-8 animate-spin" />
+              <p className="text-sm">正在加载图标...</p>
+            </div>
+          ) : isError ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-12 text-text-secondary">
+              <Box className="mb-3 h-12 w-12" />
+              <p className="text-sm">加载图标失败</p>
+              <p className="mt-1 max-w-md px-4 text-center text-xs text-danger">
+                {error?.message || "未知错误"}
+              </p>
+              {onRefresh && (
+                <button
+                  type="button"
+                  onClick={onRefresh}
+                  className="btn btn-primary mt-4 text-xs"
+                >
+                  重试
+                </button>
+              )}
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="col-span-full flex flex-col items-center justify-center py-12 text-text-secondary">
               <Box className="mb-3 h-12 w-12" />
               <p className="text-sm">未找到图标</p>

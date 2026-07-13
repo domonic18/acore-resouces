@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,7 @@ from app.preview.m2_reader import m2_metadata_to_dict, read_m2_metadata
 from app.preview.thumbnail_cache import get_or_create_thumbnail
 
 router = APIRouter(prefix="/api/preview", tags=["preview"])
+logger = logging.getLogger(__name__)
 
 
 def _resolve_source_path(path: str) -> Path:
@@ -102,7 +104,9 @@ def preview_icon(
 @router.get("/icons")
 def list_icons() -> list[str]:
     """返回所有可用的图标名称列表。"""
-    return sorted(refresh_icon_index().keys())
+    icons = sorted(refresh_icon_index().keys())
+    logger.info("/api/preview/icons 返回 %d 个图标", len(icons))
+    return icons
 
 
 @router.get("/model/{model_folder:path}")
