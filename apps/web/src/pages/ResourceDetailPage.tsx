@@ -109,6 +109,10 @@ export function ResourceDetailPage() {
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("creature_display_info");
   const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
+  const [pickerTarget, setPickerTarget] = useState<"item" | "spell" | null>(
+    null,
+  );
+  const [pickerSearch, setPickerSearch] = useState("");
 
   const {
     data: resource,
@@ -470,6 +474,7 @@ export function ResourceDetailPage() {
                 value={itemIcon}
                 iconNames={iconNames}
                 onChange={setItemIcon}
+                onOpenPicker={() => setPickerTarget("item")}
               />
 
               <div className="border-t border-border pt-4">
@@ -615,6 +620,7 @@ export function ResourceDetailPage() {
                 value={spellIcon}
                 iconNames={iconNames}
                 onChange={setSpellIcon}
+                onOpenPicker={() => setPickerTarget("spell")}
               />
 
               <div className="border-t border-border pt-4">
@@ -842,6 +848,28 @@ export function ResourceDetailPage() {
           </div>
         </div>
       </div>
+
+      {pickerTarget && (
+        <IconPickerDialog
+          title={pickerTarget === "item" ? "选择 Item 图标" : "选择 Spell 图标"}
+          iconNames={iconNames}
+          search={pickerSearch}
+          onSearch={setPickerSearch}
+          onSelect={(name) => {
+            if (pickerTarget === "item") {
+              setItemIcon(name);
+            } else {
+              setSpellIcon(name);
+            }
+            setPickerTarget(null);
+            setPickerSearch("");
+          }}
+          onClose={() => {
+            setPickerTarget(null);
+            setPickerSearch("");
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -868,15 +896,22 @@ function IconEditor({
   value,
   iconNames,
   onChange,
+  onOpenPicker,
 }: {
   label: string;
   value: string;
   iconNames: string[];
   onChange: (value: string) => void;
+  onOpenPicker: () => void;
 }) {
   return (
     <div className="flex items-center gap-4">
-      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface">
+      <button
+        type="button"
+        onClick={onOpenPicker}
+        className="flex h-16 w-16 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-bg-surface transition-colors hover:border-primary hover:bg-bg-hover focus:outline-none focus:ring-2 focus:ring-primary"
+        title="点击选择图标"
+      >
         {value ? (
           <img
             src={getIconPreviewUrl(value, 96)}
@@ -889,7 +924,7 @@ function IconEditor({
         ) : (
           <Box className="h-8 w-8 text-text-tertiary" />
         )}
-      </div>
+      </button>
       <div className="min-w-0 flex-1">
         <label className="form-label">{label}</label>
         <input
@@ -905,6 +940,87 @@ function IconEditor({
             <option key={name} value={name} />
           ))}
         </datalist>
+      </div>
+    </div>
+  );
+}
+
+function IconPickerDialog({
+  title,
+  iconNames,
+  search,
+  onSearch,
+  onSelect,
+  onClose,
+}: {
+  title: string;
+  iconNames: string[];
+  search: string;
+  onSearch: (value: string) => void;
+  onSelect: (name: string) => void;
+  onClose: () => void;
+}) {
+  const searchLower = search.trim().toLowerCase();
+  const filtered = searchLower
+    ? iconNames.filter((name) => name.toLowerCase().includes(searchLower))
+    : iconNames;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="flex max-h-[80vh] w-full max-w-3xl flex-col rounded-lg border border-border bg-bg-surface shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-border p-4">
+          <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md p-1 text-text-tertiary hover:bg-bg-hover hover:text-text-primary"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="border-b border-border p-4">
+          <input
+            type="text"
+            autoFocus
+            className="form-input w-full"
+            placeholder="搜索图标名称..."
+            value={search}
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <p className="mt-2 text-xs text-text-secondary">
+            共 {filtered.length} 个图标
+          </p>
+        </div>
+        <div className="grid flex-1 grid-cols-6 gap-2 overflow-y-auto p-4 sm:grid-cols-8">
+          {filtered.map((name) => (
+            <button
+              key={name}
+              type="button"
+              onClick={() => onSelect(name)}
+              className="flex flex-col items-center gap-1 rounded-md border border-border p-2 transition-colors hover:border-primary hover:bg-bg-hover"
+              title={name}
+            >
+              <img
+                src={getIconPreviewUrl(name, 64)}
+                alt={name}
+                className="h-10 w-10 object-contain"
+                loading="lazy"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+              <span className="block max-w-full truncate text-[10px] text-text-secondary">
+                {name}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
