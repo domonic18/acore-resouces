@@ -33,6 +33,43 @@ const DBC_TABS = [
   { key: "item_template", label: "ItemTemplate" },
 ];
 
+const QUALITY_OPTIONS = [
+  { value: 0, label: "Poor 劣质" },
+  { value: 1, label: "Common 普通" },
+  { value: 2, label: "Uncommon 优秀" },
+  { value: 3, label: "Rare 精良" },
+  { value: 4, label: "Epic 史诗" },
+  { value: 5, label: "Legendary 传说" },
+  { value: 6, label: "Artifact 神器" },
+  { value: 7, label: "Heirloom 传家宝" },
+];
+
+const CLASS_FLAGS = [
+  { value: 1, label: "Warrior 战士" },
+  { value: 2, label: "Paladin 圣骑士" },
+  { value: 4, label: "Hunter 猎人" },
+  { value: 8, label: "Rogue 盗贼" },
+  { value: 16, label: "Priest 牧师" },
+  { value: 32, label: "Death Knight 死亡骑士" },
+  { value: 64, label: "Shaman 萨满" },
+  { value: 128, label: "Mage 法师" },
+  { value: 256, label: "Warlock 术士" },
+  { value: 1024, label: "Druid 德鲁伊" },
+];
+
+const RACE_FLAGS = [
+  { value: 1, label: "Human 人类" },
+  { value: 2, label: "Orc 兽人" },
+  { value: 4, label: "Dwarf 矮人" },
+  { value: 8, label: "Night Elf 暗夜精灵" },
+  { value: 16, label: "Undead 亡灵" },
+  { value: 32, label: "Tauren 牛头人" },
+  { value: 64, label: "Gnome 侏儒" },
+  { value: 128, label: "Troll 巨魔" },
+  { value: 512, label: "Blood Elf 血精灵" },
+  { value: 1024, label: "Draenei 德莱尼" },
+];
+
 interface FormState {
   name: string;
   mount_type: string;
@@ -61,10 +98,6 @@ function buildForm(resource?: Resource): FormState {
     debug_passed: resource?.debug_passed ?? false,
     added: resource?.added ?? false,
   };
-}
-
-function formatJson(value: unknown): string {
-  return JSON.stringify(value ?? {}, null, 2);
 }
 
 export function ResourceDetailPage() {
@@ -103,28 +136,28 @@ export function ResourceDetailPage() {
   const [spellIcon, setSpellIcon] = useState(
     resource?.official_db.spell_icon_name || "",
   );
-  const [itemDbcJson, setItemDbcJson] = useState(formatJson(resource?.dbc.item));
-  const [itemDbJson, setItemDbJson] = useState(
-    formatJson(resource?.db.item_template),
+  const [itemDbc, setItemDbc] = useState<Record<string, unknown>>(
+    resource?.dbc.item ?? {},
   );
-  const [spellDbcJson, setSpellDbcJson] = useState(
-    formatJson(resource?.dbc.spell),
+  const [itemDb, setItemDb] = useState<Record<string, unknown>>(
+    resource?.db.item_template ?? {},
   );
-  const [spellDbJson, setSpellDbJson] = useState(
-    formatJson(resource?.db.creature_template),
+  const [spellDbc, setSpellDbc] = useState<Record<string, unknown>>(
+    resource?.dbc.spell ?? {},
   );
-  const [jsonError, setJsonError] = useState<string | null>(null);
+  const [spellDb, setSpellDb] = useState<Record<string, unknown>>(
+    resource?.db.creature_template ?? {},
+  );
 
   useEffect(() => {
     if (!resource) return;
     setForm(buildForm(resource));
     setItemIcon(resource.official_db.icon_name || "");
     setSpellIcon(resource.official_db.spell_icon_name || "");
-    setItemDbcJson(formatJson(resource.dbc.item));
-    setItemDbJson(formatJson(resource.db.item_template));
-    setSpellDbcJson(formatJson(resource.dbc.spell));
-    setSpellDbJson(formatJson(resource.db.creature_template));
-    setJsonError(null);
+    setItemDbc(resource.dbc.item ?? {});
+    setItemDb(resource.db.item_template ?? {});
+    setSpellDbc(resource.dbc.spell ?? {});
+    setSpellDb(resource.db.creature_template ?? {});
   }, [resource]);
 
   const updateMutation = useMutation({
@@ -135,9 +168,25 @@ export function ResourceDetailPage() {
         queryKey: ["resource", resourceType, resourceId],
       });
       queryClient.invalidateQueries({ queryKey: ["resources-all"] });
-      setJsonError(null);
     },
   });
+
+  const liveDbc = useMemo(
+    () => ({
+      ...resource?.dbc,
+      item: itemDbc,
+      spell: spellDbc,
+    }),
+    [resource?.dbc, itemDbc, spellDbc],
+  );
+  const liveDb = useMemo(
+    () => ({
+      ...resource?.db,
+      item_template: itemDb,
+      creature_template: spellDb,
+    }),
+    [resource?.db, itemDb, spellDb],
+  );
 
   const hasChanges = useMemo(() => {
     if (!resource) return false;
@@ -145,20 +194,29 @@ export function ResourceDetailPage() {
     if (JSON.stringify(form) !== JSON.stringify(baseForm)) return true;
     if (itemIcon !== (resource.official_db.icon_name || "")) return true;
     if (spellIcon !== (resource.official_db.spell_icon_name || "")) return true;
-    if (itemDbcJson !== formatJson(resource.dbc.item)) return true;
-    if (itemDbJson !== formatJson(resource.db.item_template)) return true;
-    if (spellDbcJson !== formatJson(resource.dbc.spell)) return true;
-    if (spellDbJson !== formatJson(resource.db.creature_template)) return true;
+    if (JSON.stringify(itemDbc) !== JSON.stringify(resource.dbc.item ?? {}))
+      return true;
+    if (
+      JSON.stringify(itemDb) !== JSON.stringify(resource.db.item_template ?? {})
+    )
+      return true;
+    if (JSON.stringify(spellDbc) !== JSON.stringify(resource.dbc.spell ?? {}))
+      return true;
+    if (
+      JSON.stringify(spellDb) !==
+      JSON.stringify(resource.db.creature_template ?? {})
+    )
+      return true;
     return false;
   }, [
     form,
     resource,
     itemIcon,
     spellIcon,
-    itemDbcJson,
-    itemDbJson,
-    spellDbcJson,
-    spellDbJson,
+    itemDbc,
+    itemDb,
+    spellDbc,
+    spellDb,
   ]);
 
   const updateField = <K extends keyof FormState>(
@@ -168,33 +226,8 @@ export function ResourceDetailPage() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const parseJson = (text: string, label: string) => {
-    try {
-      return JSON.parse(text);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      throw new Error(`${label} JSON 格式错误：${message}`);
-    }
-  };
-
   const handleSave = () => {
     if (!resource) return;
-    setJsonError(null);
-
-    let parsedItemDbc: Record<string, unknown>;
-    let parsedItemDb: Record<string, unknown>;
-    let parsedSpellDbc: Record<string, unknown>;
-    let parsedSpellDb: Record<string, unknown>;
-    try {
-      parsedItemDbc = parseJson(itemDbcJson, "Item DBC");
-      parsedItemDb = parseJson(itemDbJson, "Item 数据库");
-      parsedSpellDbc = parseJson(spellDbcJson, "Spell DBC");
-      parsedSpellDb = parseJson(spellDbJson, "Spell 数据库");
-    } catch (err) {
-      setJsonError(err instanceof Error ? err.message : String(err));
-      return;
-    }
-
     const update: ResourceUpdate = {};
     const baseline = buildForm(resource);
 
@@ -237,25 +270,22 @@ export function ResourceDetailPage() {
       update.spell_icon_name = spellIcon || null;
     }
 
-    if (JSON.stringify(parsedItemDbc) !== JSON.stringify(resource.dbc.item)) {
-      update.dbc_item = parsedItemDbc;
+    if (JSON.stringify(itemDbc) !== JSON.stringify(resource.dbc.item ?? {})) {
+      update.dbc_item = itemDbc;
     }
     if (
-      JSON.stringify(parsedItemDb) !==
-      JSON.stringify(resource.db.item_template)
+      JSON.stringify(itemDb) !== JSON.stringify(resource.db.item_template ?? {})
     ) {
-      update.db_item_template = parsedItemDb;
+      update.db_item_template = itemDb;
+    }
+    if (JSON.stringify(spellDbc) !== JSON.stringify(resource.dbc.spell ?? {})) {
+      update.dbc_spell = spellDbc;
     }
     if (
-      JSON.stringify(parsedSpellDbc) !== JSON.stringify(resource.dbc.spell)
+      JSON.stringify(spellDb) !==
+      JSON.stringify(resource.db.creature_template ?? {})
     ) {
-      update.dbc_spell = parsedSpellDbc;
-    }
-    if (
-      JSON.stringify(parsedSpellDb) !==
-      JSON.stringify(resource.db.creature_template)
-    ) {
-      update.db_creature_template = parsedSpellDb;
+      update.db_creature_template = spellDb;
     }
 
     updateMutation.mutate(update);
@@ -319,12 +349,11 @@ export function ResourceDetailPage() {
         </div>
       </header>
 
-      {(updateMutation.isError || jsonError) && (
+      {updateMutation.isError && (
         <div className="mb-4 rounded-md border border-danger/30 bg-danger/10 px-4 py-2 text-sm text-danger">
-          {jsonError ||
-            (updateMutation.error instanceof Error
-              ? updateMutation.error.message
-              : "保存失败")}
+          {updateMutation.error instanceof Error
+            ? updateMutation.error.message
+            : "保存失败"}
         </div>
       )}
 
@@ -435,56 +464,258 @@ export function ResourceDetailPage() {
           </SectionCard>
 
           <SectionCard title="物品信息">
-            <div className="space-y-4">
+            <div className="space-y-5">
               <IconEditor
                 label="Item 图标"
                 value={itemIcon}
                 iconNames={iconNames}
                 onChange={setItemIcon}
               />
-              <FormGroup label="Item DBC">
-                <textarea
-                  className="form-textarea font-mono text-xs"
-                  rows={8}
-                  value={itemDbcJson}
-                  onChange={(e) => setItemDbcJson(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label="Item 数据库（item_template）">
-                <textarea
-                  className="form-textarea font-mono text-xs"
-                  rows={8}
-                  value={itemDbJson}
-                  onChange={(e) => setItemDbJson(e.target.value)}
-                />
-              </FormGroup>
+
+              <div className="border-t border-border pt-4">
+                <h4 className="mb-3 text-sm font-medium text-text-primary">
+                  Item DBC
+                </h4>
+                <div className="form-grid">
+                  <FormGroup label="ID">
+                    <NumberInput
+                      value={itemDbc.id}
+                      onChange={(v) =>
+                        setItemDbc((prev) => ({ ...prev, id: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Class">
+                    <NumberInput
+                      value={itemDbc.class}
+                      onChange={(v) =>
+                        setItemDbc((prev) => ({ ...prev, class: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="SubClass">
+                    <NumberInput
+                      value={itemDbc.subclass}
+                      onChange={(v) =>
+                        setItemDbc((prev) => ({ ...prev, subclass: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Material">
+                    <NumberInput
+                      value={itemDbc.material}
+                      onChange={(v) =>
+                        setItemDbc((prev) => ({ ...prev, material: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Display ID">
+                    <NumberInput
+                      value={itemDbc.display_id}
+                      onChange={(v) =>
+                        setItemDbc((prev) => ({ ...prev, display_id: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Inventory Type">
+                    <NumberInput
+                      value={itemDbc.inventory_type}
+                      onChange={(v) =>
+                        setItemDbc((prev) => ({ ...prev, inventory_type: v }))
+                      }
+                    />
+                  </FormGroup>
+                </div>
+              </div>
+
+              <div className="border-t border-border pt-4">
+                <h4 className="mb-3 text-sm font-medium text-text-primary">
+                  Item 数据库（item_template）
+                </h4>
+                <div className="form-grid">
+                  <FormGroup label="entry">
+                    <NumberInput
+                      value={itemDb.entry}
+                      onChange={(v) => setItemDb((prev) => ({ ...prev, entry: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="name">
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={String(itemDb.name ?? "")}
+                      onChange={(e) =>
+                        setItemDb((prev) => ({ ...prev, name: e.target.value }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="displayid（物品图标ID）">
+                    <NumberInput
+                      value={itemDb.displayid}
+                      onChange={(v) =>
+                        setItemDb((prev) => ({ ...prev, displayid: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Quality">
+                    <select
+                      className="form-select"
+                      value={selectValue(itemDb.Quality) ?? ""}
+                      onChange={(e) =>
+                        setItemDb((prev) => ({
+                          ...prev,
+                          Quality: e.target.value === "" ? null : Number(e.target.value),
+                        }))
+                      }
+                    >
+                      <option value="">未设置</option>
+                      {QUALITY_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </FormGroup>
+                  <FormGroup label="AllowableClass" className="full-width">
+                    <BitmaskCheckboxes
+                      options={CLASS_FLAGS}
+                      value={normalizeInt(itemDb.AllowableClass)}
+                      onChange={(v) =>
+                        setItemDb((prev) => ({ ...prev, AllowableClass: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="AllowableRace" className="full-width">
+                    <BitmaskCheckboxes
+                      options={RACE_FLAGS}
+                      value={normalizeInt(itemDb.AllowableRace)}
+                      onChange={(v) =>
+                        setItemDb((prev) => ({ ...prev, AllowableRace: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="spellid_2">
+                    <NumberInput
+                      value={itemDb.spellid_2}
+                      onChange={(v) =>
+                        setItemDb((prev) => ({ ...prev, spellid_2: v }))
+                      }
+                    />
+                  </FormGroup>
+                </div>
+              </div>
             </div>
           </SectionCard>
 
           <SectionCard title="技能信息">
-            <div className="space-y-4">
+            <div className="space-y-5">
               <IconEditor
                 label="Spell 图标"
                 value={spellIcon}
                 iconNames={iconNames}
                 onChange={setSpellIcon}
               />
-              <FormGroup label="Spell DBC">
-                <textarea
-                  className="form-textarea font-mono text-xs"
-                  rows={8}
-                  value={spellDbcJson}
-                  onChange={(e) => setSpellDbcJson(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label="Spell 数据库（creature_template）">
-                <textarea
-                  className="form-textarea font-mono text-xs"
-                  rows={8}
-                  value={spellDbJson}
-                  onChange={(e) => setSpellDbJson(e.target.value)}
-                />
-              </FormGroup>
+
+              <div className="border-t border-border pt-4">
+                <h4 className="mb-3 text-sm font-medium text-text-primary">
+                  Spell DBC
+                </h4>
+                <div className="form-grid">
+                  <FormGroup label="ID">
+                    <NumberInput
+                      value={spellDbc.id}
+                      onChange={(v) =>
+                        setSpellDbc((prev) => ({ ...prev, id: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Name">
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={String(spellDbc.name ?? "")}
+                      onChange={(e) =>
+                        setSpellDbc((prev) => ({ ...prev, name: e.target.value }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Icon ID">
+                    <NumberInput
+                      value={spellDbc.icon_id}
+                      onChange={(v) =>
+                        setSpellDbc((prev) => ({ ...prev, icon_id: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="Visual ID">
+                    <NumberInput
+                      value={spellDbc.visual_id}
+                      onChange={(v) =>
+                        setSpellDbc((prev) => ({ ...prev, visual_id: v }))
+                      }
+                    />
+                  </FormGroup>
+                </div>
+              </div>
+
+              <div className="border-t border-border pt-4">
+                <h4 className="mb-3 text-sm font-medium text-text-primary">
+                  Spell 数据库（creature_template）
+                </h4>
+                <div className="form-grid">
+                  <FormGroup label="entry">
+                    <NumberInput
+                      value={spellDb.entry}
+                      onChange={(v) =>
+                        setSpellDb((prev) => ({ ...prev, entry: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="name">
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={String(spellDb.name ?? "")}
+                      onChange={(e) =>
+                        setSpellDb((prev) => ({ ...prev, name: e.target.value }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="modelid1">
+                    <NumberInput
+                      value={spellDb.modelid1}
+                      onChange={(v) =>
+                        setSpellDb((prev) => ({ ...prev, modelid1: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="modelid2">
+                    <NumberInput
+                      value={spellDb.modelid2}
+                      onChange={(v) =>
+                        setSpellDb((prev) => ({ ...prev, modelid2: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="minlevel">
+                    <NumberInput
+                      value={spellDb.minlevel}
+                      onChange={(v) =>
+                        setSpellDb((prev) => ({ ...prev, minlevel: v }))
+                      }
+                    />
+                  </FormGroup>
+                  <FormGroup label="maxlevel">
+                    <NumberInput
+                      value={spellDb.maxlevel}
+                      onChange={(v) =>
+                        setSpellDb((prev) => ({ ...prev, maxlevel: v }))
+                      }
+                    />
+                  </FormGroup>
+                </div>
+              </div>
             </div>
           </SectionCard>
 
@@ -526,7 +757,7 @@ export function ResourceDetailPage() {
             </div>
           </SectionCard>
 
-          <SectionCard title="其他 DBC / 数据库配置">
+          <SectionCard title="明细数据">
             <div className="card-body">
               <div className="tabs mb-5 px-0">
                 {DBC_TABS.map((tab) => (
@@ -539,14 +770,14 @@ export function ResourceDetailPage() {
                   </button>
                 ))}
               </div>
-              <FormGroup label="原始数据" className="full-width">
+              <FormGroup label="原始 JSON 数据" className="full-width">
                 <textarea
                   className="form-textarea font-mono text-xs"
                   rows={12}
-                  value={getTabData(resource, activeTab)}
+                  value={getTabData({ dbc: liveDbc, db: liveDb }, activeTab)}
                   readOnly
                 />
-                <p className="form-hint">由系统自动同步，不建议直接编辑</p>
+                <p className="form-hint">上方区域修改时，本明细会同步更新</p>
               </FormGroup>
             </div>
           </SectionCard>
@@ -679,6 +910,66 @@ function IconEditor({
   );
 }
 
+function NumberInput({
+  value,
+  onChange,
+}: {
+  value: unknown;
+  onChange: (value: number | null) => void;
+}) {
+  return (
+    <input
+      type="number"
+      className="form-input"
+      value={value === null || value === undefined ? "" : String(value)}
+      onChange={(e) => {
+        const raw = e.target.value;
+        if (raw === "") {
+          onChange(null);
+        } else {
+          const n = Number(raw);
+          onChange(Number.isNaN(n) ? null : n);
+        }
+      }}
+    />
+  );
+}
+
+function BitmaskCheckboxes({
+  options,
+  value,
+  onChange,
+}: {
+  options: { value: number; label: string }[];
+  value: number | null;
+  onChange: (value: number | null) => void;
+}) {
+  const mask = value ?? 0;
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-wrap gap-3">
+        {options.map((opt) => (
+          <label
+            key={opt.value}
+            className="flex items-center gap-1.5 rounded-md border border-border bg-bg-surface px-2 py-1 text-sm text-text-secondary"
+          >
+            <input
+              type="checkbox"
+              checked={(mask & opt.value) === opt.value}
+              onChange={(e) => {
+                const next = e.target.checked ? mask | opt.value : mask & ~opt.value;
+                onChange(next === 0 ? null : next);
+              }}
+            />
+            {opt.label}
+          </label>
+        ))}
+      </div>
+      <div className="text-xs text-text-tertiary">当前掩码：{value ?? "—"}</div>
+    </div>
+  );
+}
+
 function FormGroup({
   label,
   children,
@@ -764,22 +1055,30 @@ function filePreviewUrl(file: AssetFile): string {
   return getFilePreviewUrl(file.relative_path);
 }
 
-function getTabData(resource: Resource, key: string): string {
-  const data =
-    (resource.dbc as unknown as Record<string, unknown>)[key] ??
-    (resource.db as unknown as Record<string, unknown>)[key] ??
+function getTabData(
+  data: { dbc: Record<string, unknown>; db: Record<string, unknown> },
+  key: string,
+): string {
+  const value =
+    (data.dbc as Record<string, unknown>)[key] ??
+    (data.db as Record<string, unknown>)[key] ??
     {};
-  return JSON.stringify(data, null, 2);
+  return JSON.stringify(value, null, 2);
 }
 
-function normalizeInt(value: string | number): number | null {
+function normalizeInt(value: unknown): number | null {
   if (value === "" || value === null || value === undefined) return null;
-  const n = typeof value === "number" ? value : parseInt(value, 10);
+  const n = typeof value === "number" ? value : parseInt(String(value), 10);
   return Number.isNaN(n) ? null : n;
 }
 
-function normalizeFloat(value: string | number): number | null {
+function normalizeFloat(value: unknown): number | null {
   if (value === "" || value === null || value === undefined) return null;
-  const n = typeof value === "number" ? value : parseFloat(value);
+  const n = typeof value === "number" ? value : parseFloat(String(value));
   return Number.isNaN(n) ? null : n;
+}
+
+function selectValue(value: unknown): string | number | undefined {
+  if (typeof value === "string" || typeof value === "number") return value;
+  return undefined;
 }
