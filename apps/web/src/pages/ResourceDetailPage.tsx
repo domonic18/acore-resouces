@@ -856,6 +856,9 @@ export function ResourceDetailPage() {
           iconNames={iconNames}
           search={pickerSearch}
           onSearch={setPickerSearch}
+          onRefresh={() =>
+            queryClient.invalidateQueries({ queryKey: ["icons"] })
+          }
           onSelect={(name) => {
             if (pickerTarget === "item") {
               setItemIcon(name);
@@ -954,6 +957,7 @@ function IconPickerDialog({
   onSearch,
   onSelect,
   onClose,
+  onRefresh,
 }: {
   title: string;
   selectedValue: string;
@@ -962,6 +966,7 @@ function IconPickerDialog({
   onSearch: (value: string) => void;
   onSelect: (name: string) => void;
   onClose: () => void;
+  onRefresh?: () => void;
 }) {
   const searchLower = search.trim().toLowerCase();
   const filtered = searchLower
@@ -979,13 +984,25 @@ function IconPickerDialog({
       >
         <div className="flex items-center justify-between border-b border-border p-4">
           <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md p-1 text-text-tertiary hover:bg-bg-hover hover:text-text-primary"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-1">
+            {onRefresh && (
+              <button
+                type="button"
+                onClick={onRefresh}
+                className="rounded-md p-1 text-text-tertiary hover:bg-bg-hover hover:text-text-primary"
+                title="刷新图标列表"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-md p-1 text-text-tertiary hover:bg-bg-hover hover:text-text-primary"
+            >
+              ✕
+            </button>
+          </div>
         </div>
         <div className="border-b border-border p-4">
           <input
