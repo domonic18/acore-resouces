@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140118
     model_id: 104118
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: DRAGONDEEPHOLMMOUNT2ORANGE
+    texture_2: DRAGONDEEPHOLMMOUNT2ORANGE
+    texture_3: DRAGONDEEPHOLMMOUNT2ORANGE
+  spell:
+    id: 80118
+    name: 沙石幼龙
+    description: 召唤或解散一个可供骑乘的沙石幼龙。这是一种速度非常快的坐骑。
+    visual_id: 9140118
+    icon_id: 27081
+  item:
+    id: 65891
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 57013
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140118
     name: 沙石幼龙
     modelid1: 140118
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140118
-  item_template: {}
+  item_template:
+    entry: 65891
+    name: 时沙之瓶
+    displayid: 57013
+    spellid_2: 80118
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 龙

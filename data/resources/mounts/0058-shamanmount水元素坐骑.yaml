@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140055
     model_id: 4055
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: shamanmount_blue
+    texture_2: shamanmount_blue
+    texture_3: shamanmount_blue
+  spell:
+    id: 80055
+    name: 水元素
+    description: 召唤或解散一个可供骑乘的水元素。这是一种速度非常快的坐骑。
+    visual_id: 9140055
+    icon_id: 2579
+  item:
+    id: 91055
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 8025
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140055
     name: 水元素
     modelid1: 140055
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140055
-  item_template: {}
+  item_template:
+    entry: 91055
+    name: 水元素
+    displayid: 8025
+    spellid_2: 80055
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 元素

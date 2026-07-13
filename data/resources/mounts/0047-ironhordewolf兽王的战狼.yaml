@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140044
     model_id: 4044
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: ironhordewolfbody
+    texture_2: ironhordewolfbody
+    texture_3: ironhordewolfbody
+  spell:
+    id: 80044
+    name: 兽王的战狼
+    description: 召唤或解散一只可供骑乘的兽王的战狼。这是一种速度非常快的坐骑。
+    visual_id: 9140044
+    icon_id: 33037
+  item:
+    id: 91044
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 16208
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140044
     name: 兽王的战狼
     modelid1: 140044
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140044
-  item_template: {}
+  item_template:
+    entry: 91044
+    name: 兽王的战狼
+    displayid: 114037
+    spellid_2: 80044
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 狼

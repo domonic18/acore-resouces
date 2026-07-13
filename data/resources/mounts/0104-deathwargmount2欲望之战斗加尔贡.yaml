@@ -19,16 +19,43 @@ dbc:
   creature_display_info:
     id: 140099
     model_id: 104099
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+  spell:
+    id: 80099
+    name: 战斗加尔贡弗雷德尼克
+    visual_id: 9140099
+  item:
+    id: 180948
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140099
     name: 战斗加尔贡弗雷德尼克
     modelid1: 140099
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140099
-  item_template: {}
+  item_template:
+    entry: 180948
+    name: 战斗加尔贡弗雷德尼克
+    spellid_2: 80099
+    Quality: 4
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 熊

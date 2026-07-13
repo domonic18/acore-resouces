@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140041
     model_id: 4041
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: elekkdraenor_ironhorde
+    texture_2: elekkdraenor_ironhorde
+    texture_3: elekkdraenor_ironhorde
+  spell:
+    id: 80041
+    name: 暗皮珠齿象
+    description: 召唤或解散一头可供骑乘的暗皮珠齿象。这是一种速度非常快的坐骑。
+    visual_id: 9140041
+    icon_id: 9931
+  item:
+    id: 91041
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 44590
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140041
     name: 暗皮珠齿象
     modelid1: 140041
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140041
-  item_template: {}
+  item_template:
+    entry: 91041
+    name: 暗皮珠齿象
+    displayid: 90931
+    spellid_2: 80041
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 象

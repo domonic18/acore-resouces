@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140339
     model_id: 104339
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: leaf_foreling
+    texture_2: leaf_foreling
+    texture_3: leaf_foreling
+  spell:
+    id: 80339
+    name: 吱吱，狡黠灵兽
+    description: 召唤或解散一个可供骑乘的吱吱，狡黠灵兽。这是一种速度非常快的坐骑。
+    visual_id: 9140339
+    icon_id: 29609
+  item:
+    id: 138386
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 110609
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140339
     name: 吱吱，狡黠灵兽
     modelid1: 140339
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140339
-  item_template: {}
+  item_template:
+    entry: 138386
+    name: 吱吱，狡黠灵兽
+    displayid: 110609
+    spellid_2: 80339
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 鼠

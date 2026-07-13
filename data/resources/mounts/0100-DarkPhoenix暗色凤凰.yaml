@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140095
     model_id: 104095
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: darkphoenixmount_armor
+    texture_2: darkphoenixmount_armor
+    texture_3: darkphoenixmount_armor
+  spell:
+    id: 80095
+    name: 暗色凤凰
+    description: 召唤或解散一个可供骑乘的暗色凤凰。这是一种速度非常快的坐骑。
+    visual_id: 9140095
+    icon_id: 27397
+  item:
+    id: 63125
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 108397
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140095
     name: 暗色凤凰
     modelid1: 140095
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140095
-  item_template: {}
+  item_template:
+    entry: 63125
+    name: 暗色凤凰缰绳
+    displayid: 108397
+    spellid_2: 80095
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 凤凰

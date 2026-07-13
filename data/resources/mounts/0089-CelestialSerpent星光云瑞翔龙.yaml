@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140084
     model_id: 104084
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: PandarenSerpentMountSaddle_Blue
+    texture_2: PandarenSerpentMountSaddle_Blue
+    texture_3: PandarenSerpentMountSaddle_Blue
+  spell:
+    id: 80084
+    name: 星光云端翔龙
+    description: 召唤或解散一个可供骑乘的星光云端翔龙。这是一种速度非常快的坐骑。
+    visual_id: 9140084
+    icon_id: 17587
+  item:
+    id: 87777
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 98587
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140084
     name: 星光云端翔龙
     modelid1: 140084
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140084
-  item_template: {}
+  item_template:
+    entry: 87777
+    name: 星光云端翔龙
+    displayid: 98587
+    spellid_2: 80084
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 翔龙

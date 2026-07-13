@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140083
     model_id: 104083
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: CAMELMOUNT_BROWN
+    texture_2: CAMELMOUNT_BROWN
+    texture_3: CAMELMOUNT_BROWN
+  spell:
+    id: 80083
+    name: 棕色骑乘骆驼
+    description: 召唤或解散一个可供骑乘的棕色骑乘骆驼。这是一种速度非常快的坐骑。
+    visual_id: 9140083
+    icon_id: 9894
+  item:
+    id: 63044
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 90894
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140083
     name: 棕色骑乘骆驼
     modelid1: 140083
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140083
-  item_template: {}
+  item_template:
+    entry: 63044
+    name: 棕色骑乘骆驼
+    displayid: 90894
+    spellid_2: 80083
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 骆驼

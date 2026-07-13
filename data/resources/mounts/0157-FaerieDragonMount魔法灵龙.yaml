@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140152
     model_id: 104152
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: FaerieDragonMount01
+    texture_2: FaerieDragonMount01
+    texture_3: FaerieDragonMount01
+  spell:
+    id: 80152
+    name: 魔法灵龙
+    description: 召唤或解散一个可供骑乘的魔法灵龙。这是一种速度非常快的坐骑。
+    visual_id: 9140152
+    icon_id: 19389
+  item:
+    id: 97989
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 100389
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140152
     name: 魔法灵龙
     modelid1: 140152
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140152
-  item_template: {}
+  item_template:
+    entry: 97989
+    name: 魔法灵龙
+    displayid: 100389
+    spellid_2: 80152
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 灵龙

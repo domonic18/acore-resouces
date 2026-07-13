@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140006
     model_id: 4006
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: armoredraptor_gold
+    texture_2: armoredraptor_gold
+    texture_3: armoredraptor_gold
+  spell:
+    id: 80006
+    name: 墓穴猎手
+    description: 召唤或解散一只可供骑乘的墓穴猎手 。这是一种速度非常快的坐骑。
+    visual_id: 9140006
+    icon_id: 14380
+  item:
+    id: 91006
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 17494
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140006
     name: 墓穴猎手
     modelid1: 140006
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140006
-  item_template: {}
+  item_template:
+    entry: 91006
+    name: 迅猛龙枯骨
+    displayid: 95380
+    spellid_2: 80006
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 迅猛龙

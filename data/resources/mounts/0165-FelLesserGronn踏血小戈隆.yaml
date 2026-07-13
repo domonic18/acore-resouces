@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140160
     model_id: 104160
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: FelLesserGronn_1
+    texture_2: FelLesserGronn_1
+    texture_3: FelLesserGronn_1
+  spell:
+    id: 80160
+    name: 踏血小戈隆
+    description: 召唤或解散一个可供骑乘的踏血小戈隆。这是一种速度非常快的坐骑。
+    visual_id: 9140160
+    icon_id: 23837
+  item:
+    id: 116383
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 104837
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140160
     name: 踏血小戈隆
     modelid1: 140160
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140160
-  item_template: {}
+  item_template:
+    entry: 116383
+    name: 踏血小戈隆
+    displayid: 104837
+    spellid_2: 80160
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 怪物

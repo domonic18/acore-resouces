@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140193
     model_id: 104193
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: goatspots
+    texture_2: goatspots
+    texture_3: goatspots
+  spell:
+    id: 80193
+    name: 黑色骑乘山羊
+    description: 召唤或解散一个可供骑乘的黑色骑乘山羊。这是一种速度非常快的坐骑。
+    visual_id: 9140193
+    icon_id: 9943
+  item:
+    id: 89391
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 90943
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140193
     name: 黑色骑乘山羊
     modelid1: 140193
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140193
-  item_template: {}
+  item_template:
+    entry: 89391
+    name: 黑色骑乘山羊缰绳
+    displayid: 90943
+    spellid_2: 80193
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 羊

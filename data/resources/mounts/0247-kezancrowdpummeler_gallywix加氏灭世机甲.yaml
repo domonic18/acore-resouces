@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140243
     model_id: 104243
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: kezancrowdpummeler_gold
+    texture_2: kezancrowdpummeler_gold
+    texture_3: kezancrowdpummeler_gold
+  spell:
+    id: 80243
+    name: 加氏灭世机甲
+    description: 召唤或解散一个可供骑乘的加氏灭世机甲。这是一种速度非常快的坐骑。
+    visual_id: 9140243
+    icon_id: 11194
+  item:
+    id: 166518
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 92194
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140243
     name: 加氏灭世机甲
     modelid1: 140243
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140243
-  item_template: {}
+  item_template:
+    entry: 166518
+    name: 加氏灭世机甲
+    displayid: 92194
+    spellid_2: 80243
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 机械

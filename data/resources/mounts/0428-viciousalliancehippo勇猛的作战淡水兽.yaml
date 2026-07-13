@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140424
     model_id: 104424
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: viciousalliancehippo
+    texture_2: viciousalliancehippo
+    texture_3: viciousalliancehippo
+  spell:
+    id: 80424
+    name: 勇猛的作战淡水兽
+    description: 召唤或解散一个可供骑乘的勇猛的作战淡水兽。这是一种速度非常快的坐骑。
+    visual_id: 9140424
+    icon_id: 32572
+  item:
+    id: 163123
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 113572
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140424
     name: 勇猛的作战淡水兽
     modelid1: 140424
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140424
-  item_template: {}
+  item_template:
+    entry: 163123
+    name: 勇猛的作战淡水兽
+    displayid: 113572
+    spellid_2: 80424
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 河马

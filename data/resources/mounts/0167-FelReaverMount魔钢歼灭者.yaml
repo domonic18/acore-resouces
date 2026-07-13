@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140162
     model_id: 104162
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: FelReaverMount
+    texture_2: FelReaverMount
+    texture_3: FelReaverMount
+  spell:
+    id: 80162
+    name: 魔钢歼灭者
+    description: 召唤或解散一个可供骑乘的魔钢歼灭者。这是一种速度非常快的坐骑。
+    visual_id: 9140162
+    icon_id: 9935
+  item:
+    id: 123890
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 90935
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140162
     name: 魔钢歼灭者
     modelid1: 140162
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140162
-  item_template: {}
+  item_template:
+    entry: 123890
+    name: 魔钢歼灭者
+    displayid: 90935
+    spellid_2: 80162
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 机械

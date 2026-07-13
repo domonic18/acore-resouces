@@ -19,16 +19,42 @@ dbc:
   creature_display_info:
     id: 140458
     model_id: 104458
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+  spell:
+    id: 80458
+    name: 火焰耗牛
+    visual_id: 9140458
+  item:
+    id: 0
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140458
     name: 火焰耗牛
     modelid1: 140458
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140458
-  item_template: {}
+  item_template:
+    name: 火焰耗牛
+    spellid_2: 80458
+    Quality: 4
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 牦牛

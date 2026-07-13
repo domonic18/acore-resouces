@@ -19,16 +19,43 @@ dbc:
   creature_display_info:
     id: 140410
     model_id: 104410
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+  spell:
+    id: 80410
+    name: 季鹍之嗣
+    visual_id: 9140410
+  item:
+    id: 95059
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140410
     name: 季鹍之嗣
     modelid1: 140410
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140410
-  item_template: {}
+  item_template:
+    entry: 95059
+    name: 季鹍之嗣
+    spellid_2: 80410
+    Quality: 4
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 怪物

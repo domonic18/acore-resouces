@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140166
     model_id: 104166
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: firehawkred
+    texture_2: firehawkred
+    texture_3: firehawkred
+  spell:
+    id: 80166
+    name: 纯血火鹰
+    description: 召唤或解散一个可供骑乘的纯血火鹰。这是一种速度非常快的坐骑。
+    visual_id: 9140166
+    icon_id: 26604
+  item:
+    id: 69224
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 107604
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140166
     name: 纯血火鹰
     modelid1: 140166
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140166
-  item_template: {}
+  item_template:
+    entry: 69224
+    name: 米拉盖佐尔的灼热之卵
+    displayid: 107604
+    spellid_2: 80166
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 火鹰

@@ -19,16 +19,43 @@ dbc:
   creature_display_info:
     id: 140333
     model_id: 104333
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+  spell:
+    id: 80333
+    name: 浴火角鹰兽
+    visual_id: 9140333
+  item:
+    id: 69213
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140333
     name: 浴火角鹰兽
     modelid1: 140333
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140333
-  item_template: {}
+  item_template:
+    entry: 69213
+    name: 浴火角鹰兽
+    spellid_2: 80333
+    Quality: 4
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 角鹰兽

@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140013
     model_id: 4013
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+    texture_1: fandralfirescorpion
+    texture_2: fandralfirescorpion
+    texture_3: fandralfirescorpion
+  spell:
+    id: 80013
+    name: 烈焰蝎子
+    description: 召唤或解散一只可供骑乘的烈焰蝎子。这是一种速度非常快的坐骑。
+    visual_id: 9140013
+    icon_id: 2433
+  item:
+    id: 91013
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 55241
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140013
     name: 烈焰蝎子
     modelid1: 140013
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140013
-  item_template: {}
+  item_template:
+    entry: 91013
+    name: 烈焰蝎子
+    displayid: 55241
+    spellid_2: 80013
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 蝎子

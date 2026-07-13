@@ -56,6 +56,49 @@ def _parse_number(value: Any) -> int | float | None:
         return None
 
 
+NUMERIC_FIELD_KEYS = {
+    "id",
+    "drop.entry",
+    "drop.rate",
+    "dbc.creature_model_data.id",
+    "dbc.creature_model_data.flags",
+    "dbc.creature_display_info.id",
+    "dbc.creature_display_info.model_id",
+    "dbc.creature_display_info.field_20",
+    "dbc.creature_display_info.field_21",
+    "dbc.creature_display_info.field_22",
+    "dbc.creature_display_info.field_23",
+    "db.creature_template.entry",
+    "db.creature_template.modelid1",
+    "db.creature_template.faction",
+    "db.creature_template.type",
+    "db.creature_template.unit_class",
+    "db.creature_template.unit_flag2",
+    "db.creature_model_info.display_id",
+    "db.creature_template.bounding_radius",
+    "db.creature_template.combat_reach",
+    "db.creature_template.gender",
+    "db.creature_template.display_id_other_gender",
+    "dbc.spell.id",
+    "dbc.spell.visual_id",
+    "dbc.spell.icon_id",
+    "db.item_template.entry",
+    "db.item_template.displayid",
+    "db.item_template.Quality",
+    "db.item_template.AllowableClass",
+    "db.item_template.AllowableRace",
+    "db.item_template.spellid_2",
+    "dbc.item.id",
+    "dbc.item.class",
+    "dbc.item.subclass",
+    "dbc.item.material",
+    "dbc.item.quality",
+    "dbc.item.display_id",
+    "dbc.item.inventory_type",
+    "dbc.item.sheath",
+}
+
+
 def _row_to_resource(
     row: tuple[Any, ...],
     mapping: dict[str, Any],
@@ -72,18 +115,7 @@ def _row_to_resource(
 
         if field_key in ("debug_passed", "added"):
             value = _parse_bool(value)
-        elif field_key in (
-            "id",
-            "drop.entry",
-            "dbc.creature_model_data.id",
-            "dbc.creature_display_info.id",
-            "dbc.creature_display_info.model_id",
-            "db.creature_template.entry",
-            "db.creature_template.modelid1",
-            "db.creature_model_info.display_id",
-        ):
-            value = _parse_number(value)
-        elif field_key == "drop.rate":
+        elif field_key in NUMERIC_FIELD_KEYS:
             value = _parse_number(value)
         elif isinstance(value, str):
             value = value.strip()
@@ -97,7 +129,11 @@ def _save_resource_with_unique_name(
     resource: Resource,
     seen_filenames: set[str],
 ) -> None:
-    from app.services.resource_store import save_resource
+    from app.services.resource_store import load_resource, save_resource
+
+    existing = load_resource(resource.resource_type, resource.id)
+    if existing is not None:
+        resource = _merge_resources(existing, resource)
 
     base_name = f"{resource.id:04d}-{resource.model_folder}"
     if base_name not in seen_filenames:
@@ -110,6 +146,27 @@ def _save_resource_with_unique_name(
         suffix += 1
     seen_filenames.add(f"{base_name}-{suffix}")
     save_resource(resource, filename_suffix=str(suffix))
+
+
+def _merge_resources(existing: Resource, new: Resource) -> Resource:
+    """将新导入的数据合并到已有资源中，保留已有字段 unless 新数据提供了非空值。"""
+    schema_cls = SCHEMA_MAP[new.resource_type]
+    base = existing.model_dump()
+    update = new.model_dump()
+
+    def deep_merge(base_dict: dict[str, Any], update_dict: dict[str, Any]) -> dict[str, Any]:
+        result = dict(base_dict)
+        for key, value in update_dict.items():
+            if value is None or value == {}:
+                continue
+            if isinstance(value, dict) and isinstance(result.get(key), dict):
+                result[key] = deep_merge(result[key], value)
+            else:
+                result[key] = value
+        return result
+
+    merged = deep_merge(base, update)
+    return cast(Resource, schema_cls(**merged))
 
 
 def import_xlsx(

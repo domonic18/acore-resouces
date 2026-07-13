@@ -19,16 +19,43 @@ dbc:
   creature_display_info:
     id: 140445
     model_id: 104445
-  spell: {}
-  item: {}
+    field_20: 0
+    field_21: 0
+    field_22: 1
+    field_23: 255
+  spell:
+    id: 80445
+    name: 泥翼信天翁
+    visual_id: 9140445
+  item:
+    id: 166745
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140445
     name: 泥翼信天翁
     modelid1: 140445
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140445
-  item_template: {}
+  item_template:
+    entry: 166745
+    name: 泥翼信天翁
+    spellid_2: 80445
+    Quality: 3
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 信天翁
