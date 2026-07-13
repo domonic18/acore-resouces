@@ -852,6 +852,7 @@ export function ResourceDetailPage() {
       {pickerTarget && (
         <IconPickerDialog
           title={pickerTarget === "item" ? "选择 Item 图标" : "选择 Spell 图标"}
+          selectedValue={pickerTarget === "item" ? itemIcon : spellIcon}
           iconNames={iconNames}
           search={pickerSearch}
           onSearch={setPickerSearch}
@@ -947,6 +948,7 @@ function IconEditor({
 
 function IconPickerDialog({
   title,
+  selectedValue,
   iconNames,
   search,
   onSearch,
@@ -954,6 +956,7 @@ function IconPickerDialog({
   onClose,
 }: {
   title: string;
+  selectedValue: string;
   iconNames: string[];
   search: string;
   onSearch: (value: string) => void;
@@ -971,7 +974,7 @@ function IconPickerDialog({
       onClick={onClose}
     >
       <div
-        className="flex max-h-[80vh] w-full max-w-3xl flex-col rounded-lg border border-border bg-bg-surface shadow-xl"
+        className="flex h-[80vh] w-full max-w-3xl flex-col rounded-lg border border-border bg-bg-surface shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-border p-4">
@@ -998,28 +1001,36 @@ function IconPickerDialog({
           </p>
         </div>
         <div className="grid flex-1 grid-cols-6 gap-2 overflow-y-auto p-4 sm:grid-cols-8">
-          {filtered.map((name) => (
-            <button
-              key={name}
-              type="button"
-              onClick={() => onSelect(name)}
-              className="flex flex-col items-center gap-1 rounded-md border border-border p-2 transition-colors hover:border-primary hover:bg-bg-hover"
-              title={name}
-            >
-              <img
-                src={getIconPreviewUrl(name, 64)}
-                alt={name}
-                className="h-10 w-10 object-contain"
-                loading="lazy"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
-              />
-              <span className="block max-w-full truncate text-[10px] text-text-secondary">
-                {name}
-              </span>
-            </button>
-          ))}
+          {filtered.map((name) => {
+            const isSelected = name === selectedValue;
+            return (
+              <button
+                key={name}
+                type="button"
+                onClick={() => onSelect(name)}
+                className={cn(
+                  "flex flex-col items-center gap-1 rounded-md border p-2 transition-colors hover:border-primary hover:bg-bg-hover",
+                  isSelected
+                    ? "border-primary bg-primary/10 ring-1 ring-primary"
+                    : "border-border",
+                )}
+                title={name}
+              >
+                <img
+                  src={getIconPreviewUrl(name, 64)}
+                  alt={name}
+                  className="h-10 w-10 object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+                <span className="block max-w-full truncate text-[10px] text-text-secondary">
+                  {name}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
