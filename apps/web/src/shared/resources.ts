@@ -71,6 +71,15 @@ export function getFilePreviewUrl(path: string): string {
   return `/api/preview/file/${encodeURIComponent(path)}`;
 }
 
+export function getM2FileUrl(relativePath: string): string {
+  return getFilePreviewUrl(relativePath);
+}
+
+export async function fetchM2Binary(relativePath: string): Promise<ArrayBuffer> {
+  const response = await apiFetch(getM2FileUrl(relativePath));
+  return response.arrayBuffer();
+}
+
 export function getResourceCount(resourceType: string): Promise<number> {
   return listResources(resourceType, { page_size: 1 }).then((res) => res.total);
 }

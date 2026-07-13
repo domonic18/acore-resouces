@@ -5,9 +5,10 @@ import {
   ArrowLeft,
   FolderTree,
   Layers,
-  RotateCw,
   FolderOpen,
   AlertCircle,
+  Box,
+  Image as ImageIcon,
 } from "lucide-react";
 import {
   getResource,
@@ -21,12 +22,15 @@ import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { ModelViewer } from "@/components/viewer/ModelViewer";
 import type { AssetFile } from "@/shared/types";
 
+type PreviewTab = "model" | "image";
+
 export function PreviewPage() {
   const { resourceType, id } = useParams<{
     resourceType?: string;
     id?: string;
   }>();
   const resourceId = id ? parseInt(id, 10) : 0;
+  const [activeTab, setActiveTab] = useState<PreviewTab>("model");
   const [selectedTexture, setSelectedTexture] = useState<AssetFile | null>(
     null,
   );
@@ -100,6 +104,30 @@ export function PreviewPage() {
     ? Object.entries(modelPreview.metadata)
     : [];
 
+  const canShowModel = modelPreview?.status === "available";
+  const canShowImage = imageFiles.length > 0;
+
+  function handleFileSelect(file: AssetFile) {
+    if (file.file_type === "m2") {
+      setActiveTab("model");
+    } else if (file.file_type === "blp") {
+      setSelectedTexture(file);
+      setActiveTab("model");
+    } else if (["png", "gif"].includes(file.file_type)) {
+      setSelectedImage(file);
+      setActiveTab("image");
+    }
+  }
+
+  const allFiles = assets
+    ? [
+        ...assets.m2_files,
+        ...assets.texture_files,
+        ...assets.image_files,
+        ...assets.icon_files,
+      ]
+    : [];
+
   return (
     <div className="content">
       <header className="topbar">
@@ -118,9 +146,6 @@ export function PreviewPage() {
           <Link to={`/resources/${resourceType}/${resourceId}`} className="btn">
             编辑资源
           </Link>
-          <button className="btn btn-primary" disabled title="重新转换开发中">
-            <RotateCw className="h-4 w-4" /> 重新转换
-          </button>
         </div>
       </header>
 
@@ -138,14 +163,17 @@ export function PreviewPage() {
                 <AssetFileTree
                   title=""
                   icon=<Layers className="h-4 w-4" />
-                  files={[
-                    ...assets.m2_files,
-                    ...assets.texture_files,
-                    ...assets.image_files,
-                    ...assets.icon_files,
-                  ]}
-                  activePath={selectedTexture?.relative_path}
-                  onSelect={(file) => setSelectedTexture(file)}
+                  files={allFiles}
+                  activePath={
+                    activeTab === "image"
+                      ? selectedImage?.relative_path
+                      : activeTab === "model" && selectedTexture
+                        ? selectedTexture.relative_path
+                        : activeTab === "model"
+                          ? modelPreview?.main_m2
+                          : undefined
+                  }
+                  onSelect={handleFileSelect}
                 />
               </div>
             ) : (
@@ -165,24 +193,62 @@ export function PreviewPage() {
           </div>
         </div>
 
-        {/* Center: Image / 3D Viewer */}
+        {/* Center: Tabbed Viewer */}
         <div className="viewer-panel">
-          {imageFiles.length > 0 ? (
-            <ImageViewer
-              files={imageFiles}
-              selected={selectedImage}
-              onSelect={setSelectedImage}
-            />
-          ) : modelPreview ? (
-            <ModelViewer preview={modelPreview} resourceType={resourceType} />
-          ) : (
-            <div className="viewer-canvas">
+          <div className="panel-header flex items-center gap-2">
+            {canShowModel && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("model")}
+                className={`flex items-center gap-1 rounded-md px-3 py-1 text-sm ${
+                  activeTab === "model"
+                    ? "bg-accent text-white"
+                    : "text-text-secondary hover:bg-bg-elevated"
+                }`}
+              >
+                <Box className="h-4 w-4" /> 3D 模型
+              </button>
+            )}
+            {canShowImage && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("image")}
+                className={`flex items-center gap-1 rounded-md px-3 py-1 text-sm ${
+                  activeTab === "image"
+                    ? "bg-accent text-white"
+                    : "text-text-secondary hover:bg-bg-elevated"
+                }`}
+              >
+                <ImageIcon className="h-4 w-4" /> 图片
+              </button>
+            )}
+          </div>
+
+          <div className="relative flex-1 overflow-hidden">
+            {activeTab === "model" && modelPreview && (
+              <ModelViewer
+                preview={modelPreview}
+                resourceType={resourceType}
+                selectedTexture={selectedTexture?.relative_path}
+              />
+            )}
+            {activeTab === "model" && !canShowModel && (
               <div className="preview-placeholder">
-                <AlertCircle className="h-12 w-12" />
-                <p>暂无模型预览数据</p>
+                <AlertCircle className="h-12 w-12 text-text-tertiary" />
+                <p>暂无可用的 3D 模型数据</p>
+                <p className="text-text-tertiary">
+                  状态：{modelPreview?.status || "未知"}
+                </p>
               </div>
-            </div>
-          )}
+            )}
+            {activeTab === "image" && (
+              <ImageViewer
+                files={imageFiles}
+                selected={selectedImage}
+                onSelect={setSelectedImage}
+              />
+            )}
+          </div>
         </div>
 
         {/* Right: Textures & Meta */}
@@ -201,7 +267,10 @@ export function PreviewPage() {
                       active={
                         selectedTexture?.relative_path === file.relative_path
                       }
-                      onClick={() => setSelectedTexture(file)}
+                      onClick={() => {
+                        setSelectedTexture(file);
+                        setActiveTab("model");
+                      }}
                     />
                   ))}
                 </div>
@@ -236,17 +305,19 @@ export function PreviewPage() {
                 <div className="text-text-secondary">暂无元数据</div>
               )}
               <div className="meta-item">
-                <span className="meta-label">转换状态</span>
+                <span className="meta-label">渲染状态</span>
                 <span
                   className={`meta-value ${
-                    modelPreview?.conversion.status === "success"
+                    modelPreview?.status === "available"
                       ? "text-success"
                       : "text-warning"
                   }`}
                 >
-                  {modelPreview?.conversion.status === "success"
-                    ? "成功"
-                    : modelPreview?.conversion.status || "未知"}
+                  {modelPreview?.status === "available"
+                    ? "可渲染"
+                    : modelPreview?.status === "skin_missing"
+                      ? "缺少 skin 文件"
+                      : modelPreview?.status || "未知"}
                 </span>
               </div>
             </div>
@@ -266,6 +337,15 @@ function ImageViewer({
   selected: AssetFile | null;
   onSelect: (file: AssetFile) => void;
 }) {
+  if (files.length === 0) {
+    return (
+      <div className="preview-placeholder">
+        <AlertCircle className="h-12 w-12 text-text-tertiary" />
+        <p>没有图片文件</p>
+      </div>
+    );
+  }
+
   const current = selected ?? files[0];
 
   return (

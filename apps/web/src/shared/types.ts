@@ -88,14 +88,10 @@ export interface ResourceAssets {
 export interface ModelPreview {
   model_folder: string;
   resource_type: string;
-  status: string;
+  status: "available" | "skin_missing" | "not_found";
   m2_files: string[];
   main_m2: string;
+  skin_files: string[];
+  blp_files: string[];
   metadata: Record<string, unknown> | null;
-  conversion: {
-    status: string;
-    output_dir: string | null;
-    manifest: Record<string, unknown> | null;
-    error: string | null;
-  };
 }
