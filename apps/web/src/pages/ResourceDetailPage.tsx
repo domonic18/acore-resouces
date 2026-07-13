@@ -1043,6 +1043,12 @@ function IconPickerDialog({
               <p className="mt-1 max-w-md px-4 text-center text-xs text-danger">
                 {error?.message || "未知错误"}
               </p>
+              {error?.message?.includes("<!doctype") && (
+                <p className="mt-2 max-w-md px-4 text-center text-xs text-text-secondary">
+                  后端 /api/preview/icons 接口返回了网页而非 JSON，
+                  通常是后端代码未更新或未重启导致。
+                </p>
+              )}
               {onRefresh && (
                 <button
                   type="button"
