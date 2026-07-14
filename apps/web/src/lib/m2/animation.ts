@@ -59,6 +59,56 @@ export function isExternalSequence(sequence: M2Sequence): boolean {
   return (sequence.flags & SEQUENCE_EXTERNAL_ANIM_MASK) === 0;
 }
 
+interface ResolvedSequence {
+  index: number;
+  sequence: M2Sequence;
+}
+
+function resolveSequence(
+  m2: ParsedM2["m2"],
+  animId: number,
+): ResolvedSequence | null {
+  let sequenceIndex = -1;
+
+  if (animId >= 0 && animId < m2.animationLookup.length) {
+    sequenceIndex = m2.animationLookup[animId];
+  }
+
+  if (sequenceIndex < 0 || sequenceIndex >= m2.sequences.length) {
+    // Fallback: some retro-ported models have a broken lookup table but the
+    // sequence.id field still matches the requested animation ID.
+    const directIndex = m2.sequences.findIndex((seq) => seq.id === animId);
+    if (directIndex >= 0) {
+      // eslint-disable-next-line no-console
+      console.log(
+        "[resolveSequence] lookup failed for animId=",
+        animId,
+        "using direct sequence.id match index=",
+        directIndex,
+      );
+      sequenceIndex = directIndex;
+    } else {
+      return null;
+    }
+  }
+
+  let resolvedIndex = sequenceIndex;
+  let sequence = m2.sequences[resolvedIndex];
+  const visited = new Set<number>();
+  visited.add(resolvedIndex);
+  while (
+    sequence.aliasNext !== ALIAS_NEXT_TERMINATOR &&
+    sequence.aliasNext < m2.sequences.length &&
+    !visited.has(sequence.aliasNext)
+  ) {
+    resolvedIndex = sequence.aliasNext;
+    sequence = m2.sequences[resolvedIndex];
+    visited.add(resolvedIndex);
+  }
+
+  return { index: resolvedIndex, sequence };
+}
+
 function readTrackTimestamps(
   buffer: ArrayBuffer,
   baseOffset: number,
@@ -250,6 +300,11 @@ function convertM2Quaternion(q: number[]): [number, number, number, number] {
   return [-q[0], -q[2], q[1], q[3]];
 }
 
+interface VectorKeyframe {
+  time: number;
+  value: [number, number, number];
+}
+
 function buildVectorKeyframes(
   timestamps: Uint32Array,
   values: Float32Array,
@@ -265,27 +320,14 @@ function buildVectorKeyframes(
     return null;
   }
 
-  const keyframes: number[] = [];
-  let lastTime = -1;
+  const keyframes: VectorKeyframe[] = [];
   for (let i = 0; i < timestamps.length; i++) {
     const time = timestamps[i] / MILLISECONDS_PER_SECOND;
-    if (time < lastTime) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "[buildVectorKeyframes] non-monotonic timestamp at",
-        i,
-        time,
-        lastTime,
-      );
-      return null;
-    }
     if (!Number.isFinite(time)) {
       // eslint-disable-next-line no-console
       console.warn("[buildVectorKeyframes] non-finite timestamp at", i, time);
-      return null;
+      continue;
     }
-    lastTime = time;
-    keyframes.push(time);
 
     const x = values[i * 3];
     const y = values[i * 3 + 1];
@@ -293,15 +335,31 @@ function buildVectorKeyframes(
     if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
       // eslint-disable-next-line no-console
       console.warn("[buildVectorKeyframes] non-finite value at", i, x, y, z);
-      return null;
+      continue;
     }
-    if (converter) {
-      keyframes.push(...converter(new Float32Array([x, y, z])));
-    } else {
-      keyframes.push(x, y, z);
-    }
+
+    const converted = converter
+      ? converter(new Float32Array([x, y, z]))
+      : ([x, y, z] as [number, number, number]);
+    keyframes.push({ time, value: converted });
   }
-  return keyframes;
+
+  if (keyframes.length === 0) {
+    return null;
+  }
+
+  keyframes.sort((a, b) => a.time - b.time);
+
+  const result: number[] = [];
+  for (const { time, value } of keyframes) {
+    result.push(time, value[0], value[1], value[2]);
+  }
+  return result;
+}
+
+interface QuaternionKeyframe {
+  time: number;
+  value: [number, number, number, number];
 }
 
 function buildQuaternionKeyframes(
@@ -318,20 +376,9 @@ function buildQuaternionKeyframes(
     return null;
   }
 
-  const keyframes: number[] = [];
-  let lastTime = -1;
+  const keyframes: QuaternionKeyframe[] = [];
   for (let i = 0; i < timestamps.length; i++) {
     const time = timestamps[i] / MILLISECONDS_PER_SECOND;
-    if (time < lastTime) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "[buildQuaternionKeyframes] non-monotonic timestamp at",
-        i,
-        time,
-        lastTime,
-      );
-      return null;
-    }
     if (!Number.isFinite(time)) {
       // eslint-disable-next-line no-console
       console.warn(
@@ -339,16 +386,14 @@ function buildQuaternionKeyframes(
         i,
         time,
       );
-      return null;
+      continue;
     }
-    lastTime = time;
-    keyframes.push(time);
 
     const q = decompressM2Quaternion(values, i);
     if (!q.every(Number.isFinite)) {
       // eslint-disable-next-line no-console
       console.warn("[buildQuaternionKeyframes] non-finite value at", i, q);
-      return null;
+      continue;
     }
     const magnitude = Math.sqrt(
       q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3],
@@ -356,12 +401,23 @@ function buildQuaternionKeyframes(
     if (magnitude <= NORMALIZATION_EPSILON) {
       // eslint-disable-next-line no-console
       console.warn("[buildQuaternionKeyframes] zero quaternion at", i, q);
-      return null;
+      continue;
     }
     const converted = convertM2Quaternion(q.map((v) => v / magnitude));
-    keyframes.push(converted[0], converted[1], converted[2], converted[3]);
+    keyframes.push({ time, value: converted });
   }
-  return keyframes;
+
+  if (keyframes.length === 0) {
+    return null;
+  }
+
+  keyframes.sort((a, b) => a.time - b.time);
+
+  const result: number[] = [];
+  for (const { time, value } of keyframes) {
+    result.push(time, value[0], value[1], value[2], value[3]);
+  }
+  return result;
 }
 
 export function buildAnimationClip(
@@ -371,44 +427,31 @@ export function buildAnimationClip(
   animBuffer: ArrayBuffer | null,
 ): THREE.AnimationClip | null {
   const { m2 } = parsed;
-  if (animId < 0 || animId >= m2.animationLookup.length) {
+
+  const resolved = resolveSequence(m2, animId);
+  if (!resolved) {
     // eslint-disable-next-line no-console
     console.log(
-      "[buildAnimationClip] animId out of lookup range",
+      "[buildAnimationClip] no sequence found for animId=",
       animId,
+      "lookupLength=",
       m2.animationLookup.length,
+      "sequences=",
+      m2.sequences.length,
     );
     return null;
   }
 
-  const sequenceIndex = m2.animationLookup[animId];
-  if (sequenceIndex < 0 || sequenceIndex >= m2.sequences.length) {
-    // eslint-disable-next-line no-console
-    console.log("[buildAnimationClip] invalid sequenceIndex", sequenceIndex);
-    return null;
-  }
-
-  let resolvedIndex = sequenceIndex;
-  let sequence = m2.sequences[resolvedIndex];
-  const visited = new Set<number>();
-  visited.add(resolvedIndex);
-  while (
-    sequence.aliasNext !== ALIAS_NEXT_TERMINATOR &&
-    sequence.aliasNext < m2.sequences.length &&
-    !visited.has(sequence.aliasNext)
-  ) {
-    resolvedIndex = sequence.aliasNext;
-    sequence = m2.sequences[resolvedIndex];
-    visited.add(resolvedIndex);
-  }
-
+  const { index: resolvedIndex, sequence } = resolved;
   const external = isExternalSequence(sequence);
   // eslint-disable-next-line no-console
   console.log(
-    "[buildAnimationClip] originalIndex=",
-    sequenceIndex,
+    "[buildAnimationClip] animId=",
+    animId,
     "resolvedIndex=",
     resolvedIndex,
+    "sequence.id=",
+    sequence.id,
     "aliasNext=",
     sequence.aliasNext,
     "external=",
@@ -445,6 +488,8 @@ export function buildAnimationClip(
 
   const tracks: THREE.KeyframeTrack[] = [];
   const duration = sequence.length / MILLISECONDS_PER_SECOND;
+
+  let animatedBoneCount = 0;
 
   for (let boneIndex = 0; boneIndex < m2.bones.length; boneIndex++) {
     const bone = m2.bones[boneIndex];
@@ -493,6 +538,7 @@ export function buildAnimationClip(
             keyframes.filter((_, i) => i % 4 !== 0),
           ),
         );
+        animatedBoneCount++;
       }
     }
 
@@ -517,6 +563,7 @@ export function buildAnimationClip(
             keyframes.filter((_, i) => i % 5 !== 0),
           ),
         );
+        animatedBoneCount++;
       }
     }
 
@@ -542,17 +589,24 @@ export function buildAnimationClip(
             keyframes.filter((_, i) => i % 4 !== 0),
           ),
         );
+        animatedBoneCount++;
       }
     }
   }
 
+  // eslint-disable-next-line no-console
+  console.log(
+    "[buildAnimationClip] generated",
+    tracks.length,
+    "tracks for",
+    animatedBoneCount,
+    "bone tracks",
+    "total bones=",
+    m2.bones.length,
+  );
   if (tracks.length === 0) {
-    // eslint-disable-next-line no-console
-    console.log("[buildAnimationClip] no tracks generated");
     return null;
   }
 
-  // eslint-disable-next-line no-console
-  console.log("[buildAnimationClip] generated", tracks.length, "tracks");
   return new THREE.AnimationClip(`anim_${animId}`, duration, tracks);
 }

@@ -162,6 +162,8 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
     useState<THREE.AnimationClip | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
+  const [customAnimId, setCustomAnimId] = useState<string>("");
+  const [debugAnimId, setDebugAnimId] = useState<number | null>(null);
 
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControlsImpl>(null);
@@ -305,9 +307,36 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
         }
       });
 
-      const animId = resolveAnimationId(animationState, availableIds);
       // eslint-disable-next-line no-console
-      console.log("[animation] state=", animationState, "resolved id=", animId);
+      console.log(
+        "[animation] sequences:",
+        currentParsed.m2.sequences.map((seq, idx) => ({
+          index: idx,
+          id: seq.id,
+          subId: seq.subId,
+          length: seq.length,
+          flags: seq.flags,
+          aliasNext: seq.aliasNext,
+        })),
+        "lookup:",
+        currentParsed.m2.animationLookup.slice(0, 256),
+      );
+
+      let animId: number | null;
+      if (debugAnimId !== null) {
+        animId = debugAnimId;
+      } else {
+        animId = resolveAnimationId(animationState, availableIds);
+      }
+      // eslint-disable-next-line no-console
+      console.log(
+        "[animation] state=",
+        animationState,
+        "resolved id=",
+        animId,
+        "debugAnimId=",
+        debugAnimId,
+      );
       if (animId === null) {
         setAnimationClip(null);
         return;
@@ -372,7 +401,7 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
     return () => {
       cancelled = true;
     };
-  }, [parsed, animationState, preview.anim_files]);
+  }, [parsed, animationState, debugAnimId, preview.anim_files]);
 
   const handleZoomIn = useCallback(() => {
     const controls = controlsRef.current;
@@ -569,6 +598,39 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
                   </option>
                 ))}
               </select>
+            </div>
+            <div className="flex items-center gap-1 border-l border-border pl-2">
+              <span className="text-xs text-text-tertiary">AnimID</span>
+              <input
+                type="number"
+                className="h-8 w-16 rounded-md border border-border bg-bg-input px-2 text-sm text-text-primary outline-none focus:border-border-focus"
+                value={customAnimId}
+                onChange={(e) => setCustomAnimId(e.target.value)}
+                title="自定义动画 ID"
+                placeholder="ID"
+              />
+              <button
+                className="btn btn-sm btn-ghost"
+                title="应用自定义动画 ID"
+                onClick={() => {
+                  const id = parseInt(customAnimId, 10);
+                  setDebugAnimId(Number.isNaN(id) ? null : id);
+                }}
+              >
+                应用
+              </button>
+              {debugAnimId !== null && (
+                <button
+                  className="btn btn-sm btn-ghost"
+                  title="清除自定义动画 ID"
+                  onClick={() => {
+                    setDebugAnimId(null);
+                    setCustomAnimId("");
+                  }}
+                >
+                  清除
+                </button>
+              )}
             </div>
           </>
         )}
