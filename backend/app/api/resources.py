@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from app.preview.asset_resolver import resolve_resource_assets
@@ -212,5 +212,9 @@ def get_resource_assets_endpoint(
         "matched_textures": [
             {"name": f.name, "relative_path": f.relative_path, "file_type": f.file_type}
             for f in assets.matched_textures
+        ],
+        "anim_files": [
+            {"name": f.name, "relative_path": f.relative_path, "file_type": f.file_type}
+            for f in assets.anim_files
         ],
     }

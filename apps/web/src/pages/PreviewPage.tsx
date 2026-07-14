@@ -20,6 +20,7 @@ import {
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { ModelViewer } from "@/components/viewer/ModelViewer";
+import { uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
 
 type PreviewTab = "model" | "image";
@@ -120,12 +121,13 @@ export function PreviewPage() {
   }
 
   const allFiles = assets
-    ? [
+    ? uniqueFiles([
         ...assets.m2_files,
         ...assets.texture_files,
+        ...(assets.anim_files ?? []),
         ...assets.image_files,
         ...assets.icon_files,
-      ]
+      ])
     : [];
 
   return (

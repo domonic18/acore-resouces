@@ -83,6 +83,7 @@ export interface ResourceAssets {
   image_files: AssetFile[];
   icon_files: AssetFile[];
   matched_textures: AssetFile[];
+  anim_files: AssetFile[];
 }
 
 export interface ModelPreview {
@@ -93,5 +94,6 @@ export interface ModelPreview {
   main_m2: string;
   skin_files: string[];
   blp_files: string[];
+  anim_files: string[];
   metadata: Record<string, unknown> | null;
 }

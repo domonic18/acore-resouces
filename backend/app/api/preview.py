@@ -139,6 +139,7 @@ def preview_model(
             "m2_files": [],
             "skin_files": [],
             "blp_files": [],
+            "anim_files": [],
             "metadata": None,
             "message": "未找到 .m2 文件",
         }
@@ -152,6 +153,7 @@ def preview_model(
 
     skin_files = sorted(resource_dir.rglob("*.skin"))
     blp_files = sorted(resource_dir.rglob("*.blp"))
+    anim_files = sorted(resource_dir.rglob("*.anim"))
 
     try:
         metadata = read_m2_metadata(main_m2)
@@ -168,13 +170,14 @@ def preview_model(
         "main_m2": str(main_m2.relative_to(settings.project_root)),
         "skin_files": [str(p.relative_to(settings.project_root)) for p in skin_files],
         "blp_files": [str(p.relative_to(settings.project_root)) for p in blp_files],
+        "anim_files": [str(p.relative_to(settings.project_root)) for p in anim_files],
         "metadata": m2_metadata_to_dict(metadata),
     }
 
 
 @router.get("/m2/{model_folder:path}/file/{relative_path:path}")
 def stream_m2_file(model_folder: str, relative_path: str) -> FileResponse:
-    """流式返回 .m2 或 .skin 原始字节，供前端解析器使用。"""
+    """流式返回 .m2、.skin 或 .anim 原始字节，供前端解析器使用。"""
     source_path = _resolve_source_path(relative_path)
     if not source_path.exists():
         raise HTTPException(status_code=404, detail=f"文件不存在：{relative_path}")
@@ -183,6 +186,7 @@ def stream_m2_file(model_folder: str, relative_path: str) -> FileResponse:
     media_type = {
         ".m2": "application/octet-stream",
         ".skin": "application/octet-stream",
+        ".anim": "application/octet-stream",
     }.get(suffix, "application/octet-stream")
 
     return FileResponse(source_path, media_type=media_type)

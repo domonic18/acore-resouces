@@ -56,6 +56,7 @@ def test_preview_model() -> None:
     assert "m2_files" in data
     assert "skin_files" in data
     assert "blp_files" in data
+    assert "anim_files" in data
     assert "main_m2" in data
 
 
@@ -73,7 +74,9 @@ def test_stream_m2_file() -> None:
 
 
 def test_stream_m2_file_not_found() -> None:
-    response = client.get("/api/preview/m2/ardenwealdstagmount影叶符文牡鹿/file/sources/mounts/nonexistent.m2")
+    response = client.get(
+        "/api/preview/m2/ardenwealdstagmount影叶符文牡鹿/file/sources/mounts/nonexistent.m2"
+    )
     assert response.status_code == 404
 
 

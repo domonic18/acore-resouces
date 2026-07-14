@@ -20,7 +20,7 @@ import {
   updateResource,
 } from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
-import { cn } from "@/shared/utils";
+import { cn, uniqueFiles } from "@/shared/utils";
 import type { AssetFile, Resource, ResourceUpdate } from "@/shared/types";
 
 const DBC_TABS = [
@@ -142,7 +142,9 @@ export function ResourceDetailPage() {
   });
 
   const [form, setForm] = useState<FormState>(() => buildForm(resource));
-  const [itemIcon, setItemIcon] = useState(resource?.official_db.icon_name || "");
+  const [itemIcon, setItemIcon] = useState(
+    resource?.official_db.icon_name || "",
+  );
   const [spellIcon, setSpellIcon] = useState(
     resource?.official_db.spell_icon_name || "",
   );
@@ -218,16 +220,7 @@ export function ResourceDetailPage() {
     )
       return true;
     return false;
-  }, [
-    form,
-    resource,
-    itemIcon,
-    spellIcon,
-    itemDbc,
-    itemDb,
-    spellDbc,
-    spellDb,
-  ]);
+  }, [form, resource, itemIcon, spellIcon, itemDbc, itemDb, spellDbc, spellDb]);
 
   const updateField = <K extends keyof FormState>(
     key: K,
@@ -248,7 +241,8 @@ export function ResourceDetailPage() {
     if (form.star_rating !== baseline.star_rating) {
       update.star_rating = form.star_rating || null;
     }
-    if (form.subtype !== baseline.subtype) update.subtype = form.subtype || null;
+    if (form.subtype !== baseline.subtype)
+      update.subtype = form.subtype || null;
     if (form.rarity !== baseline.rarity) update.rarity = form.rarity || null;
     if (
       form.debug_passed !== baseline.debug_passed ||
@@ -325,12 +319,12 @@ export function ResourceDetailPage() {
   }
 
   const allFiles = assets
-    ? [
+    ? uniqueFiles([
         ...assets.m2_files,
         ...assets.texture_files,
         ...assets.image_files,
         ...assets.icon_files,
-      ]
+      ])
     : [];
 
   const isMount = resource.resource_type === "mount";
@@ -547,7 +541,8 @@ export function ResourceDetailPage() {
                   <FormGroup label="entry">
                     <NumberInput
                       value={itemDb.entry}
-                      onChange={(v) => setItemDb((prev) => ({ ...prev, entry: v }))
+                      onChange={(v) =>
+                        setItemDb((prev) => ({ ...prev, entry: v }))
                       }
                     />
                   </FormGroup>
@@ -576,7 +571,10 @@ export function ResourceDetailPage() {
                       onChange={(e) =>
                         setItemDb((prev) => ({
                           ...prev,
-                          Quality: e.target.value === "" ? null : Number(e.target.value),
+                          Quality:
+                            e.target.value === ""
+                              ? null
+                              : Number(e.target.value),
                         }))
                       }
                     >
@@ -648,7 +646,10 @@ export function ResourceDetailPage() {
                       className="form-input"
                       value={String(spellDbc.name ?? "")}
                       onChange={(e) =>
-                        setSpellDbc((prev) => ({ ...prev, name: e.target.value }))
+                        setSpellDbc((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
                       }
                     />
                   </FormGroup>
@@ -690,7 +691,10 @@ export function ResourceDetailPage() {
                       className="form-input"
                       value={String(spellDb.name ?? "")}
                       onChange={(e) =>
-                        setSpellDb((prev) => ({ ...prev, name: e.target.value }))
+                        setSpellDb((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
                       }
                     />
                   </FormGroup>
@@ -804,11 +808,11 @@ export function ResourceDetailPage() {
               <ImageGallery
                 files={
                   assets
-                    ? [
+                    ? uniqueFiles([
                         ...assets.image_files,
                         ...assets.matched_textures,
                         ...assets.icon_files,
-                      ]
+                      ])
                     : []
                 }
                 selected={selectedImage}
@@ -1087,7 +1091,8 @@ function IconPickerDialog({
                     className="h-10 w-10 object-contain"
                     loading="lazy"
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                      (e.currentTarget as HTMLImageElement).style.display =
+                        "none";
                     }}
                   />
                   <span className="block max-w-full truncate text-[10px] text-text-secondary">
@@ -1150,7 +1155,9 @@ function BitmaskCheckboxes({
               type="checkbox"
               checked={(mask & opt.value) === opt.value}
               onChange={(e) => {
-                const next = e.target.checked ? mask | opt.value : mask & ~opt.value;
+                const next = e.target.checked
+                  ? mask | opt.value
+                  : mask & ~opt.value;
                 onChange(next === 0 ? null : next);
               }}
             />

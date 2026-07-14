@@ -1,9 +1,13 @@
-const API_BASE =
+export const API_BASE =
   import.meta.env.VITE_API_BASE_URL ??
   (import.meta.env.DEV ? "http://localhost:8000" : "");
 
 export async function apiFetch(path: string, init?: RequestInit) {
-  const response = await fetch(`${API_BASE}${path}`, {
+  const url =
+    path.startsWith("http://") || path.startsWith("https://")
+      ? path
+      : `${API_BASE}${path}`;
+  const response = await fetch(url, {
     headers: {
       Accept: "application/json",
       ...(init?.headers || {}),

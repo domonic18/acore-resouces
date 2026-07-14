@@ -19,7 +19,7 @@ RESOURCE_TYPE_TO_SOURCE_DIR = {
     "npc": "npcs",
 }
 
-ASSET_EXTENSIONS = {".m2", ".blp", ".png", ".gif"}
+ASSET_EXTENSIONS = {".m2", ".blp", ".png", ".gif", ".anim"}
 
 
 @dataclass
@@ -43,6 +43,7 @@ class ResolvedAssets:
     image_files: list[AssetFile]
     icon_files: list[AssetFile]
     matched_textures: list[AssetFile]
+    anim_files: list[AssetFile]
 
     @property
     def exists(self) -> bool:
@@ -155,6 +156,7 @@ def resolve_resource_assets(resource: Resource) -> ResolvedAssets:
     m2_files = [f for f in files if f.file_type == "m2"]
     texture_files = [f for f in files if f.file_type == "blp"]
     image_files = [f for f in files if f.file_type in ("png", "gif")]
+    anim_files = [f for f in files if f.file_type == "anim"]
 
     variations = _extract_texture_variations(resource)
     matched_textures = _match_texture_files(texture_files, variations)
@@ -187,6 +189,7 @@ def resolve_resource_assets(resource: Resource) -> ResolvedAssets:
         image_files=image_files,
         icon_files=icon_files,
         matched_textures=matched_textures,
+        anim_files=anim_files,
     )
 
 

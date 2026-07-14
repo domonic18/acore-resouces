@@ -2,10 +2,12 @@ import type {
   M2Bone,
   M2Data,
   M2Material,
+  M2Sequence,
   M2SkinBatch,
   M2SkinData,
   M2SkinSubmesh,
   M2Texture,
+  M2Track,
   M2Vertex,
   ParsedM2,
 } from "./types";
@@ -97,13 +99,25 @@ class BufferReader {
     return array;
   }
 
+  readUint32Array(count: number): Uint32Array {
+    const array = new Uint32Array(count);
+    for (let i = 0; i < count; i++) {
+      array[i] = this.readUint32();
+    }
+    return array;
+  }
+
   readCString(maxLength: number): string {
     let end = this._offset;
     const limit = Math.min(this._offset + maxLength, this.view.byteLength);
     while (end < limit && this.view.getUint8(end) !== 0) {
       end++;
     }
-    const bytes = new Uint8Array(this.view.buffer, this._offset, end - this._offset);
+    const bytes = new Uint8Array(
+      this.view.buffer,
+      this._offset,
+      end - this._offset,
+    );
     this._offset = end;
     return new TextDecoder("utf-8").decode(bytes);
   }
@@ -147,18 +161,85 @@ function readMaterial(reader: BufferReader): M2Material {
   return { renderFlags, blendingMode };
 }
 
+function readTrack(reader: BufferReader): M2Track {
+  const interpolationType = reader.readUint16();
+  const globalSequence = reader.readUint16();
+  const timestampsCount = reader.readUint32();
+  const timestampsOffset = reader.readUint32();
+  const valuesCount = reader.readUint32();
+  const valuesOffset = reader.readUint32();
+
+  return {
+    interpolationType,
+    globalSequence,
+    timestampsCount,
+    timestampsOffset,
+    valuesCount,
+    valuesOffset,
+  };
+}
+
+const STANDARD_BONE_SIZE = 88;
+
 function readBone(reader: BufferReader): M2Bone {
   const keyBoneID = reader.readInt32();
   const flags = reader.readUint32();
   const parentID = reader.readInt16();
   const submeshID = reader.readInt16();
-  reader.skip(4); // unknowns
+  const boneNameCRC = reader.readUint32();
 
-  // Skip 3 animation blocks (translation, rotation, scaling) at 20 bytes each
-  reader.skip(60);
+  const translation = readTrack(reader);
+  const rotation = readTrack(reader);
+  const scaling = readTrack(reader);
 
   const pivotPoint = reader.readFloat32Array(3);
-  return { keyBoneID, flags, parentID, submeshID, pivotPoint };
+  return {
+    keyBoneID,
+    flags,
+    parentID,
+    submeshID,
+    boneNameCRC,
+    pivotPoint,
+    translation,
+    rotation,
+    scaling,
+  };
+}
+
+function readSequence(reader: BufferReader): M2Sequence {
+  const id = reader.readUint16();
+  const subId = reader.readUint16();
+  const length = reader.readUint32();
+  const moveSpeed = reader.readFloat32();
+  const flags = reader.readUint32();
+  const probability = reader.readInt16();
+  const order = reader.readUint16();
+  const replayMin = reader.readUint32();
+  const replayMax = reader.readUint32();
+  const blendTime = reader.readUint32();
+  const boundsMin = reader.readFloat32Array(3);
+  const boundsMax = reader.readFloat32Array(3);
+  const radius = reader.readFloat32();
+  const variationNext = reader.readInt16();
+  const aliasNext = reader.readUint16();
+
+  return {
+    id,
+    subId,
+    length,
+    moveSpeed,
+    flags,
+    probability,
+    order,
+    replayMin,
+    replayMax,
+    blendTime,
+    boundsMin,
+    boundsMax,
+    radius,
+    variationNext,
+    aliasNext,
+  };
 }
 
 interface M2ArrayHeader {
@@ -173,11 +254,20 @@ function readM2ArrayHeader(reader: BufferReader): M2ArrayHeader {
   };
 }
 
-interface M2GeometryHeader {
-  vertices: M2ArrayHeader;
+interface M2Header {
+  globalSequences: M2ArrayHeader;
+  sequences: M2ArrayHeader;
+  animationLookup: M2ArrayHeader;
   bones: M2ArrayHeader;
+  keyBoneLookup: M2ArrayHeader;
+  vertices: M2ArrayHeader;
+  colors: M2ArrayHeader;
   textures: M2ArrayHeader;
+  transparency: M2ArrayHeader;
+  textureAnimations: M2ArrayHeader;
+  textureReplaceLookup: M2ArrayHeader;
   materials: M2ArrayHeader;
+  boneLookupTable: M2ArrayHeader;
   textureLookups: M2ArrayHeader;
 }
 
@@ -187,34 +277,49 @@ interface M2GeometryHeader {
  * WotLK keeps `numViews` and `numSkinProfiles` as two uint32s right after the
  * vertices array. Everything else lines up with the Cataclysm layout.
  */
-function readM2HeaderV263(reader: BufferReader): M2GeometryHeader {
+function readM2HeaderV263(reader: BufferReader): M2Header {
   reader.readUint32(); // global_flags
 
-  readM2ArrayHeader(reader); // global_sequences
-  readM2ArrayHeader(reader); // animations
-  readM2ArrayHeader(reader); // animation_lookup
+  const globalSequences = readM2ArrayHeader(reader);
+  const sequences = readM2ArrayHeader(reader);
+  const animationLookup = readM2ArrayHeader(reader);
 
   const bones = readM2ArrayHeader(reader);
-  readM2ArrayHeader(reader); // key_bone_lookup
+  const keyBoneLookup = readM2ArrayHeader(reader);
 
   const vertices = readM2ArrayHeader(reader);
 
   reader.readUint32(); // numViews
   reader.readUint32(); // numSkinProfiles
 
-  readM2ArrayHeader(reader); // colors
+  const colors = readM2ArrayHeader(reader);
 
   const textures = readM2ArrayHeader(reader);
-  readM2ArrayHeader(reader); // transparency
-  readM2ArrayHeader(reader); // texture_animations
-  readM2ArrayHeader(reader); // texture_replace_lookup
+  const transparency = readM2ArrayHeader(reader);
+  const textureAnimations = readM2ArrayHeader(reader);
+  const textureReplaceLookup = readM2ArrayHeader(reader);
 
   const materials = readM2ArrayHeader(reader);
-  readM2ArrayHeader(reader); // bone_lookup_table
+  const boneLookupTable = readM2ArrayHeader(reader);
 
   const textureLookups = readM2ArrayHeader(reader);
 
-  return { vertices, bones, textures, materials, textureLookups };
+  return {
+    globalSequences,
+    sequences,
+    animationLookup,
+    bones,
+    keyBoneLookup,
+    vertices,
+    colors,
+    textures,
+    transparency,
+    textureAnimations,
+    textureReplaceLookup,
+    materials,
+    boneLookupTable,
+    textureLookups,
+  };
 }
 
 /**
@@ -223,39 +328,51 @@ function readM2HeaderV263(reader: BufferReader): M2GeometryHeader {
  * Cataclysm collapses the WotLK view fields into a single `num_skin_profiles`
  * uint32 and adds `texture_combiner_combos` at the end of the header.
  */
-function readM2HeaderV264(reader: BufferReader): M2GeometryHeader {
+function readM2HeaderV264(reader: BufferReader): M2Header {
   reader.readUint32(); // global_flags
 
-  readM2ArrayHeader(reader); // global_sequences
-  readM2ArrayHeader(reader); // animations
-  readM2ArrayHeader(reader); // animation_lookup
+  const globalSequences = readM2ArrayHeader(reader);
+  const sequences = readM2ArrayHeader(reader);
+  const animationLookup = readM2ArrayHeader(reader);
 
   const bones = readM2ArrayHeader(reader);
-  readM2ArrayHeader(reader); // key_bone_lookup
+  const keyBoneLookup = readM2ArrayHeader(reader);
 
   const vertices = readM2ArrayHeader(reader);
 
   reader.readUint32(); // num_skin_profiles
 
-  readM2ArrayHeader(reader); // colors
+  const colors = readM2ArrayHeader(reader);
 
   const textures = readM2ArrayHeader(reader);
-  readM2ArrayHeader(reader); // transparency
-  readM2ArrayHeader(reader); // texture_animations
-  readM2ArrayHeader(reader); // texture_replace_lookup
+  const transparency = readM2ArrayHeader(reader);
+  const textureAnimations = readM2ArrayHeader(reader);
+  const textureReplaceLookup = readM2ArrayHeader(reader);
 
   const materials = readM2ArrayHeader(reader);
-  readM2ArrayHeader(reader); // bone_lookup_table
+  const boneLookupTable = readM2ArrayHeader(reader);
 
   const textureLookups = readM2ArrayHeader(reader);
 
-  return { vertices, bones, textures, materials, textureLookups };
+  return {
+    globalSequences,
+    sequences,
+    animationLookup,
+    bones,
+    keyBoneLookup,
+    vertices,
+    colors,
+    textures,
+    transparency,
+    textureAnimations,
+    textureReplaceLookup,
+    materials,
+    boneLookupTable,
+    textureLookups,
+  };
 }
 
-function readM2GeometryHeader(
-  reader: BufferReader,
-  version: number,
-): M2GeometryHeader {
+function readM2Header(reader: BufferReader, version: number): M2Header {
   switch (version) {
     case 263:
       return readM2HeaderV263(reader);
@@ -266,6 +383,25 @@ function readM2GeometryHeader(
         `Unsupported M2 version: ${version}. Supported versions: 263 (WotLK), 264 (Cataclysm).`,
       );
   }
+}
+
+function validateBoneLayout(
+  reader: BufferReader,
+  bonesHeader: M2ArrayHeader,
+  verticesOffset: number,
+): number {
+  if (bonesHeader.count <= 0) return STANDARD_BONE_SIZE;
+
+  const candidateSizes = [88, 92, 96];
+
+  for (const size of candidateSizes) {
+    const endOffset = bonesHeader.offset + bonesHeader.count * size;
+    if (endOffset <= verticesOffset && endOffset <= reader.length) {
+      return size;
+    }
+  }
+
+  return STANDARD_BONE_SIZE;
 }
 
 export function parseM2(buffer: ArrayBuffer): M2Data {
@@ -283,38 +419,60 @@ export function parseM2(buffer: ArrayBuffer): M2Data {
   reader.seek(nameOffset);
   const name = reader.readCString(nameLength);
 
-  // Position reader right after the fixed prefix (magic, version, name) and
-  // read the rest of the header with version-specific logic.
   reader.seek(16);
 
-  const { vertices, bones, textures, materials, textureLookups } =
-    readM2GeometryHeader(reader, version);
-
-  // eslint-disable-next-line no-console
-  console.log("M2 parse:", {
-    version,
-    name,
-    vertices,
+  const {
+    globalSequences,
+    sequences,
+    animationLookup,
     bones,
+    vertices,
     textures,
     materials,
     textureLookups,
-    fileSize: buffer.byteLength,
-  });
+  } = readM2Header(reader, version);
+
+  const parsedGlobalSequences: number[] = [];
+  if (globalSequences.offset > 0 && globalSequences.count > 0) {
+    reader.seek(globalSequences.offset);
+    for (let i = 0; i < globalSequences.count; i++) {
+      parsedGlobalSequences.push(reader.readUint32());
+    }
+  }
+
+  const parsedSequences: M2Sequence[] = [];
+  if (sequences.offset > 0 && sequences.count > 0) {
+    reader.seek(sequences.offset);
+    for (let i = 0; i < sequences.count; i++) {
+      parsedSequences.push(readSequence(reader));
+    }
+  }
+
+  const parsedAnimationLookup: number[] = [];
+  if (animationLookup.offset > 0 && animationLookup.count > 0) {
+    reader.seek(animationLookup.offset);
+    for (let i = 0; i < animationLookup.count; i++) {
+      parsedAnimationLookup.push(reader.readInt16());
+    }
+  }
+
+  const parsedBones: M2Bone[] = [];
+  if (bones.offset > 0 && bones.count > 0) {
+    const boneStride = validateBoneLayout(reader, bones, vertices.offset);
+    reader.seek(bones.offset);
+    for (let i = 0; i < bones.count; i++) {
+      const boneOffset = reader.offset;
+      parsedBones.push(readBone(reader));
+      // Advance to next bone record for non-standard strides.
+      reader.seek(boneOffset + boneStride);
+    }
+  }
 
   const parsedVertices: M2Vertex[] = [];
   if (vertices.offset > 0 && vertices.count > 0) {
     reader.seek(vertices.offset);
     for (let i = 0; i < vertices.count; i++) {
       parsedVertices.push(readVertex(reader));
-    }
-  }
-
-  const parsedBones: M2Bone[] = [];
-  if (bones.offset > 0 && bones.count > 0) {
-    reader.seek(bones.offset);
-    for (let i = 0; i < bones.count; i++) {
-      parsedBones.push(readBone(reader));
     }
   }
 
@@ -347,6 +505,9 @@ export function parseM2(buffer: ArrayBuffer): M2Data {
     name,
     vertices: parsedVertices,
     bones: parsedBones,
+    sequences: parsedSequences,
+    animationLookup: parsedAnimationLookup,
+    globalSequences: parsedGlobalSequences,
     textures: parsedTextures,
     materials: parsedMaterials,
     textureLookups: parsedTextureLookups,
@@ -437,18 +598,9 @@ export function parseSkin(buffer: ArrayBuffer): M2SkinData {
 
   const indicesNofs = readNofs(reader);
   const trianglesNofs = readNofs(reader);
-  reader.skip(8); // boneIndices Nofs (not used in MVP)
+  const boneIndicesNofs = readNofs(reader);
   const submeshesNofs = readNofs(reader);
   const batchesNofs = readNofs(reader);
-
-  // eslint-disable-next-line no-console
-  console.log("Skin parse:", {
-    indices: indicesNofs,
-    triangles: trianglesNofs,
-    submeshes: submeshesNofs,
-    batches: batchesNofs,
-    fileSize: buffer.byteLength,
-  });
 
   let indices: Uint16Array;
   if (indicesNofs.offset > 0 && indicesNofs.count > 0) {
@@ -464,6 +616,12 @@ export function parseSkin(buffer: ArrayBuffer): M2SkinData {
     triangles = reader.readUint16Array(trianglesNofs.count);
   } else {
     triangles = new Uint16Array(0);
+  }
+
+  let skinBones: number[] = [];
+  if (boneIndicesNofs.offset > 0 && boneIndicesNofs.count > 0) {
+    reader.seek(boneIndicesNofs.offset);
+    skinBones = Array.from(reader.readUint16Array(boneIndicesNofs.count));
   }
 
   const submeshes: M2SkinSubmesh[] = [];
@@ -482,7 +640,7 @@ export function parseSkin(buffer: ArrayBuffer): M2SkinData {
     }
   }
 
-  return { indices, triangles, submeshes, batches };
+  return { indices, triangles, submeshes, batches, skinBones };
 }
 
 export async function parseM2WithSkin(

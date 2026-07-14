@@ -1,4 +1,4 @@
-import { apiFetch, apiGetJson } from "@/shared/api";
+import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
   PaginatedResources,
   Resource,
@@ -6,6 +6,10 @@ import type {
   ResourceUpdate,
   ModelPreview,
 } from "@/shared/types";
+
+function buildPreviewUrl(path: string): string {
+  return `${API_BASE}${path}`;
+}
 
 export function listResources(
   resourceType: string,
@@ -55,27 +59,38 @@ export function getModelPreview(
 export function getBlpPreviewUrl(path: string, size?: number): string {
   const encoded = encodeURIComponent(path);
   if (size) {
-    return `/api/preview/blp/${encoded}?size=${size}`;
+    return buildPreviewUrl(`/api/preview/blp/${encoded}?size=${size}`);
   }
-  return `/api/preview/blp/${encoded}`;
+  return buildPreviewUrl(`/api/preview/blp/${encoded}`);
 }
 
 export function getIconPreviewUrl(iconName: string, size?: number): string {
   if (size) {
-    return `/api/preview/icon/${encodeURIComponent(iconName)}?size=${size}`;
+    return buildPreviewUrl(
+      `/api/preview/icon/${encodeURIComponent(iconName)}?size=${size}`,
+    );
   }
-  return `/api/preview/icon/${encodeURIComponent(iconName)}`;
+  return buildPreviewUrl(`/api/preview/icon/${encodeURIComponent(iconName)}`);
 }
 
 export function getFilePreviewUrl(path: string): string {
-  return `/api/preview/file/${encodeURIComponent(path)}`;
+  return buildPreviewUrl(`/api/preview/file/${encodeURIComponent(path)}`);
 }
 
 export function getM2FileUrl(relativePath: string): string {
   return getFilePreviewUrl(relativePath);
 }
 
-export async function fetchM2Binary(relativePath: string): Promise<ArrayBuffer> {
+export async function fetchM2Binary(
+  relativePath: string,
+): Promise<ArrayBuffer> {
+  const response = await apiFetch(getM2FileUrl(relativePath));
+  return response.arrayBuffer();
+}
+
+export async function fetchAnimBinary(
+  relativePath: string,
+): Promise<ArrayBuffer> {
   const response = await apiFetch(getM2FileUrl(relativePath));
   return response.arrayBuffer();
 }

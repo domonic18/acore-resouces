@@ -14,13 +14,11 @@ export function ResourceThumb({
 
   const iconName =
     resource.official_db.icon_name || resource.official_db.spell_icon_name;
-  const src = iconName && !imageError ? getIconPreviewUrl(iconName, size) : null;
+  const src =
+    iconName && !imageError ? getIconPreviewUrl(iconName, size) : null;
 
   return (
-    <div
-      className="resource-thumb"
-      style={{ width: size, height: size }}
-    >
+    <div className="resource-thumb" style={{ width: size, height: size }}>
       {src ? (
         <img
           src={src}
