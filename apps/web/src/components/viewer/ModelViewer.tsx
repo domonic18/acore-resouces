@@ -310,16 +310,16 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
       // eslint-disable-next-line no-console
       console.log(
         "[animation] sequences:",
-        currentParsed.m2.sequences.map((seq, idx) => ({
-          index: idx,
-          id: seq.id,
-          subId: seq.subId,
-          length: seq.length,
-          flags: seq.flags,
-          aliasNext: seq.aliasNext,
-        })),
+        currentParsed.m2.sequences
+          .map(
+            (seq, idx) =>
+              `[${idx}]id=${seq.id} sub=${seq.subId} len=${seq.length} flags=${seq.flags.toString(16)} alias=${seq.aliasNext}${
+                (seq.flags & 0x40) !== 0 ? " ALIAS" : ""
+              }`,
+          )
+          .join(", "),
         "lookup:",
-        currentParsed.m2.animationLookup.slice(0, 256),
+        currentParsed.m2.animationLookup.slice(0, 256).join(","),
       );
 
       let animId: number | null;

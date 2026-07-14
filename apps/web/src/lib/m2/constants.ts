@@ -18,6 +18,10 @@ export const BONE_STRIDE_CANDIDATES = [88, 92, 96] as const;
 // See https://wowdev.wiki/M2
 export const SEQUENCE_EXTERNAL_ANIM_MASK = 0x130;
 
+// Sequence alias flag: when set, aliasNext points to the sequence containing
+// the real animation data.
+export const SEQUENCE_ALIAS_FLAG = 0x40;
+
 // Sequence alias chain terminator
 export const ALIAS_NEXT_TERMINATOR = 0xffff;
 

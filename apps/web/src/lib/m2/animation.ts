@@ -17,6 +17,7 @@ import {
   QUATERNION_INT16_MAX,
   QUATERNION_INT16_OFFSET,
   QUATERNION_VALUE_SIZE_BYTES,
+  SEQUENCE_ALIAS_FLAG,
   SEQUENCE_EXTERNAL_ANIM_MASK,
   SUB_ANIM_ID_PADDING,
   VECTOR_VALUE_SIZE_BYTES,
@@ -97,6 +98,7 @@ function resolveSequence(
   const visited = new Set<number>();
   visited.add(resolvedIndex);
   while (
+    (sequence.flags & SEQUENCE_ALIAS_FLAG) !== 0 &&
     sequence.aliasNext !== ALIAS_NEXT_TERMINATOR &&
     sequence.aliasNext < m2.sequences.length &&
     !visited.has(sequence.aliasNext)
