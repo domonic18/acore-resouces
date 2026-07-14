@@ -20,6 +20,11 @@ import { buildAnimationClip, buildAnimFileName } from "@/lib/m2/animation";
 import type { AnimationState } from "@/lib/m2/animationIds";
 import { resolveAnimationId } from "@/lib/m2/animationIds";
 import {
+  ANIM_FILE_EXTENSION,
+  ANIM_ID_PADDING,
+  SUB_ANIM_ID_PADDING,
+} from "@/lib/m2/constants";
+import {
   fetchAnimBinary,
   fetchM2Binary,
   getBlpPreviewUrl,
@@ -27,6 +32,20 @@ import {
 import { M2Scene, centerCameraOnModel, computeModelBox } from "./M2Scene";
 import type { ModelPreview } from "@/shared/types";
 import type { ParsedM2 } from "@/lib/m2/types";
+import {
+  AMBIENT_LIGHT_INTENSITY,
+  AUTO_ROTATE_SPEED,
+  CAMERA_BOTTOM_PRESET_MULTIPLIER,
+  CAMERA_PRESET_DISTANCE_MULTIPLIER,
+  DEFAULT_CAMERA_FOV,
+  DEFAULT_CAMERA_POSITION,
+  DIRECTIONAL_LIGHT_INTENSITY,
+  DIRECTIONAL_LIGHT_POSITION,
+  GRID_FADE_DISTANCE,
+  PLAYBACK_RATE_OPTIONS,
+  ZOOM_IN_FACTOR,
+  ZOOM_OUT_FACTOR,
+} from "./constants";
 
 interface ModelViewerProps {
   preview: ModelPreview;
@@ -97,7 +116,11 @@ function getPresetPosition(
     case "top":
       return new THREE.Vector3(center.x, center.y, center.z + distance);
     case "bottom":
-      return new THREE.Vector3(center.x, center.y, center.z - distance * 0.6);
+      return new THREE.Vector3(
+        center.x,
+        center.y,
+        center.z - distance * CAMERA_BOTTOM_PRESET_MULTIPLIER,
+      );
     case "default":
     default:
       return new THREE.Vector3(
@@ -123,7 +146,7 @@ function findAnimFilePath(
   if (fullMatch) return fullMatch;
 
   const pattern =
-    `${String(animId).padStart(4, "0")}-${String(subAnimId).padStart(2, "0")}.anim`.toLowerCase();
+    `${String(animId).padStart(ANIM_ID_PADDING, "0")}-${String(subAnimId).padStart(SUB_ANIM_ID_PADDING, "0")}${ANIM_FILE_EXTENSION}`.toLowerCase();
   return animFiles.find((path) => path.toLowerCase().endsWith(pattern)) ?? null;
 }
 
@@ -357,7 +380,7 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
     if (!controls || !camera) return;
     const direction = new THREE.Vector3()
       .subVectors(camera.position, controls.target)
-      .multiplyScalar(0.8);
+      .multiplyScalar(ZOOM_IN_FACTOR);
     camera.position.copy(controls.target).add(direction);
     controls.update();
   }, []);
@@ -368,7 +391,7 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
     if (!controls || !camera) return;
     const direction = new THREE.Vector3()
       .subVectors(camera.position, controls.target)
-      .multiplyScalar(1.25);
+      .multiplyScalar(ZOOM_OUT_FACTOR);
     camera.position.copy(controls.target).add(direction);
     controls.update();
   }, []);
@@ -389,7 +412,7 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
   }, []);
 
   const initialCamera = useMemo(
-    () => ({ position: [3, 3, 3] as [number, number, number], fov: 50 }),
+    () => ({ position: DEFAULT_CAMERA_POSITION, fov: DEFAULT_CAMERA_FOV }),
     [],
   );
 
@@ -409,9 +432,12 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
         )}
         {!loading && !error && parsed && (
           <Canvas camera={initialCamera}>
-            <ambientLight intensity={0.8} />
-            <directionalLight position={[5, 5, 5]} intensity={1.2} />
-            <Grid infiniteGrid fadeDistance={25} />
+            <ambientLight intensity={AMBIENT_LIGHT_INTENSITY} />
+            <directionalLight
+              position={DIRECTIONAL_LIGHT_POSITION}
+              intensity={DIRECTIONAL_LIGHT_INTENSITY}
+            />
+            <Grid infiniteGrid fadeDistance={GRID_FADE_DISTANCE} />
             <M2Scene
               parsed={parsed}
               textureUrls={textureUrls}
@@ -424,7 +450,7 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
             <OrbitControls
               ref={controlsRef}
               autoRotate={autoRotate}
-              autoRotateSpeed={1.5}
+              autoRotateSpeed={AUTO_ROTATE_SPEED}
             />
           </Canvas>
         )}
@@ -537,11 +563,11 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
                 onChange={(e) => setPlaybackRate(Number(e.target.value))}
                 title="播放速度"
               >
-                <option value={0.25}>0.25x</option>
-                <option value={0.5}>0.5x</option>
-                <option value={1}>1x</option>
-                <option value={1.5}>1.5x</option>
-                <option value={2}>2x</option>
+                {PLAYBACK_RATE_OPTIONS.map((rate) => (
+                  <option key={rate} value={rate}>
+                    {rate}x
+                  </option>
+                ))}
               </select>
             </div>
           </>
@@ -564,7 +590,7 @@ function CameraController({
   useEffect(() => {
     if (preset && controls) {
       const { center, maxDim } = computeModelBox(parsed);
-      const distance = maxDim * 1.5;
+      const distance = maxDim * CAMERA_PRESET_DISTANCE_MULTIPLIER;
       const position = getPresetPosition(center, distance, preset);
 
       camera.position.copy(position);

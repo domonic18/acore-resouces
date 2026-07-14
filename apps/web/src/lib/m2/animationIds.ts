@@ -1,17 +1,30 @@
 export type AnimationState = "stand" | "walk" | "run" | "flight";
 
+// Standard WoW animation IDs for the high-level states we expose in the UI.
+const ANIMATION_ID_STAND = 0;
+const ANIMATION_ID_WALK = 4;
+const ANIMATION_ID_RUN = 5;
+const ANIMATION_ID_FLIGHT = 229;
+
+// IDs observed in local retro-ported assets.
+const ANIMATION_ID_RETRO_STAND = 61;
+const ANIMATION_ID_RETRO_WALK = 62;
+const ANIMATION_ID_RETRO_FLIGHT = 97;
+// Retro-port models reuse the walk ID for running.
+const ANIMATION_ID_RETRO_RUN = ANIMATION_ID_RETRO_WALK;
+
 export const ANIMATION_CANONICAL: Record<AnimationState, number> = {
-  stand: 0,
-  walk: 4,
-  run: 5,
-  flight: 229,
+  stand: ANIMATION_ID_STAND,
+  walk: ANIMATION_ID_WALK,
+  run: ANIMATION_ID_RUN,
+  flight: ANIMATION_ID_FLIGHT,
 };
 
 export const ANIMATION_RETRO_PORT: Partial<Record<AnimationState, number>> = {
-  stand: 61,
-  walk: 62,
-  run: 62,
-  flight: 97,
+  stand: ANIMATION_ID_RETRO_STAND,
+  walk: ANIMATION_ID_RETRO_WALK,
+  run: ANIMATION_ID_RETRO_RUN,
+  flight: ANIMATION_ID_RETRO_FLIGHT,
 };
 
 export function resolveAnimationId(
@@ -27,5 +40,5 @@ export function resolveAnimationId(
     if (availableIds.has(id)) return id;
   }
 
-  return availableIds.has(0) ? 0 : null;
+  return availableIds.has(ANIMATION_ID_STAND) ? ANIMATION_ID_STAND : null;
 }

@@ -2,6 +2,21 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { M2Bone, M2Data, M2SkinData, ParsedM2 } from "@/lib/m2/types";
+import { convertM2Position } from "@/lib/m2/coordinates";
+import {
+  BONE_WEIGHT_MAX,
+  MAX_BONE_INFLUENCES,
+  UV_FLIP_V_OFFSET,
+  UV_FLIP_V_SCALE,
+} from "@/lib/m2/constants";
+import {
+  DIAGNOSTIC_LOG_INTERVAL_SECONDS,
+  MATERIAL_DEFAULT_COLOR,
+  MATERIAL_DEFAULT_METALNESS,
+  MATERIAL_DEFAULT_ROUGHNESS,
+  MATERIAL_DEFAULT_SIDE,
+  MODEL_ROOT_ROTATION_X,
+} from "./constants";
 
 interface M2SceneProps {
   parsed: ParsedM2;
@@ -26,10 +41,6 @@ function resolveTextureUrl(
     return null;
   }
   return textureUrls[textureIndex] ?? null;
-}
-
-function convertM2Position(pos: Float32Array): [number, number, number] {
-  return [-pos[0], -pos[2], pos[1]];
 }
 
 interface SubmeshGeometry {
@@ -83,12 +94,15 @@ function buildSubmeshGeometry(
 
     positions.push(...convertM2Position(vertex.position));
     normals.push(...convertM2Position(vertex.normal));
-    uvs.push(vertex.textureCoords[0][0], -vertex.textureCoords[0][1] + 1);
+    uvs.push(
+      vertex.textureCoords[0][0],
+      UV_FLIP_V_SCALE * vertex.textureCoords[0][1] + UV_FLIP_V_OFFSET,
+    );
 
     if (hasSkinBones) {
       const totalWeight = vertex.boneWeights.reduce((sum, w) => sum + w, 0);
-      const weightScale = totalWeight > 0 ? totalWeight : 255;
-      for (let i = 0; i < 4; i++) {
+      const weightScale = totalWeight > 0 ? totalWeight : BONE_WEIGHT_MAX;
+      for (let i = 0; i < MAX_BONE_INFLUENCES; i++) {
         const localBone = vertex.boneIndices[i];
         const globalBone =
           localBone < skin.skinBones.length ? skin.skinBones[localBone] : 0;
@@ -259,10 +273,10 @@ function M2MaterialMesh({
 
   const material = (
     <meshStandardMaterial
-      color={0xffffff}
-      roughness={0.7}
-      metalness={0.1}
-      side={THREE.DoubleSide}
+      color={MATERIAL_DEFAULT_COLOR}
+      roughness={MATERIAL_DEFAULT_ROUGHNESS}
+      metalness={MATERIAL_DEFAULT_METALNESS}
+      side={MATERIAL_DEFAULT_SIDE}
       wireframe={wireframe}
       map={texture}
       transparent={textureUrl !== null}
@@ -407,7 +421,7 @@ export function M2Scene({
         }
       }
 
-      if (now - lastLogTime.current > 1) {
+      if (now - lastLogTime.current > DIAGNOSTIC_LOG_INTERVAL_SECONDS) {
         lastLogTime.current = now;
         const bone0 = rootBone?.getObjectByName("bone_0") as
           THREE.Bone | undefined;
@@ -423,7 +437,7 @@ export function M2Scene({
   });
 
   return (
-    <group rotation={[-Math.PI / 2, 0, 0]}>
+    <group rotation={[MODEL_ROOT_ROTATION_X, 0, 0]}>
       {rootBone && <primitive object={rootBone} />}
       {skin.submeshes.map((submesh, index) => {
         const item = submeshGeometries[index];

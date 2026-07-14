@@ -11,9 +11,19 @@ import type {
   M2Vertex,
   ParsedM2,
 } from "./types";
-
-const M2_MAGIC = 0x3032444d; // "MD20" as little-endian uint32
-const SKIN_MAGIC = 0x4e494b53; // "SKIN" as little-endian uint32
+import {
+  BONE_STRIDE_CANDIDATES,
+  COMPONENTS_PER_UV,
+  COMPONENTS_PER_VECTOR,
+  M2_HEADER_SIZE,
+  M2_MAGIC,
+  M2_VERSION_CATACLYSM,
+  M2_VERSION_WOTLK,
+  MAX_BONE_INFLUENCES,
+  SKIN_MAGIC,
+  STANDARD_BONE_SIZE,
+  TEXTURE_COORD_SETS,
+} from "./constants";
 
 class BufferReader {
   private view: DataView;
@@ -130,13 +140,13 @@ class BufferReader {
 }
 
 function readVertex(reader: BufferReader): M2Vertex {
-  const position = reader.readFloat32Array(3);
-  const boneWeights = reader.readUint8Array(4);
-  const boneIndices = reader.readUint8Array(4);
-  const normal = reader.readFloat32Array(3);
+  const position = reader.readFloat32Array(COMPONENTS_PER_VECTOR);
+  const boneWeights = reader.readUint8Array(MAX_BONE_INFLUENCES);
+  const boneIndices = reader.readUint8Array(MAX_BONE_INFLUENCES);
+  const normal = reader.readFloat32Array(COMPONENTS_PER_VECTOR);
   const textureCoords: Float32Array[] = [];
-  for (let i = 0; i < 2; i++) {
-    textureCoords.push(reader.readFloat32Array(2));
+  for (let i = 0; i < TEXTURE_COORD_SETS; i++) {
+    textureCoords.push(reader.readFloat32Array(COMPONENTS_PER_UV));
   }
   return { position, boneWeights, boneIndices, normal, textureCoords };
 }
@@ -178,8 +188,6 @@ function readTrack(reader: BufferReader): M2Track {
     valuesOffset,
   };
 }
-
-const STANDARD_BONE_SIZE = 88;
 
 function readBone(reader: BufferReader): M2Bone {
   const keyBoneID = reader.readInt32();
@@ -374,13 +382,13 @@ function readM2HeaderV264(reader: BufferReader): M2Header {
 
 function readM2Header(reader: BufferReader, version: number): M2Header {
   switch (version) {
-    case 263:
+    case M2_VERSION_WOTLK:
       return readM2HeaderV263(reader);
-    case 264:
+    case M2_VERSION_CATACLYSM:
       return readM2HeaderV264(reader);
     default:
       throw new Error(
-        `Unsupported M2 version: ${version}. Supported versions: 263 (WotLK), 264 (Cataclysm).`,
+        `Unsupported M2 version: ${version}. Supported versions: ${M2_VERSION_WOTLK} (WotLK), ${M2_VERSION_CATACLYSM} (Cataclysm).`,
       );
   }
 }
@@ -392,9 +400,7 @@ function validateBoneLayout(
 ): number {
   if (bonesHeader.count <= 0) return STANDARD_BONE_SIZE;
 
-  const candidateSizes = [88, 92, 96];
-
-  for (const size of candidateSizes) {
+  for (const size of BONE_STRIDE_CANDIDATES) {
     const endOffset = bonesHeader.offset + bonesHeader.count * size;
     if (endOffset <= verticesOffset && endOffset <= reader.length) {
       return size;
@@ -419,7 +425,7 @@ export function parseM2(buffer: ArrayBuffer): M2Data {
   reader.seek(nameOffset);
   const name = reader.readCString(nameLength);
 
-  reader.seek(16);
+  reader.seek(M2_HEADER_SIZE);
 
   const {
     globalSequences,

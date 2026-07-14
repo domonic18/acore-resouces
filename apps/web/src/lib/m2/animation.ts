@@ -1,7 +1,27 @@
 import * as THREE from "three";
 import type { M2Sequence, M2Track, ParsedM2, SequenceTrackData } from "./types";
-
-const AFM2_MAGIC = 0x324d4641; // "AFM2" as little-endian uint32
+import {
+  ALIAS_NEXT_TERMINATOR,
+  ANIM_FILE_EXTENSION,
+  ANIM_FILE_HEADER_SIZE,
+  ANIM_FILE_MAGIC,
+  ANIM_ID_PADDING,
+  BYTES_PER_FLOAT32,
+  BYTES_PER_INT16,
+  BYTES_PER_UINT32,
+  COMPONENTS_PER_QUATERNION,
+  COMPONENTS_PER_VECTOR,
+  MAX_TRACK_ENTRY_COUNT,
+  MILLISECONDS_PER_SECOND,
+  NORMALIZATION_EPSILON,
+  QUATERNION_INT16_MAX,
+  QUATERNION_INT16_OFFSET,
+  QUATERNION_VALUE_SIZE_BYTES,
+  SEQUENCE_EXTERNAL_ANIM_MASK,
+  SUB_ANIM_ID_PADDING,
+  VECTOR_VALUE_SIZE_BYTES,
+} from "./constants";
+import { convertM2Position } from "./coordinates";
 
 export interface AnimFileData {
   buffer: ArrayBuffer;
@@ -12,14 +32,14 @@ export interface AnimFileData {
 export function parseAnimFile(buffer: ArrayBuffer): AnimFileData {
   const view = new DataView(buffer);
   const magic = view.getUint32(0, true);
-  if (magic !== AFM2_MAGIC) {
+  if (magic !== ANIM_FILE_MAGIC) {
     throw new Error(`Invalid .anim magic: 0x${magic.toString(16)}`);
   }
   const chunkSize = view.getUint32(4, true);
   return {
     buffer,
-    dataOffset: 8,
-    dataLength: Math.min(chunkSize, buffer.byteLength - 8),
+    dataOffset: ANIM_FILE_HEADER_SIZE,
+    dataLength: Math.min(chunkSize, buffer.byteLength - ANIM_FILE_HEADER_SIZE),
   };
 }
 
@@ -30,13 +50,13 @@ export function buildAnimFileName(
 ): string {
   const base =
     modelName.replace(/\\/g, "/").split("/").pop()?.replace(/\.m2$/i, "") ?? "";
-  return `${base}${String(animId).padStart(4, "0")}-${String(subAnimId).padStart(2, "0")}.anim`;
+  return `${base}${String(animId).padStart(ANIM_ID_PADDING, "0")}-${String(subAnimId).padStart(SUB_ANIM_ID_PADDING, "0")}${ANIM_FILE_EXTENSION}`;
 }
 
 export function isExternalSequence(sequence: M2Sequence): boolean {
   // Client loads external .anim files when none of bits 0x20, 0x10, 0x100 are set.
   // See https://wowdev.wiki/M2
-  return (sequence.flags & 0x130) === 0;
+  return (sequence.flags & SEQUENCE_EXTERNAL_ANIM_MASK) === 0;
 }
 
 function readTrackTimestamps(
@@ -66,14 +86,14 @@ function readTrackTimestamps(
   }
 
   const count = view.getUint32(outerOffset, true);
-  const offset = view.getUint32(outerOffset + 4, true);
+  const offset = view.getUint32(outerOffset + BYTES_PER_UINT32, true);
 
-  if (count === 0 || offset === 0 || count > 100_000) {
+  if (count === 0 || offset === 0 || count > MAX_TRACK_ENTRY_COUNT) {
     return new Uint32Array(0);
   }
 
   const dataOffset = baseOffset + offset;
-  const dataByteLength = count * 4;
+  const dataByteLength = count * BYTES_PER_UINT32;
   if (dataOffset + dataByteLength > buffer.byteLength) {
     // eslint-disable-next-line no-console
     console.warn(
@@ -87,7 +107,7 @@ function readTrackTimestamps(
 
   const result = new Uint32Array(count);
   for (let i = 0; i < count; i++) {
-    result[i] = view.getUint32(dataOffset + i * 4, true);
+    result[i] = view.getUint32(dataOffset + i * BYTES_PER_UINT32, true);
   }
   return result;
 }
@@ -105,7 +125,9 @@ function readTrackValues(
     track.valuesCount <= 0 ||
     sequenceIndex >= track.valuesCount
   ) {
-    return valueSizeBytes === 8 ? new Int16Array(0) : new Float32Array(0);
+    return valueSizeBytes === QUATERNION_VALUE_SIZE_BYTES
+      ? new Int16Array(0)
+      : new Float32Array(0);
   }
 
   const outerOffset = baseOffset + track.valuesOffset + sequenceIndex * 8;
@@ -116,20 +138,24 @@ function readTrackValues(
       outerOffset,
       buffer.byteLength,
     );
-    return valueSizeBytes === 8 ? new Int16Array(0) : new Float32Array(0);
+    return valueSizeBytes === QUATERNION_VALUE_SIZE_BYTES
+      ? new Int16Array(0)
+      : new Float32Array(0);
   }
 
   const count = view.getUint32(outerOffset, true);
-  const offset = view.getUint32(outerOffset + 4, true);
+  const offset = view.getUint32(outerOffset + BYTES_PER_UINT32, true);
 
-  if (count === 0 || offset === 0 || count > 100_000) {
-    return valueSizeBytes === 8 ? new Int16Array(0) : new Float32Array(0);
+  if (count === 0 || offset === 0 || count > MAX_TRACK_ENTRY_COUNT) {
+    return valueSizeBytes === QUATERNION_VALUE_SIZE_BYTES
+      ? new Int16Array(0)
+      : new Float32Array(0);
   }
 
   const dataOffset = baseOffset + offset;
 
-  if (valueSizeBytes === 8) {
-    const dataByteLength = count * 4 * 2;
+  if (valueSizeBytes === QUATERNION_VALUE_SIZE_BYTES) {
+    const dataByteLength = count * COMPONENTS_PER_QUATERNION * BYTES_PER_INT16;
     if (dataOffset + dataByteLength > buffer.byteLength) {
       // eslint-disable-next-line no-console
       console.warn(
@@ -140,14 +166,14 @@ function readTrackValues(
       );
       return new Int16Array(0);
     }
-    const result = new Int16Array(count * 4);
-    for (let i = 0; i < count * 4; i++) {
-      result[i] = view.getInt16(dataOffset + i * 2, true);
+    const result = new Int16Array(count * COMPONENTS_PER_QUATERNION);
+    for (let i = 0; i < count * COMPONENTS_PER_QUATERNION; i++) {
+      result[i] = view.getInt16(dataOffset + i * BYTES_PER_INT16, true);
     }
     return result;
   }
 
-  const dataByteLength = count * 3 * 4;
+  const dataByteLength = count * COMPONENTS_PER_VECTOR * BYTES_PER_FLOAT32;
   if (dataOffset + dataByteLength > buffer.byteLength) {
     // eslint-disable-next-line no-console
     console.warn(
@@ -158,9 +184,9 @@ function readTrackValues(
     );
     return new Float32Array(0);
   }
-  const result = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i++) {
-    result[i] = view.getFloat32(dataOffset + i * 4, true);
+  const result = new Float32Array(count * COMPONENTS_PER_VECTOR);
+  for (let i = 0; i < count * COMPONENTS_PER_VECTOR; i++) {
+    result[i] = view.getFloat32(dataOffset + i * BYTES_PER_FLOAT32, true);
   }
   return result;
 }
@@ -207,11 +233,11 @@ export function decompressM2Quaternion(
 }
 
 function decompressComponent(value: number): number {
-  return (value < 0 ? value + 32768 : value - 32767) / 32767.0;
-}
-
-function convertM2Position(pos: Float32Array): [number, number, number] {
-  return [-pos[0], -pos[2], pos[1]];
+  return (
+    (value < 0
+      ? value + QUATERNION_INT16_OFFSET
+      : value - QUATERNION_INT16_MAX) / QUATERNION_INT16_MAX
+  );
 }
 
 function convertM2Scale(scale: Float32Array): [number, number, number] {
@@ -242,7 +268,7 @@ function buildVectorKeyframes(
   const keyframes: number[] = [];
   let lastTime = -1;
   for (let i = 0; i < timestamps.length; i++) {
-    const time = timestamps[i] / 1000;
+    const time = timestamps[i] / MILLISECONDS_PER_SECOND;
     if (time < lastTime) {
       // eslint-disable-next-line no-console
       console.warn(
@@ -295,7 +321,7 @@ function buildQuaternionKeyframes(
   const keyframes: number[] = [];
   let lastTime = -1;
   for (let i = 0; i < timestamps.length; i++) {
-    const time = timestamps[i] / 1000;
+    const time = timestamps[i] / MILLISECONDS_PER_SECOND;
     if (time < lastTime) {
       // eslint-disable-next-line no-console
       console.warn(
@@ -327,7 +353,7 @@ function buildQuaternionKeyframes(
     const magnitude = Math.sqrt(
       q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3],
     );
-    if (magnitude <= 1e-6) {
+    if (magnitude <= NORMALIZATION_EPSILON) {
       // eslint-disable-next-line no-console
       console.warn("[buildQuaternionKeyframes] zero quaternion at", i, q);
       return null;
@@ -367,7 +393,7 @@ export function buildAnimationClip(
   const visited = new Set<number>();
   visited.add(resolvedIndex);
   while (
-    sequence.aliasNext !== 0xffff &&
+    sequence.aliasNext !== ALIAS_NEXT_TERMINATOR &&
     sequence.aliasNext < m2.sequences.length &&
     !visited.has(sequence.aliasNext)
   ) {
@@ -418,7 +444,7 @@ export function buildAnimationClip(
   }
 
   const tracks: THREE.KeyframeTrack[] = [];
-  const duration = sequence.length / 1000;
+  const duration = sequence.length / MILLISECONDS_PER_SECOND;
 
   for (let boneIndex = 0; boneIndex < m2.bones.length; boneIndex++) {
     const bone = m2.bones[boneIndex];
@@ -442,7 +468,7 @@ export function buildAnimationClip(
       animData,
       bone.translation,
       resolvedIndex,
-      12,
+      VECTOR_VALUE_SIZE_BYTES,
       external,
     );
     if (translation.timestamps.length > 0 && translation.values.length > 0) {
@@ -475,7 +501,7 @@ export function buildAnimationClip(
       animData,
       bone.rotation,
       resolvedIndex,
-      8,
+      QUATERNION_VALUE_SIZE_BYTES,
       external,
     );
     if (rotation.timestamps.length > 0 && rotation.values.length > 0) {
@@ -499,7 +525,7 @@ export function buildAnimationClip(
       animData,
       bone.scaling,
       resolvedIndex,
-      12,
+      VECTOR_VALUE_SIZE_BYTES,
       external,
     );
     if (scaling.timestamps.length > 0 && scaling.values.length > 0) {
