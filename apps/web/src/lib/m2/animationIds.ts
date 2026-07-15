@@ -6,12 +6,10 @@ const ANIMATION_ID_WALK = 4;
 const ANIMATION_ID_RUN = 5;
 const ANIMATION_ID_FLIGHT = 229;
 
-// IDs observed in local retro-ported assets.
-const ANIMATION_ID_RETRO_STAND = 61;
-const ANIMATION_ID_RETRO_WALK = 62;
+// IDs observed in local retro-ported assets. These are used only for states
+// where the canonical ID resolves to an internal stub sequence.
+const ANIMATION_ID_RETRO_RUN = 62;
 const ANIMATION_ID_RETRO_FLIGHT = 97;
-// Retro-port models reuse the walk ID for running.
-const ANIMATION_ID_RETRO_RUN = ANIMATION_ID_RETRO_WALK;
 
 export const ANIMATION_CANONICAL: Record<AnimationState, number> = {
   stand: ANIMATION_ID_STAND,
@@ -21,8 +19,6 @@ export const ANIMATION_CANONICAL: Record<AnimationState, number> = {
 };
 
 export const ANIMATION_RETRO_PORT: Partial<Record<AnimationState, number>> = {
-  stand: ANIMATION_ID_RETRO_STAND,
-  walk: ANIMATION_ID_RETRO_WALK,
   run: ANIMATION_ID_RETRO_RUN,
   flight: ANIMATION_ID_RETRO_FLIGHT,
 };
@@ -31,6 +27,10 @@ export function resolveAnimationId(
   state: AnimationState,
   availableIds: Set<number>,
 ): number | null {
+  // Prefer the canonical ID when it is available. Retro-ported assets sometimes
+  // keep real animation data on the canonical internal sequence (e.g. run=5)
+  // and only use external retro IDs as alternates. If the canonical ID is
+  // missing, fall back to the retro-port ID.
   const candidates = [
     ANIMATION_CANONICAL[state],
     ANIMATION_RETRO_PORT[state],

@@ -117,3 +117,21 @@ export interface SequenceTrackData {
   timestamps: Uint32Array;
   values: Float32Array | Int16Array;
 }
+
+export interface AnimBoneTrackData {
+  boneId: number;
+  translation: SequenceTrackData | null;
+  rotation: SequenceTrackData | null;
+  scaling: SequenceTrackData | null;
+}
+
+export interface AnimSectionData {
+  id: number;
+  start: number;
+  end: number;
+  boneAnimations: AnimBoneTrackData[];
+}
+
+export type AnimFileData =
+  | { format: "modern"; sections: AnimSectionData[] }
+  | { format: "legacy"; buffer: ArrayBuffer };

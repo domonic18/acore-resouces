@@ -6,6 +6,8 @@ export const M2_VERSION_CATACLYSM = 264;
 export const M2_MAGIC = 0x3032444d; // "MD20"
 export const SKIN_MAGIC = 0x4e494b53; // "SKIN"
 export const ANIM_FILE_MAGIC = 0x324d4641; // "AFM2"
+export const ANIM_MODERN_MAGIC = 0x464f414d; // "MAOF"
+export const ANIM_SECTION_MAGIC = 0x44494641; // "AFID"
 
 // M2 header layout
 export const M2_HEADER_SIZE = 16; // magic + version + nameLength + nameOffset
@@ -26,7 +28,21 @@ export const SEQUENCE_ALIAS_FLAG = 0x40;
 export const ALIAS_NEXT_TERMINATOR = 0xffff;
 
 // External .anim file layout
-export const ANIM_FILE_HEADER_SIZE = 8; // magic + chunkSize
+// Legacy Cataclysm format: raw M2 track data, no header.
+// Modern Legion+ format: MAOF header + AFID sections.
+// AFM2 (Legion chunk wrapper): 8-byte header (AFM2 magic + chunk size)
+// followed by classic raw M2 track data.
+export const ANIM_MODERN_HEADER_SIZE = 20; // magic + version + id_count + unknown + entry_offset
+export const ANIM_MODERN_ENTRY_SIZE = 12; // id + offset + size
+export const ANIM_SECTION_HEADER_SIZE = 16; // AFID magic + id + start + end
+export const ANIM_BONE_ANIMATION_HEADER_SIZE = 8; // bone_id + flags
+export const ANIM_BONE_REFERENCE_SIZE = 4; // offset per bone
+export const ANIM_FILE_HEADER_SIZE = 8; // AFM2 magic + chunk size
+
+// Bone animation flags for modern .anim sections
+export const ANIM_BONE_FLAG_TRANSLATION = 0x1;
+export const ANIM_BONE_FLAG_ROTATION = 0x2;
+export const ANIM_BONE_FLAG_SCALING = 0x4;
 
 // Sanity limit for animation track entry counts
 export const MAX_TRACK_ENTRY_COUNT = 100_000;

@@ -18,7 +18,11 @@ import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { parseM2WithSkin } from "@/lib/m2/parser";
 import { buildAnimationClip, buildAnimFileName } from "@/lib/m2/animation";
 import type { AnimationState } from "@/lib/m2/animationIds";
-import { resolveAnimationId } from "@/lib/m2/animationIds";
+import {
+  ANIMATION_CANONICAL,
+  ANIMATION_RETRO_PORT,
+  resolveAnimationId,
+} from "@/lib/m2/animationIds";
 import {
   ANIM_FILE_EXTENSION,
   ANIM_ID_PADDING,
@@ -138,12 +142,26 @@ function findAnimFilePath(
   subAnimId = 0,
 ): string | null {
   if (!animFiles || animFiles.length === 0) return null;
+
   const expectedName = buildAnimFileName(modelName, animId, subAnimId);
   const lowerExpected = expectedName.toLowerCase();
   const fullMatch = animFiles.find((path) =>
     path.toLowerCase().endsWith(lowerExpected),
   );
   if (fullMatch) return fullMatch;
+
+  // Fallback: any sub-animation variation for the same animId. Some assets
+  // store the run/walk animation under subId 01 instead of 00.
+  const baseName =
+    modelName.replace(/\\/g, "/").split("/").pop()?.replace(/\.m2$/i, "") ?? "";
+  const escapedBaseName = baseName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const variationPattern =
+    `${escapedBaseName}${String(animId).padStart(ANIM_ID_PADDING, "0")}-\\d{2}${ANIM_FILE_EXTENSION}`.toLowerCase();
+  const variationRegex = new RegExp(`${variationPattern}$`);
+  const variationMatch = animFiles.find((path) =>
+    variationRegex.test(path.toLowerCase()),
+  );
+  if (variationMatch) return variationMatch;
 
   const pattern =
     `${String(animId).padStart(ANIM_ID_PADDING, "0")}-${String(subAnimId).padStart(SUB_ANIM_ID_PADDING, "0")}${ANIM_FILE_EXTENSION}`.toLowerCase();
@@ -306,6 +324,10 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
           availableIds.add(animId);
         }
       });
+      // Some retro-ported assets expose sequence IDs beyond the lookup table.
+      currentParsed.m2.sequences.forEach((seq) => {
+        availableIds.add(seq.id);
+      });
 
       // eslint-disable-next-line no-console
       console.log(
@@ -342,58 +364,79 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
         return;
       }
 
-      const animFiles = preview.anim_files ?? [];
-      const animPath = findAnimFilePath(
-        animFiles,
-        currentParsed.m2.name,
-        animId,
-        0,
-      );
-      // eslint-disable-next-line no-console
-      console.log(
-        "[animation] anim path=",
-        animPath,
-        "total anim files=",
-        animFiles.length,
-      );
-
-      try {
-        let animBuffer: ArrayBuffer | null = null;
-        if (animPath) {
-          animBuffer = await fetchAnimBinary(animPath);
-        }
-        if (cancelled) return;
-
-        const m2Buffer = m2BufferRef.current;
-        if (!m2Buffer) {
-          setAnimationClip(null);
-          return;
-        }
-
-        const clip = buildAnimationClip(
-          currentParsed,
-          m2Buffer,
-          animId,
-          animBuffer,
+      async function tryBuildClip(
+        id: number,
+      ): Promise<THREE.AnimationClip | null> {
+        const animFiles = preview.anim_files ?? [];
+        const animPath = findAnimFilePath(
+          animFiles,
+          currentParsed.m2.name,
+          id,
+          0,
         );
         // eslint-disable-next-line no-console
         console.log(
-          "[animation] clip=",
-          clip?.name,
-          "duration=",
-          clip?.duration,
-          "tracks=",
-          clip?.tracks.length,
+          "[animation] anim path=",
+          animPath,
+          "total anim files=",
+          animFiles.length,
         );
-        if (!cancelled) {
-          setAnimationClip(clip);
+
+        try {
+          let animBuffer: ArrayBuffer | null = null;
+          if (animPath) {
+            animBuffer = await fetchAnimBinary(animPath);
+          }
+          if (cancelled) return null;
+
+          const m2Buffer = m2BufferRef.current;
+          if (!m2Buffer) return null;
+
+          return buildAnimationClip(currentParsed, m2Buffer, id, animBuffer);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn("Animation load failed:", err);
+          return null;
         }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn("Animation load failed:", err);
-        if (!cancelled) {
-          setAnimationClip(null);
+      }
+
+      let clip = await tryBuildClip(animId);
+
+      // If the resolved animation produced no usable tracks, try the alternate
+      // ID (canonical <-> retro) before giving up. This handles retro-ported
+      // assets where one of the IDs is a stub and the other holds the real data.
+      if (debugAnimId === null && (!clip || clip.tracks.length < 3)) {
+        const alternateIds = [
+          ANIMATION_CANONICAL[animationState],
+          ANIMATION_RETRO_PORT[animationState],
+        ].filter((id): id is number => id !== undefined && id !== animId);
+
+        for (const altId of alternateIds) {
+          if (!availableIds.has(altId)) continue;
+          // eslint-disable-next-line no-console
+          console.log(
+            "[animation] resolved clip sparse, trying alternate id=",
+            altId,
+          );
+          const altClip = await tryBuildClip(altId);
+          if (altClip && altClip.tracks.length > (clip?.tracks.length ?? 0)) {
+            clip = altClip;
+          }
+          if (clip && clip.tracks.length >= 3) break;
         }
+      }
+
+      // eslint-disable-next-line no-console
+      console.log(
+        "[animation] clip=",
+        clip?.name,
+        "duration=",
+        clip?.duration,
+        "tracks=",
+        clip?.tracks.length,
+      );
+      if (!cancelled) {
+        setAnimationClip(clip);
       }
     }
 

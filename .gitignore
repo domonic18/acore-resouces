@@ -34,6 +34,9 @@ Desktop.ini
 # 运行时数据（SQLite、日志等）
 /workspace/
 
+# 本地参考文档/下载资料
+/docs/references/
+
 # Python
 __pycache__/
 *.py[cod]
