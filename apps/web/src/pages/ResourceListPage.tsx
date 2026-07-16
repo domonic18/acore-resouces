@@ -374,22 +374,22 @@ export function ResourceListPage() {
                         {formatDateTime(resource.updated_at)}
                       </td>
                       <td className="text-right">
-                        <div className="inline-flex items-center justify-end gap-2">
+                        <div className="inline-flex items-center justify-end gap-1.5">
                           <Link
                             to={`/resources/${resource.resource_type}/${resource.id}`}
-                            className="btn btn-sm"
+                            className="btn btn-icon btn-sm"
                             title="编辑资源"
+                            aria-label="编辑资源"
                           >
                             <Pencil className="h-3.5 w-3.5" />
-                            <span className="hidden sm:inline">编辑</span>
                           </Link>
                           <Link
                             to={`/preview/${resource.resource_type}/${resource.id}`}
-                            className="btn btn-sm btn-primary"
+                            className="btn btn-icon btn-sm btn-primary"
                             title="预览模型"
+                            aria-label="预览模型"
                           >
                             <Eye className="h-3.5 w-3.5" />
-                            <span className="hidden sm:inline">预览</span>
                           </Link>
                         </div>
                       </td>
