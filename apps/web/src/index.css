@@ -66,31 +66,34 @@ button {
   .btn {
     @apply inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-bg-surface px-4 text-sm font-semibold text-text-secondary transition-all;
   }
-  .btn:hover {
+  .btn:hover:not(:disabled) {
     @apply border-border-hover bg-bg-hover text-text-primary;
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
   }
   .btn-primary {
     @apply border-accent bg-accent text-white;
   }
-  .btn-primary:hover {
+  .btn-primary:hover:not(:disabled) {
     @apply border-accent-hover bg-accent-hover;
   }
   .btn-success {
     @apply border-green-500/30 bg-green-500/15 text-green-500;
   }
-  .btn-success:hover {
+  .btn-success:hover:not(:disabled) {
     @apply bg-green-500/25;
   }
   .btn-danger {
     @apply border-red-500/30 bg-red-500/15 text-red-500;
   }
-  .btn-danger:hover {
+  .btn-danger:hover:not(:disabled) {
     @apply bg-red-500/25;
   }
   .btn-ghost {
     @apply border-transparent bg-transparent;
   }
-  .btn-ghost:hover {
+  .btn-ghost:hover:not(:disabled) {
     @apply bg-bg-hover;
   }
   .btn-sm {
@@ -135,7 +138,7 @@ button {
   }
 
   .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold;
+    @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-[11px] font-semibold;
   }
   .badge-blue {
     @apply bg-blue-500/15 text-blue-400;
@@ -151,6 +154,12 @@ button {
   }
   .badge-gray {
     @apply bg-gray-500/15 text-gray-400;
+  }
+  .badge-success {
+    @apply bg-green-500/15 text-green-400;
+  }
+  .badge-warning {
+    @apply bg-amber-500/15 text-amber-400;
   }
 
   .status-dot {

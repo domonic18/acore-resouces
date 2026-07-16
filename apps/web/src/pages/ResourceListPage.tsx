@@ -9,6 +9,9 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  Pencil,
+  Eye,
+  Filter,
 } from "lucide-react";
 import { fetchAllResources, getResourceCount } from "@/shared/resources";
 import { ResourceThumb } from "@/components/ResourceThumb";
@@ -210,6 +213,10 @@ export function ResourceListPage() {
 
         <div className="table-toolbar">
           <div className="table-filters">
+            <span className="hidden items-center gap-1.5 text-xs font-semibold text-text-tertiary sm:inline-flex">
+              <Filter className="h-3.5 w-3.5" />
+              筛选
+            </span>
             <select
               className="filter-select"
               value={searchParams.get("category") || ""}
@@ -257,7 +264,9 @@ export function ResourceListPage() {
             >
               刷新
             </button>
-            <button className="btn btn-sm">导出当前页</button>
+            <button className="btn btn-sm" disabled title="导出功能开发中">
+              导出当前页
+            </button>
           </div>
         </div>
 
@@ -335,13 +344,14 @@ export function ResourceListPage() {
                         <Link
                           to={`/resources/${resource.resource_type}/${resource.id}`}
                           className="name-cell"
+                          title={resource.name || resource.model_folder}
                         >
                           <ResourceThumb resource={resource} />
-                          <div>
-                            <div className="resource-name">
+                          <div className="min-w-0">
+                            <div className="resource-name truncate">
                               {resource.name || resource.model_folder}
                             </div>
-                            <div className="resource-meta">
+                            <div className="resource-meta truncate">
                               id: {String(resource.id).padStart(4, "0")} ·{" "}
                               {resource.model_folder}
                             </div>
@@ -363,29 +373,38 @@ export function ResourceListPage() {
                       <td className="text-text-secondary">
                         {formatDateTime(resource.updated_at)}
                       </td>
-                      <td style={{ textAlign: "right" }}>
-                        <Link
-                          to={`/resources/${resource.resource_type}/${resource.id}`}
-                          className="btn btn-sm btn-ghost"
-                        >
-                          编辑
-                        </Link>
-                        <Link
-                          to={`/preview/${resource.resource_type}/${resource.id}`}
-                          className="btn btn-sm btn-ghost"
-                        >
-                          预览
-                        </Link>
+                      <td className="text-right">
+                        <div className="inline-flex items-center justify-end gap-2">
+                          <Link
+                            to={`/resources/${resource.resource_type}/${resource.id}`}
+                            className="btn btn-sm"
+                            title="编辑资源"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">编辑</span>
+                          </Link>
+                          <Link
+                            to={`/preview/${resource.resource_type}/${resource.id}`}
+                            className="btn btn-sm btn-primary"
+                            title="预览模型"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">预览</span>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}
                   {currentItems.length === 0 && (
                     <tr>
-                      <td
-                        colSpan={10}
-                        className="py-8 text-center text-text-secondary"
-                      >
-                        暂无资源
+                      <td colSpan={10}>
+                        <div className="empty-state">
+                          <Search className="mb-3 h-12 w-12 text-text-tertiary" />
+                          <h3>暂无资源</h3>
+                          <p>
+                            当前筛选条件下没有找到资源，请尝试调整搜索或筛选条件。
+                          </p>
+                        </div>
                       </td>
                     </tr>
                   )}
@@ -477,23 +496,28 @@ function TypeBadge({ resource }: { resource: Resource }) {
     label: resource.resource_type,
     className: "badge-gray",
   };
-  return <span className={cn("badge", className)}>{label}</span>;
+  return (
+    <span className={cn("badge", className)} title={label}>
+      {label}
+    </span>
+  );
 }
 
 function StatusBadge({ resource }: { resource: Resource }) {
-  const addedText = resource.added ? " · 已添加" : " · 未添加";
+  const addedText = resource.added ? "已通过 · 已添加" : "已通过 · 未添加";
+  const pendingText = resource.added ? "待调试 · 已添加" : "待调试 · 未添加";
   if (resource.debug_passed) {
     return (
-      <span className="text-sm text-text-secondary">
+      <span className="badge badge-success" title={addedText}>
         <span className="status-dot bg-success" />
-        已通过{addedText}
+        已通过
       </span>
     );
   }
   return (
-    <span className="text-sm text-text-secondary">
+    <span className="badge badge-warning" title={pendingText}>
       <span className="status-dot bg-warning" />
-      待调试{addedText}
+      待调试
     </span>
   );
 }
