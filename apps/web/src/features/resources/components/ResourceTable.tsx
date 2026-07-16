@@ -1,0 +1,172 @@
+import { Link } from "react-router-dom";
+import { Pencil, Eye, Search } from "lucide-react";
+import { ResourceThumb } from "@/components/ResourceThumb";
+import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
+import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
+import { SortHeader } from "@/components/table/SortHeader";
+import { formatDrop, formatDateTime } from "../lib/resource-list";
+import type { Resource } from "@/shared/types";
+import type { SortKey, SortOrder } from "../lib/resource-list";
+
+interface ResourceTableProps {
+  currentItems: Resource[];
+  sortKey: SortKey;
+  sortOrder: SortOrder;
+  setSort: (key: SortKey) => void;
+  isLoading: boolean;
+  error: Error | null;
+}
+
+export function ResourceTable({
+  currentItems,
+  sortKey,
+  sortOrder,
+  setSort,
+  isLoading,
+  error,
+}: ResourceTableProps) {
+  if (isLoading) {
+    return (
+      <p className="px-5 py-8 text-center text-text-secondary">加载中...</p>
+    );
+  }
+
+  if (error) {
+    return (
+      <p className="px-5 py-8 text-center text-danger">
+        加载失败：{error instanceof Error ? error.message : String(error)}
+      </p>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="data-table w-full">
+        <thead>
+          <tr>
+            <th style={{ width: 40 }}>
+              <input type="checkbox" />
+            </th>
+            <SortHeader
+              label="资源"
+              active={sortKey === "resource"}
+              order={sortOrder}
+              onClick={() => setSort("resource")}
+            />
+            <SortHeader
+              label="ID"
+              active={sortKey === "id"}
+              order={sortOrder}
+              onClick={() => setSort("id")}
+            />
+            <SortHeader
+              label="类型"
+              active={sortKey === "resource_type"}
+              order={sortOrder}
+              onClick={() => setSort("resource_type")}
+            />
+            <SortHeader
+              label="星级/稀有度"
+              active={sortKey === "tier"}
+              order={sortOrder}
+              onClick={() => setSort("tier")}
+            />
+            <SortHeader
+              label="掉落来源"
+              active={sortKey === "drop"}
+              order={sortOrder}
+              onClick={() => setSort("drop")}
+            />
+            <th>状态</th>
+            <SortHeader
+              label="添加时间"
+              active={sortKey === "created_at"}
+              order={sortOrder}
+              onClick={() => setSort("created_at")}
+            />
+            <SortHeader
+              label="修改时间"
+              active={sortKey === "updated_at"}
+              order={sortOrder}
+              onClick={() => setSort("updated_at")}
+            />
+            <th style={{ textAlign: "right" }}>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentItems.map((resource) => (
+            <tr key={`${resource.resource_type}-${resource.id}`}>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td>
+                <Link
+                  to={`/resources/${resource.resource_type}/${resource.id}`}
+                  className="name-cell"
+                  title={resource.name || resource.model_folder}
+                >
+                  <ResourceThumb resource={resource} />
+                  <div className="min-w-0">
+                    <div className="resource-name truncate">
+                      {resource.name || resource.model_folder}
+                    </div>
+                    <div className="resource-meta truncate">
+                      id: {String(resource.id).padStart(4, "0")} ·{" "}
+                      {resource.model_folder}
+                    </div>
+                  </div>
+                </Link>
+              </td>
+              <td>{String(resource.id).padStart(4, "0")}</td>
+              <td>
+                <ResourceTypeBadge resource={resource} />
+              </td>
+              <td>{resource.star_rating || resource.rarity || "—"}</td>
+              <td>{formatDrop(resource.drop)}</td>
+              <td>
+                <ResourceStatusBadge resource={resource} />
+              </td>
+              <td className="text-text-secondary">
+                {formatDateTime(resource.created_at)}
+              </td>
+              <td className="text-text-secondary">
+                {formatDateTime(resource.updated_at)}
+              </td>
+              <td className="text-right">
+                <div className="inline-flex items-center justify-end gap-1.5">
+                  <Link
+                    to={`/resources/${resource.resource_type}/${resource.id}`}
+                    className="btn btn-icon btn-sm"
+                    title="编辑资源"
+                    aria-label="编辑资源"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Link>
+                  <Link
+                    to={`/preview/${resource.resource_type}/${resource.id}`}
+                    className="btn btn-icon btn-sm btn-primary"
+                    title="预览模型"
+                    aria-label="预览模型"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </td>
+            </tr>
+          ))}
+          {currentItems.length === 0 && (
+            <tr>
+              <td colSpan={10}>
+                <div className="empty-state">
+                  <Search className="mb-3 h-12 w-12 text-text-tertiary" />
+                  <h3>暂无资源</h3>
+                  <p>当前筛选条件下没有找到资源，请尝试调整搜索或筛选条件。</p>
+                </div>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}

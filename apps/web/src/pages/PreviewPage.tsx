@@ -14,12 +14,11 @@ import {
   getResource,
   getResourceAssets,
   getModelPreview,
-  getFilePreviewUrl,
-  getBlpPreviewUrl,
 } from "@/shared/resources";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
-import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { ModelViewer } from "@/components/viewer/ModelViewer";
+import { ModelMetadataPanel } from "@/components/viewer/ModelMetadataPanel";
+import { ImageGallery } from "@/components/media/ImageGallery";
 import { uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
 
@@ -101,9 +100,6 @@ export function PreviewPage() {
     ? [...assets.matched_textures, ...assets.texture_files]
     : [];
   const imageFiles = assets ? assets.image_files : [];
-  const metaEntries = modelPreview?.metadata
-    ? Object.entries(modelPreview.metadata)
-    : [];
 
   const canShowModel = modelPreview?.status === "available";
   const canShowImage = imageFiles.length > 0;
@@ -118,6 +114,11 @@ export function PreviewPage() {
       setSelectedImage(file);
       setActiveTab("image");
     }
+  }
+
+  function handleTextureSelect(file: AssetFile) {
+    setSelectedTexture(file);
+    setActiveTab("model");
   }
 
   const allFiles = assets
@@ -244,7 +245,8 @@ export function PreviewPage() {
               </div>
             )}
             {activeTab === "image" && (
-              <ImageViewer
+              <ImageGallery
+                variant="viewer"
                 files={imageFiles}
                 selected={selectedImage}
                 onSelect={setSelectedImage}
@@ -254,152 +256,13 @@ export function PreviewPage() {
         </div>
 
         {/* Right: Textures & Meta */}
-        <div className="viewer-panel">
-          <div className="panel-header">贴图变体</div>
-          <div className="panel-body">
-            {textures.length > 0 ? (
-              <>
-                <div className="texture-grid">
-                  {textures.map((file) => (
-                    <TextureViewer
-                      key={file.relative_path}
-                      path={file.relative_path}
-                      label={file.name}
-                      size={96}
-                      active={
-                        selectedTexture?.relative_path === file.relative_path
-                      }
-                      onClick={() => {
-                        setSelectedTexture(file);
-                        setActiveTab("model");
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="px-4 pb-4">
-                  <div className="text-xs text-text-tertiary">当前贴图</div>
-                  <div className="mt-1 text-sm font-medium text-text-primary">
-                    {selectedTexture?.name || textures[0].name}
-                  </div>
-                  <div className="mt-1 text-[11px] text-text-tertiary">
-                    {selectedTexture?.relative_path ||
-                      textures[0].relative_path}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="p-4 text-sm text-text-secondary">
-                未找到贴图文件
-              </div>
-            )}
-
-            <div className="border-t border-border"></div>
-            <div className="panel-header">模型元数据</div>
-            <div className="meta-list">
-              {metaEntries.length > 0 ? (
-                metaEntries.map(([key, value]) => (
-                  <div className="meta-item" key={key}>
-                    <span className="meta-label">{key}</span>
-                    <span className="meta-value">{formatMetaValue(value)}</span>
-                  </div>
-                ))
-              ) : (
-                <div className="text-text-secondary">暂无元数据</div>
-              )}
-              <div className="meta-item">
-                <span className="meta-label">渲染状态</span>
-                <span
-                  className={`meta-value ${
-                    modelPreview?.status === "available"
-                      ? "text-success"
-                      : "text-warning"
-                  }`}
-                >
-                  {modelPreview?.status === "available"
-                    ? "可渲染"
-                    : modelPreview?.status === "skin_missing"
-                      ? "缺少 skin 文件"
-                      : modelPreview?.status || "未知"}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModelMetadataPanel
+          textures={textures}
+          selectedTexture={selectedTexture}
+          onSelectTexture={handleTextureSelect}
+          modelPreview={modelPreview}
+        />
       </div>
     </div>
   );
-}
-
-function ImageViewer({
-  files,
-  selected,
-  onSelect,
-}: {
-  files: AssetFile[];
-  selected: AssetFile | null;
-  onSelect: (file: AssetFile) => void;
-}) {
-  if (files.length === 0) {
-    return (
-      <div className="preview-placeholder">
-        <AlertCircle className="h-12 w-12 text-text-tertiary" />
-        <p>没有图片文件</p>
-      </div>
-    );
-  }
-
-  const current = selected ?? files[0];
-
-  return (
-    <>
-      <div className="viewer-canvas">
-        <img
-          src={filePreviewUrl(current)}
-          alt={current.name}
-          className="relative z-10 max-h-full max-w-full rounded-md object-contain"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
-      </div>
-      <div className="viewer-toolbar flex-wrap">
-        {files.map((file) => (
-          <button
-            key={file.relative_path}
-            type="button"
-            onClick={() => onSelect(file)}
-            className={`h-12 w-12 shrink-0 overflow-hidden rounded-md border object-cover transition-all ${
-              current.relative_path === file.relative_path
-                ? "border-accent"
-                : "border-border hover:border-border-hover"
-            }`}
-          >
-            <img
-              src={filePreviewUrl(file)}
-              alt={file.name}
-              className="h-full w-full object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-            />
-          </button>
-        ))}
-      </div>
-    </>
-  );
-}
-
-function filePreviewUrl(file: AssetFile): string {
-  if (file.file_type === "blp") {
-    return getBlpPreviewUrl(file.relative_path, 512);
-  }
-  return getFilePreviewUrl(file.relative_path);
-}
-
-function formatMetaValue(value: unknown): string {
-  if (value === null || value === undefined) return "—";
-  if (typeof value === "number") return value.toLocaleString();
-  if (typeof value === "boolean") return value ? "是" : "否";
-  if (Array.isArray(value)) return `${value.length} 项`;
-  return String(value);
 }
