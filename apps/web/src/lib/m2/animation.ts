@@ -570,8 +570,10 @@ function convertM2Scale(scale: Float32Array): [number, number, number] {
 }
 
 function convertM2Quaternion(q: number[]): [number, number, number, number] {
-  // Quaternion vector part transforms the same way as a position vector.
-  return [-q[0], -q[2], q[1], q[3]];
+  // M2 -> Three.js is a -90 degree rotation around X:
+  //   (x, y, z) -> (x, z, -y)
+  // Apply the same rotation to the quaternion vector part.
+  return [q[0], q[2], -q[1], q[3]];
 }
 
 interface VectorKeyframe {

@@ -436,6 +436,7 @@ export function parseM2(buffer: ArrayBuffer): M2Data {
     textures,
     materials,
     textureLookups,
+    boneLookupTable,
   } = readM2Header(reader, version);
 
   const parsedGlobalSequences: number[] = [];
@@ -506,6 +507,14 @@ export function parseM2(buffer: ArrayBuffer): M2Data {
     }
   }
 
+  const parsedBoneLookups: number[] = [];
+  if (boneLookupTable.offset > 0 && boneLookupTable.count > 0) {
+    reader.seek(boneLookupTable.offset);
+    for (let i = 0; i < boneLookupTable.count; i++) {
+      parsedBoneLookups.push(reader.readInt16());
+    }
+  }
+
   return {
     version,
     name,
@@ -517,6 +526,7 @@ export function parseM2(buffer: ArrayBuffer): M2Data {
     textures: parsedTextures,
     materials: parsedMaterials,
     textureLookups: parsedTextureLookups,
+    boneLookups: parsedBoneLookups,
   };
 }
 
@@ -624,10 +634,11 @@ export function parseSkin(buffer: ArrayBuffer): M2SkinData {
     triangles = new Uint16Array(0);
   }
 
-  let skinBones: number[] = [];
+  let skinBoneIndices: Uint8Array = new Uint8Array(0);
   if (boneIndicesNofs.offset > 0 && boneIndicesNofs.count > 0) {
     reader.seek(boneIndicesNofs.offset);
-    skinBones = Array.from(reader.readUint16Array(boneIndicesNofs.count));
+    const byteCount = boneIndicesNofs.count * 4;
+    skinBoneIndices = reader.readUint8Array(byteCount);
   }
 
   const submeshes: M2SkinSubmesh[] = [];
@@ -646,7 +657,7 @@ export function parseSkin(buffer: ArrayBuffer): M2SkinData {
     }
   }
 
-  return { indices, triangles, submeshes, batches, skinBones };
+  return { indices, triangles, submeshes, batches, skinBoneIndices };
 }
 
 export async function parseM2WithSkin(

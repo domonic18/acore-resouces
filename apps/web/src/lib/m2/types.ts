@@ -67,6 +67,7 @@ export interface M2Data {
   textures: M2Texture[];
   materials: M2Material[];
   textureLookups: number[];
+  boneLookups: number[];
 }
 
 export interface M2SkinSubmesh {
@@ -105,7 +106,7 @@ export interface M2SkinData {
   triangles: Uint16Array;
   submeshes: M2SkinSubmesh[];
   batches: M2SkinBatch[];
-  skinBones: number[];
+  skinBoneIndices: Uint8Array;
 }
 
 export interface ParsedM2 {

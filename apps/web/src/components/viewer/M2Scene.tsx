@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { M2Bone, M2Data, M2SkinData, ParsedM2 } from "@/lib/m2/types";
-import { convertM2Position } from "@/lib/m2/coordinates";
+import { convertM2Position, convertM2Normal } from "@/lib/m2/coordinates";
 import {
   BONE_WEIGHT_MAX,
   MAX_BONE_INFLUENCES,
@@ -59,25 +59,22 @@ function buildSubmeshGeometry(
   }
 
   const geometry = new THREE.BufferGeometry();
-  const vertexSet = new Set<number>();
+  const skinVertexSet = new Set<number>();
   const { startTriangle, triangleCount } = submesh;
   const endTriangle = startTriangle + triangleCount;
 
-  for (let i = startTriangle; i < endTriangle; i += 3) {
-    for (let j = 0; j < 3; j++) {
-      const index = skin.triangles[i + j];
-      vertexSet.add(index);
-    }
+  for (let i = startTriangle; i < endTriangle; i++) {
+    skinVertexSet.add(skin.triangles[i]);
   }
 
-  if (vertexSet.size === 0) {
+  if (skinVertexSet.size === 0) {
     return null;
   }
 
-  const uniqueVertices = Array.from(vertexSet);
+  const uniqueSkinVertices = Array.from(skinVertexSet);
   const indexMap = new Map<number, number>();
-  uniqueVertices.forEach((vertexIndex, newIndex) => {
-    indexMap.set(vertexIndex, newIndex);
+  uniqueSkinVertices.forEach((skinVertexIndex, newIndex) => {
+    indexMap.set(skinVertexIndex, newIndex);
   });
 
   const positions: number[] = [];
@@ -86,14 +83,16 @@ function buildSubmeshGeometry(
   const skinIndices: number[] = [];
   const skinWeights: number[] = [];
 
-  const hasSkinBones = skin.skinBones.length > 0;
+  const hasSkinBones = skin.skinBoneIndices.length > 0;
+  const boneLookupBase = submesh.startBone;
 
-  for (const vertexIndex of uniqueVertices) {
+  for (const skinVertexIndex of uniqueSkinVertices) {
+    const vertexIndex = skin.indices[skinVertexIndex];
     const vertex = m2.vertices[vertexIndex];
     if (!vertex) continue;
 
     positions.push(...convertM2Position(vertex.position));
-    normals.push(...convertM2Position(vertex.normal));
+    normals.push(...convertM2Normal(vertex.normal));
     uvs.push(
       vertex.textureCoords[0][0],
       UV_FLIP_V_SCALE * vertex.textureCoords[0][1] + UV_FLIP_V_OFFSET,
@@ -102,10 +101,17 @@ function buildSubmeshGeometry(
     if (hasSkinBones) {
       const totalWeight = vertex.boneWeights.reduce((sum, w) => sum + w, 0);
       const weightScale = totalWeight > 0 ? totalWeight : BONE_WEIGHT_MAX;
+      const boneBase = skinVertexIndex * MAX_BONE_INFLUENCES;
       for (let i = 0; i < MAX_BONE_INFLUENCES; i++) {
-        const localBone = vertex.boneIndices[i];
-        const globalBone =
-          localBone < skin.skinBones.length ? skin.skinBones[localBone] : 0;
+        const localBone = skin.skinBoneIndices[boneBase + i];
+        const lookupIndex = boneLookupBase + localBone;
+        let globalBone =
+          lookupIndex >= 0 && lookupIndex < m2.boneLookups.length
+            ? m2.boneLookups[lookupIndex]
+            : localBone;
+        if (globalBone < 0 || globalBone >= m2.bones.length) {
+          globalBone = 0;
+        }
         skinIndices.push(globalBone);
         skinWeights.push(vertex.boneWeights[i] / weightScale);
       }
@@ -331,8 +337,8 @@ export function M2Scene({
 
   // eslint-disable-next-line no-console
   console.log(
-    "[M2Scene] skinBones=",
-    skin.skinBones.length,
+    "[M2Scene] skinBoneIndices=",
+    skin.skinBoneIndices.length / MAX_BONE_INFLUENCES,
     "skeleton bones=",
     skeleton?.bones.length,
   );

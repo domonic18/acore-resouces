@@ -4,8 +4,10 @@ import * as THREE from "three";
 export const DEFAULT_CAMERA_POSITION: [number, number, number] = [3, 3, 3];
 export const DEFAULT_CAMERA_FOV = 50;
 
-// Model root orientation correction
-export const MODEL_ROOT_ROTATION_X = -Math.PI / 2;
+// Model root orientation correction.
+// convertM2Position already maps M2 (X=right, Y=forward, Z=up) to Three.js
+// (X=right, Y=up, Z=forward), so no extra rotation is required.
+export const MODEL_ROOT_ROTATION_X = 0;
 
 // Default mesh material parameters
 export const MATERIAL_DEFAULT_COLOR = 0xffffff;
