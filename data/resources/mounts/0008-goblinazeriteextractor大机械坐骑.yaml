@@ -10,8 +10,10 @@ drop:
   rate: 0.01
 official_db:
   name: 地精岩石挖掘机
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_vehicle_powertowheels
+  icon_name: inv_misc_key_06
+  spell_wowhead_url: null
+  item_wowhead_url: null
 dbc:
   creature_model_data:
     id: 4005

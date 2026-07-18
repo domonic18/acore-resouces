@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 部落豪猪战车
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_vehicle_powertowheels
+  icon_name: inv_misc_key_06
+
 dbc:
   creature_model_data:
     id: 4053

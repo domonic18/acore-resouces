@@ -10,8 +10,10 @@ drop:
   rate: 0.02
 official_db:
   name: 狡狐魔使
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_encrypted09
+  icon_name: inv_encrypted09
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=290133
+  item_wowhead_url: https://www.wowhead.com/cn/item=166775
 dbc:
   creature_model_data:
     id: 104146
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80146
     name: 狡狐魔使
-    description: 召唤或解散一个可供骑乘的狡狐魔使。这是一种速度非常快的坐骑。
+    description: 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
     visual_id: 9140146
     icon_id: 19207
   item:
@@ -42,6 +44,8 @@ dbc:
     display_id: 100207
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 这种外形酷似狐狸的生物既聪明又好奇，它们穿过深暗领域来到了艾泽拉斯，然后被艾泽拉斯的勇士所吸引，想陪伴在勇士们身边一同冒险。
 db:
   creature_template:
     entry: 9140146

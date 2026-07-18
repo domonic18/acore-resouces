@@ -11,7 +11,8 @@ drop:
 official_db:
   name: 火焰卡利鸟
   spell_icon_name: null
-  icon_name: null
+  icon_name: inv_misc_stonedragonred
+
 dbc:
   creature_model_data:
     id: 104112

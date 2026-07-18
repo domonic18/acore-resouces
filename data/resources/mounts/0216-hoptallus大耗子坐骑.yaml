@@ -9,9 +9,11 @@ drop:
   boss: 迪克斯特·瓦德
   rate: 0.01
 official_db:
-  name: 跳跳大王
-  spell_icon_name: null
-  icon_name: null
+  name: 骑乘巨鼠
+  spell_icon_name: inv_ratmount
+  icon_name: inv_ratmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=215558
+  item_wowhead_url: https://www.wowhead.com/item=138387
 dbc:
   creature_model_data:
     id: 104212
@@ -29,9 +31,10 @@ dbc:
     texture_3: hoptallus1
   spell:
     id: 80212
-    name: 跳跳大王
-    description: 召唤或解散一个可供骑乘的跳跳大王。这是一种速度非常快的坐骑。
+    name: 骑乘巨鼠
+    description: 召唤或解散一只可供骑乘的骑乘巨鼠。
     visual_id: 9140212
+    icon_id: 957
   item:
     id: 153593
     class: 15
@@ -41,6 +44,7 @@ dbc:
     display_id: 102791
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的骑乘巨鼠。
 db:
   creature_template:
     entry: 9140212

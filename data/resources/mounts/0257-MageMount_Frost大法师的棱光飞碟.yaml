@@ -10,8 +10,10 @@ drop:
   rate: 0.02
 official_db:
   name: 大法师的棱光飞碟
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_magemount
+  icon_name: inv_magemount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=229376
+  item_wowhead_url: null
 dbc:
   creature_model_data:
     id: 104253
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80253
     name: 大法师的棱光飞碟
-    description: 召唤或解散一个可供骑乘的大法师的棱光飞碟。这是一种速度非常快的坐骑。
+    description: 召唤或解散你的大法师的棱光飞碟。这是一种飞行坐骑。
     visual_id: 9140253
     icon_id: 24258
   item:

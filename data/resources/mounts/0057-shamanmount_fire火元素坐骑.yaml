@@ -9,9 +9,11 @@ drop:
   boss: 拉格纳罗斯
   rate: 0.035
 official_db:
-  name: 火元素
-  spell_icon_name: null
-  icon_name: null
+  name: 先知的狂怒风暴
+  spell_icon_name: inv_shamanmount
+  icon_name: inv_shamanmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=231442
+  item_wowhead_url: null
 dbc:
   creature_model_data:
     id: 4054
@@ -29,8 +31,8 @@ dbc:
     texture_3: shamanmount_enhancement
   spell:
     id: 80054
-    name: 火元素
-    description: 召唤或解散一个可供骑乘的火元素。这是一种速度非常快的坐骑。
+    name: 先知的狂怒风暴
+    description: 召唤或解散你的先知的狂怒风暴。这是一种飞行坐骑。
     visual_id: 9140054
     icon_id: 3170
   item:
@@ -45,7 +47,7 @@ dbc:
 db:
   creature_template:
     entry: 9140054
-    name: 火元素
+    name: 先知的狂怒风暴
     modelid1: 140054
     faction: 35
     type: 1
@@ -59,12 +61,12 @@ db:
     display_id: 140054
   item_template:
     entry: 91054
-    name: 火元素
+    name: 先知的狂怒风暴
     displayid: 21583
     spellid_2: 80054
     Quality: 4
     AllowableClass: -1
     AllowableRace: 2047
-mount_type: 陆地坐骑
+mount_type: 飞行坐骑
 star_rating: 四星
-subtype: 元素
+subtype: 风暴元素

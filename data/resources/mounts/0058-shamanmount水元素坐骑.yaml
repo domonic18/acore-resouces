@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 水元素
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: spell_fire_blueflamebreath
+  icon_name: inv_misc_orb_01
+
 dbc:
   creature_model_data:
     id: 4055

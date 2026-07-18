@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 加氏灭世机甲
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: achievement_dungeon_coinoperatedcrowdpummeler
+  icon_name: achievement_dungeon_coinoperatedcrowdpummeler
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=289083
+  item_wowhead_url: https://www.wowhead.com/item=166518
 dbc:
   creature_model_data:
     id: 104243
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80243
     name: 加氏灭世机甲
-    description: 召唤或解散一个可供骑乘的加氏灭世机甲。这是一种速度非常快的坐骑。
+    description: 召唤或解散你的加氏灭世机甲。这种坐骑的速度会根据你的骑术等级和所在区域改变。
     visual_id: 9140243
     icon_id: 11194
   item:
@@ -42,6 +44,8 @@ dbc:
     display_id: 92194
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的加氏灭世机甲。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 加里维克斯指派制作的灭世机甲具有极其繁复的地精花哨装饰，他不仅要求在战斗力方面绝不能比梅卡托克逊色，在外形上更是必须时尚而大气。
 db:
   creature_template:
     entry: 9140243

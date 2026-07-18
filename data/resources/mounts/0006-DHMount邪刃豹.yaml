@@ -10,8 +10,8 @@ drop:
   rate: 0.01
 official_db:
   name: 邪刃豹
-  spell_icon_name: inv-dhmount-felsaber
-  icon_name: inv-dhmount-felsaber
+  spell_icon_name: inv_dhmount_felsaber
+  icon_name: inv_misc_horn_01
 dbc:
   creature_model_data:
     id: 4003

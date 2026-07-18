@@ -10,8 +10,9 @@ drop:
   rate: 0.035
 official_db:
   name: 烈焰蝎子
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_weapon_hand_06
+  icon_name: inv_elemental_crystal_fire
+
 dbc:
   creature_model_data:
     id: 4013

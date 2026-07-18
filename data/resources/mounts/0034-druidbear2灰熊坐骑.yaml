@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 灰熊
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_druid_challangingroar
+  icon_name: ability_druid_challangingroar
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=51412
+  item_wowhead_url: https://www.wowhead.com/item=49282
 dbc:
   creature_model_data:
     id: 4031
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80031
     name: 灰熊
-    description: 召唤或解散一头可供骑乘的灰熊。这是一种速度非常快的坐骑。
+    description: 召唤或解散一头可供骑乘的大战熊。
     visual_id: 9140031
     icon_id: 957
   item:
@@ -42,6 +44,8 @@ dbc:
     display_id: 40160
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一头可供骑乘的大战熊。
+    flavor_text: 他很大，他随时能投入战斗，他是一头熊。对于一头坐骑，你还能要求什么呢？
 db:
   creature_template:
     entry: 9140031

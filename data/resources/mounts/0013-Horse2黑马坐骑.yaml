@@ -10,8 +10,10 @@ drop:
   rate: 0.01
 official_db:
   name: 黑马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_ridinghorse
+  icon_name: ability_mount_ridinghorse
+  spell_wowhead_url: https://www.wowhead.com/wotlk/cn/spell=470
+  item_wowhead_url: https://www.wowhead.com/wotlk/cn/item=2411
 dbc:
   creature_model_data:
     id: 4010
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80010
     name: 黑马
-    description: 召唤或解散一只可供骑乘的黑马。这是一种速度非常快的坐骑。
+    description: 召唤或解散一匹可供骑乘的黑马。
     visual_id: 9140010
     icon_id: 1176
   item:
@@ -42,6 +44,7 @@ dbc:
     display_id: 13108
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一匹可供骑乘的黑马。
 db:
   creature_template:
     entry: 9140010

@@ -10,8 +10,10 @@ drop:
   rate: 0.035
 official_db:
   name: 装甲铁牙践踏者
-  spell_icon_name: inv_iron-horde-elekk
-  icon_name: inv_iron-horde-elekk
+  spell_icon_name: inv_iron horde elekk
+  icon_name: inv_iron horde elekk
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171626
+  item_wowhead_url: https://www.wowhead.com/cn/item=116665
 dbc:
   creature_model_data:
     id: 4043
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80043
     name: 装甲铁牙践踏者
-    description: 召唤或解散一头可供骑乘的装甲铁牙践踏者。这是一种速度非常快的坐骑。
+    description: 召唤或解散你的装甲铁牙践踏者。
     visual_id: 9140043
     icon_id: 2166
   item:
@@ -42,6 +44,8 @@ dbc:
     display_id: 44590
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的装甲铁牙践踏者。
+    flavor_text: 据说雷象过目不忘。考虑到那些兽人对这头野兽带来的折磨，难怪它那么讨厌钢铁部落。
 db:
   creature_template:
     entry: 9140043

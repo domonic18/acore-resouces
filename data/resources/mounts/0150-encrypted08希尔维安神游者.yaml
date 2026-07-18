@@ -10,8 +10,10 @@ drop:
   rate: 0.02
 official_db:
   name: 希尔维安神游者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_encrypted08
+  icon_name: inv_encrypted08
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=290132
+  item_wowhead_url: https://www.wowhead.com/cn/item=166776
 dbc:
   creature_model_data:
     id: 104145
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80145
     name: 希尔维安神游者
-    description: 召唤或解散一个可供骑乘的希尔维安神游者。这是一种速度非常快的坐骑。
+    description: 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
     visual_id: 9140145
     icon_id: 19206
   item:
@@ -42,6 +44,8 @@ dbc:
     display_id: 100206
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 魔法之城达拉然有位艺术家在绘画时睡着了，她在梦中绘制了一只长羽毛的美丽巨龙。她的画作从纸上飞跃而出。当她醒来时，发现这只巨龙正在她身旁酣睡。
 db:
   creature_template:
     entry: 9140145

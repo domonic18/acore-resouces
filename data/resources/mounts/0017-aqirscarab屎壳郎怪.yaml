@@ -10,8 +10,9 @@ drop:
   rate: 0.035
 official_db:
   name: 红虫
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_hunter_pet_ravager
+  icon_name: inv_misc_qirajicrystal_02
+
 dbc:
   creature_model_data:
     id: 4014

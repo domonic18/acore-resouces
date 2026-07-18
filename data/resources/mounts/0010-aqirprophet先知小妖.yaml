@@ -10,8 +10,9 @@ drop:
   rate: 0.01
 official_db:
   name: 先知小妖
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_hunter_pet_windserpent
+  icon_name: inv_misc_net_01
+
 dbc:
   creature_model_data:
     id: 4007

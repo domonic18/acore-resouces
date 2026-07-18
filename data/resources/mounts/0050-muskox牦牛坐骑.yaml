@@ -10,8 +10,9 @@ drop:
   rate: 0.01
 official_db:
   name: 高地符角牛
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_ridingelekkelite
+  icon_name: ability_mount_ridingelekkelite_green
+
 dbc:
   creature_model_data:
     id: 4047
