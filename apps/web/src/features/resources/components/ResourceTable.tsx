@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Pencil, Eye, Search } from "lucide-react";
+import { Check, Copy, Pencil, Eye, Search } from "lucide-react";
+import { useState } from "react";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
 import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
@@ -7,6 +8,35 @@ import { SortHeader } from "@/components/table/SortHeader";
 import { formatDrop, formatDateTime } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
 import type { SortKey, SortOrder } from "../lib/resource-list";
+
+function CopyResourceButton({ resource }: { resource: Resource }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const text = `${String(resource.id).padStart(4, "0")} ${resource.name || resource.model_folder} (${resource.model_folder})`;
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      className="btn btn-icon btn-sm btn-ghost shrink-0 text-text-tertiary hover:text-text-primary"
+      title="复制资源信息"
+      aria-label="复制资源信息"
+    >
+      {copied ? (
+        <Check className="h-3.5 w-3.5 text-success" />
+      ) : (
+        <Copy className="h-3.5 w-3.5" />
+      )}
+    </button>
+  );
+}
 
 interface ResourceTableProps {
   currentItems: Resource[];
@@ -100,22 +130,25 @@ export function ResourceTable({
                 <input type="checkbox" />
               </td>
               <td>
-                <Link
-                  to={`/resources/${resource.resource_type}/${resource.id}`}
-                  className="name-cell"
-                  title={resource.name || resource.model_folder}
-                >
-                  <ResourceThumb resource={resource} />
-                  <div className="min-w-0">
-                    <div className="resource-name truncate">
-                      {resource.name || resource.model_folder}
+                <div className="flex items-center gap-2">
+                  <Link
+                    to={`/resources/${resource.resource_type}/${resource.id}`}
+                    className="name-cell min-w-0 flex-1"
+                    title={resource.name || resource.model_folder}
+                  >
+                    <ResourceThumb resource={resource} />
+                    <div className="min-w-0">
+                      <div className="resource-name truncate">
+                        {resource.name || resource.model_folder}
+                      </div>
+                      <div className="resource-meta truncate">
+                        id: {String(resource.id).padStart(4, "0")} ·{" "}
+                        {resource.model_folder}
+                      </div>
                     </div>
-                    <div className="resource-meta truncate">
-                      id: {String(resource.id).padStart(4, "0")} ·{" "}
-                      {resource.model_folder}
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                  <CopyResourceButton resource={resource} />
+                </div>
               </td>
               <td>{String(resource.id).padStart(4, "0")}</td>
               <td>
