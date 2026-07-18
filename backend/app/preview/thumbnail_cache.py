@@ -1,6 +1,6 @@
 """缩略图缓存管理。
 
-缓存路径规则：assets/thumbnails/{width}x{height}/{relative_path}.webp
+缓存路径规则：workspace/assets/thumbnails/{width}x{height}/{relative_path}.webp
 命中条件：源文件 mtime 未变化。
 """
 

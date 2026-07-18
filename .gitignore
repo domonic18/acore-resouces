@@ -28,10 +28,10 @@ Desktop.ini
 # 但保留图标索引文件（文本，可纳入 Git）
 !/sources/icons/interface/*.txt
 
-# 运行时生成的缓存（可重新生成，不入 Git）
+# 运行时生成的缓存（已统一收拢到 workspace/assets/，旧目录保留兼容）
 /assets/
 
-# 运行时数据（SQLite、日志等）
+# 运行时数据（SQLite、日志、运行时缓存）
 /workspace/
 
 # 本地参考文档/下载资料

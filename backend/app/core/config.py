@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     workspace_dir: Path = Path("workspace")
     sources_dir: Path = Path("sources")
     imports_dir: Path = Path("imports")
-    assets_dir: Path = Path("assets")
+    assets_dir: Path = Path("workspace/assets")
     patches_dir: Path = Path("patches")
 
     db_url: str = ""
@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     schemas_dir: Path = Path("data/schemas")
     mapping_dir: Path = Path("data/mapping")
 
-    thumbnails_dir: Path = Path("assets/thumbnails")
-    gltf_dir: Path = Path("assets/gltf")
+    thumbnails_dir: Path = Path("workspace/assets/thumbnails")
+    gltf_dir: Path = Path("workspace/assets/gltf")
     logs_dir: Path = Path("workspace/logs")
 
     def model_post_init(self, __context: Any) -> None:
@@ -34,7 +34,7 @@ class Settings(BaseSettings):
         self.workspace_dir = root / "workspace"
         self.sources_dir = root / "sources"
         self.imports_dir = root / "imports"
-        self.assets_dir = root / "assets"
+        self.assets_dir = self.workspace_dir / "assets"
         self.patches_dir = root / "patches"
 
         self.db_url = f"sqlite:///{self.workspace_dir / 'data' / 'acore_resource.db'}"

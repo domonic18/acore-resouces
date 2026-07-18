@@ -1,7 +1,7 @@
 """模型转换工具调用客户端。
 
 负责调用 Rust `model-converter` CLI，将 `.m2` 转换为 `.gltf`/`.glb`，
-并管理 `assets/gltf/{model_folder}/` 缓存。
+并管理 `workspace/assets/gltf/{model_folder}/` 缓存。
 """
 
 from __future__ import annotations

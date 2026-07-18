@@ -84,7 +84,7 @@ def resolve_texture_files(
 - **YAML/JSON 文件**（`data/resources/`）：资源定义主存储，纳入 Git。
 - **SQLite**（`workspace/data/acore_resource.db`）：运行时查询缓存，不入 Git。
 - **原始资源**（`sources/`）：`.m2`/`.blp`/`.png`/`.gif`，不入 Git。
-- **运行时缓存**（`assets/`）：缩略图、glTF 转换产物，不入 Git。
+- **运行时缓存**（`workspace/assets/`）：缩略图、glTF 转换产物，不入 Git。
 - **运行时日志**（`workspace/logs/`）：应用日志，不入 Git。
 
 ### 状态管理
