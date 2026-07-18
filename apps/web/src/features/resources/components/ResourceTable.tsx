@@ -1,5 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import { Check, Copy, Pencil, Eye, Search } from "lucide-react";
+import {
+  Check,
+  Copy,
+  Pencil,
+  Eye,
+  Search,
+  Sparkles,
+  Package,
+} from "lucide-react";
 import { useState } from "react";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
@@ -196,6 +204,32 @@ export function ResourceTable({
                   >
                     <Eye className="h-3.5 w-3.5" />
                   </Link>
+                  {resource.official_db.spell_wowhead_url && (
+                    <a
+                      href={resource.official_db.spell_wowhead_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
+                      title="查看 Wowhead 法术页"
+                      aria-label="查看 Wowhead 法术页"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Sparkles className="h-3.5 w-3.5" />
+                    </a>
+                  )}
+                  {resource.official_db.item_wowhead_url && (
+                    <a
+                      href={resource.official_db.item_wowhead_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
+                      title="查看 Wowhead 物品页"
+                      aria-label="查看 Wowhead 物品页"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Package className="h-3.5 w-3.5" />
+                    </a>
+                  )}
                 </div>
               </td>
             </tr>

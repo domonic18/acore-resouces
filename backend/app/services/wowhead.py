@@ -11,7 +11,7 @@ import json
 import logging
 import re
 import time
-from typing import TypedDict
+from typing import TypedDict, cast
 from urllib.parse import quote, unquote
 
 from playwright.sync_api import Locator, Page, sync_playwright
@@ -54,6 +54,20 @@ def _item_path(expansion: str, locale: str) -> str:
     if expansion == "wotlk":
         return "/wotlk/cn/item=" if locale == "zh" else "/wotlk/item="
     return "/cn/item=" if locale == "zh" else "/item="
+
+
+def _spell_wowhead_url(spell_id: int | None, expansion: str, locale: str) -> str | None:
+    """构造法术页 Wowhead URL。"""
+    if not spell_id:
+        return None
+    return f"https://www.wowhead.com{_spell_path(expansion, locale)}{spell_id}"
+
+
+def _item_wowhead_url(item_id: int | None, expansion: str, locale: str) -> str | None:
+    """构造物品页 Wowhead URL。"""
+    if not item_id:
+        return None
+    return f"https://www.wowhead.com{_item_path(expansion, locale)}{item_id}"
 
 
 def _build_search_url(query: str, expansion: str, locale: str) -> str:
@@ -352,7 +366,9 @@ def _search_mount_single(query: str, expansion: str, locale: str) -> dict:
         "description": None,
         "icon_name": None,
         "spell_id": None,
+        "spell_wowhead_url": None,
         "item_id": None,
+        "item_wowhead_url": None,
         "mount_id": None,
         "source": None,
         "confidence": "low",
@@ -384,6 +400,16 @@ def _search_mount_single(query: str, expansion: str, locale: str) -> dict:
             parsed = _parse_spell_page(page, query, expansion, locale)
             result.update(parsed)
             result["item_id"] = item_id
+            result["spell_wowhead_url"] = _spell_wowhead_url(
+                cast(int | None, result.get("spell_id")),
+                expansion,
+                locale,
+            )
+            result["item_wowhead_url"] = _item_wowhead_url(
+                item_id,
+                expansion,
+                locale,
+            )
 
             confidence = "low"
             if result["name_en"] and result["description"]:
@@ -413,7 +439,9 @@ def _search_mount_by_id(spell_id: int, expansion: str, locale: str) -> dict:
         "description": None,
         "icon_name": None,
         "spell_id": spell_id,
+        "spell_wowhead_url": None,
         "item_id": None,
+        "item_wowhead_url": None,
         "mount_id": None,
         "source": None,
         "confidence": "low",
@@ -429,6 +457,11 @@ def _search_mount_by_id(spell_id: int, expansion: str, locale: str) -> dict:
             result["url"] = page.url
             parsed = _parse_spell_page(page, "", expansion, locale)
             result.update(parsed)
+            result["spell_wowhead_url"] = _spell_wowhead_url(
+                cast(int | None, result.get("spell_id")),
+                expansion,
+                locale,
+            )
 
             confidence = "low"
             if result["name_en"] and result["description"]:
@@ -484,6 +517,12 @@ def search_mount(query: str) -> dict:
                 result["mount_id"] = cn_result.get("mount_id") or result.get("mount_id")
                 result["source"] = cn_result.get("source") or result.get("source")
                 result["url"] = cn_result.get("url") or result.get("url")
+                result["spell_wowhead_url"] = cn_result.get("spell_wowhead_url") or result.get(
+                    "spell_wowhead_url"
+                )
+                result["item_wowhead_url"] = cn_result.get("item_wowhead_url") or result.get(
+                    "item_wowhead_url"
+                )
                 result["confidence"] = cn_result.get("confidence") or result.get("confidence")
         return result
 

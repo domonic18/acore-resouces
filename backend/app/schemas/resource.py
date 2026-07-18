@@ -17,6 +17,8 @@ class OfficialDbInfo(BaseModel):
     name: str | None = None
     spell_icon_name: str | None = None
     icon_name: str | None = None
+    spell_wowhead_url: str | None = None
+    item_wowhead_url: str | None = None
 
 
 class DbcInfo(BaseModel):

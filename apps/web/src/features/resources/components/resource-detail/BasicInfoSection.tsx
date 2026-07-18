@@ -1,5 +1,6 @@
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
+import { ExternalLink } from "lucide-react";
 import type { Resource } from "@/shared/types";
 import type { FormState } from "../../hooks/useResourceForm";
 
@@ -43,6 +44,28 @@ export function BasicInfoSection({
             value={form.name}
             onChange={(e) => updateField("name", e.target.value)}
           />
+          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+            {resource.official_db.spell_wowhead_url && (
+              <a
+                href={resource.official_db.spell_wowhead_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent-hover"
+              >
+                <ExternalLink className="h-3 w-3" /> Wowhead 法术页
+              </a>
+            )}
+            {resource.official_db.item_wowhead_url && (
+              <a
+                href={resource.official_db.item_wowhead_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent-hover"
+              >
+                <ExternalLink className="h-3 w-3" /> Wowhead 物品页
+              </a>
+            )}
+          </div>
         </FormGroup>
         {isMount && (
           <>

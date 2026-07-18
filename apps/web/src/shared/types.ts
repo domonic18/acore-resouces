@@ -9,6 +9,8 @@ export interface OfficialDbInfo {
   name: string | null;
   spell_icon_name: string | null;
   icon_name: string | null;
+  spell_wowhead_url: string | null;
+  item_wowhead_url: string | null;
 }
 
 export interface DbcInfo {

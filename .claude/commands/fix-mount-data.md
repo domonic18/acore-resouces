@@ -70,6 +70,8 @@
      - `official_db.name` ← `name_zh`
      - `official_db.spell_icon_name` ← `icon_name`
      - `official_db.icon_name` ← `icon_name`
+     - `official_db.spell_wowhead_url` ← `spell_wowhead_url`
+     - `official_db.item_wowhead_url` ← `item_wowhead_url`
      - `dbc.spell.name` ← `name_zh`
      - `dbc.spell.description` ← `description`
 
