@@ -54,6 +54,8 @@
      ```bash
      uv run python -m app.cli wowhead lookup-mount "{query}"
      ```
+   - CLI 会自动回退：WotLK 简体中文 → 零售版简体中文 → 零售版英文。
+   - 若英文查询命中，会再用 spell_id 取回零售版中文页核对中文名称。
    - 命令输出 JSON。
 
 5. **解析与验证**

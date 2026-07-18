@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 卡多雷夜刃豹
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_nightsaber2mount
+  icon_name: inv_nightsaber2mount
 dbc:
   creature_model_data:
     id: 104288
@@ -26,6 +26,7 @@ dbc:
   spell:
     id: 80288
     name: 卡多雷夜刃豹
+    description: 召唤或解散一头可供骑乘的卡多雷夜刃豹。
     visual_id: 9140288
   item:
     id: 166435
