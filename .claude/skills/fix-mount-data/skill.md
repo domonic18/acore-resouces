@@ -1,4 +1,9 @@
-# /fix-mount-data
+---
+name: fix-mount-data
+description: 根据用户指定的坐骑 YAML 文件，结合多模态图片识别与 Playwright Wowhead 查询，补全缺失的官方数据字段。
+---
+
+# fix-mount-data
 
 根据用户指定的坐骑 YAML 文件，结合多模态图片识别与 Playwright Wowhead 查询，补全缺失的官方数据字段。
 
