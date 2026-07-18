@@ -11,10 +11,27 @@ import { ItemInfoSection } from "@/features/resources/components/resource-detail
 import { SpellInfoSection } from "@/features/resources/components/resource-detail/SpellInfoSection";
 import { DropSection } from "@/features/resources/components/resource-detail/DropSection";
 import { RawDataSection } from "@/features/resources/components/resource-detail/RawDataSection";
+import { RelationshipCheckSection } from "@/features/resources/components/resource-detail/RelationshipCheckSection";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
 import { uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
+
+const DETAIL_NAV_ITEMS = [
+  { id: "section-basic", label: "基础信息" },
+  { id: "section-relationships", label: "关联校验" },
+  { id: "section-item", label: "物品信息" },
+  { id: "section-spell", label: "技能信息" },
+  { id: "section-drop", label: "掉落信息" },
+  { id: "section-rawdata", label: "明细数据" },
+];
+
+function scrollToSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
 export function ResourceDetailPage() {
   const { resourceType = "mount", id } = useParams<{
@@ -134,47 +151,89 @@ export function ResourceDetailPage() {
       )}
 
       <div className="detail-layout">
-        <div className="detail-main space-y-5">
-          <BasicInfoSection
-            resource={resource}
-            form={formState.form}
-            updateField={formState.updateField}
-            isMount={isMount}
-          />
+        <nav className="detail-nav">
+          <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-text-tertiary">
+            页面导航
+          </p>
+          <div className="space-y-0.5">
+            {DETAIL_NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className="detail-nav-item"
+                onClick={() => scrollToSection(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </nav>
 
-          <ItemInfoSection
-            itemIcon={formState.itemIcon}
-            setItemIcon={formState.setItemIcon}
-            setPickerTarget={setPickerTarget}
-            iconNames={iconNames}
-            itemDbc={formState.itemDbc}
-            setItemDbc={formState.setItemDbc}
-            itemDb={formState.itemDb}
-            setItemDb={formState.setItemDb}
-          />
+        <div className="detail-main space-y-4">
+          <div id="section-basic" className="scroll-mt-20">
+            <BasicInfoSection
+              resource={resource}
+              form={formState.form}
+              updateField={formState.updateField}
+              isMount={isMount}
+              compact
+            />
+          </div>
 
-          <SpellInfoSection
-            spellIcon={formState.spellIcon}
-            setSpellIcon={formState.setSpellIcon}
-            setPickerTarget={setPickerTarget}
-            iconNames={iconNames}
-            spellDbc={formState.spellDbc}
-            setSpellDbc={formState.setSpellDbc}
-            spellDb={formState.spellDb}
-            setSpellDb={formState.setSpellDb}
-          />
+          <div id="section-relationships" className="scroll-mt-20">
+            <RelationshipCheckSection
+              liveDbc={formState.liveDbc}
+              liveDb={formState.liveDb}
+              compact
+              onSelectTab={setActiveTab}
+            />
+          </div>
 
-          <DropSection
-            form={formState.form}
-            updateField={formState.updateField}
-          />
+          <div id="section-item" className="scroll-mt-20">
+            <ItemInfoSection
+              itemIcon={formState.itemIcon}
+              setItemIcon={formState.setItemIcon}
+              setPickerTarget={setPickerTarget}
+              iconNames={iconNames}
+              itemDbc={formState.itemDbc}
+              setItemDbc={formState.setItemDbc}
+              itemDb={formState.itemDb}
+              setItemDb={formState.setItemDb}
+              compact
+            />
+          </div>
 
-          <RawDataSection
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            liveDbc={formState.liveDbc}
-            liveDb={formState.liveDb}
-          />
+          <div id="section-spell" className="scroll-mt-20">
+            <SpellInfoSection
+              spellIcon={formState.spellIcon}
+              setSpellIcon={formState.setSpellIcon}
+              setPickerTarget={setPickerTarget}
+              iconNames={iconNames}
+              spellDbc={formState.spellDbc}
+              setSpellDbc={formState.setSpellDbc}
+              spellDb={formState.spellDb}
+              setSpellDb={formState.setSpellDb}
+              compact
+            />
+          </div>
+
+          <div id="section-drop" className="scroll-mt-20">
+            <DropSection
+              form={formState.form}
+              updateField={formState.updateField}
+              compact
+            />
+          </div>
+
+          <div id="section-rawdata" className="scroll-mt-20">
+            <RawDataSection
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              liveDbc={formState.liveDbc}
+              liveDb={formState.liveDb}
+              compact
+            />
+          </div>
         </div>
 
         <ResourceDetailSidebar

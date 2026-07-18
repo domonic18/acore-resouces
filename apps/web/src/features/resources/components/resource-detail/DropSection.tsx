@@ -1,16 +1,18 @@
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
+import { cn } from "@/shared/utils";
 import type { FormState } from "../../hooks/useResourceForm";
 
 interface DropSectionProps {
   form: FormState;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+  compact?: boolean;
 }
 
-export function DropSection({ form, updateField }: DropSectionProps) {
+export function DropSection({ form, updateField, compact }: DropSectionProps) {
   return (
-    <SectionCard title="掉落信息">
-      <div className="form-grid">
+    <SectionCard title="掉落信息" compact={compact}>
+      <div className={cn("form-grid", compact && "form-grid-compact")}>
         <FormGroup label="掉落 entry">
           <input
             type="number"

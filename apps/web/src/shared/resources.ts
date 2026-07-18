@@ -109,12 +109,15 @@ export async function fetchAllResources(
     types.map(async (type) => {
       const items: Resource[] = [];
       let page = 1;
-      while (true) {
+      let hasMore = true;
+      while (hasMore) {
         const res = await listResources(type, { page, page_size: 100 });
         items.push(...res.items);
-        if (res.items.length < res.page_size) break;
-        page += 1;
-        if (page > 100) break;
+        if (res.items.length < res.page_size || page >= 100) {
+          hasMore = false;
+        } else {
+          page += 1;
+        }
       }
       all.push(...items);
     }),

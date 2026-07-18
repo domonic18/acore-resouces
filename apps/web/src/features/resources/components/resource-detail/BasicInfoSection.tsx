@@ -1,5 +1,6 @@
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
+import { cn } from "@/shared/utils";
 import { ExternalLink } from "lucide-react";
 import type { Resource } from "@/shared/types";
 import type { FormState } from "../../hooks/useResourceForm";
@@ -9,6 +10,7 @@ interface BasicInfoSectionProps {
   form: FormState;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
   isMount: boolean;
+  compact?: boolean;
 }
 
 export function BasicInfoSection({
@@ -16,62 +18,68 @@ export function BasicInfoSection({
   form,
   updateField,
   isMount,
+  compact,
 }: BasicInfoSectionProps) {
+  const inputCls = cn(compact ? "form-input-compact" : "form-input");
+  const selectCls = cn(compact ? "form-select-compact" : "form-select");
+
   return (
-    <SectionCard title="基础信息">
-      <div className="form-grid">
-        <FormGroup label="资源 ID">
+    <SectionCard title="基础信息" compact={compact}>
+      <div className={cn("form-grid", compact && "form-grid-compact")}>
+        <FormGroup label="资源 ID" compact={compact}>
           <input
             type="text"
-            className="form-input"
+            className={inputCls}
             value={resource.id}
             readOnly
           />
-          <p className="form-hint">由系统生成，不可修改</p>
         </FormGroup>
-        <FormGroup label="模型文件夹">
+        <FormGroup label="模型文件夹" compact={compact}>
           <input
             type="text"
-            className="form-input"
+            className={inputCls}
             value={resource.model_folder}
             readOnly
           />
         </FormGroup>
-        <FormGroup label="官方名称">
+        <FormGroup label="官方名称" compact={compact}>
           <input
             type="text"
-            className="form-input"
+            className={inputCls}
             value={form.name}
             onChange={(e) => updateField("name", e.target.value)}
           />
-          <div className="mt-1.5 flex flex-wrap items-center gap-2">
-            {resource.official_db.spell_wowhead_url && (
-              <a
-                href={resource.official_db.spell_wowhead_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent-hover"
-              >
-                <ExternalLink className="h-3 w-3" /> Wowhead 法术页
-              </a>
-            )}
-            {resource.official_db.item_wowhead_url && (
-              <a
-                href={resource.official_db.item_wowhead_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent-hover"
-              >
-                <ExternalLink className="h-3 w-3" /> Wowhead 物品页
-              </a>
-            )}
-          </div>
+          {(resource.official_db.spell_wowhead_url ||
+            resource.official_db.item_wowhead_url) && (
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              {resource.official_db.spell_wowhead_url && (
+                <a
+                  href={resource.official_db.spell_wowhead_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] text-accent hover:text-accent-hover"
+                >
+                  <ExternalLink className="h-3 w-3" /> Wowhead 法术页
+                </a>
+              )}
+              {resource.official_db.item_wowhead_url && (
+                <a
+                  href={resource.official_db.item_wowhead_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] text-accent hover:text-accent-hover"
+                >
+                  <ExternalLink className="h-3 w-3" /> Wowhead 物品页
+                </a>
+              )}
+            </div>
+          )}
         </FormGroup>
         {isMount && (
           <>
-            <FormGroup label="坐骑类型">
+            <FormGroup label="坐骑类型" compact={compact}>
               <select
-                className="form-select"
+                className={selectCls}
                 value={form.mount_type}
                 onChange={(e) => updateField("mount_type", e.target.value)}
               >
@@ -81,9 +89,9 @@ export function BasicInfoSection({
                 <option>水域坐骑</option>
               </select>
             </FormGroup>
-            <FormGroup label="星级">
+            <FormGroup label="星级" compact={compact}>
               <select
-                className="form-select"
+                className={selectCls}
                 value={form.star_rating}
                 onChange={(e) => updateField("star_rating", e.target.value)}
               >
@@ -95,10 +103,10 @@ export function BasicInfoSection({
                 <option>五星</option>
               </select>
             </FormGroup>
-            <FormGroup label="子类型">
+            <FormGroup label="子类型" compact={compact}>
               <input
                 type="text"
-                className="form-input"
+                className={inputCls}
                 value={form.subtype}
                 onChange={(e) => updateField("subtype", e.target.value)}
               />
@@ -106,18 +114,18 @@ export function BasicInfoSection({
           </>
         )}
         {!isMount && (
-          <FormGroup label="稀有度">
+          <FormGroup label="稀有度" compact={compact}>
             <input
               type="text"
-              className="form-input"
+              className={inputCls}
               value={form.rarity}
               onChange={(e) => updateField("rarity", e.target.value)}
             />
           </FormGroup>
         )}
-        <FormGroup label="状态" className="full-width">
-          <div className="flex gap-5">
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
+        <FormGroup label="状态" compact={compact}>
+          <div className="flex h-[34px] items-center gap-4">
+            <label className="flex items-center gap-1.5 text-xs text-text-secondary">
               <input
                 type="checkbox"
                 checked={form.debug_passed}
@@ -125,7 +133,7 @@ export function BasicInfoSection({
               />{" "}
               调试通过
             </label>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
+            <label className="flex items-center gap-1.5 text-xs text-text-secondary">
               <input
                 type="checkbox"
                 checked={form.added}
