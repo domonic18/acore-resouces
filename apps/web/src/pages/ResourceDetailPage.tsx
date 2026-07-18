@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { ArrowLeft, Save } from "lucide-react";
 import { useResourceDetail } from "@/features/resources/hooks/useResourceDetail";
 import { useResourceAssets } from "@/features/resources/hooks/useResourceAssets";
@@ -22,6 +22,13 @@ export function ResourceDetailPage() {
     id: string;
   }>();
   const resourceId = parseInt(id || "0", 10);
+  const location = useLocation();
+  const listLocation = location.state?.from as
+    { pathname: string; search: string } | undefined;
+  const backTo = listLocation
+    ? { pathname: listLocation.pathname, search: listLocation.search }
+    : "/resources";
+  const backState = { restoreScroll: true };
 
   const [activeTab, setActiveTab] = useState("creature_display_info");
   const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
@@ -68,7 +75,11 @@ export function ResourceDetailPage() {
     return (
       <div className="content">
         <div className="card p-6">
-          <Link to="/resources" className="btn btn-sm btn-ghost mb-4">
+          <Link
+            to={backTo}
+            state={backState}
+            className="btn btn-sm btn-ghost mb-4"
+          >
             <ArrowLeft className="h-4 w-4" /> 返回列表
           </Link>
           <p className="text-danger">
@@ -94,7 +105,7 @@ export function ResourceDetailPage() {
     <div className="content">
       <header className="topbar">
         <div className="flex items-center gap-3">
-          <Link to="/resources" className="btn btn-sm btn-ghost">
+          <Link to={backTo} state={backState} className="btn btn-sm btn-ghost">
             <ArrowLeft className="h-4 w-4" /> 返回列表
           </Link>
           <h1 className="page-title">编辑资源</h1>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Check, Copy, Pencil, Eye, Search } from "lucide-react";
 import { useState } from "react";
 import { ResourceThumb } from "@/components/ResourceThumb";
@@ -55,6 +55,13 @@ export function ResourceTable({
   isLoading,
   error,
 }: ResourceTableProps) {
+  const location = useLocation();
+
+  const saveScrollAndNavigate = () => {
+    sessionStorage.setItem("resourceListScrollY", String(window.scrollY));
+  };
+
+  const listState = { from: location };
   if (isLoading) {
     return (
       <p className="px-5 py-8 text-center text-text-secondary">加载中...</p>
@@ -133,6 +140,8 @@ export function ResourceTable({
                 <div className="flex items-center gap-2">
                   <Link
                     to={`/resources/${resource.resource_type}/${resource.id}`}
+                    state={listState}
+                    onClick={saveScrollAndNavigate}
                     className="name-cell min-w-0 flex-1"
                     title={resource.name || resource.model_folder}
                   >
@@ -169,6 +178,8 @@ export function ResourceTable({
                 <div className="inline-flex items-center justify-end gap-1.5">
                   <Link
                     to={`/resources/${resource.resource_type}/${resource.id}`}
+                    state={listState}
+                    onClick={saveScrollAndNavigate}
                     className="btn btn-icon btn-sm"
                     title="编辑资源"
                     aria-label="编辑资源"
@@ -177,6 +188,8 @@ export function ResourceTable({
                   </Link>
                   <Link
                     to={`/preview/${resource.resource_type}/${resource.id}`}
+                    state={listState}
+                    onClick={saveScrollAndNavigate}
                     className="btn btn-icon btn-sm btn-primary"
                     title="预览模型"
                     aria-label="预览模型"

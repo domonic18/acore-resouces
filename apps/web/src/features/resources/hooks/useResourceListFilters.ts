@@ -38,10 +38,9 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
 
     const category = searchParams.get("category") || "";
     if (category) {
-      items = items.filter((r) => {
-        if (r.resource_type === "mount") return r.mount_type === category;
-        return r.rarity === category;
-      });
+      items = items.filter(
+        (r) => r.resource_type === "mount" && r.mount_type === category,
+      );
     }
 
     const tier = searchParams.get("tier") || "";
@@ -100,8 +99,7 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     if (!allItems) return [];
     const set = new Set<string>();
     allItems.forEach((r) => {
-      const val = r.resource_type === "mount" ? r.mount_type : r.rarity;
-      if (val) set.add(val);
+      if (r.resource_type === "mount" && r.mount_type) set.add(r.mount_type);
     });
     return Array.from(set).sort();
   }, [allItems]);
