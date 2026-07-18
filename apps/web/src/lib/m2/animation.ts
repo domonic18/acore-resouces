@@ -78,7 +78,7 @@ function resolveSequence(
     // sequence.id field still matches the requested animation ID.
     const directIndex = m2.sequences.findIndex((seq) => seq.id === animId);
     if (directIndex >= 0) {
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[resolveSequence] lookup failed for animId=",
         animId,
@@ -390,7 +390,7 @@ function readTrackTimestamps(
   const outerOffset =
     outerBaseOffset + track.timestampsOffset + sequenceIndex * 8;
   if (outerOffset + 8 > outerBuffer.byteLength) {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       "[readTrackTimestamps] outer offset out of bounds",
       outerOffset,
@@ -410,7 +410,7 @@ function readTrackTimestamps(
   const dataOffset = dataBaseOffset + offset;
   const dataByteLength = count * BYTES_PER_UINT32;
   if (dataOffset + dataByteLength > dataBuffer.byteLength) {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       "[readTrackTimestamps] data offset out of bounds",
       dataOffset,
@@ -449,7 +449,7 @@ function readTrackValues(
 
   const outerOffset = outerBaseOffset + track.valuesOffset + sequenceIndex * 8;
   if (outerOffset + 8 > outerBuffer.byteLength) {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       "[readTrackValues] outer offset out of bounds",
       outerOffset,
@@ -475,7 +475,7 @@ function readTrackValues(
   if (valueSizeBytes === QUATERNION_VALUE_SIZE_BYTES) {
     const dataByteLength = count * COMPONENTS_PER_QUATERNION * BYTES_PER_INT16;
     if (dataOffset + dataByteLength > dataBuffer.byteLength) {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         "[readTrackValues] quaternion data out of bounds",
         dataOffset,
@@ -493,7 +493,7 @@ function readTrackValues(
 
   const dataByteLength = count * COMPONENTS_PER_VECTOR * BYTES_PER_FLOAT32;
   if (dataOffset + dataByteLength > dataBuffer.byteLength) {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       "[readTrackValues] vector data out of bounds",
       dataOffset,
@@ -587,7 +587,7 @@ function buildVectorKeyframes(
   converter?: (v: Float32Array) => [number, number, number],
 ): number[] | null {
   if (values.length < timestamps.length * 3) {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       "[buildVectorKeyframes] values count mismatch",
       values.length,
@@ -600,7 +600,7 @@ function buildVectorKeyframes(
   for (let i = 0; i < timestamps.length; i++) {
     const time = timestamps[i] / MILLISECONDS_PER_SECOND;
     if (!Number.isFinite(time)) {
-      // eslint-disable-next-line no-console
+       
       console.warn("[buildVectorKeyframes] non-finite timestamp at", i, time);
       continue;
     }
@@ -609,7 +609,7 @@ function buildVectorKeyframes(
     const y = values[i * 3 + 1];
     const z = values[i * 3 + 2];
     if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
-      // eslint-disable-next-line no-console
+       
       console.warn("[buildVectorKeyframes] non-finite value at", i, x, y, z);
       continue;
     }
@@ -643,7 +643,7 @@ function buildQuaternionKeyframes(
   values: Int16Array,
 ): number[] | null {
   if (values.length < timestamps.length * 4) {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       "[buildQuaternionKeyframes] values count mismatch",
       values.length,
@@ -656,7 +656,7 @@ function buildQuaternionKeyframes(
   for (let i = 0; i < timestamps.length; i++) {
     const time = timestamps[i] / MILLISECONDS_PER_SECOND;
     if (!Number.isFinite(time)) {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         "[buildQuaternionKeyframes] non-finite timestamp at",
         i,
@@ -667,7 +667,7 @@ function buildQuaternionKeyframes(
 
     const q = decompressM2Quaternion(values, i);
     if (!q.every(Number.isFinite)) {
-      // eslint-disable-next-line no-console
+       
       console.warn("[buildQuaternionKeyframes] non-finite value at", i, q);
       continue;
     }
@@ -675,7 +675,7 @@ function buildQuaternionKeyframes(
       q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3],
     );
     if (magnitude <= NORMALIZATION_EPSILON) {
-      // eslint-disable-next-line no-console
+       
       console.warn("[buildQuaternionKeyframes] zero quaternion at", i, q);
       continue;
     }
@@ -721,7 +721,7 @@ export function buildAnimationClip(
 
   const resolved = resolveSequence(m2, animId);
   if (!resolved) {
-    // eslint-disable-next-line no-console
+     
     console.log(
       "[buildAnimationClip] no sequence found for animId=",
       animId,
@@ -735,7 +735,7 @@ export function buildAnimationClip(
 
   const { index: resolvedIndex, sequence } = resolved;
   const external = isExternalSequence(sequence);
-  // eslint-disable-next-line no-console
+   
   console.log(
     "[buildAnimationClip] animId=",
     animId,
@@ -754,7 +754,7 @@ export function buildAnimationClip(
   );
 
   if (external && !animBuffer) {
-    // eslint-disable-next-line no-console
+     
     console.log("[buildAnimationClip] external but no animBuffer");
     return null;
   }
@@ -763,7 +763,7 @@ export function buildAnimationClip(
   if (animBuffer) {
     try {
       animData = parseAnimFile(animBuffer);
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[buildAnimationClip] parsed anim file, format=",
         animData.format,
@@ -772,7 +772,7 @@ export function buildAnimationClip(
           : `size=${animData.buffer.byteLength}`,
       );
     } catch {
-      // eslint-disable-next-line no-console
+       
       console.log("[buildAnimationClip] failed to parse anim file");
       return null;
     }
@@ -818,7 +818,7 @@ export function buildAnimationClip(
   // animation is not applied.
   const rootBone = m2.bones[0];
   if (rootBone) {
-    // eslint-disable-next-line no-console
+     
     console.log(
       "[buildAnimationClip] root bone track metadata:",
       "translation",
@@ -948,7 +948,7 @@ export function buildAnimationClip(
     }
 
     if (boneIndex === 0) {
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[buildAnimationClip] root bone resolved track counts:",
         "translation",
@@ -986,7 +986,7 @@ export function buildAnimationClip(
     }
   }
 
-  // eslint-disable-next-line no-console
+   
   console.log(
     "[buildAnimationClip] generated",
     tracks.length,

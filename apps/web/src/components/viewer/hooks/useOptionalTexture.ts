@@ -23,13 +23,13 @@ export function useOptionalTexture(url: string | null): THREE.Texture | null {
         loaded.flipY = false;
         loaded.wrapS = THREE.RepeatWrapping;
         loaded.wrapT = THREE.RepeatWrapping;
-        // eslint-disable-next-line no-console
+         
         console.log("[useOptionalTexture] loaded", url);
         setTexture(loaded);
       },
       undefined,
       (err) => {
-        // eslint-disable-next-line no-console
+         
         console.error("[useOptionalTexture] failed to load", url, err);
       },
     );

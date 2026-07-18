@@ -5,7 +5,6 @@ import { MAX_BONE_INFLUENCES } from "@/lib/m2/constants";
 import { buildSubmeshGeometry, type SubmeshGeometry } from "@/lib/m2/geometry";
 import { buildSkeleton } from "@/lib/m2/skeleton";
 import { resolveTextureUrl } from "@/lib/m2/material";
-import { computeModelBox, centerCameraOnModel } from "@/lib/m2/camera";
 import { M2MaterialMesh } from "./M2MaterialMesh";
 import { useM2AnimationMixer } from "./hooks/useM2AnimationMixer";
 import { MODEL_ROOT_ROTATION_X } from "./constants";
@@ -35,7 +34,7 @@ export function M2Scene({
       try {
         geometries.push(buildSubmeshGeometry(m2, skin, i));
       } catch (err) {
-        // eslint-disable-next-line no-console
+         
         console.warn(`Submesh ${i} geometry build failed:`, err);
         geometries.push(null);
       }
@@ -47,7 +46,7 @@ export function M2Scene({
   const skeleton = skeletonResult?.skeleton ?? null;
   const rootBone = skeletonResult?.rootBone ?? null;
 
-  // eslint-disable-next-line no-console
+   
   console.log(
     "[M2Scene] skinBoneIndices=",
     skin.skinBoneIndices.length / MAX_BONE_INFLUENCES,
@@ -87,7 +86,7 @@ export function M2Scene({
         const textureUrl = batch
           ? resolveTextureUrl(m2, batch, textureUrls)
           : null;
-        // eslint-disable-next-line no-console
+         
         console.log(
           "[M2Scene] submesh",
           index,
@@ -115,5 +114,3 @@ export function M2Scene({
     </group>
   );
 }
-
-export { computeModelBox, centerCameraOnModel };

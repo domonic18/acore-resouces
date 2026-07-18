@@ -89,7 +89,15 @@
 }
 
 .detail-layout {
-  @apply grid gap-6 lg:grid-cols-[1fr_360px];
+  @apply grid gap-5 lg:grid-cols-[140px_1fr_360px];
+}
+
+.detail-nav {
+  @apply sticky top-20 hidden self-start lg:block;
+}
+
+.detail-nav-item {
+  @apply block w-full rounded-md px-3 py-1.5 text-left text-xs text-text-secondary transition-all hover:bg-bg-hover hover:text-text-primary;
 }
 
 .detail-main {
@@ -102,6 +110,10 @@
 
 .form-grid {
   @apply grid gap-5 md:grid-cols-2;
+}
+
+.form-grid-compact {
+  @apply grid gap-x-4 gap-y-3 md:grid-cols-2;
 }
 
 .form-group {

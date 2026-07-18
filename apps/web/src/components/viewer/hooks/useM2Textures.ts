@@ -103,7 +103,7 @@ export function useM2Textures(
         }
       });
 
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[textureUrls] textures:",
         parsed.m2.textures.map(function (t, i) {

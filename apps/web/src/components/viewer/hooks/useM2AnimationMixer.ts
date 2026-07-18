@@ -76,7 +76,7 @@ export function useM2AnimationMixer(
         });
         if (hasNaN) {
           nanReported.current = true;
-          // eslint-disable-next-line no-console
+           
           console.error(
             "[M2Scene] NaN detected in skeleton at mixer time=",
             now.toFixed(2),
@@ -93,7 +93,7 @@ export function useM2AnimationMixer(
         lastLogTime.current = now;
         const bone0 = rootBone?.getObjectByName("bone_0") as
           THREE.Bone | undefined;
-        // eslint-disable-next-line no-console
+         
         console.log(
           "[M2Scene] mixer time=",
           now.toFixed(2),

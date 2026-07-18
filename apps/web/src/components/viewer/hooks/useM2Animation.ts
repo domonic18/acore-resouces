@@ -85,7 +85,7 @@ export function useM2Animation(
         availableIds.add(seq.id);
       });
 
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[animation] sequences:",
         currentParsed.m2.sequences
@@ -105,7 +105,7 @@ export function useM2Animation(
       } else {
         animId = resolveAnimationId(animationState, availableIds);
       }
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[animation] state=",
         animationState,
@@ -128,7 +128,7 @@ export function useM2Animation(
           id,
           0,
         );
-        // eslint-disable-next-line no-console
+         
         console.log(
           "[animation] anim path=",
           animPath,
@@ -148,7 +148,7 @@ export function useM2Animation(
 
           return buildAnimationClip(currentParsed, m2Buffer, id, animBuffer);
         } catch (err) {
-          // eslint-disable-next-line no-console
+           
           console.warn("Animation load failed:", err);
           return null;
         }
@@ -166,7 +166,7 @@ export function useM2Animation(
 
         for (const altId of alternateIds) {
           if (!availableIds.has(altId)) continue;
-          // eslint-disable-next-line no-console
+           
           console.log(
             "[animation] resolved clip sparse, trying alternate id=",
             altId,
@@ -179,7 +179,7 @@ export function useM2Animation(
         }
       }
 
-      // eslint-disable-next-line no-console
+       
       console.log(
         "[animation] clip=",
         clip?.name,
