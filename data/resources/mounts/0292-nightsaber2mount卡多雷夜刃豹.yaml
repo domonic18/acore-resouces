@@ -39,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。召唤或解散一头可供骑乘的卡多雷夜刃豹。
+    flavor_text: 夜刃豹与它们的猎人的羁绊几乎牢不可破。
 db:
   creature_template:
     entry: 9140288

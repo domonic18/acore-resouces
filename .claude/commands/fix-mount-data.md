@@ -74,6 +74,8 @@
      - `official_db.item_wowhead_url` ← `item_wowhead_url`
      - `dbc.spell.name` ← `name_zh`
      - `dbc.spell.description` ← `description`
+     - `dbc.item.description` ← `item_description`
+     - `dbc.item.flavor_text` ← `flavor_text`
 
 7. **写入文件并展示 diff**
    - 使用 `Edit` 工具精确更新 YAML 字段。

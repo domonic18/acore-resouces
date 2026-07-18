@@ -179,6 +179,40 @@ def _extract_source_en(body_text: str) -> str | None:
     return None
 
 
+def _extract_item_description(body_text: str) -> str | None:
+    """从中文物品页面文本中提取使用描述。"""
+    match = re.search(r"使用[:：]\s*(.+?)(?=\n需要|\n掉落|\n来源|$)", body_text, re.DOTALL)
+    if match:
+        return re.sub(r"\s+", " ", match.group(1).strip())
+    return None
+
+
+def _extract_item_description_en(body_text: str) -> str | None:
+    """从英文物品页面文本中提取使用描述。"""
+    match = re.search(r"Use:\s*(.+?)(?=\nRequires|\nDropped by|\nSource|$)", body_text, re.DOTALL)
+    if match:
+        return re.sub(r"\s+", " ", match.group(1).strip())
+    return None
+
+
+def _extract_flavor_text(body_text: str) -> str | None:
+    """从页面文本中提取引号包裹的风味文本（含中文）。"""
+    for match in re.finditer(r'"([^"]{10,})"', body_text):
+        text = match.group(1)
+        if re.search(r"[一-鿿]", text):
+            return text.strip()
+    return None
+
+
+def _extract_flavor_text_en(body_text: str) -> str | None:
+    """从页面文本中提取引号包裹的风味文本（英文）。"""
+    for match in re.finditer(r'"([^"]{20,})"', body_text):
+        text = match.group(1)
+        if re.search(r"[a-zA-Z]", text):
+            return text.strip()
+    return None
+
+
 def _safe_inner_text(locator: Locator) -> str | None:
     """安全地获取 locator 的 inner_text，不存在时返回 None。"""
     try:
@@ -316,6 +350,48 @@ def _parse_spell_page(
     }
 
 
+def _parse_item_page(page: Page, locale: str) -> dict[str, object]:
+    """解析物品详情页，提取物品描述与风味文本。"""
+    body_text = page.inner_text("body")
+
+    item_description = _extract_item_description(body_text)
+    flavor_text = _extract_flavor_text(body_text)
+
+    if locale == "en":
+        item_description = _extract_item_description_en(body_text) or item_description
+        flavor_text = _extract_flavor_text_en(body_text) or flavor_text
+
+    return {
+        "item_description": item_description,
+        "flavor_text": flavor_text,
+    }
+
+
+def _fetch_item_page(
+    page: Page,
+    item_id: int | None,
+    expansion: str,
+    locale: str,
+) -> dict[str, object]:
+    """根据 item_id 使用已有页面获取物品页面数据。"""
+    result: dict[str, object] = {
+        "item_description": None,
+        "flavor_text": None,
+    }
+    if not item_id:
+        return result
+
+    url = f"https://www.wowhead.com{_item_path(expansion, locale)}{item_id}?locale={locale}"
+
+    try:
+        _goto_with_retry(page, url)
+        result.update(_parse_item_page(page, locale))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("获取物品页面失败: %s", exc)
+
+    return result
+
+
 def _make_absolute_url(href: str, locale: str) -> str:
     """将搜索结果中的相对 href 补全为绝对 URL 并附加 locale。"""
     if href.startswith("/"):
@@ -369,6 +445,8 @@ def _search_mount_single(query: str, expansion: str, locale: str) -> dict:
         "spell_wowhead_url": None,
         "item_id": None,
         "item_wowhead_url": None,
+        "item_description": None,
+        "flavor_text": None,
         "mount_id": None,
         "source": None,
         "confidence": "low",
@@ -410,6 +488,9 @@ def _search_mount_single(query: str, expansion: str, locale: str) -> dict:
                 expansion,
                 locale,
             )
+
+            item_page_data = _fetch_item_page(page, item_id, expansion, locale)
+            result.update(item_page_data)
 
             confidence = "low"
             if result["name_en"] and result["description"]:
@@ -507,6 +588,7 @@ def search_mount(query: str) -> dict:
     result = _search_mount_single(query, "retail", "en")
     if not result.get("error"):
         spell_id = result.get("spell_id")
+        item_id = result.get("item_id")
         if spell_id:
             cn_result = _search_mount_by_id(int(spell_id), "retail", "zh")
             if not cn_result.get("error"):
@@ -524,6 +606,16 @@ def search_mount(query: str) -> dict:
                     "item_wowhead_url"
                 )
                 result["confidence"] = cn_result.get("confidence") or result.get("confidence")
+        if item_id:
+            item_page = _new_browser_page()
+            try:
+                cn_item_data = _fetch_item_page(item_page, int(item_id), "retail", "zh")
+                result["item_description"] = cn_item_data.get("item_description") or result.get(
+                    "item_description"
+                )
+                result["flavor_text"] = cn_item_data.get("flavor_text") or result.get("flavor_text")
+            finally:
+                _close_browser_page(item_page)
         return result
 
     return result
