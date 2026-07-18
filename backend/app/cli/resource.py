@@ -6,6 +6,7 @@ from rich.table import Table
 
 from app.schemas.resource import Mount, Npc, Pet
 from app.services import resource_store
+from app.services.resource_validation import check_resource_relationships
 
 app = typer.Typer(help="资源管理命令")
 console = Console()
@@ -132,6 +133,7 @@ def validate_resource(
     )
 
     errors: list[str] = []
+    relationship_issues: list[str] = []
     for r in resources:
         if r is None:
             continue
@@ -140,9 +142,31 @@ def validate_resource(
         if not r.official_db.name:
             errors.append(f"ID={r.id} 缺少 official_db.name")
 
+        for check in check_resource_relationships(r):
+            if check.status == "mismatch":
+                values_str = ", ".join(
+                    f"{v.source}.{v.table}.{v.field}={v.value}" for v in check.values
+                )
+                relationship_issues.append(f"ID={r.id} {check.rule.name} 不一致: {values_str}")
+            elif check.status == "missing":
+                missing_fields = [
+                    f"{v.source}.{v.table}.{v.field}"
+                    for v in check.values
+                    if v.value is None or v.value == ""
+                ]
+                if missing_fields:
+                    relationship_issues.append(
+                        f"ID={r.id} {check.rule.name} 缺失: {', '.join(missing_fields)}"
+                    )
+
     if errors:
         for err in errors:
             console.print(f"[red]{err}[/red]")
+    if relationship_issues:
+        for issue in relationship_issues:
+            console.print(f"[yellow]{issue}[/yellow]")
+
+    if errors or relationship_issues:
         raise typer.Exit(1)
 
     console.print(f"[green]校验通过，共 {len(resources)} 条资源[/green]")
