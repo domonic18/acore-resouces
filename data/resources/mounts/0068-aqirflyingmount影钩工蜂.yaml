@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 影钩工蜂
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_aqirflyingmount_purple
+  icon_name: inv_aqirflyingmount_purple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=316339
+  item_wowhead_url: https://www.wowhead.com/cn/item=174771
 dbc:
   creature_model_data:
     id: 104063
@@ -27,6 +29,7 @@ dbc:
     id: 80063
     name: 影钩工蜂
     visual_id: 9140063
+    description: 召唤或解散这种坐骑。
   item:
     id: 174771
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
 db:
   creature_template:
     entry: 9140063

@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 格噜普斯的爪牙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_misc_pet_pandaren_yeti_grey
+  icon_name: inv_misc_pet_pandaren_yeti_grey
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=191314
+  item_wowhead_url: https://www.wowhead.com/cn/item=128671
 dbc:
   creature_model_data:
     id: 104314
@@ -27,6 +29,7 @@ dbc:
     id: 80314
     name: 格噜普斯的爪牙
     visual_id: 9140314
+    description: 召唤或解散你的格噜普斯的爪牙。
   item:
     id: 128671
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的格噜普斯的爪牙。
 db:
   creature_template:
     entry: 9140314

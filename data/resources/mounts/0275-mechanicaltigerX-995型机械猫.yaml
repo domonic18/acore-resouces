@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: X-995型机械猫
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mechanicaltiger_grey
+  icon_name: inv_mechanicaltiger_grey
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=294143
 dbc:
   creature_model_data:
     id: 104271
@@ -27,6 +28,7 @@ dbc:
     id: 80271
     name: X-995型机械猫
     visual_id: 9140271
+    description: 召唤或解散这种坐骑。
   item:
     id: 167751
     class: 15

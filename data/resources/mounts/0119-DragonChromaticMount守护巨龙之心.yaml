@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 守护巨龙之心
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_dragonchromaticmount
+  icon_name: inv_dragonchromaticmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=110051
+  item_wowhead_url: https://www.wowhead.com/cn/item=78924
 dbc:
   creature_model_data:
     id: 104114
@@ -28,6 +30,7 @@ dbc:
     name: 守护巨龙之心
     visual_id: 9140114
     icon_id: 18916
+    description: 召唤或解散一个守护巨龙之心。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
     id: 78924
     class: 15
@@ -37,6 +40,8 @@ dbc:
     display_id: 99916
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。 召唤或解散一个守护巨龙之心。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 你是艾泽拉斯真正的守护者，这个世界的未来就在你的手中，因为凡人的纪元已经开启了。——阿莱克丝塔萨
 db:
   creature_template:
     entry: 9140114

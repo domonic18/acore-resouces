@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 火羽恐嘴龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_falcosaurosred
+  icon_name: inv_falcosaurosred
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=213164
+  item_wowhead_url: https://www.wowhead.com/cn/item=137579
 dbc:
   creature_model_data:
     id: 104155
@@ -27,6 +29,7 @@ dbc:
     id: 80155
     name: 火羽恐嘴龙
     visual_id: 9140155
+    description: 召唤或解散你的火羽恐嘴龙。
   item:
     id: 137579
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的火羽恐嘴龙。
 db:
   creature_template:
     entry: 9140155

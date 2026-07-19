@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 狩猎大师的忠诚狼鹰
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_huntermount
+  icon_name: inv_huntermount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=229386
 dbc:
   creature_model_data:
     id: 104234
@@ -27,6 +28,7 @@ dbc:
     id: 80234
     name: 狩猎大师的忠诚狼鹰
     visual_id: 9140234
+    description: 召唤或解散你的狩猎大师的忠诚狼鹰
   item:
     id: 142227
     class: 15
