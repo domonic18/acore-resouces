@@ -19,10 +19,10 @@ dbc:
   creature_display_info:
     id: 140208
     model_id: 104208
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80208
     name: 天蓝淡水兽

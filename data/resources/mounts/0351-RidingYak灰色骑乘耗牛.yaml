@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140347
     model_id: 104347
-    field_20: 0
-    field_21: 0
-    field_22: 1.3
-    field_23: 255
-    texture_1: ridingyakbrown
-    texture_2: ridingyakbrown
-    texture_3: ridingyakbrown
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.3
+    opacity: 255
+    texture_variation_1: ridingyakbrown
+    texture_variation_2: ridingyakbrown
+    texture_variation_3: ridingyakbrown
   spell:
     id: 80347
     name: 金色骑乘牦牛

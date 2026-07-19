@@ -22,13 +22,13 @@ dbc:
   creature_display_info:
     id: 140246
     model_id: 104246
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: lavahorseglow
-    texture_2: lavahorseglow
-    texture_3: lavahorseglow
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: lavahorseglow
+    texture_variation_2: lavahorseglow
+    texture_variation_3: lavahorseglow
   spell:
     id: 80246
     name: 烬鬃战马

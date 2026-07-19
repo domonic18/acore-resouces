@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 督军的死亡之轮
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_chopper_horde
+  icon_name: inv_chopper_horde
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171845
+  item_wowhead_url: https://www.wowhead.com/cn/item=116788
 dbc:
   creature_model_data:
     id: 104213
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140213
     model_id: 104213
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80213
     name: 督军的死亡之轮
     visual_id: 9140213
+    description: 召唤或解散你的督军的死亡之轮。
   item:
     id: 116788
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的督军的死亡之轮。
+    flavor_text: 这头吼声震天的巨兽常被戏称为“地精割草机”。它能像割草一样碾压敌人……准备被它收割吧。
 db:
   creature_template:
     entry: 9140213

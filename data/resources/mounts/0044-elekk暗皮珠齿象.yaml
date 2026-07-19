@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140041
     model_id: 4041
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: elekkdraenor_ironhorde
-    texture_2: elekkdraenor_ironhorde
-    texture_3: elekkdraenor_ironhorde
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: elekkdraenor_ironhorde
+    texture_variation_2: elekkdraenor_ironhorde
+    texture_variation_3: elekkdraenor_ironhorde
   spell:
     id: 80041
     name: 暗皮珠齿象

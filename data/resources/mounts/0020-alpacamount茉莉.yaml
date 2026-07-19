@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140017
     model_id: 4017
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: alpacamount_yellow
-    texture_2: alpacamount_yellow
-    texture_3: alpacamount_yellow
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: alpacamount_yellow
+    texture_variation_2: alpacamount_yellow
+    texture_variation_3: alpacamount_yellow
   spell:
     id: 80017
     visual_id: 9140017

@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140033
     model_id: 4033
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidbearkultiran_noarmor_dark
-    texture_2: druidbearkultiran_noarmor_dark
-    texture_3: druidbearkultiran_noarmor_dark
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidbearkultiran_noarmor_dark
+    texture_variation_2: druidbearkultiran_noarmor_dark
+    texture_variation_3: druidbearkultiran_noarmor_dark
   spell:
     id: 80033
     visual_id: 9140033

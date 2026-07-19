@@ -12,6 +12,8 @@ official_db:
   name: 清道夫
   spell_icon_name: null
   icon_name: null
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=281554
+  item_wowhead_url: https://www.wowhead.com/cn/item=164571
 dbc:
   creature_model_data:
     id: 104144
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140144
     model_id: 104144
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80144
     name: 清道夫
     visual_id: 9140144
+    description: 召唤或解散一架可以骑乘的清道夫。
   item:
     id: 164571
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一架可以骑乘的清道夫。
+    flavor_text: 巫妖王最爱的单位，兼具攻城武器的摧枯拉朽之力，以及生灵陨灭时令他心旷神怡的哭喊。
 db:
   creature_template:
     entry: 9140144

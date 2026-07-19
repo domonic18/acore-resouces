@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140018
     model_id: 4018
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: automatonlionmount_bronze
-    texture_2: automatonlionmount_bronze
-    texture_3: automatonlionmount_bronze
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: automatonlionmount_bronze
+    texture_variation_2: automatonlionmount_bronze
+    texture_variation_3: automatonlionmount_bronze
   spell:
     id: 80018
     name: 勇气灵豹

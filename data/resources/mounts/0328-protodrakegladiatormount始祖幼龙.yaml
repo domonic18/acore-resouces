@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 迷时始祖幼龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_drake_proto
+  icon_name: ability_mount_drake_proto
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=60002
+  item_wowhead_url: https://www.wowhead.com/cn/item=44168
 dbc:
   creature_model_data:
     id: 104324
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140324
     model_id: 104324
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80324
     name: 迷时始祖幼龙
     visual_id: 9140324
+    description: 召唤或解散一条可供骑乘的迷时始祖幼龙。这是一种飞行坐骑。
   item:
     id: 44168
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散一条可供骑乘的迷时始祖幼龙。这是一种飞行坐骑。
+    flavor_text: 时间存在的唯一好处就是不会让所有事情同时发生。
 db:
   creature_template:
     entry: 9140324

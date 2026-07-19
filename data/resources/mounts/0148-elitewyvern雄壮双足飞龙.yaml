@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140143
     model_id: 104143
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: elitewyvernskin
-    texture_2: elitewyvernskin
-    texture_3: elitewyvernskin
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: elitewyvernskin
+    texture_variation_2: elitewyvernskin
+    texture_variation_3: elitewyvernskin
   spell:
     id: 80143
     name: 重装双足飞龙

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140090
     model_id: 104090
-    field_20: 0
-    field_21: 0
-    field_22: 1.5
-    field_23: 255
-    texture_1: cloudMount
-    texture_2: CloudMountPurple
-    texture_3: CloudMountRed
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.5
+    opacity: 255
+    texture_variation_1: cloudMount
+    texture_variation_2: CloudMountPurple
+    texture_variation_3: CloudMountRed
   spell:
     id: 80090
     name: 红色筋斗云

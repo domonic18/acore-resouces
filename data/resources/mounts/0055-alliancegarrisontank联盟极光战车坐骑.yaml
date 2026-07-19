@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140052
     model_id: 4052
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: cloud_puffy_mod
-    texture_2: cloud_puffy_mod
-    texture_3: cloud_puffy_mod
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: cloud_puffy_mod
+    texture_variation_2: cloud_puffy_mod
+    texture_variation_3: cloud_puffy_mod
   spell:
     id: 80052
     visual_id: 9140052

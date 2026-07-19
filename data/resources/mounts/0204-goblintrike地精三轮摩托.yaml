@@ -12,6 +12,8 @@ official_db:
   name: 地精三轮摩托
   spell_icon_name: inv_misc_key_03
   icon_name: inv_misc_key_03
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=87090
+  item_wowhead_url: https://www.wowhead.com/cn/item=62462
 dbc:
   creature_model_data:
     id: 104199
@@ -20,13 +22,13 @@ dbc:
   creature_display_info:
     id: 140199
     model_id: 104199
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: goblintrike02
-    texture_2: goblintrike02
-    texture_3: goblintrike02
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: goblintrike02
+    texture_variation_2: goblintrike02
+    texture_variation_3: goblintrike02
   spell:
     id: 80199
     name: 地精三轮摩托

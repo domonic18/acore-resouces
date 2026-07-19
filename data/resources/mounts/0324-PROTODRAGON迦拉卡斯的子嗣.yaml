@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140320
     model_id: 104320
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: KorKronProtodrake_Armor
-    texture_2: KorKronProtodrake_Armor
-    texture_3: KorKronProtodrake_Armor
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: KorKronProtodrake_Armor
+    texture_variation_2: KorKronProtodrake_Armor
+    texture_variation_3: KorKronProtodrake_Armor
   spell:
     id: 80320
     name: 迦拉卡斯的子嗣

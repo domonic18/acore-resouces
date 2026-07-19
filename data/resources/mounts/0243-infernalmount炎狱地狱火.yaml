@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 霜裂地狱火
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_infernalmounice
+  icon_name: inv_infernalmounice
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=213350
 dbc:
   creature_model_data:
     id: 104239
@@ -19,14 +20,15 @@ dbc:
   creature_display_info:
     id: 140239
     model_id: 104239
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80239
     name: 霜裂地狱火
     visual_id: 9140239
+    description: 召唤或解散你的霜裂地狱火。
   item:
     id: 137614
     class: 15

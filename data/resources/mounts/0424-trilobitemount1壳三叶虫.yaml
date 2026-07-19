@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140420
     model_id: 104420
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: trilobite_red
-    texture_2: trilobite_red
-    texture_3: trilobite_red
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: trilobite_red
+    texture_variation_2: trilobite_red
+    texture_variation_3: trilobite_red
   spell:
     id: 80420
     name: 赤壳三叶虫

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140416
     model_id: 104416
-    field_20: 0
-    field_21: 0
-    field_22: 1.3
-    field_23: 255
-    texture_1: traveleryakcarts1
-    texture_2: traveleryakcarts1
-    texture_3: traveleryakcarts1
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.3
+    opacity: 255
+    texture_variation_1: traveleryakcarts1
+    texture_variation_2: traveleryakcarts1
+    texture_variation_3: traveleryakcarts1
   spell:
     id: 80416
     name: 雄壮远足牦牛

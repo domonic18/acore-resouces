@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140107
     model_id: 104107
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: decomposermountblack
-    texture_2: decomposermountblue
-    texture_3: decomposermountpurple
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: decomposermountblack
+    texture_variation_2: decomposermountblue
+    texture_variation_3: decomposermountpurple
   spell:
     id: 80107
     name: 幽影镰角虫

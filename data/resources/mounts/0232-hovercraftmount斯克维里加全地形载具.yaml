@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140228
     model_id: 104228
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: hovercraftmount_original
-    texture_2: hovercraftmount_red
-    texture_3: hovercraftmount_green
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: hovercraftmount_original
+    texture_variation_2: hovercraftmount_red
+    texture_variation_3: hovercraftmount_green
   spell:
     id: 80228
     name: 斯克维里加全地形载具

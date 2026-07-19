@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140025
     model_id: 4025
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: crystalscorpionred
-    texture_2: crystalscorpionred
-    texture_3: crystalscorpionred
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: crystalscorpionred
+    texture_variation_2: crystalscorpionred
+    texture_variation_3: crystalscorpionred
   spell:
     id: 80025
     visual_id: 9140025

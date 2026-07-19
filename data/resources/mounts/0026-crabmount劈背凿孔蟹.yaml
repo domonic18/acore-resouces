@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140023
     model_id: 4023
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: crabmount_body
-    texture_2: crabmount_body
-    texture_3: crabmount_body
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: crabmount_body
+    texture_variation_2: crabmount_body
+    texture_variation_3: crabmount_body
   spell:
     id: 80023
     name: 劈背凿孔蟹

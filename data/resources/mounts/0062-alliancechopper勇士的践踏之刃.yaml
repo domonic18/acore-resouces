@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 勇士的践踏之刃
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_chopper_alliance
+  icon_name: inv_chopper_alliance
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171846
+  item_wowhead_url: https://www.wowhead.com/cn/item=116789
 dbc:
   creature_model_data:
     id: 104057
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140057
     model_id: 104057
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80057
     name: 勇士的践踏之刃
     visual_id: 9140057
+    description: 召唤或解散你的勇士的践踏之刃。
   item:
     id: 116789
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的勇士的践踏之刃。
+    flavor_text: 这件装甲杰作由人类，侏儒和矮人精心打造而成，只要轻轻一转把手，它就能将牛头人切成三角牛排。
 db:
   creature_template:
     entry: 9140057

@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140032
     model_id: 4032
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidbearhmtauren_brown
-    texture_2: druidbearhmtauren_brown
-    texture_3: druidbearhmtauren_brown
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidbearhmtauren_brown
+    texture_variation_2: druidbearhmtauren_brown
+    texture_variation_3: druidbearhmtauren_brown
   spell:
     id: 80032
     name: 鹿角熊

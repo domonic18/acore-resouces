@@ -9,9 +9,11 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 火箭伐木机9001型
+  spell_icon_name: inv_goblinshredderrocketmount
+  icon_name: inv_goblinshredderrocketmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=400733
+  item_wowhead_url: https://www.wowhead.com/item=204091
 dbc:
   creature_model_data:
     id: 104381
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140381
     model_id: 104381
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80381
-    name: 0
+    name: 火箭伐木机9001型
     visual_id: 9140381
+    description: 召唤或解散这种坐骑。
   item:
     id: 0
     class: 15
@@ -36,10 +39,12 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。 召唤或解散这种坐骑。
+    flavor_text: 推销地精总会喋喋不休地夸赞火伐-9001那多种多样的附件类型，但却神秘地忽略了一点：你坐上坐骑时并不能挑选它所拥有的附件。
 db:
   creature_template:
     entry: 9140381
-    name: 0
+    name: 火箭伐木机9001型
     modelid1: 140381
     faction: 35
     type: 1
@@ -52,7 +57,7 @@ db:
   creature_model_info:
     display_id: 140381
   item_template:
-    name: 0
+    name: 火箭伐木机9001型
     spellid_2: 80381
     Quality: 4
 mount_type: 陆地坐骑

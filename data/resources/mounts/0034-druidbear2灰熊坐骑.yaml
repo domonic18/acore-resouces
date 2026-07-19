@@ -22,13 +22,13 @@ dbc:
   creature_display_info:
     id: 140031
     model_id: 4031
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidbeartroll2_white
-    texture_2: druidbeartroll2_white
-    texture_3: druidbeartroll2_white
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidbeartroll2_white
+    texture_variation_2: druidbeartroll2_white
+    texture_variation_3: druidbeartroll2_white
   spell:
     id: 80031
     name: 灰熊

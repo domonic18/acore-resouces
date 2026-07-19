@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140039
     model_id: 4039
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidcattrollskingreen
-    texture_2: druidcattrollskingreen
-    texture_3: druidcattrollskingreen
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidcattrollskingreen
+    texture_variation_2: druidcattrollskingreen
+    texture_variation_3: druidcattrollskingreen
   spell:
     id: 80039
     name: 拉风豹子

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140127
     model_id: 104127
-    field_20: 0
-    field_21: 0
-    field_22: 1.5
-    field_23: 255
-    texture_1: RidingDragonTurtleBlack
-    texture_2: RidingDragonTurtleBrown
-    texture_3: RidingDragonTurtleRed
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.5
+    opacity: 255
+    texture_variation_1: RidingDragonTurtleBlack
+    texture_variation_2: RidingDragonTurtleBrown
+    texture_variation_3: RidingDragonTurtleRed
   spell:
     id: 80127
     name: 巨型黑色龙龟

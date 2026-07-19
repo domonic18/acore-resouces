@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140019
     model_id: 4019
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: armoredtrex_body_loa_armor
-    texture_2: armoredtrex_body_loa_armor
-    texture_3: armoredtrex_body_loa_armor
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: armoredtrex_body_loa_armor
+    texture_variation_2: armoredtrex_body_loa_armor
+    texture_variation_3: armoredtrex_body_loa_armor
   spell:
     id: 80019
     visual_id: 9140019

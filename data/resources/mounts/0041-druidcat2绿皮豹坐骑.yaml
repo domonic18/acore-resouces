@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140038
     model_id: 4038
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidcat2_artifact4_green
-    texture_2: druidcat2_artifact4_green
-    texture_3: druidcat2_artifact4_green
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidcat2_artifact4_green
+    texture_variation_2: druidcat2_artifact4_green
+    texture_variation_3: druidcat2_artifact4_green
   spell:
     id: 80038
     visual_id: 9140038

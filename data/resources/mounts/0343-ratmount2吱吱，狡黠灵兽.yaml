@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140339
     model_id: 104339
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: leaf_foreling
-    texture_2: leaf_foreling
-    texture_3: leaf_foreling
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: leaf_foreling
+    texture_variation_2: leaf_foreling
+    texture_variation_3: leaf_foreling
   spell:
     id: 80339
     name: 吱吱，狡黠灵兽

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140193
     model_id: 104193
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: goatspots
-    texture_2: goatspots
-    texture_3: goatspots
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: goatspots
+    texture_variation_2: goatspots
+    texture_variation_3: goatspots
   spell:
     id: 80193
     name: 黑色骑乘山羊

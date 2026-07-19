@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140001
     model_id: 4001
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: corehoundmount1
-    texture_2: corehoundmount1
-    texture_3: corehoundmount1
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: corehoundmount1
+    texture_variation_2: corehoundmount1
+    texture_variation_3: corehoundmount1
   spell:
     id: 80001
     name: 熔火恶犬

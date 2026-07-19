@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140040
     model_id: 4040
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidcatskinworgenwhite
-    texture_2: druidcatskinworgenwhite
-    texture_3: druidcatskinworgenwhite
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidcatskinworgenwhite
+    texture_variation_2: druidcatskinworgenwhite
+    texture_variation_3: druidcatskinworgenwhite
   spell:
     id: 80040
     visual_id: 9140040

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140116
     model_id: 104116
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: DRAGONDEEPHOLMMOUNT1RED
-    texture_2: DRAGONDEEPHOLMMOUNT1RED
-    texture_3: DRAGONDEEPHOLMMOUNT1RED
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: DRAGONDEEPHOLMMOUNT1RED
+    texture_variation_2: DRAGONDEEPHOLMMOUNT1RED
+    texture_variation_3: DRAGONDEEPHOLMMOUNT1RED
   spell:
     id: 80116
     name: 磷光石幼龙

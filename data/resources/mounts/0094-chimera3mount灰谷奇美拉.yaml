@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140089
     model_id: 104089
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: chimera3_armorpurple
-    texture_2: chimera3_armorpurple
-    texture_3: chimera3_armorpurple
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: chimera3_armorpurple
+    texture_variation_2: chimera3_armorpurple
+    texture_variation_3: chimera3_armorpurple
   spell:
     id: 80089
     name: 灰谷奇美拉

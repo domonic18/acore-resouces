@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140024
     model_id: 4024
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: cranegodwhite
-    texture_2: cranegodwhite
-    texture_3: cranegodwhite
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: cranegodwhite
+    texture_variation_2: cranegodwhite
+    texture_variation_3: cranegodwhite
   spell:
     id: 80024
     name: 帝王骑乘仙鹤

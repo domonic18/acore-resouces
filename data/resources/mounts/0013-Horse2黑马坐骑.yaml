@@ -22,13 +22,13 @@ dbc:
   creature_display_info:
     id: 140010
     model_id: 4010
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: horse2mountbasedark
-    texture_2: horse2mountbasedark
-    texture_3: horse2mountbasedark
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: horse2mountbasedark
+    texture_variation_2: horse2mountbasedark
+    texture_variation_3: horse2mountbasedark
   spell:
     id: 80010
     name: 黑马

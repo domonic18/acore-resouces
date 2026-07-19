@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140140
     model_id: 104140
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: elitehippogryph
-    texture_2: elitehippogryph
-    texture_3: elitehippogryph
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: elitehippogryph
+    texture_variation_2: elitehippogryph
+    texture_variation_3: elitehippogryph
   spell:
     id: 80140
     name: 翡翠角鹰兽

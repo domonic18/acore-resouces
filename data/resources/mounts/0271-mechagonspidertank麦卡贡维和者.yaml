@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140267
     model_id: 104267
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: mechagonspidertank_silver
-    texture_2: mechagonspidertank_silver
-    texture_3: mechagonspidertank_silver
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: mechagonspidertank_silver
+    texture_variation_2: mechagonspidertank_silver
+    texture_variation_3: mechagonspidertank_silver
   spell:
     id: 80267
     name: 麦卡贡维和者

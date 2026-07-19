@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140300
     model_id: 104300
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: pandarenphoenixmountbodygreen
-    texture_2: pandarenphoenixmountbodygreen
-    texture_3: pandarenphoenixmountbodygreen
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: pandarenphoenixmountbodygreen
+    texture_variation_2: pandarenphoenixmountbodygreen
+    texture_variation_3: pandarenphoenixmountbodygreen
   spell:
     id: 80300
     name: 蓝紫熊猫人凤凰

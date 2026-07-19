@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140011
     model_id: 4011
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: basaliskmount
-    texture_2: basaliskmount
-    texture_3: basaliskmount
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: basaliskmount
+    texture_variation_2: basaliskmount
+    texture_variation_3: basaliskmount
   spell:
     id: 80011
     name: 拳手的健壮蜥蜴

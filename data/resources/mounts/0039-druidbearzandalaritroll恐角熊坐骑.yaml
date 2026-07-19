@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140036
     model_id: 4036
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: druidbearzandalaritroll_green
-    texture_2: druidbearzandalaritroll_green
-    texture_3: druidbearzandalaritroll_green
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidbearzandalaritroll_green
+    texture_variation_2: druidbearzandalaritroll_green
+    texture_variation_3: druidbearzandalaritroll_green
   spell:
     id: 80036
     visual_id: 9140036

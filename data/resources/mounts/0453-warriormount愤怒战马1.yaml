@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140449
     model_id: 104449
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: warriormount_armor
-    texture_2: warriormount_armor
-    texture_3: warriormount_armor
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: warriormount_armor
+    texture_variation_2: warriormount_armor
+    texture_variation_3: warriormount_armor
   spell:
     id: 80449
     name: 虚空领主的诅咒愤怒战马

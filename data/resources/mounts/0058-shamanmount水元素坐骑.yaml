@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140055
     model_id: 4055
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: shamanmount_blue
-    texture_2: shamanmount_blue
-    texture_3: shamanmount_blue
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: shamanmount_blue
+    texture_variation_2: shamanmount_blue
+    texture_variation_3: shamanmount_blue
   spell:
     id: 80055
     name: 水元素

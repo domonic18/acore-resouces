@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140446
     model_id: 104446
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: warlockmount
-    texture_2: warlockmount
-    texture_3: warlockmount
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: warlockmount
+    texture_variation_2: warlockmount
+    texture_variation_3: warlockmount
   spell:
     id: 80446
     name: 虚空领主的硫磺愤怒战马

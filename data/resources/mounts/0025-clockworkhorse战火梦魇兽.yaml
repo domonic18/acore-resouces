@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140022
     model_id: 4022
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: clockworkhorsescroll
-    texture_2: clockworkhorsescroll
-    texture_3: clockworkhorsescroll
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: clockworkhorsescroll
+    texture_variation_2: clockworkhorsescroll
+    texture_variation_3: clockworkhorsescroll
   spell:
     id: 80022
     name: 战火梦魇兽

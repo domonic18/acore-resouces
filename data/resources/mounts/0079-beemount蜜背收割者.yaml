@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140074
     model_id: 104074
-    field_20: 0
-    field_21: 0
-    field_22: 1.5
-    field_23: 255
-    texture_1: beemount
-    texture_2: beemount_black
-    texture_3: beemount_red
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.5
+    opacity: 255
+    texture_variation_1: beemount
+    texture_variation_2: beemount_black
+    texture_variation_3: beemount_red
   spell:
     id: 80074
     name: 蜜背收割者

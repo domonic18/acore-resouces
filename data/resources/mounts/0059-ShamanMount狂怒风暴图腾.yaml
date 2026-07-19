@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140056
     model_id: 4056
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: shamanmount_fire
-    texture_2: shamanmount_fire
-    texture_3: shamanmount_fire
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: shamanmount_fire
+    texture_variation_2: shamanmount_fire
+    texture_variation_3: shamanmount_fire
   spell:
     id: 80056
     visual_id: 9140056

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140371
     model_id: 104371
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: sharkraymount_blue
-    texture_2: sharkraymount_blue
-    texture_3: sharkraymount_blue
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: sharkraymount_blue
+    texture_variation_2: sharkraymount_blue
+    texture_variation_3: sharkraymount_blue
   spell:
     id: 80371
     name: 柔光法力鳐

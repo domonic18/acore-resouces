@@ -9,9 +9,11 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: 芭美兹拉之链
-  spell_icon_name: null
-  icon_name: null
+  name: 芭美兹拉之手
+  spell_icon_name: inv_mawguardhandmountpurple
+  icon_name: inv_mawguardhandmountpurple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=352309
+  item_wowhead_url: https://www.wowhead.com/item=185973
 dbc:
   creature_model_data:
     id: 104262
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140262
     model_id: 104262
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80262
-    name: 芭美兹拉之链
+    name: 芭美兹拉之手
     visual_id: 9140262
+    description: 召唤或解散这种坐骑。
   item:
     id: 185973
     class: 15

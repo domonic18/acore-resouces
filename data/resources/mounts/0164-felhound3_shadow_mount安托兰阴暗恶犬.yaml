@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 安托兰阴暗恶犬
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_felhound3_shadow_mount
+  icon_name: inv_felhound3_shadow_mount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253087
+  item_wowhead_url: https://www.wowhead.com/cn/item=152815
 dbc:
   creature_model_data:
     id: 104159
@@ -19,14 +21,15 @@ dbc:
   creature_display_info:
     id: 140159
     model_id: 104159
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
   spell:
     id: 80159
     name: 安托兰阴暗恶犬
     visual_id: 9140159
+    description: 召唤或解散你的安托兰阴暗恶犬。
   item:
     id: 152815
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散你的安托兰阴暗恶犬。
 db:
   creature_template:
     entry: 9140159

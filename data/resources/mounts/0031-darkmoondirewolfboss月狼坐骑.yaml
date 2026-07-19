@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140028
     model_id: 4028
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: direwolfskinlightbluealpha
-    texture_2: direwolfskinlightbluealpha
-    texture_3: direwolfskinlightbluealpha
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: direwolfskinlightbluealpha
+    texture_variation_2: direwolfskinlightbluealpha
+    texture_variation_3: direwolfskinlightbluealpha
   spell:
     id: 80028
     visual_id: 9140028

@@ -22,13 +22,13 @@ dbc:
   creature_display_info:
     id: 140169
     model_id: 104169
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: FishMount
-    texture_2: FishMount
-    texture_3: FishMount
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: FishMount
+    texture_variation_2: FishMount
+    texture_variation_3: FishMount
   spell:
     id: 80169
     name: 深海喂食者

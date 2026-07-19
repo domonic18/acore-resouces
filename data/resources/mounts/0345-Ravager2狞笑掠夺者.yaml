@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140341
     model_id: 104341
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: Ravager2Mount1
-    texture_2: Ravager2Mount1
-    texture_3: Ravager2Mount1
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: Ravager2Mount1
+    texture_variation_2: Ravager2Mount1
+    texture_variation_3: Ravager2Mount1
   spell:
     id: 80341
     name: 狞笑掠夺者

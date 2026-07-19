@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140068
     model_id: 104068
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: automatonfliermount
-    texture_2: automatonfliermount
-    texture_3: automatonfliermount
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: automatonfliermount
+    texture_variation_2: automatonfliermount
+    texture_variation_3: automatonfliermount
   spell:
     id: 80068
     name: 高风暗鬃狮

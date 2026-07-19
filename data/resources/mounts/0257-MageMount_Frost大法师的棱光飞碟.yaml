@@ -22,13 +22,13 @@ dbc:
   creature_display_info:
     id: 140253
     model_id: 104253
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: Magemount_Frost
-    texture_2: Magemount_Frost
-    texture_3: Magemount_Frost
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: Magemount_Frost
+    texture_variation_2: Magemount_Frost
+    texture_variation_3: Magemount_Frost
   spell:
     id: 80253
     name: 大法师的棱光飞碟

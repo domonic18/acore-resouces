@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140046
     model_id: 4046
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: encrypted06
-    texture_2: encrypted06
-    texture_3: encrypted06
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: encrypted06
+    texture_variation_2: encrypted06
+    texture_variation_3: encrypted06
   spell:
     id: 80046
     name: 霍格鲁斯，鸿运亥客

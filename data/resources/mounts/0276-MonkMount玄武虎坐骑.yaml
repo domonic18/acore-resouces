@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140272
     model_id: 104272
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: monkmount_jade
-    texture_2: monkmount_jade
-    texture_3: monkmount_jade
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: monkmount_jade
+    texture_variation_2: monkmount_jade
+    texture_variation_3: monkmount_jade
   spell:
     id: 80272
     name: 班禄，大宗师的伙伴

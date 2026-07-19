@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140117
     model_id: 104117
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: DRAGONDEEPHOLMMOUNT2PURPLE
-    texture_2: DRAGONDEEPHOLMMOUNT2PURPLE
-    texture_3: DRAGONDEEPHOLMMOUNT2PURPLE
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: DRAGONDEEPHOLMMOUNT2PURPLE
+    texture_variation_2: DRAGONDEEPHOLMMOUNT2PURPLE
+    texture_variation_3: DRAGONDEEPHOLMMOUNT2PURPLE
   spell:
     id: 80117
     name: 琉璃石幼龙

@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140037
     model_id: 4037
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: DruidBearSkinBlack
-    texture_2: DruidBearSkinBlack
-    texture_3: DruidBearSkinBlack
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: DruidBearSkinBlack
+    texture_variation_2: DruidBearSkinBlack
+    texture_variation_3: DruidBearSkinBlack
   spell:
     id: 80037
     visual_id: 9140037

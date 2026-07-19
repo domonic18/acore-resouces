@@ -21,13 +21,13 @@ dbc:
   creature_display_info:
     id: 140053
     model_id: 4053
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: armorreflect_hard
-    texture_2: armorreflect_hard
-    texture_3: armorreflect_hard
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: armorreflect_hard
+    texture_variation_2: armorreflect_hard
+    texture_variation_3: armorreflect_hard
   spell:
     id: 80053
     visual_id: 9140053

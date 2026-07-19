@@ -20,13 +20,13 @@ dbc:
   creature_display_info:
     id: 140304
     model_id: 104304
-    field_20: 0
-    field_21: 0
-    field_22: 1
-    field_23: 255
-    texture_1: pandarenserpentgod_yellow
-    texture_2: pandarenserpentgod_yellow
-    texture_3: pandarenserpentgod_yellow
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: pandarenserpentgod_yellow
+    texture_variation_2: pandarenserpentgod_yellow
+    texture_variation_3: pandarenserpentgod_yellow
   spell:
     id: 80304
     name: 神圣金色云端翔龙
