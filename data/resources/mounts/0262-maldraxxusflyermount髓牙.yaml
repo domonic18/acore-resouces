@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140258
     description: 召唤或解散一只灰谷奇美拉。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
-    id: 0
+    id: 166432
     class: 15
     subclass: 5
     material: -1
@@ -57,6 +57,7 @@ db:
   creature_model_info:
     display_id: 140258
   item_template:
+    entry: 166432
     name: 灰谷奇美拉
     spellid_2: 80258
     Quality: 4

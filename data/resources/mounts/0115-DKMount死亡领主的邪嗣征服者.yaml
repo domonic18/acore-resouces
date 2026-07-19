@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 死亡领主的邪嗣征服者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_dkmount
+  icon_name: ability_mount_dkmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=229387
 dbc:
   creature_model_data:
     id: 104110
@@ -27,6 +28,7 @@ dbc:
     id: 80110
     name: 死亡领主的邪嗣征服者
     visual_id: 9140110
+    description: 召唤或解散你的死亡领主的邪嗣征服者。这是一种飞行坐骑。
   item:
     id: 142231
     class: 15

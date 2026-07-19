@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 黄金狮王
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_allianceliong
+  icon_name: inv_mount_allianceliong
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=90621
+  item_wowhead_url: https://www.wowhead.com/cn/item=62298
 dbc:
   creature_model_data:
     id: 104201
@@ -27,6 +29,7 @@ dbc:
     id: 80201
     name: 黄金狮王
     visual_id: 9140201
+    description: 召唤或解散一个可供骑乘的黄金狮王。
   item:
     id: 62298
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一个可供骑乘的黄金狮王。
+    flavor_text: 别让那个鞍具骗了，它很狂野，可不是温顺的狮子。
 db:
   creature_template:
     entry: 9140201

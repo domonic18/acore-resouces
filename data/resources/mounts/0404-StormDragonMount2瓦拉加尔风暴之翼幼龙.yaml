@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 瓦拉加尔风暴之翼幼龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_stormdragonmount2
+  icon_name: inv_stormdragonmount2
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=242882
+  item_wowhead_url: https://www.wowhead.com/cn/item=147805
 dbc:
   creature_model_data:
     id: 104400
@@ -27,6 +29,7 @@ dbc:
     id: 80400
     name: 瓦拉加尔风暴之翼幼龙
     visual_id: 9140400
+    description: 召唤或解散你的瓦拉加尔风暴之翼幼龙。
   item:
     id: 147805
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散你的瓦拉加尔风暴之翼幼龙。
+    flavor_text: 它拍动双翼的声音就像远方传来的隆隆雷声。
 db:
   creature_template:
     entry: 9140400

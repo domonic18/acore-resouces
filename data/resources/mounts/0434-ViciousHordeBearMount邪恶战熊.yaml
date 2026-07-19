@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 邪恶战熊
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_viciousalliancebearmount
+  icon_name: inv_mount_viciousalliancebearmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=229487
+  item_wowhead_url: https://www.wowhead.com/cn/item=142234
 dbc:
   creature_model_data:
     id: 104430
@@ -27,8 +29,9 @@ dbc:
     id: 80430
     name: 邪恶战熊
     visual_id: 9140430
+    description: 召唤或解散你的邪恶战熊。
   item:
-    id: 142235
+    id: 142234
     class: 15
     subclass: 5
     material: -1
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的邪恶战熊。
+    flavor_text: 比它在部落的同类还要凶猛一倍。
 db:
   creature_template:
     entry: 9140430
@@ -52,7 +57,7 @@ db:
   creature_model_info:
     display_id: 140430
   item_template:
-    entry: 142235
+    entry: 142234
     name: 邪恶战熊
     spellid_2: 80430
     Quality: 4

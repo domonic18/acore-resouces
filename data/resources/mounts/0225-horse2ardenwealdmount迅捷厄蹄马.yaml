@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 闪雾奔行者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_horse2ardenwealdmount_blue
+  icon_name: inv_horse2ardenwealdmount_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=332252
+  item_wowhead_url: https://www.wowhead.com/cn/item=180727
 dbc:
   creature_model_data:
     id: 104221
@@ -27,6 +29,7 @@ dbc:
     id: 80221
     name: 闪雾奔行者
     visual_id: 9140221
+    description: 召唤或解散这种坐骑。
   item:
     id: 180727
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 喜欢恶作剧的林鬼和谷奔者是天生的死敌。谷奔者绝不会屈尊让一只林鬼骑到背上，因为它们感觉得到林鬼内心的恶意。这一点令林鬼这种捣蛋专家非常生气，它们会对这种威严的生物开各种残酷的玩笑，并获得扭曲的快感。
 db:
   creature_template:
     entry: 9140221
