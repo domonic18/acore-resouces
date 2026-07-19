@@ -93,7 +93,8 @@ function getFieldValue(
   liveDb: Record<string, unknown>,
 ): unknown {
   const sourceData = spec.source === "dbc" ? liveDbc : liveDb;
-  const tableData = sourceData[spec.table] as Record<string, unknown> | undefined;
+  const tableData = sourceData[spec.table] as
+    Record<string, unknown> | undefined;
   return tableData?.[spec.field];
 }
 

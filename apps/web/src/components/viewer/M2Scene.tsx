@@ -34,7 +34,6 @@ export function M2Scene({
       try {
         geometries.push(buildSubmeshGeometry(m2, skin, i));
       } catch (err) {
-         
         console.warn(`Submesh ${i} geometry build failed:`, err);
         geometries.push(null);
       }
@@ -46,7 +45,6 @@ export function M2Scene({
   const skeleton = skeletonResult?.skeleton ?? null;
   const rootBone = skeletonResult?.rootBone ?? null;
 
-   
   console.log(
     "[M2Scene] skinBoneIndices=",
     skin.skinBoneIndices.length / MAX_BONE_INFLUENCES,
@@ -86,7 +84,7 @@ export function M2Scene({
         const textureUrl = batch
           ? resolveTextureUrl(m2, batch, textureUrls)
           : null;
-         
+
         console.log(
           "[M2Scene] submesh",
           index,

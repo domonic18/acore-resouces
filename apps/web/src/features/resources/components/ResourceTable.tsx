@@ -12,6 +12,7 @@ import { useState } from "react";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
 import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
+import { ResourceTagBadge } from "@/components/badges/ResourceTagBadge";
 import { SortHeader } from "@/components/table/SortHeader";
 import { formatDrop, formatDateTime } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
@@ -123,6 +124,7 @@ export function ResourceTable({
               onClick={() => setSort("drop")}
             />
             <th>状态</th>
+            <th>标签</th>
             <SortHeader
               label="添加时间"
               active={sortKey === "created_at"}
@@ -175,6 +177,9 @@ export function ResourceTable({
               <td>{formatDrop(resource.drop)}</td>
               <td>
                 <ResourceStatusBadge resource={resource} />
+              </td>
+              <td>
+                <ResourceTagBadge resource={resource} />
               </td>
               <td className="text-text-secondary">
                 {formatDateTime(resource.created_at)}
@@ -236,7 +241,7 @@ export function ResourceTable({
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan={10}>
+              <td colSpan={11}>
                 <div className="empty-state">
                   <Search className="mb-3 h-12 w-12 text-text-tertiary" />
                   <h3>暂无资源</h3>

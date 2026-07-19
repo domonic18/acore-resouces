@@ -8,13 +8,34 @@ export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
     { key: "npc", label: "NPC" },
   ];
 
-export const STATUS_OPTIONS = [
-  { value: "", label: "所有状态" },
-  { value: "passed", label: "调试通过" },
-  { value: "pending", label: "待调试" },
-  { value: "added", label: "已添加" },
-  { value: "not_added", label: "未添加" },
+export type StatusTagValue = "passed" | "pending" | "added" | "not_added";
+
+export const STATUS_TAG_OPTIONS: {
+  value: StatusTagValue;
+  label: string;
+  group: "debug" | "added";
+}[] = [
+  { value: "passed", label: "调试通过", group: "debug" },
+  { value: "pending", label: "待调试", group: "debug" },
+  { value: "added", label: "已添加", group: "added" },
+  { value: "not_added", label: "未添加", group: "added" },
 ];
+
+export type ResourceTagValue = "unofficial";
+
+export const RESOURCE_TAG_OPTIONS: {
+  value: ResourceTagValue;
+  label: string;
+}[] = [{ value: "unofficial", label: "非官方" }];
+
+export function getUnofficialLabel(
+  type: "all" | "mount" | "pet" | "npc",
+): string {
+  if (type === "mount") return "非官方坐骑";
+  if (type === "pet") return "非官方宠物";
+  if (type === "npc") return "非官方NPC";
+  return "非官方";
+}
 
 export type SortKey =
   | "id"
@@ -45,6 +66,113 @@ export function formatDateTime(iso: string | null): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+export function formatDateInputValue(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function parseDateInputValue(value: string): Date | null {
+  const match = value.match(/^\d{4}-\d{2}-\d{2}$/);
+  if (!match) return null;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+  return date;
+}
+
+export function getStartOfDay(date: Date): Date {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    0,
+    0,
+    0,
+    0,
+  );
+}
+
+export function getEndOfDay(date: Date): Date {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    23,
+    59,
+    59,
+    999,
+  );
+}
+
+export type DatePresetKey = "yesterday" | "today" | "last7days";
+
+export const DATE_PRESETS: {
+  value: DatePresetKey;
+  label: string;
+  getRange: () => { start: string; end: string };
+}[] = [
+  {
+    value: "yesterday",
+    label: "昨日",
+    getRange: () => {
+      const date = new Date();
+      date.setDate(date.getDate() - 1);
+      const value = formatDateInputValue(date);
+      return { start: value, end: value };
+    },
+  },
+  {
+    value: "today",
+    label: "今天",
+    getRange: () => {
+      const value = formatDateInputValue(new Date());
+      return { start: value, end: value };
+    },
+  },
+  {
+    value: "last7days",
+    label: "最近7天",
+    getRange: () => {
+      const end = formatDateInputValue(new Date());
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 6);
+      return { start: formatDateInputValue(startDate), end };
+    },
+  },
+];
+
+export function matchesUpdatedAtFilter(
+  resource: Resource,
+  start: string | null,
+  end: string | null,
+): boolean {
+  if (!resource.updated_at) return false;
+  const updatedAt = new Date(resource.updated_at).getTime();
+  if (Number.isNaN(updatedAt)) return false;
+
+  if (start) {
+    const startDate = parseDateInputValue(start);
+    if (startDate && updatedAt < getStartOfDay(startDate).getTime()) {
+      return false;
+    }
+  }
+  if (end) {
+    const endDate = parseDateInputValue(end);
+    if (endDate && updatedAt > getEndOfDay(endDate).getTime()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 export function sortResources(
@@ -99,4 +227,46 @@ export function pageButtons(
   if (current >= total - 2)
     return [1, "...", total - 3, total - 2, total - 1, total];
   return [1, "...", current - 1, current, current + 1, "...", total];
+}
+
+export function computeResourceTags(resource: Resource): ResourceTagValue[] {
+  const tags: ResourceTagValue[] = [];
+  if (!resource.official_db.name) {
+    tags.push("unofficial");
+  }
+  return tags;
+}
+
+export function matchesStatusFilter(
+  resource: Resource,
+  selectedStatuses: StatusTagValue[],
+): boolean {
+  if (selectedStatuses.length === 0) return true;
+
+  const selectedDebug = selectedStatuses.filter((s) =>
+    STATUS_TAG_OPTIONS.find((o) => o.value === s && o.group === "debug"),
+  );
+  const selectedAdded = selectedStatuses.filter((s) =>
+    STATUS_TAG_OPTIONS.find((o) => o.value === s && o.group === "added"),
+  );
+
+  // Within a group, selecting both options is equivalent to no filter for that group.
+  if (selectedDebug.length === 1) {
+    const expected = selectedDebug[0] === "passed";
+    if (resource.debug_passed !== expected) return false;
+  }
+  if (selectedAdded.length === 1) {
+    const expected = selectedAdded[0] === "added";
+    if (resource.added !== expected) return false;
+  }
+  return true;
+}
+
+export function matchesTagFilter(
+  resource: Resource,
+  selectedTags: ResourceTagValue[],
+): boolean {
+  if (selectedTags.length === 0) return true;
+  const tags = computeResourceTags(resource);
+  return selectedTags.some((t) => tags.includes(t));
 }

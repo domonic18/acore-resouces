@@ -40,11 +40,18 @@ export function IconEditor({
             }}
           />
         ) : (
-          <Box className={cn("text-text-tertiary", compact ? "h-6 w-6" : "h-8 w-8")} />
+          <Box
+            className={cn(
+              "text-text-tertiary",
+              compact ? "h-6 w-6" : "h-8 w-8",
+            )}
+          />
         )}
       </button>
       <div className="min-w-0 flex-1">
-        <label className={cn("form-label", compact && "form-label-compact")}>{label}</label>
+        <label className={cn("form-label", compact && "form-label-compact")}>
+          {label}
+        </label>
         <input
           list="icon-options"
           type="text"

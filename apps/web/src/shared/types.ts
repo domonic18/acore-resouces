@@ -44,6 +44,7 @@ export interface Resource {
   star_rating?: string | null;
   subtype?: string | null;
   rarity?: string | null;
+  tags?: string[];
 }
 
 export interface ResourceUpdate {

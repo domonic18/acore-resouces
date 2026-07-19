@@ -23,13 +23,12 @@ export function useOptionalTexture(url: string | null): THREE.Texture | null {
         loaded.flipY = false;
         loaded.wrapS = THREE.RepeatWrapping;
         loaded.wrapT = THREE.RepeatWrapping;
-         
+
         console.log("[useOptionalTexture] loaded", url);
         setTexture(loaded);
       },
       undefined,
       (err) => {
-         
         console.error("[useOptionalTexture] failed to load", url, err);
       },
     );

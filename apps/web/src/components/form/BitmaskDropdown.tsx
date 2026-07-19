@@ -94,7 +94,10 @@ export function BitmaskDropdown({
       >
         <span className="truncate">{summaryText}</span>
         <ChevronDown
-          className={cn("h-3 w-3 shrink-0 transition-transform", open && "rotate-180")}
+          className={cn(
+            "h-3 w-3 shrink-0 transition-transform",
+            open && "rotate-180",
+          )}
         />
       </button>
       {open && (

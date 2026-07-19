@@ -7,10 +7,17 @@ interface FormGroupProps {
   compact?: boolean;
 }
 
-export function FormGroup({ label, children, className, compact }: FormGroupProps) {
+export function FormGroup({
+  label,
+  children,
+  className,
+  compact,
+}: FormGroupProps) {
   return (
     <div className={cn("form-group", compact && "space-y-0", className)}>
-      <label className={cn("form-label", compact && "form-label-compact")}>{label}</label>
+      <label className={cn("form-label", compact && "form-label-compact")}>
+        {label}
+      </label>
       {children}
     </div>
   );

@@ -5,7 +5,15 @@ import { cn } from "@/shared/utils";
 import { BitmaskDropdown } from "@/components/form/BitmaskDropdown";
 import { OptionSelect } from "@/components/form/OptionSelect";
 import { IconEditor } from "./IconEditor";
-import { ITEM_CLASS_OPTIONS, ITEM_SUBCLASS_OPTIONS, MATERIAL_OPTIONS, QUALITY_OPTIONS, CLASS_FLAGS, RACE_FLAGS, INVENTORY_TYPE_OPTIONS } from "../../constants";
+import {
+  ITEM_CLASS_OPTIONS,
+  ITEM_SUBCLASS_OPTIONS,
+  MATERIAL_OPTIONS,
+  QUALITY_OPTIONS,
+  CLASS_FLAGS,
+  RACE_FLAGS,
+  INVENTORY_TYPE_OPTIONS,
+} from "../../constants";
 import { normalizeInt } from "../../lib/detail-helpers";
 
 interface ItemInfoSectionProps {
@@ -71,7 +79,9 @@ export function ItemInfoSection({
                 <OptionSelect
                   options={ITEM_CLASS_OPTIONS}
                   value={itemDbc.class}
-                  onChange={(v) => setItemDbc((prev) => ({ ...prev, class: v }))}
+                  onChange={(v) =>
+                    setItemDbc((prev) => ({ ...prev, class: v }))
+                  }
                   compact={compact}
                 />
               </FormGroup>

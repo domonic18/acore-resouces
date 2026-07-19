@@ -12,10 +12,7 @@ const NODE_HEIGHT = 64;
 const COLUMN_WIDTH = 200;
 const ROW_HEIGHT = 90;
 
-const NODE_LAYOUT: Record<
-  string,
-  { x: number; y: number; tab: string }
-> = {
+const NODE_LAYOUT: Record<string, { x: number; y: number; tab: string }> = {
   "dbc:creature_model_data": { x: 0, y: 0, tab: "creature_model_data" },
   "dbc:spell": { x: 0, y: 2, tab: "spell" },
   "dbc:item": { x: 1, y: 3, tab: "item" },
@@ -46,7 +43,11 @@ const STATUS_DASH = {
   missing: "4 4",
 };
 
-function formatEdgeLabel(fromField: string, toField: string, value: unknown): string {
+function formatEdgeLabel(
+  fromField: string,
+  toField: string,
+  value: unknown,
+): string {
   const valueText = value === null || value === undefined ? "—" : String(value);
   return `${fromField} → ${toField}: ${valueText}`;
 }
@@ -91,7 +92,9 @@ export function RelationshipGraph({
     }[] = [];
 
     results.forEach((result) => {
-      result.values.forEach((field) => nodeIds.add(`${field.source}:${field.table}`));
+      result.values.forEach((field) =>
+        nodeIds.add(`${field.source}:${field.table}`),
+      );
       for (let i = 0; i < result.values.length - 1; i++) {
         const from = result.values[i];
         const to = result.values[i + 1];
@@ -112,7 +115,13 @@ export function RelationshipGraph({
       const layout = NODE_LAYOUT[id];
       const pos = getNodePosition(id);
       const [source, table] = id.split(":");
-      return { id, source: source as "dbc" | "db", table, pos, tab: layout?.tab ?? "" };
+      return {
+        id,
+        source: source as "dbc" | "db",
+        table,
+        pos,
+        tab: layout?.tab ?? "",
+      };
     });
 
     const maxX = Math.max(...nodesData.map((n) => n.pos.x));
@@ -196,39 +205,38 @@ export function RelationshipGraph({
               />
               {hoveredEdge === `${edge.from}-${edge.to}` && (
                 <g>
-                  {
-                    (() => {
-                      const fromPos = getNodePosition(edge.from);
-                      const toPos = getNodePosition(edge.to);
-                      const midX = (fromPos.x + NODE_WIDTH + toPos.x) / 2;
-                      const midY =
-                        (fromPos.y + NODE_HEIGHT / 2 +
-                          toPos.y +
-                          NODE_HEIGHT / 2) /
-                        2;
-                      return (
-                        <>
-                          <rect
-                            x={midX - 60}
-                            y={midY - 22}
-                            width={120}
-                            height={24}
-                            rx={4}
-                            fill="var(--bg-elevated)"
-                            stroke="var(--border)"
-                          />
-                          <text
-                            x={midX}
-                            y={midY - 6}
-                            textAnchor="middle"
-                            className="fill-text-secondary text-[10px]"
-                          >
-                            {edge.label}
-                          </text>
-                        </>
-                      );
-                    })()
-                  }
+                  {(() => {
+                    const fromPos = getNodePosition(edge.from);
+                    const toPos = getNodePosition(edge.to);
+                    const midX = (fromPos.x + NODE_WIDTH + toPos.x) / 2;
+                    const midY =
+                      (fromPos.y +
+                        NODE_HEIGHT / 2 +
+                        toPos.y +
+                        NODE_HEIGHT / 2) /
+                      2;
+                    return (
+                      <>
+                        <rect
+                          x={midX - 60}
+                          y={midY - 22}
+                          width={120}
+                          height={24}
+                          rx={4}
+                          fill="var(--bg-elevated)"
+                          stroke="var(--border)"
+                        />
+                        <text
+                          x={midX}
+                          y={midY - 6}
+                          textAnchor="middle"
+                          className="fill-text-secondary text-[10px]"
+                        >
+                          {edge.label}
+                        </text>
+                      </>
+                    );
+                  })()}
                 </g>
               )}
             </g>
@@ -248,8 +256,10 @@ export function RelationshipGraph({
             const relatedEdges = edges.filter(
               (e) => e.from === node.id || e.to === node.id,
             );
-            if (relatedEdges.some((e) => e.status === "mismatch")) return "mismatch";
-            if (relatedEdges.some((e) => e.status === "missing")) return "missing";
+            if (relatedEdges.some((e) => e.status === "mismatch"))
+              return "mismatch";
+            if (relatedEdges.some((e) => e.status === "missing"))
+              return "missing";
             if (relatedEdges.every((e) => e.status === "ok")) return "ok";
             return "missing";
           })();
@@ -280,7 +290,11 @@ export function RelationshipGraph({
                   width={node.source === "dbc" ? 32 : 28}
                   height={16}
                   rx={8}
-                  fill={node.source === "dbc" ? "rgba(168,85,247,0.15)" : "rgba(59,130,246,0.15)"}
+                  fill={
+                    node.source === "dbc"
+                      ? "rgba(168,85,247,0.15)"
+                      : "rgba(59,130,246,0.15)"
+                  }
                 />
                 <text
                   x={node.source === "dbc" ? 16 : 14}

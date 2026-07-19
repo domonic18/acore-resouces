@@ -5,9 +5,30 @@ import {
   DEFAULT_ORDER,
   sortResources,
   pageButtons,
+  computeResourceTags,
+  matchesStatusFilter,
+  matchesTagFilter,
+  matchesUpdatedAtFilter,
 } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
-import type { SortKey, SortOrder } from "../lib/resource-list";
+import type {
+  SortKey,
+  SortOrder,
+  StatusTagValue,
+  ResourceTagValue,
+} from "../lib/resource-list";
+
+function parseParamList(value: string | null): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+function buildParamList(values: string[]): string {
+  return values.join(",");
+}
 
 const PAGE_SIZE = 20;
 
@@ -51,11 +72,25 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
       });
     }
 
-    const status = searchParams.get("status") || "";
-    if (status === "passed") items = items.filter((r) => r.debug_passed);
-    if (status === "pending") items = items.filter((r) => !r.debug_passed);
-    if (status === "added") items = items.filter((r) => r.added);
-    if (status === "not_added") items = items.filter((r) => !r.added);
+    const statuses = parseParamList(
+      searchParams.get("status"),
+    ) as StatusTagValue[];
+    if (statuses.length > 0) {
+      items = items.filter((r) => matchesStatusFilter(r, statuses));
+    }
+
+    const tags = parseParamList(searchParams.get("tags")) as ResourceTagValue[];
+    if (tags.length > 0) {
+      items = items.filter((r) => matchesTagFilter(r, tags));
+    }
+
+    const updatedStart = searchParams.get("updated_start");
+    const updatedEnd = searchParams.get("updated_end");
+    if (updatedStart || updatedEnd) {
+      items = items.filter((r) =>
+        matchesUpdatedAtFilter(r, updatedStart, updatedEnd),
+      );
+    }
 
     return items;
   }, [allItems, searchParams]);
@@ -79,6 +114,14 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     }
     if (key !== "page") next.set("page", "1");
     setSearchParams(next);
+  };
+
+  const toggleParamValue = (key: "status" | "tags", value: string) => {
+    const current = parseParamList(searchParams.get(key));
+    const nextValues = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value];
+    updateParam(key, buildParamList(nextValues));
   };
 
   const applySearch = () => updateParam("search", searchInput);
@@ -114,6 +157,15 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     return Array.from(set).sort();
   }, [allItems]);
 
+  const tagOptions = useMemo(() => {
+    if (!allItems) return [];
+    const set = new Set<ResourceTagValue>();
+    allItems.forEach((r) => {
+      computeResourceTags(r).forEach((t) => set.add(t));
+    });
+    return Array.from(set);
+  }, [allItems]);
+
   return {
     searchParams,
     searchInput,
@@ -129,7 +181,9 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     page,
     pageButtons: pageButtons(totalPages, page),
     updateParam,
+    toggleParamValue,
     categoryOptions,
     tierOptions,
+    tagOptions,
   };
 }

@@ -19,7 +19,8 @@ export function OptionSelect({
     value === null || value === undefined || value === ""
       ? null
       : Number(value);
-  const currentInList = numValue !== null && options.some((o) => o.value === numValue);
+  const currentInList =
+    numValue !== null && options.some((o) => o.value === numValue);
 
   return (
     <select

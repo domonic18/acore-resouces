@@ -21,7 +21,8 @@ export function useResourceRelationships(
 
   const overallStatus = useMemo(() => {
     if (results.length === 0) return "missing" as const;
-    if (results.some((r) => r.status === "mismatch")) return "mismatch" as const;
+    if (results.some((r) => r.status === "mismatch"))
+      return "mismatch" as const;
     if (results.some((r) => r.status === "missing")) return "missing" as const;
     return "ok" as const;
   }, [results]);

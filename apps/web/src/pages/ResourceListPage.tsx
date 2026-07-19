@@ -42,8 +42,10 @@ export function ResourceListPage() {
     totalPages,
     page,
     updateParam,
+    toggleParamValue,
     categoryOptions,
     tierOptions,
+    tagOptions,
   } = useResourceListFilters(allItems);
 
   return (
@@ -85,7 +87,9 @@ export function ResourceListPage() {
           searchParams={searchParams}
           categoryOptions={categoryOptions}
           tierOptions={tierOptions}
+          tagOptions={tagOptions}
           updateParam={updateParam}
+          toggleParamValue={toggleParamValue}
         />
 
         <ResourceTable

@@ -69,7 +69,10 @@ export const ITEM_CLASS_OPTIONS = [
 ];
 
 // SubClass 的含义取决于 Class，按 Class ID 分组（ItemTemplate.h 中各 ItemSubclass* 枚举）
-export const ITEM_SUBCLASS_OPTIONS: Record<number, { value: number; label: string }[]> = {
+export const ITEM_SUBCLASS_OPTIONS: Record<
+  number,
+  { value: number; label: string }[]
+> = {
   0: [
     { value: 0, label: "0 Consumable 消耗品" },
     { value: 1, label: "1 Potion 药水" },

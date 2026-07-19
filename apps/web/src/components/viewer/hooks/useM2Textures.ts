@@ -103,7 +103,6 @@ export function useM2Textures(
         }
       });
 
-       
       console.log(
         "[textureUrls] textures:",
         parsed.m2.textures.map(function (t, i) {

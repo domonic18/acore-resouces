@@ -52,24 +52,33 @@ export function RelationshipChain({ result }: RelationshipChainProps) {
         <span className="text-sm font-semibold text-text-primary">
           {result.rule.name}
         </span>
-        <span className="text-xs text-text-tertiary">{result.rule.description}</span>
+        <span className="text-xs text-text-tertiary">
+          {result.rule.description}
+        </span>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
         {values.map((field, index) => {
           const isLast = index === values.length - 1;
           return (
-            <div key={`${field.source}-${field.table}-${field.field}`} className="flex items-center gap-2">
+            <div
+              key={`${field.source}-${field.table}-${field.field}`}
+              className="flex items-center gap-2"
+            >
               <div className="flex min-w-[120px] flex-col rounded-md border border-border bg-bg-elevated px-3 py-2">
                 <div className="mb-1 flex items-center gap-1.5">
-                  <span className={cn("badge", SOURCE_BADGE_CLASS[field.source])}>
+                  <span
+                    className={cn("badge", SOURCE_BADGE_CLASS[field.source])}
+                  >
                     {field.source.toUpperCase()}
                   </span>
                   <span className="text-xs font-medium text-text-secondary">
                     {field.table}
                   </span>
                 </div>
-                <div className="text-[11px] text-text-tertiary">{field.field}</div>
+                <div className="text-[11px] text-text-tertiary">
+                  {field.field}
+                </div>
                 <div
                   className={cn(
                     "text-sm font-semibold",
@@ -83,9 +92,7 @@ export function RelationshipChain({ result }: RelationshipChainProps) {
                   {formatValue(field.value)}
                 </div>
               </div>
-              {!isLast && (
-                <span className="text-text-tertiary">→</span>
-              )}
+              {!isLast && <span className="text-text-tertiary">→</span>}
             </div>
           );
         })}

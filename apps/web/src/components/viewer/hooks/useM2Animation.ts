@@ -85,7 +85,6 @@ export function useM2Animation(
         availableIds.add(seq.id);
       });
 
-       
       console.log(
         "[animation] sequences:",
         currentParsed.m2.sequences
@@ -105,7 +104,7 @@ export function useM2Animation(
       } else {
         animId = resolveAnimationId(animationState, availableIds);
       }
-       
+
       console.log(
         "[animation] state=",
         animationState,
@@ -128,7 +127,7 @@ export function useM2Animation(
           id,
           0,
         );
-         
+
         console.log(
           "[animation] anim path=",
           animPath,
@@ -148,7 +147,6 @@ export function useM2Animation(
 
           return buildAnimationClip(currentParsed, m2Buffer, id, animBuffer);
         } catch (err) {
-           
           console.warn("Animation load failed:", err);
           return null;
         }
@@ -166,7 +164,7 @@ export function useM2Animation(
 
         for (const altId of alternateIds) {
           if (!availableIds.has(altId)) continue;
-           
+
           console.log(
             "[animation] resolved clip sparse, trying alternate id=",
             altId,
@@ -179,7 +177,6 @@ export function useM2Animation(
         }
       }
 
-       
       console.log(
         "[animation] clip=",
         clip?.name,

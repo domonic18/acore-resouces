@@ -31,7 +31,6 @@ export function M2MaterialMesh({
     if (!mesh || !skeleton) return;
 
     if (mesh instanceof THREE.SkinnedMesh) {
-       
       console.log(
         "[M2MaterialMesh] binding SkinnedMesh to skeleton",
         skeleton.bones.length,
@@ -42,7 +41,6 @@ export function M2MaterialMesh({
       skeleton.calculateInverses();
       mesh.bind(skeleton);
     } else {
-       
       console.log("[M2MaterialMesh] mesh is not SkinnedMesh");
     }
   }, [skeleton, rootBone]);
