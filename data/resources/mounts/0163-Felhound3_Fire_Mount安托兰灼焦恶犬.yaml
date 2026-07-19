@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140158
     model_id: 104158
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: felhound3_fire_mount
+    texture_variation_2: felhound3_fire_mount
+    texture_variation_3: felhound3_fire_mount
+  spell:
+    id: 80158
+    name: 安托兰灼焦恶犬
+    description: 召唤或解散一个可供骑乘的安托兰灼焦恶犬。这是一种速度非常快的坐骑。
+    visual_id: 9140158
+    icon_id: 19445
+  item:
+    id: 152816
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 100445
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140158
     name: 安托兰灼焦恶犬
     modelid1: 140158
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140158
-  item_template: {}
+  item_template:
+    entry: 152816
+    name: 安托兰灼焦恶犬
+    displayid: 100445
+    spellid_2: 80158
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 怪物

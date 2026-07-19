@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 海岛雷鳞龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_stormdragonmount2_fel
+  icon_name: inv_stormdragonmount2_fel
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=288721
+  item_wowhead_url: https://www.wowhead.com/cn/item=166467
 dbc:
   creature_model_data:
     id: 104401
@@ -19,16 +21,46 @@ dbc:
   creature_display_info:
     id: 140401
     model_id: 104401
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80401
+    name: 海岛雷鳞龙
+    visual_id: 9140401
+    description: 召唤或解散这种坐骑。
+  item:
+    id: 166467
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 艾泽拉斯本土巨龙中较大的品种，基本上完全以鱼类为生，另外还有渔夫。
 db:
   creature_template:
     entry: 9140401
     name: 海岛雷鳞龙
     modelid1: 140401
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140401
-  item_template: {}
+  item_template:
+    entry: 166467
+    name: 海岛雷鳞龙
+    spellid_2: 80401
+    Quality: 4
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙

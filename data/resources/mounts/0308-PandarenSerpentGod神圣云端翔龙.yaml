@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140304
     model_id: 104304
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: pandarenserpentgod_yellow
+    texture_variation_2: pandarenserpentgod_yellow
+    texture_variation_3: pandarenserpentgod_yellow
+  spell:
+    id: 80304
+    name: 神圣金色云端翔龙
+    description: 召唤或解散一个可供骑乘的神圣金色云端翔龙。这是一种速度非常快的坐骑。
+    visual_id: 9140304
+    icon_id: 27737
+  item:
+    id: 87774
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 108737
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140304
     name: 神圣金色云端翔龙
     modelid1: 140304
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140304
-  item_template: {}
+  item_template:
+    entry: 87774
+    name: 神圣金色云端翔龙
+    displayid: 108737
+    spellid_2: 80304
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 翔龙

@@ -19,16 +19,43 @@ dbc:
   creature_display_info:
     id: 140392
     model_id: 104392
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80392
+    name: 血牙寡妇蛛
+    visual_id: 9140392
+  item:
+    id: 137570
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140392
     name: 血牙寡妇蛛
     modelid1: 140392
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140392
-  item_template: {}
+  item_template:
+    entry: 137570
+    name: 血牙寡妇蛛
+    spellid_2: 80392
+    Quality: 4
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 蜘蛛

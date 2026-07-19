@@ -20,15 +20,47 @@ dbc:
   creature_display_info:
     id: 140035
     model_id: 4035
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidbearzandalaritroll_noarmor_blue
+    texture_variation_2: druidbearzandalaritroll_noarmor_blue
+    texture_variation_3: druidbearzandalaritroll_noarmor_blue
+  spell:
+    id: 80035
+    visual_id: 9140035
+    icon_id: 957
+  item:
+    id: 91035
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 40160
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140035
     modelid1: 140035
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140035
-  item_template: {}
+  item_template:
+    entry: 91035
+    displayid: 40160
+    spellid_2: 80035
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 熊

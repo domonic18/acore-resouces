@@ -19,16 +19,43 @@ dbc:
   creature_display_info:
     id: 140257
     model_id: 104257
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80257
+    name: 髓牙
+    visual_id: 9140257
+  item:
+    id: 181819
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140257
     name: 髓牙
     modelid1: 140257
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140257
-  item_template: {}
+  item_template:
+    entry: 181819
+    name: 髓牙
+    spellid_2: 80257
+    Quality: 4
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 奇美拉

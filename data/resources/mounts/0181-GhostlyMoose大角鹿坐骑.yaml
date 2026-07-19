@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 艾特洛之魂
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_ghostlymoosemount
+  icon_name: inv_ghostlymoosemount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=196681
+  item_wowhead_url: https://www.wowhead.com/cn/item=131734
 dbc:
   creature_model_data:
     id: 104176
@@ -20,16 +22,52 @@ dbc:
   creature_display_info:
     id: 140176
     model_id: 104176
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: ghostlymoosemount
+    texture_variation_2: ghostlymoosemount
+    texture_variation_3: ghostlymoosemount
+  spell:
+    id: 80176
+    name: 艾特洛之魂
+    description: 召唤或解散艾特洛之魂。
+    visual_id: 9140176
+    icon_id: 19983
+  item:
+    id: 131734
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 100983
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散艾特洛之魂。
 db:
   creature_template:
     entry: 9140176
     name: 艾特洛之魂
     modelid1: 140176
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140176
-  item_template: {}
+  item_template:
+    entry: 131734
+    name: 艾特洛之魂
+    displayid: 100983
+    spellid_2: 80176
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 鹿

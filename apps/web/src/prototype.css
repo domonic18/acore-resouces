@@ -1,0 +1,251 @@
+.topbar {
+  @apply sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border px-7 backdrop-blur-md;
+  background-color: color-mix(in srgb, var(--bg) 80%, transparent);
+}
+
+.page-title {
+  @apply text-lg font-bold tracking-tight;
+}
+
+.topbar-actions {
+  @apply flex items-center gap-3;
+}
+
+.search-box {
+  @apply relative;
+}
+
+.search-box input {
+  @apply h-9 w-64 rounded-md border border-border bg-bg-input pl-9 pr-3 text-sm text-text-primary outline-none transition-all placeholder:text-text-tertiary focus:border-border-focus;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-box svg {
+  @apply absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary;
+}
+
+.content {
+  @apply flex-1 p-7;
+}
+
+.tabs {
+  @apply flex gap-1 border-b border-border px-5;
+}
+
+.tab {
+  @apply -mb-px border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-text-secondary transition-all hover:text-text-primary;
+}
+
+.tab.active {
+  @apply border-accent text-accent;
+}
+
+.table-toolbar {
+  @apply flex flex-wrap items-center justify-between gap-3 px-5 py-4;
+}
+
+.table-filters {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.filter-select {
+  @apply h-[34px] min-w-[140px] rounded-md border border-border bg-bg-input px-3 text-sm text-text-primary outline-none focus:border-border-focus;
+}
+
+.name-cell {
+  @apply flex items-center gap-3 min-w-0;
+}
+
+.resource-thumb {
+  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface text-lg;
+}
+
+.resource-thumb img {
+  @apply h-full w-full rounded-md object-contain;
+}
+
+.resource-name {
+  @apply font-semibold text-text-primary;
+}
+
+.resource-meta {
+  @apply text-[11px] text-text-tertiary;
+}
+
+.pagination {
+  @apply flex items-center justify-between border-t border-border px-5 py-4 text-sm text-text-secondary;
+}
+
+.page-nav {
+  @apply flex gap-1;
+}
+
+.page-btn {
+  @apply flex h-8 w-8 items-center justify-center rounded-md border border-border bg-bg-surface text-sm text-text-secondary transition-all hover:border-border-hover hover:text-text-primary disabled:opacity-50;
+}
+
+.page-btn.active {
+  @apply border-accent bg-accent text-white;
+}
+
+.detail-layout {
+  @apply grid gap-5 lg:grid-cols-[140px_1fr_360px];
+}
+
+.detail-nav {
+  @apply sticky top-20 hidden self-start lg:block;
+}
+
+.detail-nav-item {
+  @apply block w-full rounded-md px-3 py-1.5 text-left text-xs text-text-secondary transition-all hover:bg-bg-hover hover:text-text-primary;
+}
+
+.detail-main {
+  @apply min-w-0 space-y-6;
+}
+
+.detail-sidebar {
+  @apply flex flex-col gap-5;
+}
+
+.form-grid {
+  @apply grid gap-5 md:grid-cols-2;
+}
+
+.form-grid-compact {
+  @apply grid gap-x-4 gap-y-3 md:grid-cols-2;
+}
+
+.form-group {
+  @apply space-y-1.5;
+}
+
+.form-group.full-width {
+  @apply md:col-span-2;
+}
+
+.preview-frame {
+  @apply relative flex aspect-video items-center justify-center overflow-hidden rounded-lg border border-border;
+  background: linear-gradient(135deg, #0f1118 0%, #1a1d27 100%);
+}
+
+.preview-frame::before {
+  content: "";
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.preview-placeholder {
+  @apply relative z-10 text-center text-text-tertiary;
+}
+
+.preview-placeholder svg {
+  @apply mx-auto mb-3 h-12 w-12 opacity-50;
+}
+
+.preview-placeholder p {
+  @apply text-sm font-medium;
+}
+
+.preview-toolbar {
+  @apply mt-3 flex gap-2;
+}
+
+.file-tree {
+  @apply text-sm;
+}
+
+.file-tree-item {
+  @apply flex items-center gap-2 rounded px-2.5 py-2 text-text-secondary transition-all hover:bg-bg-hover hover:text-text-primary;
+}
+
+.file-tree-item svg {
+  @apply h-4 w-4 shrink-0;
+}
+
+.viewer-container {
+  @apply grid gap-5 lg:grid-cols-[280px_1fr_300px];
+  min-height: 600px;
+  height: calc(100vh - 128px);
+}
+
+.viewer-panel {
+  @apply flex flex-col overflow-hidden rounded-lg border border-border bg-bg-elevated shadow;
+}
+
+.viewer-canvas {
+  @apply relative flex flex-1 items-center justify-center;
+  background: linear-gradient(135deg, #0f1118 0%, #1a1d27 100%);
+}
+
+.viewer-canvas::before {
+  content: "";
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.viewer-toolbar {
+  @apply flex items-center justify-center gap-2 border-t border-border p-3;
+}
+
+.texture-grid {
+  @apply grid grid-cols-2 gap-2 p-3;
+}
+
+.texture-item {
+  @apply flex aspect-square cursor-pointer items-center justify-center rounded-md border border-border bg-bg-surface text-2xl transition-all hover:border-accent hover:bg-accent-soft;
+}
+
+.texture-item.active {
+  @apply border-accent bg-accent-soft;
+}
+
+.panel-header {
+  @apply border-b border-border px-4 py-3.5 text-sm font-bold text-text-primary;
+}
+
+.panel-body {
+  @apply flex-1 overflow-y-auto;
+}
+
+.panel-footer {
+  @apply border-t border-border p-3;
+}
+
+.meta-list {
+  @apply px-4 py-3 text-xs;
+}
+
+.meta-item {
+  @apply flex items-center justify-between border-b border-border py-2 text-text-secondary last:border-b-0;
+}
+
+.meta-label {
+  @apply text-text-tertiary;
+}
+
+.meta-value {
+  @apply font-medium text-text-primary;
+}
+
+.empty-state {
+  @apply flex flex-col items-center justify-center px-6 py-16 text-center text-text-secondary;
+}
+
+.empty-state svg {
+  @apply mb-5 h-16 w-16 text-text-tertiary;
+}
+
+.empty-state h3 {
+  @apply mb-2 text-base font-semibold text-text-primary;
+}
+
+.empty-state p {
+  @apply max-w-md text-sm;
+}

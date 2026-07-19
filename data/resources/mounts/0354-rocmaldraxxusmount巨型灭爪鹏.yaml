@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 巨型灭爪鹏
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_rocmaldraxxusmountblack
+  icon_name: inv_rocmaldraxxusmountblack
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=327405
+  item_wowhead_url: https://www.wowhead.com/cn/item=182081
 dbc:
   creature_model_data:
     id: 104350
@@ -19,16 +21,46 @@ dbc:
   creature_display_info:
     id: 140350
     model_id: 104350
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80350
+    name: 巨型灭爪鹏
+    visual_id: 9140350
+    description: 召唤或解散这种坐骑。
+  item:
+    id: 182081
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤巨型灭爪鹏。 召唤或解散这种坐骑。
+    flavor_text: 只有玛卓克萨斯最坚毅的兽栏管理员才能驯服巨型灭爪鹏，为不朽军团的勇士提供这些威震暗影界的盟友。
 db:
   creature_template:
     entry: 9140350
     name: 巨型灭爪鹏
     modelid1: 140350
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140350
-  item_template: {}
+  item_template:
+    entry: 182081
+    name: 巨型灭爪鹏
+    spellid_2: 80350
+    Quality: 4
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 鹏

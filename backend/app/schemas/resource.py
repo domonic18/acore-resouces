@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -16,6 +17,8 @@ class OfficialDbInfo(BaseModel):
     name: str | None = None
     spell_icon_name: str | None = None
     icon_name: str | None = None
+    spell_wowhead_url: str | None = None
+    item_wowhead_url: str | None = None
 
 
 class DbcInfo(BaseModel):
@@ -41,6 +44,8 @@ class ResourceBase(BaseModel):
     preview_image: str | None = None
     debug_passed: bool = False
     added: bool = False
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
     drop: DropInfo = Field(default_factory=DropInfo)
     official_db: OfficialDbInfo = Field(default_factory=OfficialDbInfo)
     dbc: DbcInfo = Field(default_factory=DbcInfo)

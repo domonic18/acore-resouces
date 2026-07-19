@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140228
     model_id: 104228
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: hovercraftmount_original
+    texture_variation_2: hovercraftmount_red
+    texture_variation_3: hovercraftmount_green
+  spell:
+    id: 80228
+    name: 斯克维里加全地形载具
+    description: 召唤或解散一个可供骑乘的斯克维里加全地形载具。这是一种速度非常快的坐骑。
+    visual_id: 9140228
+    icon_id: 21791
+  item:
+    id: 153594
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 102791
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140228
     name: 斯克维里加全地形载具
     modelid1: 140228
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140228
-  item_template: {}
+  item_template:
+    entry: 153594
+    name: 斯克维里加全地形载具
+    displayid: 102791
+    spellid_2: 80228
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 机械

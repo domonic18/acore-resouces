@@ -9,9 +9,11 @@ drop:
   boss: 迪克斯特·瓦德
   rate: 0.01
 official_db:
-  name: 跳跳大王
-  spell_icon_name: null
-  icon_name: null
+  name: 骑乘巨鼠
+  spell_icon_name: inv_ratmount
+  icon_name: inv_ratmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=215558
+  item_wowhead_url: https://www.wowhead.com/item=138387
 dbc:
   creature_model_data:
     id: 104212
@@ -20,16 +22,52 @@ dbc:
   creature_display_info:
     id: 140212
     model_id: 104212
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: hoptallus1
+    texture_variation_2: hoptallus1
+    texture_variation_3: hoptallus1
+  spell:
+    id: 80212
+    name: 骑乘巨鼠
+    description: 召唤或解散一只可供骑乘的骑乘巨鼠。
+    visual_id: 9140212
+    icon_id: 957
+  item:
+    id: 153593
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 102791
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的骑乘巨鼠。
 db:
   creature_template:
     entry: 9140212
     name: 跳跳大王
     modelid1: 140212
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140212
-  item_template: {}
+  item_template:
+    entry: 153593
+    name: 跳跳大王
+    displayid: 102791
+    spellid_2: 80212
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 鼠

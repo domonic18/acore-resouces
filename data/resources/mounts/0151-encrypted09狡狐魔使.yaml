@@ -10,8 +10,10 @@ drop:
   rate: 0.02
 official_db:
   name: 狡狐魔使
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_encrypted09
+  icon_name: inv_encrypted09
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=290133
+  item_wowhead_url: https://www.wowhead.com/cn/item=166775
 dbc:
   creature_model_data:
     id: 104146
@@ -20,16 +22,53 @@ dbc:
   creature_display_info:
     id: 140146
     model_id: 104146
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: armorreflect4
+    texture_variation_2: armorreflect4
+    texture_variation_3: armorreflect4
+  spell:
+    id: 80146
+    name: 狡狐魔使
+    description: 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    visual_id: 9140146
+    icon_id: 19207
+  item:
+    id: 166775
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 100207
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 这种外形酷似狐狸的生物既聪明又好奇，它们穿过深暗领域来到了艾泽拉斯，然后被艾泽拉斯的勇士所吸引，想陪伴在勇士们身边一同冒险。
 db:
   creature_template:
     entry: 9140146
     name: 狡狐魔使
     modelid1: 140146
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140146
-  item_template: {}
+  item_template:
+    entry: 166775
+    name: 狡狐魔使
+    displayid: 100207
+    spellid_2: 80146
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 狐狸

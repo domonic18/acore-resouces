@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140015
     model_id: 4015
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: viciouswarraptor1
+    texture_variation_2: viciouswarraptor1
+    texture_variation_3: viciouswarraptor1
+  spell:
+    id: 80015
+    name: 勇猛作战迅猛龙
+    description: 召唤或解散一只可供骑乘的勇猛作战迅猛龙。这是一种速度非常快的坐骑。
+    visual_id: 9140015
+    icon_id: 10080
+  item:
+    id: 91015
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 17494
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140015
     name: 勇猛作战迅猛龙
     modelid1: 140015
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140015
-  item_template: {}
+  item_template:
+    entry: 91015
+    name: 勇猛作战迅猛龙
+    displayid: 91080
+    spellid_2: 80015
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 迅猛龙

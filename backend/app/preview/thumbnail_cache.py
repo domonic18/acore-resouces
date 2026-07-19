@@ -1,6 +1,6 @@
 """缩略图缓存管理。
 
-缓存路径规则：assets/thumbnails/{width}x{height}/{relative_path}.webp
+缓存路径规则：workspace/assets/thumbnails/{width}x{height}/{relative_path}.webp
 命中条件：源文件 mtime 未变化。
 """
 
@@ -111,9 +111,11 @@ def clear_thumbnails(size: tuple[int, int] | None = None) -> int:
         target_dir = settings.thumbnails_dir / _cache_key(size)
         dirs = [target_dir] if target_dir.exists() else []
     else:
-        dirs = [
-            p for p in settings.thumbnails_dir.iterdir() if p.is_dir()
-        ] if settings.thumbnails_dir.exists() else []
+        dirs = (
+            [p for p in settings.thumbnails_dir.iterdir() if p.is_dir()]
+            if settings.thumbnails_dir.exists()
+            else []
+        )
 
     for directory in dirs:
         for file_path in directory.rglob("*.webp"):
@@ -140,9 +142,11 @@ def cleanup_missing_sources(size: tuple[int, int] | None = None) -> int:
         target_dir = settings.thumbnails_dir / _cache_key(size)
         dirs = [target_dir] if target_dir.exists() else []
     else:
-        dirs = [
-            p for p in settings.thumbnails_dir.iterdir() if p.is_dir()
-        ] if settings.thumbnails_dir.exists() else []
+        dirs = (
+            [p for p in settings.thumbnails_dir.iterdir() if p.is_dir()]
+            if settings.thumbnails_dir.exists()
+            else []
+        )
 
     for directory in dirs:
         for file_path in directory.rglob("*.webp"):

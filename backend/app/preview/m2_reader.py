@@ -96,9 +96,7 @@ def _parse_wotlk_metadata(m2_path: Path, data: bytes) -> M2Metadata:
             "<IIII", data, entry_offset
         )
         filename = _read_c_string(data, filename_offset, filename_length)
-        textures.append(
-            M2TextureInfo(texture_type=tex_type, flags=tex_flags, filename=filename)
-        )
+        textures.append(M2TextureInfo(texture_type=tex_type, flags=tex_flags, filename=filename))
 
     version, _, name = _parse_header_name(data)
     return M2Metadata(

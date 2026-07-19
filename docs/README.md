@@ -13,7 +13,8 @@ docs/
 │   ├── 02数据存储设计.md
 │   ├── 03Agent交互架构.md
 │   ├── 04模型与贴图渲染架构.md
-│   └── 05测试策略.md
+│   ├── 05测试策略.md
+│   └── 07DBC维护与同步方案.md
 ├── references/                     # 参考资料
 │   └── 06资源DBC与SQL实现参考.md
 └── README.md                       # 本文件
@@ -29,9 +30,12 @@ docs/
 | Agent 如何读取和操作资源、CLI 接口设计 | [`arch/03Agent交互架构.md`](./arch/03Agent交互架构.md) |
 | `.m2`/`.blp` 渲染与 3D 预览方案 | [`arch/04模型与贴图渲染架构.md`](./arch/04模型与贴图渲染架构.md) |
 | 测试分层、fixtures、CI 流程 | [`arch/05测试策略.md`](./arch/05测试策略.md) |
+| DBC 维护职责划分、补丁生成与部署同步 | [`arch/07DBC维护与同步方案.md`](./arch/07DBC维护与同步方案.md) |
 | 坐骑/宠物/NPC 所需的 DBC 文件、字段与 SQL 实现清单 | [`references/06资源DBC与SQL实现参考.md`](./references/06资源DBC与SQL实现参考.md) |
 
 ## 相关项目
 
-- `wow-dbc-tool`：`/Users/deadwalk/Workspace/acore-deploy/wow-dbc/tools/wow-dbc-tool`
+- `wow-dbc`（原始 DBC 仓库）：`data/wow-dbc`
+- `wow-dbc-tool`：`tools/wow-dbc-tool`
+- `wow-mpq-cli`：`tools/wow-mpq-cli`
 - `acore-deploy`：`/Users/deadwalk/Workspace/acore-deploy`

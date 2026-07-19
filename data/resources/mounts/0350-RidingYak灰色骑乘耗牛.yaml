@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 灰色骑乘牦牛
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_yakmountgrey
+  icon_name: ability_mount_yakmountgrey
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127216
+  item_wowhead_url: https://www.wowhead.com/cn/item=87788
 dbc:
   creature_model_data:
     id: 104346
@@ -19,16 +21,45 @@ dbc:
   creature_display_info:
     id: 140346
     model_id: 104346
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80346
+    name: 灰色骑乘牦牛
+    visual_id: 9140346
+    description: 召唤或解散一只可供骑乘的灰色骑乘牦牛。
+  item:
+    id: 87788
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的灰色骑乘牦牛。
 db:
   creature_template:
     entry: 9140346
     name: 灰色骑乘牦牛
     modelid1: 140346
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140346
-  item_template: {}
+  item_template:
+    entry: 87788
+    name: 灰色骑乘牦牛
+    spellid_2: 80346
+    Quality: 4
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 牦牛

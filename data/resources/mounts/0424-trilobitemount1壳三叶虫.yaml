@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140420
     model_id: 104420
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: trilobite_red
+    texture_variation_2: trilobite_red
+    texture_variation_3: trilobite_red
+  spell:
+    id: 80420
+    name: 赤壳三叶虫
+    description: 召唤或解散一个可供骑乘的赤壳三叶虫。这是一种速度非常快的坐骑。
+    visual_id: 9140420
+    icon_id: 32406
+  item:
+    id: 166464
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 113406
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140420
     name: 赤壳三叶虫
     modelid1: 140420
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140420
-  item_template: {}
+  item_template:
+    entry: 166464
+    name: 赤壳三叶虫
+    displayid: 113406
+    spellid_2: 80420
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 三叶虫

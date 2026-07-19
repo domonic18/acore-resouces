@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 烬鬃战马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_lavahorse
+  icon_name: inv_lavahorse
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171847
+  item_wowhead_url: https://www.wowhead.com/cn/item=118515
 dbc:
   creature_model_data:
     id: 104246
@@ -20,16 +22,53 @@ dbc:
   creature_display_info:
     id: 140246
     model_id: 104246
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: lavahorseglow
+    texture_variation_2: lavahorseglow
+    texture_variation_3: lavahorseglow
+  spell:
+    id: 80246
+    name: 烬鬃战马
+    description: 召唤或解散你的烬鬃战马。
+    visual_id: 9140246
+    icon_id: 23335
+  item:
+    id: 118515
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 104335
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的烬鬃战马。
+    flavor_text: 由拉格纳罗斯亲手制造的礼物，准备送给他并不存在的女儿。
 db:
   creature_template:
     entry: 9140246
     name: 烬鬃战马
     modelid1: 140246
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140246
-  item_template: {}
+  item_template:
+    entry: 118515
+    name: 烬鬃战马
+    displayid: 104335
+    spellid_2: 80246
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 马

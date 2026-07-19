@@ -1,0 +1,20 @@
+appId: com.acore.resouces
+productName: acore-resouces
+directories:
+  output: dist
+files:
+  - dist/**/*
+  - "../web/dist/**/*"
+extraResources:
+  - from: ../../backend
+    to: backend
+    filter:
+      - "app/**"
+      - "pyproject.toml"
+      - "uv.lock"
+mac:
+  category: public.app-category.developer-tools
+win:
+  target: nsis
+linux:
+  target: AppImage

@@ -51,8 +51,33 @@ def test_preview_model() -> None:
     data = response.json()
     assert data["model_folder"] == "ardenwealdstagmount影叶符文牡鹿"
     assert data["resource_type"] == "mount"
+    assert data["status"] in ("available", "skin_missing")
     assert "metadata" in data
-    assert "conversion" in data
+    assert "m2_files" in data
+    assert "skin_files" in data
+    assert "blp_files" in data
+    assert "anim_files" in data
+    assert "main_m2" in data
+
+
+def test_stream_m2_file() -> None:
+    response = client.get("/api/preview/model/ardenwealdstagmount影叶符文牡鹿?resource_type=mount")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["main_m2"]
+
+    response = client.get(f"/api/preview/m2/ardenwealdstagmount影叶符文牡鹿/file/{data['main_m2']}")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/octet-stream"
+    assert len(response.content) > 0
+    assert response.content[:4] == b"MD20"
+
+
+def test_stream_m2_file_not_found() -> None:
+    response = client.get(
+        "/api/preview/m2/ardenwealdstagmount影叶符文牡鹿/file/sources/mounts/nonexistent.m2"
+    )
+    assert response.status_code == 404
 
 
 def test_preview_model_not_found() -> None:

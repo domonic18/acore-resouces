@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 碧蓝云端翔龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_pandarenserpentmount_blue
+  icon_name: inv_pandarenserpentmount_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=123992
 dbc:
   creature_model_data:
     id: 104308
@@ -19,16 +20,44 @@ dbc:
   creature_display_info:
     id: 140308
     model_id: 104308
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80308
+    name: 碧蓝云端翔龙
+    visual_id: 9140308
+    description: 召唤或解散一条可供骑乘的碧蓝云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
+  item:
+    id: 85430
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140308
     name: 碧蓝云端翔龙
     modelid1: 140308
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140308
-  item_template: {}
+  item_template:
+    entry: 85430
+    name: 碧蓝云端翔龙
+    spellid_2: 80308
+    Quality: 4
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 翔龙

@@ -10,8 +10,10 @@ drop:
   rate: 0.01
 official_db:
   name: 地精岩石挖掘机
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_vehicle_powertowheels
+  icon_name: inv_misc_key_06
+  spell_wowhead_url: null
+  item_wowhead_url: null
 dbc:
   creature_model_data:
     id: 4005
@@ -20,16 +22,51 @@ dbc:
   creature_display_info:
     id: 140005
     model_id: 4005
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: 8gn_gnome_azeritecuttermap01
+    texture_variation_2: 8gn_gnome_azeritecuttermap01
+    texture_variation_3: 8gn_gnome_azeritecuttermap01
+  spell:
+    id: 80005
+    name: 地精岩石挖掘机
+    description: 召唤或解散一个可供骑乘的地精岩石挖掘机。这是一种速度非常快的坐骑。
+    visual_id: 9140005
+    icon_id: 3766
+  item:
+    id: 91005
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 56884
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140005
     name: 地精岩石挖掘机
     modelid1: 140005
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140005
-  item_template: {}
+  item_template:
+    entry: 91005
+    name: 地精岩石挖掘机
+    displayid: 56884
+    spellid_2: 80005
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 机械

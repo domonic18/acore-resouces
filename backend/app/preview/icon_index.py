@@ -6,9 +6,12 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 ICON_BASE_DIR = settings.sources_dir / "icons" / "interface" / "icons"
 ICON_INV_FILE = settings.sources_dir / "icons" / "interface" / "icon_inv.txt"
@@ -40,6 +43,22 @@ class IconIndex:
             except OSError:
                 continue
 
+        # 回退：扫描图标目录，确保即使 txt 索引缺失也能列出所有 .blp
+        if ICON_BASE_DIR.exists():
+            blp_files = list(ICON_BASE_DIR.glob("*.blp"))
+            for blp_file in blp_files:
+                name = blp_file.stem
+                if name not in index:
+                    index[name] = blp_file
+        else:
+            logger.warning("图标目录不存在: %s", ICON_BASE_DIR)
+
+        logger.info(
+            "图标索引构建完成: sources_dir=%s, icon_base_dir=%s, count=%d",
+            settings.sources_dir,
+            ICON_BASE_DIR,
+            len(index),
+        )
         return index
 
     def refresh(self) -> None:

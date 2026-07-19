@@ -9,9 +9,11 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 幽灵驭风者
+  spell_icon_name: ability_mount_spectralwyvern
+  icon_name: ability_mount_spectralwyvern
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=107517
+  item_wowhead_url: https://www.wowhead.com/cn/item=76902
 dbc:
   creature_model_data:
     id: 104390
@@ -19,16 +21,46 @@ dbc:
   creature_display_info:
     id: 140390
     model_id: 104390
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80390
+    name: 幽灵驭风者
+    visual_id: 9140390
+    description: 召唤或解散一头可供骑乘的幽灵驭风者坐骑。这是一种飞行坐骑。
+  item:
+    id: 76902
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。 召唤或解散一头可供骑乘的幽灵驭风者坐骑。这是一种飞行坐骑。
+    flavor_text: 你怎么不会穿过它的身体掉下来呢？——玛奇萨
 db:
   creature_template:
     entry: 9140390
-    name: 0
+    name: 幽灵驭风者
     modelid1: 140390
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140390
-  item_template: {}
+  item_template:
+    name: 幽灵驭风者
+    spellid_2: 80390
+    Quality: 4
+    entry: 76902
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 双足飞龙

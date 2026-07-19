@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140178
     model_id: 104178
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: GiantBoarMountFel1
+    texture_variation_2: GiantBoarMountFel1
+    texture_variation_3: GiantBoarMountFel1
+  spell:
+    id: 80178
+    name: 钢鬃地狱野猪
+    description: 召唤或解散一个可供骑乘的钢鬃地狱野猪。这是一种速度非常快的坐骑。
+    visual_id: 9140178
+    icon_id: 19993
+  item:
+    id: 128480
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 100993
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140178
     name: 钢鬃地狱野猪
     modelid1: 140178
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140178
-  item_template: {}
+  item_template:
+    entry: 128480
+    name: 钢鬃地狱野猪
+    displayid: 100993
+    spellid_2: 80178
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 猪

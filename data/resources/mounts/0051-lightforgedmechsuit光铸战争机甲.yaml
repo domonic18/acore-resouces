@@ -20,16 +20,51 @@ dbc:
   creature_display_info:
     id: 140048
     model_id: 4048
-  spell: {}
-  item: {}
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: lightforgedmechsuit
+    texture_variation_2: lightforgedmechsuit
+    texture_variation_3: lightforgedmechsuit
+  spell:
+    id: 80048
+    name: 光铸战争机甲
+    description: 召唤或解散一个可供骑乘的光铸战争机甲。这是一种速度非常快的坐骑。
+    visual_id: 9140048
+    icon_id: 23873
+  item:
+    id: 91048
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 56884
+    inventory_type: 0
+    sheath: 0
 db:
   creature_template:
     entry: 9140048
     name: 光铸战争机甲
     modelid1: 140048
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
   creature_model_info:
     display_id: 140048
-  item_template: {}
+  item_template:
+    entry: 91048
+    name: 光铸战争机甲
+    displayid: 104873
+    spellid_2: 80048
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 机械
