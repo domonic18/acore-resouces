@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 库卡隆横扫者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_hordescorpiong
+  icon_name: inv_mount_hordescorpiong
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=93644
+  item_wowhead_url: https://www.wowhead.com/cn/item=67107
 dbc:
   creature_model_data:
     id: 104217
@@ -27,6 +29,7 @@ dbc:
     id: 80217
     name: 库卡隆横扫者
     visual_id: 9140217
+    description: 召唤或解散库卡隆横扫者。
   item:
     id: 67107
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散库卡隆横扫者。
+    flavor_text: 这种战蝎在战斗时极其狡诈却格外忠诚，只会臣服于那些为强大的公会付出满腔热情的人。
 db:
   creature_template:
     entry: 9140217

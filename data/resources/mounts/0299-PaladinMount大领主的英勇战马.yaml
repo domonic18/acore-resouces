@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 大领主的复仇战马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_paladinmount_red
+  icon_name: inv_paladinmount_red
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=231587
 dbc:
   creature_model_data:
     id: 104295
@@ -27,6 +28,7 @@ dbc:
     id: 80295
     name: 大领主的复仇战马
     visual_id: 9140295
+    description: 召唤或解散你的大领主的复仇战马。这是一种飞行坐骑。
   item:
     id: 143503
     class: 15

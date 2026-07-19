@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 炮舰之子
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mushanbeastmount
+  icon_name: inv_mushanbeastmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=130965
+  item_wowhead_url: https://www.wowhead.com/cn/item=89783
 dbc:
   creature_model_data:
     id: 104283
@@ -27,6 +29,7 @@ dbc:
     id: 80283
     name: 炮舰之子
     visual_id: 9140283
+    description: 召唤或解散一只可供骑乘的炮舰之子。
   item:
     id: 89783
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的炮舰之子。
 db:
   creature_template:
     entry: 9140283

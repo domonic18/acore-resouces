@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 荧光法力鳐
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_manaraymount_orange
+  icon_name: inv_manaraymount_orange
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253109
+  item_wowhead_url: https://www.wowhead.com/cn/item=152840
 dbc:
   creature_model_data:
     id: 104259
@@ -27,6 +29,7 @@ dbc:
     id: 80259
     name: 荧光法力鳐
     visual_id: 9140259
+    description: 召唤或解散一头荧光法力鳐。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
     id: 152840
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散一头荧光法力鳐。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: "账号通用\n图标：\n inv_manaraymount_orange\n45%角色已完成\n英语：Scintillating Mana Ray"
 db:
   creature_template:
     entry: 9140259

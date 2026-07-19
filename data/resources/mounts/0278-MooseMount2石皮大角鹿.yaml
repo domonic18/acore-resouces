@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 巨型北地大角鹿
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_moosemount2white
+  icon_name: inv_moosemount2white
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=213339
 dbc:
   creature_model_data:
     id: 104274
@@ -27,6 +28,7 @@ dbc:
     id: 80274
     name: 巨型北地大角鹿
     visual_id: 9140274
+    description: 召唤或解散你的巨型北地大角鹿。
   item:
     id: 129962
     class: 15
