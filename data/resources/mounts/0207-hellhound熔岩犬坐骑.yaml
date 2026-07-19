@@ -58,3 +58,5 @@ db:
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 犬
+tags:
+- no_official_data

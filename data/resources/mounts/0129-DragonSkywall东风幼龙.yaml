@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 西风幼龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_misc_stormdragongreen
+  icon_name: inv_misc_stormdragongreen
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88741
+  item_wowhead_url: https://www.wowhead.com/cn/item=65356
 dbc:
   creature_model_data:
     id: 104124
@@ -27,6 +29,7 @@ dbc:
     id: 80124
     name: 西风幼龙
     visual_id: 9140124
+    description: 召唤或解散一条可供骑乘的西风幼龙。这是一种飞行坐骑。
   item:
     id: 65356
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散一条可供骑乘的西风幼龙。这是一种飞行坐骑。
+    flavor_text: "账号通用\n图标：\n inv_misc_stormdragongreen\n32%角色已完成\n英语：Reins of the Drake of the West Wind"
 db:
   creature_template:
     entry: 9140124

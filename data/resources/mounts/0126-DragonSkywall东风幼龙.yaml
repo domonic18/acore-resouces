@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 北风幼龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_misc_stormdragonpale
+  icon_name: inv_misc_stormdragonpale
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88742
+  item_wowhead_url: https://www.wowhead.com/cn/item=63040
 dbc:
   creature_model_data:
     id: 104121
@@ -27,6 +29,7 @@ dbc:
     id: 80121
     name: 北风幼龙
     visual_id: 9140121
+    description: 召唤或解散一条可供骑乘的北风幼龙。这是一种飞行坐骑。
   item:
     id: 63040
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散一条可供骑乘的北风幼龙。这是一种飞行坐骑。
+    flavor_text: "账号通用\n图标：\n inv_misc_stormdragonpale\n18%角色已完成\n英语：Reins of the Drake of the North Wind"
 db:
   creature_template:
     entry: 9140121
