@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 飞翼守护者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_wingedlion
+  icon_name: inv_mount_wingedlion
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=98727
+  item_wowhead_url: https://www.wowhead.com/cn/item=69846
 dbc:
   creature_model_data:
     id: 104455
@@ -27,6 +29,7 @@ dbc:
     id: 80455
     name: 飞翼守护者
     visual_id: 9140455
+    description: 召唤或解散一个飞翼守护者。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
     id: 69846
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。 召唤或解散一个飞翼守护者。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: "账号通用\n图标：\n inv_mount_wingedlion\n35%角色已完成\n英语：Winged Guardian"
 db:
   creature_template:
     entry: 9140455

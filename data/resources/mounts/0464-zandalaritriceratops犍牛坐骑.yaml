@@ -9,9 +9,11 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: 翡翠原始恐角龙缰绳
-  spell_icon_name: null
-  icon_name: null
+  name: 翡翠原始恐角龙
+  spell_icon_name: ability_mount_triceratopsmount_green
+  icon_name: ability_mount_triceratopsmount_green
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=138426
+  item_wowhead_url: https://www.wowhead.com/item=94231
 dbc:
   creature_model_data:
     id: 104460
@@ -25,8 +27,9 @@ dbc:
     opacity: 255
   spell:
     id: 80460
-    name: 翡翠原始恐角龙缰绳
+    name: 翡翠原始恐角龙
     visual_id: 9140460
+    description: 召唤或解散一头可供骑乘的翡翠原始恐角龙。
   item:
     id: 94231
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一头可供骑乘的翡翠原始恐角龙。
 db:
   creature_template:
     entry: 9140460

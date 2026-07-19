@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 勇猛的吉尔尼斯战马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_vicioushorse
+  icon_name: inv_mount_vicioushorse
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=223341
+  item_wowhead_url: https://www.wowhead.com/cn/item=140353
 dbc:
   creature_model_data:
     id: 104433
@@ -27,6 +29,7 @@ dbc:
     id: 80433
     name: 勇猛的吉尔尼斯战马
     visual_id: 9140433
+    description: 召唤或解散一只可供骑乘的勇猛的吉尔尼斯战马
   item:
     id: 140353
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的勇猛的吉尔尼斯战马
+    flavor_text: "账号通用\n图标：\n inv_mount_vicioushorse\n1%角色已完成\n英语：Vicious Gilnean Warhorse"
 db:
   creature_template:
     entry: 9140433

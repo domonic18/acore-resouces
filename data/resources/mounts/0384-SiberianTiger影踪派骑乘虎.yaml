@@ -12,6 +12,8 @@ official_db:
   name: 绿色影踪派骑乘虎
   spell_icon_name: ability_mount_siberiantigermount
   icon_name: ability_mount_siberiantigermount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=129932
+  item_wowhead_url: https://www.wowhead.com/cn/item/89305
 dbc:
   creature_model_data:
     id: 104380
@@ -30,7 +32,7 @@ dbc:
   spell:
     id: 80380
     name: 绿色影踪派骑乘虎
-    description: 召唤或解散一个可供骑乘的绿色影踪派骑乘虎。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的绿色影踪派骑乘虎。
     visual_id: 9140380
     icon_id: 10041
   item:
@@ -42,6 +44,7 @@ dbc:
     display_id: 91041
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的绿色影踪派骑乘虎。
 db:
   creature_template:
     entry: 9140380

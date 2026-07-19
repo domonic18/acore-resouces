@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 装甲霜狼
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_wolfdraenormountfrost
+  icon_name: inv_wolfdraenormountfrost
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171838
+  item_wowhead_url: https://www.wowhead.com/cn/item=116781
 dbc:
   creature_model_data:
     id: 104456
@@ -27,6 +29,7 @@ dbc:
     id: 80456
     name: 装甲霜狼
     visual_id: 9140456
+    description: 召唤或解散你的装甲霜狼。
   item:
     id: 116781
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的装甲霜狼。
+    flavor_text: 它训练有素，可以在霜火岭严酷的气候下生存。所以它会蜷缩起来，这是它生存的秘诀。
 db:
   creature_template:
     entry: 9140456

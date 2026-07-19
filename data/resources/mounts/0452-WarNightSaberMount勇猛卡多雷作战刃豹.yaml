@@ -10,8 +10,9 @@ drop:
   rate: null
 official_db:
   name: 勇猛卡多雷作战刃豹
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_warnightsaber
+  icon_name: ability_mount_warnightsaber
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=146615
 dbc:
   creature_model_data:
     id: 104448
@@ -27,6 +28,7 @@ dbc:
     id: 80448
     name: 勇猛卡多雷作战刃豹
     visual_id: 9140448
+    description: 召唤或解散一头可供骑乘的勇猛卡多雷作战刃豹。
   item:
     id: 102514
     class: 15
