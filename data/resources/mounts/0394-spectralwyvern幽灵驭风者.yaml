@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140390
     description: 召唤或解散一头可供骑乘的幽灵驭风者坐骑。这是一种飞行坐骑。
   item:
-    id: 0
+    id: 76902
     class: 15
     subclass: 5
     material: -1
@@ -60,6 +60,7 @@ db:
     name: 幽灵驭风者
     spellid_2: 80390
     Quality: 4
+    entry: 76902
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 双足飞龙

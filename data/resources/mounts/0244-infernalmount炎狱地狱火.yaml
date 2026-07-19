@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140240
     description: 召唤或解散你的邪焰地狱火。
   item:
-    id: 137574
+    id: 152413
     class: 15
     subclass: 5
     material: -1
@@ -55,7 +55,7 @@ db:
   creature_model_info:
     display_id: 140240
   item_template:
-    entry: 137574
+    entry: 152413
     name: 邪焰地狱火
     spellid_2: 80240
     Quality: 4

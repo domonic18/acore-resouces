@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 死亡使者的绽翼兽
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_maldraxxusflyermount_black
+  icon_name: inv_maldraxxusflyermount_black
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=318052
+  item_wowhead_url: https://www.wowhead.com/cn/item=181817
 dbc:
   creature_model_data:
     id: 104086
@@ -27,6 +29,7 @@ dbc:
     id: 80086
     name: 死亡使者的绽翼兽
     visual_id: 9140086
+    description: 召唤或解散这种坐骑。
   item:
     id: 181817
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
 db:
   creature_template:
     entry: 9140086

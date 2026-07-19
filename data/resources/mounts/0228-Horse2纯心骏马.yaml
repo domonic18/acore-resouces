@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 晋升天鬃马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_horse2bastionmount_blue
+  icon_name: inv_horse2bastionmount_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=342335
+  item_wowhead_url: https://www.wowhead.com/cn/item=183741
 dbc:
   creature_model_data:
     id: 104224
@@ -27,6 +29,7 @@ dbc:
     id: 80224
     name: 晋升天鬃马
     visual_id: 9140224
+    description: 召唤或解散这种坐骑。
   item:
     id: 183741
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 只有证明了自己的实力，足以与晋升者的团结之力相媲美的人，才能骑上这匹坐骑。
 db:
   creature_template:
     entry: 9140224

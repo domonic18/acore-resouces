@@ -35,7 +35,7 @@ dbc:
     icon_id: 3443
     description: 召唤或解散你的雄壮商队雷龙。
   item:
-    id: 91021
+    id: 163042
     class: 15
     subclass: 5
     material: -1
@@ -56,15 +56,17 @@ db:
     combat_reach: 0
     gender: 2
     display_id_other_gender: 0
+    name: 雄壮商队雷龙
   creature_model_info:
     display_id: 140021
   item_template:
-    entry: 91021
+    entry: 163042
     displayid: 31511
     spellid_2: 80021
     Quality: 4
     AllowableClass: -1
     AllowableRace: 2047
+    name: 雄壮商队雷龙
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 雷龙

@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 野生梦境角马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_horse2green
+  icon_name: inv_horse2green
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=242875
+  item_wowhead_url: https://www.wowhead.com/cn/item=147804
 dbc:
   creature_model_data:
     id: 104225
@@ -27,6 +29,7 @@ dbc:
     id: 80225
     name: 野生梦境角马
     visual_id: 9140225
+    description: 召唤或解散你的野生梦境角马。
   item:
     id: 147804
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的野生梦境角马。
+    flavor_text: 梦境角马能自由地在这个世界和翡翠梦境间穿梭，释放它们自由的天性。
 db:
   creature_template:
     entry: 9140225

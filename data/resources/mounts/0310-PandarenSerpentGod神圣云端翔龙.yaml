@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140306
     description: 召唤或解散一条可供骑乘的神圣猩红云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
   item:
-    id: 0
+    id: 87773
     class: 15
     subclass: 5
     material: -1
@@ -58,6 +58,7 @@ db:
     name: 神圣猩红云端祥龙
     spellid_2: 80306
     Quality: 4
+    entry: 87773
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 翔龙

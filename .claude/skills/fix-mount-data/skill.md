@@ -22,8 +22,13 @@ description: 根据用户指定的坐骑 YAML 文件，结合多模态图片识�
 - `official_db.name`（中文官方名称）
 - `official_db.spell_icon_name`
 - `official_db.icon_name`
+- `official_db.spell_wowhead_url`
+- `official_db.item_wowhead_url`
 - `dbc.spell.name`
 - `dbc.spell.description`
+- `dbc.item.id`
+- `dbc.item.description`
+- `dbc.item.flavor_text`
 
 暂不补全（项目缺少可靠映射或数据源）：
 
@@ -47,11 +52,11 @@ description: 根据用户指定的坐骑 YAML 文件，结合多模态图片识�
 
 3. **多模态图片识别（可选）**
    - 触发条件：
-     - `official_db.name` 为空或不可靠；
+     - `official_db.name` 为空、为占位符（如 `0`）或明显不可靠；
      - 用户明确要求“根据图片识别”。
    - 读取路径：`sources/mounts/{model_folder}/`。
    - 列出该目录下 `.png` 文件，选择最具代表性的一张（默认第一张）。
-   - 使用 Claude 多模态能力识别图片，输出候选中文名称与英文原名。
+   - 使用 Claude 多模态能力识别图片，输出候选中文名称与英文原名，注意图片中的文字（如坐骑面板名称）。
    - 将识别结果作为后续 Wowhead 查询词。
 
 4. **调用 Wowhead 查询 CLI**
@@ -64,13 +69,26 @@ description: 根据用户指定的坐骑 YAML 文件，结合多模态图片识�
    - 命令输出 JSON。
 
 5. **解析与验证**
-   - 如果返回 `error`，停止并向用户报告错误信息。
-   - 如果 `confidence` 为 `low`，询问用户是否继续。
+   - 如果返回 `error` 或 `confidence` 为 `low`，不要直接写入，进入下一步回退流程。
    - 交叉验证：若启用图片识别，Wowhead 返回的 `name_en` 应与图片识别英文原名一致或高度相关；不一致时向用户报告并停止修改。
 
-6. **填充缺失字段**
-   - 仅更新当前为空或与 Wowhead 不一致的字段。
-   - 保留原有非空字段。
+6. **失败回退**
+   - 当首次查询失败或结果明显不对时，按以下顺序尝试：
+     - 使用图片中识别到的中文/英文名称重新查询；
+     - 使用 Wowhead 返回的 `name_en` 英文原名查询；
+     - 通过 `WebSearch` 确认官方中文名、spell_id、item_id；
+     - 仍无法命中时，跳过该文件并向用户说明原因（可能是自定义/NPC-only 坐骑）。
+
+7. **清洗原始文本**
+   - 对 `item_description` 和 `flavor_text` 进行清洗，删除以下 UI 噪声，避免 YAML 解析错误并保持字段干净：
+     - `售价:` 及其后所有内容（冒号+空格会导致 YAML 解析失败）；
+     - `[Vendor Locations]` 及商人位置、成本信息；
+     - `\n\n屏幕截图`、`\n\n英文视频`、`贡献 添加评论` 等无关段落。
+   - 同时去掉字符串开头的零宽空格（`U+200B`）。
+
+8. **填充缺失字段**
+   - 仅更新当前为空、为占位符（`0`/`null`）或与 Wowhead 不一致的字段。
+   - 保留原有非空字段，但 `dbc.item.id` 应使用官方 `item_id` 填充，不保留自定义占位 `0`。
    - 更新映射：
      - `official_db.name` ← `name_zh`
      - `official_db.spell_icon_name` ← `icon_name`
@@ -79,22 +97,31 @@ description: 根据用户指定的坐骑 YAML 文件，结合多模态图片识�
      - `official_db.item_wowhead_url` ← `item_wowhead_url`
      - `dbc.spell.name` ← `name_zh`
      - `dbc.spell.description` ← `description`
-     - `dbc.item.description` ← `item_description`
-     - `dbc.item.flavor_text` ← `flavor_text`
+     - `dbc.item.id` ← `item_id`
+     - `dbc.item.description` ← 清洗后的 `item_description`
+     - `dbc.item.flavor_text` ← 清洗后的 `flavor_text`
+   - 若 `db.creature_template.name` / `db.item_template.name` 为占位符或与官方名称明显不一致，同步修正。
 
-7. **写入文件并展示 diff**
-   - 使用 `Edit` 工具精确更新 YAML 字段。
+9. **写入文件并展示 diff**
+   - 批量文件（>10）建议先用临时 Python 脚本配合 PyYAML 统一写入，再用 `Edit` 工具处理个别需要人工确认的字段。
    - 展示每个文件的变更摘要：文件路径、更新字段、旧值 → 新值。
 
-8. **失败处理**
-   - 图片识别模糊、Wowhead 查询失败、交叉验证不一致或用户拒绝继续时，停止修改并向用户说明原因。
+10. **全量 YAML 校验**
+    - 写入后运行：
+      ```python
+      import yaml, pathlib
+      base = pathlib.Path('data/resources/mounts')
+      for p in sorted(base.glob('*.yaml')):
+          yaml.safe_load(p.read_text(encoding='utf-8'))
+      ```
+    - 发现解析错误时立即修复（通常是未清理的 `售价:` 或特殊字符）。
 
 ## 注意事项
 
 - 每次调用只处理用户明确指定的文件，不批量处理全部坐骑。
-- 建议单次处理数量不超过 10 个文件（Playwright 启动较慢）。
+- 批量较大时（超过 10 个），用一次 Bash 循环把所有查询结果输出到临时文件，再统一解析写入，避免 Playwright 反复启动。
 - 图片识别仅作为辅助，最终结果以 Wowhead 官方数据为准。
-- 如果 Wowhead 查询结果与预期不符，不要强行写入。
+- 如果 Wowhead 查询结果与预期不符（自定义坐骑、NPC-only），不要强行写入。
 - 未来扩展宠物时，图片目录改为 `sources/pets/{model_folder}/`，其余流程不变。
 
 ## 示例

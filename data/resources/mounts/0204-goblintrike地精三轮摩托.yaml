@@ -36,7 +36,7 @@ dbc:
     visual_id: 9140199
     icon_id: 26261
   item:
-    id: 62461
+    id: 62462
     class: 15
     subclass: 5
     material: -1
@@ -60,7 +60,7 @@ db:
   creature_model_info:
     display_id: 140199
   item_template:
-    entry: 62461
+    entry: 62462
     name: 地精三轮摩托
     displayid: 107261
     spellid_2: 80199

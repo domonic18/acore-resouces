@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 苔皮淡水兽
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_hippo_green
+  icon_name: inv_hippo_green
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171825
+  item_wowhead_url: https://www.wowhead.com/cn/item=116768
 dbc:
   creature_model_data:
     id: 104210
@@ -27,6 +29,7 @@ dbc:
     id: 80210
     name: 苔皮淡水兽
     visual_id: 9140210
+    description: 召唤或解散你的苔皮淡水兽。
   item:
     id: 116768
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的苔皮淡水兽。
+    flavor_text: 富有攻击性且领地观念极强的苔皮淡水兽会躲在河边的灌木丛中，伏击毫无准备的路人。
 db:
   creature_template:
     entry: 9140210

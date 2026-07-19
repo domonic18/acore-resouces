@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 达萨罗破风龙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_pterrordax2mount_bronze
+  icon_name: inv_pterrordax2mount_bronze
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=289101
+  item_wowhead_url: https://www.wowhead.com/cn/item=166539
 dbc:
   creature_model_data:
     id: 104332
@@ -27,6 +29,7 @@ dbc:
     id: 80332
     name: 达萨罗破风龙
     visual_id: 9140332
+    description: 召唤或解散你的达萨罗破风龙。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
     id: 166539
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的达萨罗破风龙。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 这些翼手龙喜欢翱翔在达萨罗之战的天空中，因为它们总是被胜利者的狡诈气息所吸引。
 db:
   creature_template:
     entry: 9140332

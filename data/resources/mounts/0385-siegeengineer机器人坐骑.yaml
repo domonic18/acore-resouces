@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140381
     description: 召唤或解散这种坐骑。
   item:
-    id: 0
+    id: 204091
     class: 15
     subclass: 5
     material: -1
@@ -60,6 +60,7 @@ db:
     name: 火箭伐木机9001型
     spellid_2: 80381
     Quality: 4
+    entry: 204091
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械

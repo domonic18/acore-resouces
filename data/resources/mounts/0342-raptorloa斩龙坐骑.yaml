@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140338
     description: 召唤或解散你的奢华暴掠龙。
   item:
-    id: 0
+    id: 153540
     class: 15
     subclass: 5
     material: -1
@@ -56,9 +56,10 @@ db:
   creature_model_info:
     display_id: 140338
   item_template:
-    name: 0
+    name: 奢华暴掠龙
     spellid_2: 80338
     Quality: 4
+    entry: 153540
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 迅猛龙

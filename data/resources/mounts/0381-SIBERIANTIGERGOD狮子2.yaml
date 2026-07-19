@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140377
     description: 召唤或解散一头可供骑乘的幽灵虎。
   item:
-    id: 0
+    id: 33224
     class: 15
     subclass: 5
     material: -1
@@ -42,7 +42,7 @@ dbc:
 db:
   creature_template:
     entry: 9140377
-    name: 0
+    name: 幽灵虎
     modelid1: 140377
     faction: 35
     type: 1
@@ -55,9 +55,10 @@ db:
   creature_model_info:
     display_id: 140377
   item_template:
-    name: 0
+    name: 幽灵虎
     spellid_2: 80377
     Quality: 4
+    entry: 33224
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 狮子

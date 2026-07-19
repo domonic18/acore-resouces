@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 冰川狂潮
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_waterelementalmount
+  icon_name: inv_waterelementalmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=289555
+  item_wowhead_url: https://www.wowhead.com/cn/item=166705
 dbc:
   creature_model_data:
     id: 104450
@@ -27,6 +29,7 @@ dbc:
     id: 80450
     name: 冰川狂潮
     visual_id: 9140450
+    description: 召唤或解散你的冰川狂潮。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
     id: 166705
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的冰川狂潮。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 吉安娜虽然能使用多种类型的魔法，但她最擅长的还是召唤强力的水元素和冰元素。
 db:
   creature_template:
     entry: 9140450

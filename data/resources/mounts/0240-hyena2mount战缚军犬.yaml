@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 沙丘食腐狼
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_hyena2mount_tan
+  icon_name: inv_hyena2mount_tan
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=237286
+  item_wowhead_url: https://www.wowhead.com/cn/item=163576
 dbc:
   creature_model_data:
     id: 104236
@@ -27,6 +29,7 @@ dbc:
     id: 80236
     name: 沙丘食腐狼
     visual_id: 9140236
+    description: 召唤或解散你的沙丘食腐狼。
   item:
     id: 163576
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤沙丘食腐狼。 召唤或解散你的沙丘食腐狼。
+    flavor_text: "账号通用\n图标：\n inv_hyena2mount_tan\n8%角色已完成\n英语：Captured Dune Scavenger"
 db:
   creature_template:
     entry: 9140236

@@ -31,7 +31,7 @@ dbc:
     visual_id: 9140423
     description: 召唤或解散你的邪恶战熊。
   item:
-    id: 142235
+    id: 142234
     class: 15
     subclass: 5
     material: -1
@@ -57,7 +57,7 @@ db:
   creature_model_info:
     display_id: 140423
   item_template:
-    entry: 142235
+    entry: 142234
     name: 邪恶战熊
     spellid_2: 80423
     Quality: 4

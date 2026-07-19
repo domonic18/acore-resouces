@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 踏血小戈隆
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_lessergronnmount_red
+  icon_name: inv_lessergronnmount_red
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171436
+  item_wowhead_url: https://www.wowhead.com/cn/item=116383
 dbc:
   creature_model_data:
     id: 104247
@@ -27,6 +29,7 @@ dbc:
     id: 80247
     name: 踏血小戈隆
     visual_id: 9140247
+    description: 召唤或解散一只可供骑乘的小戈隆。
   item:
     id: 116383
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的小戈隆。
+    flavor_text: 只要“交上朋友”，小戈隆就会很乐意载着它的骑手冲向死亡。
 db:
   creature_template:
     entry: 9140247

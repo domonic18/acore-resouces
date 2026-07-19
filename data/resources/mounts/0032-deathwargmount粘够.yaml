@@ -36,7 +36,7 @@ dbc:
     visual_id: 9140029
     icon_id: 957
   item:
-    id: 91029
+    id: 70910
     class: 15
     subclass: 5
     material: -1
@@ -61,7 +61,7 @@ db:
   creature_model_info:
     display_id: 140029
   item_template:
-    entry: 91029
+    entry: 70910
     name: 勇猛的战狼
     displayid: 40160
     spellid_2: 80029
