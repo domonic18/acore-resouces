@@ -25,13 +25,13 @@ fields:
   "dbc.creature_model_data.model_name": 17
   "dbc.creature_display_info.id": 18
   "dbc.creature_display_info.model_id": 19
-  "dbc.creature_display_info.field_20": 20
-  "dbc.creature_display_info.field_21": 21
-  "dbc.creature_display_info.field_22": 22
-  "dbc.creature_display_info.field_23": 23
-  "dbc.creature_display_info.texture_1": 24
-  "dbc.creature_display_info.texture_2": 25
-  "dbc.creature_display_info.texture_3": 26
+  "dbc.creature_display_info.sound_id": 20
+  "dbc.creature_display_info.extra_display_information_id": 21
+  "dbc.creature_display_info.scale": 22
+  "dbc.creature_display_info.opacity": 23
+  "dbc.creature_display_info.texture_variation_1": 24
+  "dbc.creature_display_info.texture_variation_2": 25
+  "dbc.creature_display_info.texture_variation_3": 26
   "db.creature_template.entry": 27
   "db.creature_template.name": 28
   "db.creature_template.modelid1": 29
