@@ -58,3 +58,5 @@ db:
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 机械
+tags:
+- no_official_data
