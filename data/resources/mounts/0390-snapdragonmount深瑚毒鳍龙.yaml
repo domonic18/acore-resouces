@@ -1,0 +1,61 @@
+id: 390
+model_folder: snapdragonmount深瑚毒鳍龙
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 皇家毒鳍龙
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104386
+    flags: 2
+  creature_display_info:
+    id: 140386
+    model_id: 104386
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80386
+    name: 皇家毒鳍龙
+    visual_id: 9140386
+  item:
+    id: 169198
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140386
+    name: 皇家毒鳍龙
+    modelid1: 140386
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140386
+  item_template:
+    entry: 169198
+    name: 皇家毒鳍龙
+    spellid_2: 80386
+    Quality: 3
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 怪物

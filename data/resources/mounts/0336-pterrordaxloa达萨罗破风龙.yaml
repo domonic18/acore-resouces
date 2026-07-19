@@ -1,0 +1,66 @@
+id: 336
+model_folder: pterrordaxloa达萨罗破风龙
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 达萨罗破风龙
+  spell_icon_name: inv_pterrordax2mount_bronze
+  icon_name: inv_pterrordax2mount_bronze
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=289101
+  item_wowhead_url: https://www.wowhead.com/cn/item=166539
+dbc:
+  creature_model_data:
+    id: 104332
+    flags: 2
+  creature_display_info:
+    id: 140332
+    model_id: 104332
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80332
+    name: 达萨罗破风龙
+    visual_id: 9140332
+    description: 召唤或解散你的达萨罗破风龙。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+  item:
+    id: 166539
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的达萨罗破风龙。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 这些翼手龙喜欢翱翔在达萨罗之战的天空中，因为它们总是被胜利者的狡诈气息所吸引。
+db:
+  creature_template:
+    entry: 9140332
+    name: 达萨罗破风龙
+    modelid1: 140332
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140332
+  item_template:
+    entry: 166539
+    name: 达萨罗破风龙
+    spellid_2: 80332
+    Quality: 4
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

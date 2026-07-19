@@ -1,0 +1,66 @@
+id: 270
+model_folder: mechacycle锈废漂移者
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 锈废漂移者
+  spell_icon_name: inv_mechacycle
+  icon_name: inv_mechacycle
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=297157
+  item_wowhead_url: https://www.wowhead.com/cn/item=168370
+dbc:
+  creature_model_data:
+    id: 104266
+    flags: 2
+  creature_display_info:
+    id: 140266
+    model_id: 104266
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80266
+    name: 锈废漂移者
+    visual_id: 9140266
+    description: 召唤或解散这种坐骑。
+  item:
+    id: 168370
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤锈废漂移者。 召唤或解散这种坐骑。
+    flavor_text: 如果你非常想引起其他人的注意，又不介意把自己绑在一个巨大的、快散架的轮子上……
+db:
+  creature_template:
+    entry: 9140266
+    name: 锈废漂移者
+    modelid1: 140266
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140266
+  item_template:
+    entry: 168370
+    name: 锈废漂移者
+    spellid_2: 80266
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 机械

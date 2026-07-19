@@ -1,0 +1,70 @@
+id: 96
+model_folder: Crane骑乘仙鹤
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 24664
+  instance: 魔导师平台(英雄模式)
+  boss: 凯尔萨斯·逐日者
+  rate: 0.02
+official_db:
+  name: 帝王骑乘仙鹤
+  spell_icon_name: ability_mount_cranemountpurple
+  icon_name: ability_mount_cranemountpurple
+dbc:
+  creature_model_data:
+    id: 104091
+    flags: 2
+    model_name: creature\crane\cranegod.m2
+  creature_display_info:
+    id: 140091
+    model_id: 104091
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: cranegodwhiteglow
+    texture_variation_2: cranegodwhiteglow
+    texture_variation_3: cranegodwhiteglow
+  spell:
+    id: 80091
+    name: 帝王骑乘仙鹤
+    description: 召唤或解散一个可供骑乘的帝王骑乘仙鹤。这是一种速度非常快的坐骑。
+    visual_id: 9140091
+    icon_id: 9914
+  item:
+    id: 87783
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 90914
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140091
+    name: 帝王骑乘仙鹤
+    modelid1: 140091
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140091
+  item_template:
+    entry: 87783
+    name: 帝王骑乘仙鹤缰绳
+    displayid: 90914
+    spellid_2: 80091
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 仙鹤

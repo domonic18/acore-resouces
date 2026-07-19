@@ -1,0 +1,61 @@
+id: 70
+model_folder: ardenwealdstagmount2魔化梦光符文牡鹿
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 魔化梦光符文牡鹿
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104065
+    flags: 2
+  creature_display_info:
+    id: 140065
+    model_id: 104065
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80065
+    name: 魔化梦光符文牡鹿
+    visual_id: 9140065
+  item:
+    id: 180721
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140065
+    name: 魔化梦光符文牡鹿
+    modelid1: 140065
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140065
+  item_template:
+    entry: 180721
+    name: 魔化梦光符文牡鹿
+    spellid_2: 80065
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 鹿

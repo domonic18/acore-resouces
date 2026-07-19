@@ -1,0 +1,66 @@
+id: 361
+model_folder: Saber2秘魔刃豹
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 秘魔刃豹
+  spell_icon_name: inv_saber2mount
+  icon_name: inv_saber2mount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=180545
+  item_wowhead_url: https://www.wowhead.com/cn/item=122469
+dbc:
+  creature_model_data:
+    id: 104357
+    flags: 2
+  creature_display_info:
+    id: 140357
+    model_id: 104357
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80357
+    name: 秘魔刃豹
+    visual_id: 9140357
+    description: 召唤或解散你的秘魔刃豹。
+  item:
+    id: 122469
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。 召唤或解散你的秘魔刃豹。
+    flavor_text: 灌注了魔法能量的秘魔刃豹已在混沌的虚空能量下潜伏多年。最近，它们才从阴影中现身，搜索魔网以满足自己对魔力的渴望。
+db:
+  creature_template:
+    entry: 9140357
+    name: 秘魔刃豹
+    modelid1: 140357
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140357
+  item_template:
+    entry: 122469
+    name: 秘魔刃豹
+    spellid_2: 80357
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 豹子

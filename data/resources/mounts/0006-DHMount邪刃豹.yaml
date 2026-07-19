@@ -1,0 +1,70 @@
+id: 6
+model_folder: DHMount邪刃豹
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 10363
+  instance: 黑石塔上
+  boss: 达基萨斯将军
+  rate: 0.01
+official_db:
+  name: 邪刃豹
+  spell_icon_name: inv_dhmount_felsaber
+  icon_name: inv_misc_horn_01
+dbc:
+  creature_model_data:
+    id: 4003
+    flags: 2
+    model_name: creature\DHMount\DHMount.m2
+  creature_display_info:
+    id: 140003
+    model_id: 4003
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: DemonHunterMountBody
+    texture_variation_2: DemonHunterMountBody
+    texture_variation_3: DemonHunterMountBody
+  spell:
+    id: 80003
+    name: 邪刃豹
+    description: 召唤或解散一只可供骑乘的邪刃豹。这是一种速度非常快的坐骑。
+    visual_id: 9140003
+    icon_id: 18892
+  item:
+    id: 91003
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 31511
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140003
+    name: 邪刃豹
+    modelid1: 140003
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140003
+  item_template:
+    entry: 91003
+    name: 邪刃豹
+    displayid: 99892
+    spellid_2: 80003
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 豹子

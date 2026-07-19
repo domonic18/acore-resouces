@@ -1,0 +1,74 @@
+id: 150
+model_folder: encrypted08希尔维安神游者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 24850
+  instance: 太阳之井高地
+  boss: 卡雷苟斯
+  rate: 0.02
+official_db:
+  name: 希尔维安神游者
+  spell_icon_name: inv_encrypted08
+  icon_name: inv_encrypted08
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=290132
+  item_wowhead_url: https://www.wowhead.com/cn/item=166776
+dbc:
+  creature_model_data:
+    id: 104145
+    flags: 2
+    model_name: creature\encrypted08\encrypted08.m2
+  creature_display_info:
+    id: 140145
+    model_id: 104145
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: encrypted08
+    texture_variation_2: encrypted08
+    texture_variation_3: encrypted08
+  spell:
+    id: 80145
+    name: 希尔维安神游者
+    description: 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    visual_id: 9140145
+    icon_id: 19206
+  item:
+    id: 166776
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 100206
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    flavor_text: 魔法之城达拉然有位艺术家在绘画时睡着了，她在梦中绘制了一只长羽毛的美丽巨龙。她的画作从纸上飞跃而出。当她醒来时，发现这只巨龙正在她身旁酣睡。
+db:
+  creature_template:
+    entry: 9140145
+    name: 希尔维安神游者
+    modelid1: 140145
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140145
+  item_template:
+    entry: 166776
+    name: 希尔维安神游者
+    displayid: 100206
+    spellid_2: 80145
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

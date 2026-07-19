@@ -1,0 +1,70 @@
+id: 362
+model_folder: saber3mount女祭司的月刃豹
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 22947
+  instance: 黑暗神殿
+  boss: 莎赫拉丝主母
+  rate: 0.03
+official_db:
+  name: 女祭司的月刃豹
+  spell_icon_name: inv_nightsaber2mountwhite
+  icon_name: inv_nightsaber2mountwhite
+dbc:
+  creature_model_data:
+    id: 104358
+    flags: 2
+    model_name: creature\saber3mount\saber3mount.m2
+  creature_display_info:
+    id: 140358
+    model_id: 104358
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.3
+    opacity: 255
+    texture_variation_1: saber3mount_body
+    texture_variation_2: saber3mount_body
+    texture_variation_3: saber3mount_body
+  spell:
+    id: 80358
+    name: 女祭司的月刃豹
+    description: 召唤或解散一个可供骑乘的女祭司的月刃豹。这是一种速度非常快的坐骑。
+    visual_id: 9140358
+    icon_id: 27493
+  item:
+    id: 166463
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 108493
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140358
+    name: 女祭司的月刃豹
+    modelid1: 140358
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140358
+  item_template:
+    entry: 166463
+    name: 女祭司的月刃豹
+    displayid: 108493
+    spellid_2: 80358
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 豹子

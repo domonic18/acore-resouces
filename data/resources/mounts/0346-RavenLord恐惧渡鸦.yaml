@@ -1,0 +1,65 @@
+id: 346
+model_folder: RavenLord恐惧渡鸦
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 恐惧渡鸦
+  spell_icon_name: inv_ravenlordmount
+  icon_name: inv_ravenlordmount
+  spell_wowhead_url: https://www.wowhead.com/spell=155741
+  item_wowhead_url: https://www.wowhead.com/item=109013
+dbc:
+  creature_model_data:
+    id: 104342
+    flags: 2
+  creature_display_info:
+    id: 140342
+    model_id: 104342
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80342
+    name: 恐惧渡鸦
+    visual_id: 9140342
+    description: 召唤或解散一头恐惧渡鸦。这种坐骑会根据你的骑术等级和所在区域改变。
+  item:
+    id: 109013
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑会根据你的骑术等级和所在区域改变。 召唤或解散一头恐惧渡鸦。这种坐骑会根据你的骑术等级和所在区域改变。
+db:
+  creature_template:
+    entry: 9140342
+    name: 恐惧渡鸦
+    modelid1: 140342
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140342
+  item_template:
+    entry: 109013
+    name: 恐惧渡鸦
+    spellid_2: 80342
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 乌鸦

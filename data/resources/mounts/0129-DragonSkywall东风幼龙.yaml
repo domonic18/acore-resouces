@@ -1,0 +1,61 @@
+id: 129
+model_folder: DragonSkywall东风幼龙
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 西风幼龙
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104124
+    flags: 2
+  creature_display_info:
+    id: 140124
+    model_id: 104124
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80124
+    name: 西风幼龙
+    visual_id: 9140124
+  item:
+    id: 65356
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140124
+    name: 西风幼龙
+    modelid1: 140124
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140124
+  item_template:
+    entry: 65356
+    name: 西风幼龙
+    spellid_2: 80124
+    Quality: 4
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

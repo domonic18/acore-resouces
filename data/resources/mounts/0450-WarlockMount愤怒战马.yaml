@@ -1,0 +1,70 @@
+id: 450
+model_folder: WarlockMount愤怒战马
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 185169
+  instance: 地狱火城墙(英雄模式)
+  boss: 强化魔铁箱
+  rate: 0.02
+official_db:
+  name: 虚空领主的硫磺愤怒战马
+  spell_icon_name: inv_warlockmountfire
+  icon_name: inv_warlockmountfire
+dbc:
+  creature_model_data:
+    id: 104446
+    flags: 2
+    model_name: creature\WarlockMount\warlockmount.m2
+  creature_display_info:
+    id: 140446
+    model_id: 104446
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: warlockmount
+    texture_variation_2: warlockmount
+    texture_variation_3: warlockmount
+  spell:
+    id: 80446
+    name: 虚空领主的硫磺愤怒战马
+    description: 召唤或解散一个可供骑乘的虚空领主的硫磺愤怒战马。这是一种速度非常快的坐骑。
+    visual_id: 9140446
+    icon_id: 32705
+  item:
+    id: 143637
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 113705
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140446
+    name: 虚空领主的硫磺愤怒战马
+    modelid1: 140446
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140446
+  item_template:
+    entry: 143637
+    name: 硫磺愤怒战马的地狱火缰绳
+    displayid: 113705
+    spellid_2: 80446
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 马

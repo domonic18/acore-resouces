@@ -1,0 +1,61 @@
+id: 194
+model_folder: giantvampirebatmount嗜血恐翼蝠
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 充血猎蝠
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104189
+    flags: 2
+  creature_display_info:
+    id: 140189
+    model_id: 104189
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80189
+    name: 充血猎蝠
+    visual_id: 9140189
+  item:
+    id: 166468
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140189
+    name: 充血猎蝠
+    modelid1: 140189
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140189
+  item_template:
+    entry: 166468
+    name: 充血猎蝠
+    spellid_2: 80189
+    Quality: 3
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 蝙蝠

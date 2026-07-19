@@ -1,0 +1,70 @@
+id: 29
+model_folder: darkhoundmount_draka狼坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 15276
+  instance: 安其拉神殿
+  boss: 维克洛尔大帝
+  rate: 0.035
+official_db:
+  name: 战缝黑暗犬
+  spell_icon_name: inv_darkhoundmount_draka_blue
+  icon_name: inv_darkhoundmount_draka_blue
+dbc:
+  creature_model_data:
+    id: 4026
+    flags: 2
+    model_name: creature\darkhoundmount_draka\darkhoundmount_draka.m2
+  creature_display_info:
+    id: 140026
+    model_id: 4026
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: darkhoundmount_draka_blue
+    texture_variation_2: darkhoundmount_draka_blue
+    texture_variation_3: darkhoundmount_draka_blue
+  spell:
+    id: 80026
+    name: 战缝黑暗犬
+    description: 召唤或解散一只可供骑乘的战缝黑暗犬。这是一种速度非常快的坐骑。
+    visual_id: 9140026
+    icon_id: 18820
+  item:
+    id: 91026
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 16208
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140026
+    name: 战缝黑暗犬
+    modelid1: 140026
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140026
+  item_template:
+    entry: 91026
+    name: 战缝黑暗犬
+    displayid: 99820
+    spellid_2: 80026
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 狼

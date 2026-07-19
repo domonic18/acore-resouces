@@ -1,0 +1,66 @@
+id: 205
+model_folder: goblintrike地精三轮摩托
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 地精三轮摩托涡轮增压型
+  spell_icon_name: inv_misc_key_04
+  icon_name: inv_misc_key_04
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=87091
+  item_wowhead_url: https://www.wowhead.com/cn/item=62462
+dbc:
+  creature_model_data:
+    id: 104200
+    flags: 2
+  creature_display_info:
+    id: 140200
+    model_id: 104200
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80200
+    name: 地精三轮摩托涡轮增压型
+    visual_id: 9140200
+    description: 召唤或解散一辆地精三轮摩托涡轮增压型。
+  item:
+    id: 62462
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一辆地精三轮摩托涡轮增压型。
+    flavor_text: 涡轮增压型三轮摩托的三轮设计使其具有超强的稳定性，并使转向半径比它的两轮近亲们更小。
+db:
+  creature_template:
+    entry: 9140200
+    name: 地精三轮摩托涡轮增压型
+    modelid1: 140200
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140200
+  item_template:
+    entry: 62462
+    name: 地精三轮摩托涡轮增压型
+    spellid_2: 80200
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 机械

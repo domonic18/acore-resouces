@@ -1,0 +1,60 @@
+id: 461
+model_folder: wolfeel沃菲尔德坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 纳沙塔尔狼鳗
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104457
+    flags: 2
+  creature_display_info:
+    id: 140457
+    model_id: 104457
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80457
+    name: 纳沙塔尔狼鳗
+    visual_id: 9140457
+  item:
+    id: 153693
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140457
+    name: 纳沙塔尔狼鳗
+    modelid1: 140457
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140457
+  item_template:
+    entry: 153693
+    name: 纳沙塔尔狼鳗
+    spellid_2: 80457
+mount_type: 水上坐骑
+star_rating: null
+subtype: null

@@ -1,0 +1,66 @@
+id: 41
+model_folder: druidcat2绿皮豹坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 绿皮豹
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4038
+    flags: 2
+    model_name: creature\druidcat2\druidcattauren2.m2
+  creature_display_info:
+    id: 140038
+    model_id: 4038
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidcat2_artifact4_green
+    texture_variation_2: druidcat2_artifact4_green
+    texture_variation_3: druidcat2_artifact4_green
+  spell:
+    id: 80038
+    visual_id: 9140038
+    icon_id: 2865
+  item:
+    id: 91038
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 17606
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140038
+    modelid1: 140038
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140038
+  item_template:
+    entry: 91038
+    displayid: 17606
+    spellid_2: 80038
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: null
+subtype: 豹子

@@ -1,0 +1,19 @@
+sheet: "NPC列表"
+header_row: 2
+data_start_row: 3
+resource_type: "npc"
+fields:
+  id: 0
+  model_folder: 1
+  preview_image: 2
+  rarity: 3
+  debug_passed: 4
+  added: 5
+  "official_db.name": 6
+  "official_db.spell_icon_name": 7
+  "official_db.icon_name": 8
+  "dbc.creature_model_data.id": 9
+  "dbc.creature_model_data.flags": 10
+  "dbc.creature_model_data.model_name": 11
+  "dbc.creature_display_info.id": 12
+  "dbc.creature_display_info.model_id": 13

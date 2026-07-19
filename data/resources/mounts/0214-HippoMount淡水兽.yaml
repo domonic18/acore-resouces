@@ -1,0 +1,66 @@
+id: 214
+model_folder: HippoMount淡水兽
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 苔皮淡水兽
+  spell_icon_name: inv_hippo_green
+  icon_name: inv_hippo_green
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171825
+  item_wowhead_url: https://www.wowhead.com/cn/item=116768
+dbc:
+  creature_model_data:
+    id: 104210
+    flags: 2
+  creature_display_info:
+    id: 140210
+    model_id: 104210
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80210
+    name: 苔皮淡水兽
+    visual_id: 9140210
+    description: 召唤或解散你的苔皮淡水兽。
+  item:
+    id: 116768
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的苔皮淡水兽。
+    flavor_text: 富有攻击性且领地观念极强的苔皮淡水兽会躲在河边的灌木丛中，伏击毫无准备的路人。
+db:
+  creature_template:
+    entry: 9140210
+    name: 苔皮淡水兽
+    modelid1: 140210
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140210
+  item_template:
+    entry: 116768
+    name: 苔皮淡水兽
+    spellid_2: 80210
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 河马

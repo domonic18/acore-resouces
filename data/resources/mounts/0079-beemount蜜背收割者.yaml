@@ -1,0 +1,70 @@
+id: 79
+model_folder: beemount蜜背收割者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 18831
+  instance: 格鲁尔的巢穴
+  boss: 莫加尔大王
+  rate: 0.03
+official_db:
+  name: 蜜背收割者
+  spell_icon_name: inv_bee_default
+  icon_name: inv_bee_default
+dbc:
+  creature_model_data:
+    id: 104074
+    flags: 2
+    model_name: creature\beemount\beemount.m2
+  creature_display_info:
+    id: 140074
+    model_id: 104074
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.5
+    opacity: 255
+    texture_variation_1: beemount
+    texture_variation_2: beemount_black
+    texture_variation_3: beemount_red
+  spell:
+    id: 80074
+    name: 蜜背收割者
+    description: 召唤或解散一个可供骑乘的蜜背收割者。这是一种速度非常快的坐骑。
+    visual_id: 9140074
+    icon_id: 14895
+  item:
+    id: 170069
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 95895
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140074
+    name: 蜜背收割者
+    modelid1: 140074
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140074
+  item_template:
+    entry: 170069
+    name: 蜜背收割者
+    displayid: 95895
+    spellid_2: 80074
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 蜂

@@ -1,0 +1,74 @@
+id: 52
+model_folder: lightningworg雷电狼坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 9019
+  instance: 黑石深渊
+  boss: 达格兰·索瑞森大帝
+  rate: 0.01
+official_db:
+  name: 雷电狼
+  spell_icon_name: inv_wolfdraenormountred
+  icon_name: inv_wolfdraenormountred
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171839
+  item_wowhead_url: https://www.wowhead.com/item=116782
+dbc:
+  creature_model_data:
+    id: 4049
+    flags: 2
+    model_name: creature\lightningworg\lightningworg.m2
+  creature_display_info:
+    id: 140049
+    model_id: 4049
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: lightningworg_black
+    texture_variation_2: lightningworg_black
+    texture_variation_3: lightningworg_black
+  spell:
+    id: 80049
+    name: 雷电狼
+    description: 召唤或解散你的铁甲战狼。
+    visual_id: 9140049
+    icon_id: 1178
+  item:
+    id: 91049
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 16208
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的铁甲战狼。
+    flavor_text: 它的尾巴上有装甲尖刺。给它挠肚皮的后果自负。
+db:
+  creature_template:
+    entry: 9140049
+    name: 雷电狼
+    modelid1: 140049
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140049
+  item_template:
+    entry: 91049
+    name: 雷电狼
+    displayid: 16208
+    spellid_2: 80049
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 狼

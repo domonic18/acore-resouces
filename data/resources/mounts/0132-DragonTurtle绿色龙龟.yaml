@@ -1,0 +1,70 @@
+id: 132
+model_folder: DragonTurtle绿色龙龟
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 21214
+  instance: 毒蛇神殿
+  boss: 深水领主卡拉瑟雷斯
+  rate: 0.03
+official_db:
+  name: 巨型黑色龙龟
+  spell_icon_name: ability_mount_pandaranmountepicblack
+  icon_name: ability_mount_pandaranmountepicblack
+dbc:
+  creature_model_data:
+    id: 104127
+    flags: 2
+    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.M2
+  creature_display_info:
+    id: 140127
+    model_id: 104127
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.5
+    opacity: 255
+    texture_variation_1: RidingDragonTurtleBlack
+    texture_variation_2: RidingDragonTurtleBrown
+    texture_variation_3: RidingDragonTurtleRed
+  spell:
+    id: 80127
+    name: 巨型黑色龙龟
+    description: 召唤或解散一个可供骑乘的巨型黑色龙龟。这是一种速度非常快的坐骑。
+    visual_id: 9140127
+    icon_id: 9989
+  item:
+    id: 87802
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 90989
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140127
+    name: 巨型黑色龙龟
+    modelid1: 140127
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140127
+  item_template:
+    entry: 87802
+    name: 巨型黑色龙龟缰绳
+    displayid: 90989
+    spellid_2: 80127
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 水上坐骑
+star_rating: 二星
+subtype: 乌龟

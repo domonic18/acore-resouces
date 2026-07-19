@@ -1,0 +1,70 @@
+id: 417
+model_folder: toadloamount情侣沼泽跃蛙
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 情侣沼泽跃蛙
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104413
+    flags: 2
+    model_name: creature\toadloamount\toadloamount.m2
+  creature_display_info:
+    id: 140413
+    model_id: 104413
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: toadloamount_green
+    texture_variation_2: toadloamount_green
+    texture_variation_3: toadloamount_green
+  spell:
+    id: 80413
+    name: 情侣沼泽跃蛙
+    description: 召唤或解散一个可供骑乘的情侣沼泽跃蛙。这是一种速度非常快的坐骑。
+    visual_id: 9140413
+    icon_id: 32332
+  item:
+    id: 182651
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 113332
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140413
+    name: 情侣沼泽跃蛙
+    modelid1: 140413
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140413
+  item_template:
+    entry: 182651
+    name: 情侣沼泽跃蛙
+    displayid: 113332
+    spellid_2: 80413
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 二星
+subtype: 蟾蜍

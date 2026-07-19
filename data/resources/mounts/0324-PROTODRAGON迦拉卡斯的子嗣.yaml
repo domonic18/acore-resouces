@@ -1,0 +1,70 @@
+id: 324
+model_folder: PROTODRAGON迦拉卡斯的子嗣
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 17842
+  instance: 海加尔峰
+  boss: 阿兹加洛
+  rate: 0.03
+official_db:
+  name: 迦拉卡斯的子嗣
+  spell_icon_name: ability_mount_korkronprotodrake
+  icon_name: inv_belt_44a
+dbc:
+  creature_model_data:
+    id: 104320
+    flags: 2
+    model_name: creature\PROTODRAGON\KorKronProtodrake.M2
+  creature_display_info:
+    id: 140320
+    model_id: 104320
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: KorKronProtodrake_Armor
+    texture_variation_2: KorKronProtodrake_Armor
+    texture_variation_3: KorKronProtodrake_Armor
+  spell:
+    id: 80320
+    name: 迦拉卡斯的子嗣
+    description: 召唤或解散一个可供骑乘的迦拉卡斯的子嗣。这是一种速度非常快的坐骑。
+    visual_id: 9140320
+    icon_id: 9960
+  item:
+    id: 104208
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 95968
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140320
+    name: 迦拉卡斯的子嗣
+    modelid1: 140320
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140320
+  item_template:
+    entry: 104208
+    name: 迦拉卡斯的缰绳
+    displayid: 95968
+    spellid_2: 80320
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 龙

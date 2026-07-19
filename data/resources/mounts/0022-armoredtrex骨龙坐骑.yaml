@@ -1,0 +1,67 @@
+id: 22
+model_folder: armoredtrex骨龙坐骑
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 骨龙
+  spell_icon_name: ability_mount_raptor
+  icon_name: ability_mount_raptor
+
+dbc:
+  creature_model_data:
+    id: 4019
+    flags: 2
+    model_name: creature\armoredtrex\armoredtrex.m2
+  creature_display_info:
+    id: 140019
+    model_id: 4019
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: armoredtrex_body_loa_armor
+    texture_variation_2: armoredtrex_body_loa_armor
+    texture_variation_3: armoredtrex_body_loa_armor
+  spell:
+    id: 80019
+    visual_id: 9140019
+    icon_id: 1180
+  item:
+    id: 91019
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 17494
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140019
+    modelid1: 140019
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140019
+  item_template:
+    entry: 91019
+    displayid: 17494
+    spellid_2: 80019
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 迅猛龙

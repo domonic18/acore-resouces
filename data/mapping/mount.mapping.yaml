@@ -1,0 +1,66 @@
+sheet: "坐骑列表"
+header_row: 2
+data_start_row: 3
+resource_type: "mount"
+id_source: "row"
+required_field: "mount_type"
+fields:
+  id: 0
+  model_folder: 1
+  preview_image: 2
+  mount_type: 3
+  star_rating: 4
+  subtype: 5
+  debug_passed: 6
+  added: 7
+  "drop.entry": 8
+  "drop.instance": 9
+  "drop.boss": 10
+  "drop.rate": 11
+  "official_db.name": 12
+  "official_db.spell_icon_name": 13
+  "official_db.icon_name": 14
+  "dbc.creature_model_data.id": 15
+  "dbc.creature_model_data.flags": 16
+  "dbc.creature_model_data.model_name": 17
+  "dbc.creature_display_info.id": 18
+  "dbc.creature_display_info.model_id": 19
+  "dbc.creature_display_info.sound_id": 20
+  "dbc.creature_display_info.extra_display_information_id": 21
+  "dbc.creature_display_info.scale": 22
+  "dbc.creature_display_info.opacity": 23
+  "dbc.creature_display_info.texture_variation_1": 24
+  "dbc.creature_display_info.texture_variation_2": 25
+  "dbc.creature_display_info.texture_variation_3": 26
+  "db.creature_template.entry": 27
+  "db.creature_template.name": 28
+  "db.creature_template.modelid1": 29
+  "db.creature_template.faction": 30
+  "db.creature_template.type": 31
+  "db.creature_template.unit_class": 32
+  "db.creature_template.unit_flag2": 33
+  "db.creature_model_info.display_id": 34
+  "db.creature_template.bounding_radius": 35
+  "db.creature_template.combat_reach": 36
+  "db.creature_template.gender": 37
+  "db.creature_template.display_id_other_gender": 38
+  "dbc.spell.id": 39
+  "dbc.spell.visual_id": 40
+  "dbc.spell.icon_id": 41
+  "dbc.spell.name": 42
+  "dbc.spell.description": 43
+  "db.item_template.entry": 44
+  "db.item_template.name": 45
+  "db.item_template.displayid": 46
+  "db.item_template.Quality": 47
+  "db.item_template.AllowableClass": 48
+  "db.item_template.AllowableRace": 49
+  "db.item_template.spellid_2": 50
+  "dbc.item.id": 51
+  "dbc.item.class": 52
+  "dbc.item.subclass": 53
+  "dbc.item.material": 54
+  "dbc.item.quality": 55
+  "dbc.item.display_id": 56
+  "dbc.item.inventory_type": 57
+  "dbc.item.sheath": 58

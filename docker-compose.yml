@@ -1,0 +1,61 @@
+services:
+  # ============================================
+  # Web 服务：前端静态文件 + FastAPI 后端合并部署
+  # 访问地址：http://localhost:8080
+  # ============================================
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    container_name: acore-resources-web
+    ports:
+      - "8080:8000"
+    environment:
+      - PROJECT_ROOT=/app
+    volumes:
+      - ./sources:/app/sources
+      - ./data:/app/data
+      - ./assets:/app/assets
+      - ./workspace:/app/workspace
+      - ./imports:/app/imports
+      - ./patches:/app/patches
+      - ./backend/app:/app/app
+      - ./apps/web/dist:/app/app/static
+    networks:
+      - acore-resources-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # 后端服务：纯 FastAPI API（可选，用于前后端分离测试）
+  # 访问地址：http://localhost:8000
+  # 启用时请将前端 VITE_API_BASE_URL 指向 http://localhost:8000
+  # ============================================
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/backend/Dockerfile
+  #   container_name: acore-resources-backend
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - PROJECT_ROOT=/app
+  #   volumes:
+  #     - ./sources:/app/sources
+  #     - ./data:/app/data
+  #     - ./assets:/app/assets
+  #     - ./workspace:/app/workspace
+  #     - ./imports:/app/imports
+  #     - ./patches:/app/patches
+  #   networks:
+  #     - acore-resources-network
+  #   restart: unless-stopped
+
+networks:
+  acore-resources-network:
+    driver: bridge

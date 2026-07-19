@@ -1,0 +1,70 @@
+id: 375
+model_folder: sharkraymount致命通灵鳐
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 20266
+  instance: 法力陵墓(英雄模式)
+  boss: 节点亲王沙法尔
+  rate: 0.02
+official_db:
+  name: 柔光法力鳐
+  spell_icon_name: inv_manaraymount_blue
+  icon_name: inv_manaraymount_blue
+dbc:
+  creature_model_data:
+    id: 104371
+    flags: 2
+    model_name: creature\sharkraymount\sharkraymount.m2
+  creature_display_info:
+    id: 140371
+    model_id: 104371
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: sharkraymount_blue
+    texture_variation_2: sharkraymount_blue
+    texture_variation_3: sharkraymount_blue
+  spell:
+    id: 80371
+    name: 柔光法力鳐
+    description: 召唤或解散一个可供骑乘的柔光法力鳐。这是一种速度非常快的坐骑。
+    visual_id: 9140371
+    icon_id: 24430
+  item:
+    id: 152844
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 105430
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140371
+    name: 柔光法力鳐
+    modelid1: 140371
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140371
+  item_template:
+    entry: 152844
+    name: 柔光法力鳐
+    displayid: 105430
+    spellid_2: 80371
+    Quality: 3
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 飞行坐骑
+star_rating: 二星
+subtype: 鳐

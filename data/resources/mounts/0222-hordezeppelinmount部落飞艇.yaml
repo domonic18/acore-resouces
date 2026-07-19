@@ -1,0 +1,65 @@
+id: 222
+model_folder: hordezeppelinmount部落飞艇
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 奥格瑞玛拦截飞艇
+  spell_icon_name: inv_hordezeppelinmount
+  icon_name: inv_hordezeppelinmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=245725
+  item_wowhead_url: https://www.wowhead.com/cn/item=151617
+dbc:
+  creature_model_data:
+    id: 104218
+    flags: 2
+  creature_display_info:
+    id: 140218
+    model_id: 104218
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80218
+    name: 奥格瑞玛拦截飞艇
+    visual_id: 9140218
+    description: 召唤或解散你的奥格瑞玛拦截飞艇。这是一种飞行坐骑。
+  item:
+    id: 151617
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的奥格瑞玛拦截飞艇。这是一种飞行坐骑。
+db:
+  creature_template:
+    entry: 9140218
+    name: 奥格瑞玛拦截飞艇
+    modelid1: 140218
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140218
+  item_template:
+    entry: 151617
+    name: 奥格瑞玛拦截飞艇
+    spellid_2: 80218
+    Quality: 4
+mount_type: 飞行坐骑
+star_rating: 五星
+subtype: 飞艇

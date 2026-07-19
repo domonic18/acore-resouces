@@ -1,0 +1,70 @@
+id: 45
+model_folder: ironhordeclefthoof铁蹄毁灭者
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 14020
+  instance: 黑翼之巢
+  boss: 克洛玛古斯
+  rate: 0.035
+official_db:
+  name: 铁蹄毁灭者
+  spell_icon_name: inv_ironhordeclefthoof
+  icon_name: inv_ironhordeclefthoof
+dbc:
+  creature_model_data:
+    id: 4042
+    flags: 2
+    model_name: creature\ironhordeclefthoof\ironhordeclefthoof.m2
+  creature_display_info:
+    id: 140042
+    model_id: 4042
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: ironhordeclefthoof_armor
+    texture_variation_2: ironhordeclefthoof_armor
+    texture_variation_3: ironhordeclefthoof_armor
+  spell:
+    id: 80042
+    name: 铁蹄毁灭者
+    description: 召唤或解散一头可供骑乘的铁蹄毁灭者。这是一种速度非常快的坐骑。
+    visual_id: 9140042
+    icon_id: 22315
+  item:
+    id: 91042
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 44590
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140042
+    name: 铁蹄毁灭者
+    modelid1: 140042
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140042
+  item_template:
+    entry: 91042
+    name: 铁蹄毁灭者
+    displayid: 103315
+    spellid_2: 80042
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 科多兽

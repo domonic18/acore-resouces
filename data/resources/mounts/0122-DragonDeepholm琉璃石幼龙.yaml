@@ -1,0 +1,70 @@
+id: 122
+model_folder: DragonDeepholm琉璃石幼龙
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 15689
+  instance: 卡拉赞
+  boss: 虚空幽龙
+  rate: 0.03
+official_db:
+  name: 琉璃石幼龙
+  spell_icon_name: inv_misc_stonedragonblue
+  icon_name: inv_misc_stonedragonblue
+dbc:
+  creature_model_data:
+    id: 104117
+    flags: 2
+    model_name: creature\DragonDeepholm\DragonDeepholmMount.M2
+  creature_display_info:
+    id: 140117
+    model_id: 104117
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: DRAGONDEEPHOLMMOUNT2PURPLE
+    texture_variation_2: DRAGONDEEPHOLMMOUNT2PURPLE
+    texture_variation_3: DRAGONDEEPHOLMMOUNT2PURPLE
+  spell:
+    id: 80117
+    name: 琉璃石幼龙
+    description: 召唤或解散一个可供骑乘的琉璃石幼龙。这是一种速度非常快的坐骑。
+    visual_id: 9140117
+    icon_id: 27080
+  item:
+    id: 63043
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 108080
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140117
+    name: 琉璃石幼龙
+    modelid1: 140117
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140117
+  item_template:
+    entry: 63043
+    name: 琉璃石幼龙
+    displayid: 108080
+    spellid_2: 80117
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 飞行坐骑
+star_rating: 三星
+subtype: 龙

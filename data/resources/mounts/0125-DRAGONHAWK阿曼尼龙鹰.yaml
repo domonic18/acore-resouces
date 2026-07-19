@@ -1,0 +1,64 @@
+id: 125
+model_folder: DRAGONHAWK阿曼尼龙鹰
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 红色装甲龙鹰
+  spell_icon_name: ability_mount_dragonhawkarmorhorde
+  icon_name: ability_mount_dragonhawkarmorhorde
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=142266
+  item_wowhead_url: https://www.wowhead.com/cn/item=98104
+dbc:
+  creature_model_data:
+    id: 104120
+    flags: 2
+  creature_display_info:
+    id: 140120
+    model_id: 104120
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80120
+    name: 红色装甲龙鹰
+    visual_id: 9140120
+    description: 召唤或解散一只可供骑乘的红色装甲龙鹰。这是一种飞行坐骑。
+  item:
+    id: 98104
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140120
+    name: 红色装甲龙鹰
+    modelid1: 140120
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140120
+  item_template:
+    entry: 98104
+    name: 红色装甲龙鹰
+    spellid_2: 80120
+    Quality: 4
+mount_type: 飞行坐骑
+star_rating: 四星
+subtype: 四星

@@ -1,0 +1,65 @@
+id: 64
+model_folder: allianceshipmount联盟龙鹰飞艇坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 暴风城逐天战机
+  spell_icon_name: inv_allianceshipmount
+  icon_name: inv_allianceshipmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=245723
+  item_wowhead_url: https://www.wowhead.com/cn/item=151618
+dbc:
+  creature_model_data:
+    id: 104059
+    flags: 2
+  creature_display_info:
+    id: 140059
+    model_id: 104059
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80059
+    name: 暴风城逐天战机
+    visual_id: 9140059
+    description: 召唤或解散你的暴风城逐天战机。这是一种飞行坐骑。
+  item:
+    id: 151618
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的暴风城逐天战机。这是一种飞行坐骑。
+db:
+  creature_template:
+    entry: 9140059
+    name: 暴风城逐天战机
+    modelid1: 140059
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140059
+  item_template:
+    entry: 151618
+    name: 暴风城逐天战机
+    spellid_2: 80059
+    Quality: 4
+mount_type: 飞行坐骑
+star_rating: 五星
+subtype: 机械

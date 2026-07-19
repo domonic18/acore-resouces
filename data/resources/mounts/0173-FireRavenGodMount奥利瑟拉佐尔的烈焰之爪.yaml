@@ -1,0 +1,70 @@
+id: 173
+model_folder: FireRavenGodMount奥利瑟拉佐尔的烈焰之爪
+preview_image: null
+debug_passed: true
+added: true
+drop:
+  entry: 20706
+  instance: 塞泰克大厅(英雄模式)
+  boss: 利爪之王艾吉斯
+  rate: 0.02
+official_db:
+  name: 奥利瑟拉佐尔的烈焰之爪
+  spell_icon_name: ability_mount_fireravengodmount
+  icon_name: ability_mount_fireravengodmount
+dbc:
+  creature_model_data:
+    id: 104168
+    flags: 2
+    model_name: creature\FireRavenGodMount\FireRavenGodMount.M2
+  creature_display_info:
+    id: 140168
+    model_id: 104168
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: FireRavenGodMountRed1
+    texture_variation_2: FireRavenGodMountRed1
+    texture_variation_3: FireRavenGodMountRed1
+  spell:
+    id: 80168
+    name: 奥利瑟拉佐尔的烈焰之爪
+    description: 召唤或解散一个可供骑乘的奥利瑟拉佐尔的烈焰之爪。这是一种速度非常快的坐骑。
+    visual_id: 9140168
+    icon_id: 9936
+  item:
+    id: 71665
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 90936
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140168
+    name: 奥利瑟拉佐尔的烈焰之爪
+    modelid1: 140168
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140168
+  item_template:
+    entry: 71665
+    name: 奥利瑟拉佐尔的烈焰之爪
+    displayid: 90936
+    spellid_2: 80168
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: 五星
+subtype: 乌鸦

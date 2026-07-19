@@ -1,0 +1,66 @@
+id: 37
+model_folder: druidbeartroll迷彩熊坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 迷彩熊
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 4034
+    flags: 2
+    model_name: creature\druidbeartroll\druidbeartrollepic.m2
+  creature_display_info:
+    id: 140034
+    model_id: 4034
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+    texture_variation_1: druidbeartrollyellow
+    texture_variation_2: druidbeartrollyellow
+    texture_variation_3: druidbeartrollyellow
+  spell:
+    id: 80034
+    visual_id: 9140034
+    icon_id: 957
+  item:
+    id: 91034
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 40160
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140034
+    modelid1: 140034
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140034
+  item_template:
+    entry: 91034
+    displayid: 40160
+    spellid_2: 80034
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+mount_type: 陆地坐骑
+star_rating: null
+subtype: 熊

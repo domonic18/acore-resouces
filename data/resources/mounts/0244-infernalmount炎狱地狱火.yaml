@@ -1,0 +1,64 @@
+id: 244
+model_folder: infernalmount炎狱地狱火
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 邪焰地狱火
+  spell_icon_name: inv_infernalmount
+  icon_name: inv_infernalmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=213134
+  item_wowhead_url: https://www.wowhead.com/cn/item=152413
+dbc:
+  creature_model_data:
+    id: 104240
+    flags: 2
+  creature_display_info:
+    id: 140240
+    model_id: 104240
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80240
+    name: 邪焰地狱火
+    visual_id: 9140240
+    description: 召唤或解散你的邪焰地狱火。
+  item:
+    id: 152413
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140240
+    name: 邪焰地狱火
+    modelid1: 140240
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140240
+  item_template:
+    entry: 152413
+    name: 邪焰地狱火
+    spellid_2: 80240
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 机械

@@ -1,0 +1,24 @@
+id: 146
+model_folder: minstrel_alliance吟游诗人联盟NPC
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: null
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data: {}
+  creature_display_info: {}
+  spell: {}
+  item: {}
+db:
+  creature_template: {}
+  creature_model_info: {}
+  item_template: {}
+rarity: null

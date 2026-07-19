@@ -1,0 +1,60 @@
+id: 201
+model_folder: goblinhotairballoonvehicle热气球坐骑
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 地精热气球
+  spell_icon_name: null
+  icon_name: null
+dbc:
+  creature_model_data:
+    id: 104196
+    flags: 2
+  creature_display_info:
+    id: 140196
+    model_id: 104196
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80196
+    name: 地精热气球
+    visual_id: 9140196
+  item:
+    id: 0
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140196
+    name: 地精热气球
+    modelid1: 140196
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140196
+  item_template:
+    name: 地精热气球
+    spellid_2: 80196
+    Quality: 4
+mount_type: 飞行坐骑
+star_rating: 五星
+subtype: 机械

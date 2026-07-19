@@ -1,0 +1,66 @@
+id: 273
+model_folder: mechagonspidertank麦卡贡维和者
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 生锈的机械爬蛛
+  spell_icon_name: inv_mechagonspidertank_junker
+  icon_name: inv_mechagonspidertank_junker
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=291492
+  item_wowhead_url: https://www.wowhead.com/cn/item=168823
+dbc:
+  creature_model_data:
+    id: 104269
+    flags: 2
+  creature_display_info:
+    id: 140269
+    model_id: 104269
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80269
+    name: 生锈的机械爬蛛
+    visual_id: 9140269
+    description: 召唤或解散这种坐骑。
+  item:
+    id: 168823
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 引擎检查灯一直都是亮着的。真要是灭了，你才应该担心了。
+db:
+  creature_template:
+    entry: 9140269
+    name: 生锈的机械爬蛛
+    modelid1: 140269
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140269
+  item_template:
+    entry: 168823
+    name: 生锈的机械爬蛛
+    spellid_2: 80269
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 机械

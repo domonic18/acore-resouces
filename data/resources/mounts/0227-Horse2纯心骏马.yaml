@@ -1,0 +1,66 @@
+id: 227
+model_folder: Horse2纯心骏马
+preview_image: null
+debug_passed: false
+added: false
+drop:
+  entry: null
+  instance: null
+  boss: null
+  rate: null
+official_db:
+  name: 纯心骏马
+  spell_icon_name: inv_horse2white
+  icon_name: inv_horse2white
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=280730
+  item_wowhead_url: https://www.wowhead.com/cn/item=163982
+dbc:
+  creature_model_data:
+    id: 104223
+    flags: 2
+  creature_display_info:
+    id: 140223
+    model_id: 104223
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1
+    opacity: 255
+  spell:
+    id: 80223
+    name: 纯心骏马
+    visual_id: 9140223
+    description: 召唤或解散你的纯心骏马。
+  item:
+    id: 163982
+    class: 15
+    subclass: 5
+    material: -1
+    quality: 4
+    display_id: 0
+    inventory_type: 0
+    sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的纯心骏马。
+    flavor_text: "账号通用\n图标：\n inv_horse2white\n5%角色已完成\n英语：Pureheart Courser"
+db:
+  creature_template:
+    entry: 9140223
+    name: 纯心骏马
+    modelid1: 140223
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flag2: 2048
+    bounding_radius: 0
+    combat_reach: 0
+    gender: 2
+    display_id_other_gender: 0
+  creature_model_info:
+    display_id: 140223
+  item_template:
+    entry: 163982
+    name: 纯心骏马
+    spellid_2: 80223
+    Quality: 4
+mount_type: 陆地坐骑
+star_rating: 三星
+subtype: 马
