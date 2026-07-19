@@ -1,0 +1,3 @@
+[submodule "tools/wow-mpq-cli"]
+	path = tools/wow-mpq-cli
+	url = https://github.com/domonic18/wow-mpq-cli.git
