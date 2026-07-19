@@ -59,3 +59,5 @@ db:
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙
+tags:
+- no_official_data

@@ -9,9 +9,11 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: 炽炎幼龙的缰绳
-  spell_icon_name: null
-  icon_name: null
+  name: 燃烬巨龙
+  spell_icon_name: inv_nightbane2mount
+  icon_name: inv_nightbane2mount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=231428
+  item_wowhead_url: https://www.wowhead.com/item=142552
 dbc:
   creature_model_data:
     id: 104105
@@ -25,10 +27,11 @@ dbc:
     opacity: 255
   spell:
     id: 80105
-    name: 炽炎幼龙的缰绳
+    name: 燃烬巨龙
     visual_id: 9140105
+    description: 召唤或解散一只可骑乘的燃烬巨龙。这是一种飞行坐骑。
   item:
-    id: 77067
+    id: 142552
     class: 15
     subclass: 5
     material: -1
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散一只可骑乘的燃烬巨龙。这是一种飞行坐骑。
+    flavor_text: 阿坎纳苟斯想要让麦迪文放弃奥术实验，但是萨格拉斯对这位巫师的腐蚀太深，这头伟大的巨龙为自己的行为付出了代价，受到了永恒燃烧的痛苦折磨。
 db:
   creature_template:
     entry: 9140105
@@ -52,7 +57,7 @@ db:
   creature_model_info:
     display_id: 140105
   item_template:
-    entry: 77067
+    entry: 142552
     name: 炽炎幼龙的缰绳
     spellid_2: 80105
     Quality: 4

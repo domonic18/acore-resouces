@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 茉莉
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_alpacamount_brown
+  icon_name: inv_alpacamount_brown
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=298367
+  item_wowhead_url: https://www.wowhead.com/cn/item=90659
 dbc:
   creature_model_data:
     id: 4017
@@ -31,8 +33,10 @@ dbc:
     id: 80017
     visual_id: 9140017
     icon_id: 3443
+    name: 茉莉
+    description: 召唤或解散这种坐骑。
   item:
-    id: 91017
+    id: 90659
     class: 15
     subclass: 5
     material: -1
@@ -40,6 +44,7 @@ dbc:
     display_id: 31511
     inventory_type: 0
     sheath: 0
+    description: '在21秒内恢复总计504点法力值，喝水时必须保持坐姿。 最大叠加: 20'
 db:
   creature_template:
     entry: 9140017
@@ -52,15 +57,17 @@ db:
     combat_reach: 0
     gender: 2
     display_id_other_gender: 0
+    name: 茉莉
   creature_model_info:
     display_id: 140017
   item_template:
-    entry: 91017
+    entry: 90659
     displayid: 31511
     spellid_2: 80017
     Quality: 3
     AllowableClass: -1
     AllowableRace: 2047
+    name: 茉莉
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 骆驼

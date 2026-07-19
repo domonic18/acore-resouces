@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 阴森绽翼兽
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_maldraxxusflyermount_blue
+  icon_name: inv_maldraxxusflyermount_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=336039
+  item_wowhead_url: https://www.wowhead.com/cn/item=181300
 dbc:
   creature_model_data:
     id: 104087
@@ -27,6 +29,7 @@ dbc:
     id: 80087
     name: 阴森绽翼兽
     visual_id: 9140087
+    description: 召唤或解散这种坐骑。
   item:
     id: 181300
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 玛卓克萨斯的绽翼兽可以轻松地翱翔于暗影界的天空，它们背上的骑手可以对敌人发动奇袭，或者援助盟友。
 db:
   creature_template:
     entry: 9140087
