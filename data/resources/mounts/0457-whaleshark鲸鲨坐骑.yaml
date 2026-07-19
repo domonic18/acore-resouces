@@ -57,3 +57,5 @@ db:
 mount_type: 水上坐骑
 star_rating: null
 subtype: null
+tags:
+- no_official_data

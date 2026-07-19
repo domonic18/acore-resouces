@@ -58,3 +58,5 @@ db:
 mount_type: 水上坐骑
 star_rating: 二星
 subtype: 鲨鱼
+tags:
+- no_official_data

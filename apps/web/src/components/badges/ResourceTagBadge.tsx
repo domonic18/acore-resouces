@@ -1,6 +1,7 @@
 import { cn } from "@/shared/utils";
 import {
   computeResourceTags,
+  getResourceTagLabel,
   getUnofficialLabel,
 } from "@/features/resources/lib/resource-list";
 import type { Resource } from "@/shared/types";
@@ -19,15 +20,15 @@ export function ResourceTagBadge({ resource }: ResourceTagBadgeProps) {
         const label =
           tag === "unofficial"
             ? getUnofficialLabel(resource.resource_type)
-            : tag;
+            : getResourceTagLabel(tag);
+        const colorClass =
+          tag === "unofficial"
+            ? "badge-orange"
+            : tag === "no_official_data"
+              ? "badge-danger"
+              : "badge-gray";
         return (
-          <span
-            key={tag}
-            className={cn(
-              "badge",
-              tag === "unofficial" ? "badge-orange" : "badge-gray",
-            )}
-          >
+          <span key={tag} className={cn("badge", colorClass)}>
             {label}
           </span>
         );

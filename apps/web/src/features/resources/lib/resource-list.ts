@@ -21,12 +21,15 @@ export const STATUS_TAG_OPTIONS: {
   { value: "not_added", label: "未添加", group: "added" },
 ];
 
-export type ResourceTagValue = "unofficial";
+export type ResourceTagValue = "unofficial" | "no_official_data";
 
 export const RESOURCE_TAG_OPTIONS: {
   value: ResourceTagValue;
   label: string;
-}[] = [{ value: "unofficial", label: "非官方" }];
+}[] = [
+  { value: "unofficial", label: "非官方" },
+  { value: "no_official_data", label: "无官方数据" },
+];
 
 export function getUnofficialLabel(
   type: "all" | "mount" | "pet" | "npc",
@@ -35,6 +38,11 @@ export function getUnofficialLabel(
   if (type === "pet") return "非官方宠物";
   if (type === "npc") return "非官方NPC";
   return "非官方";
+}
+
+export function getResourceTagLabel(tag: ResourceTagValue): string {
+  const option = RESOURCE_TAG_OPTIONS.find((o) => o.value === tag);
+  return option?.label ?? tag;
 }
 
 export type SortKey =
@@ -233,6 +241,14 @@ export function computeResourceTags(resource: Resource): ResourceTagValue[] {
   const tags: ResourceTagValue[] = [];
   if (!resource.official_db.name) {
     tags.push("unofficial");
+  }
+  for (const tag of resource.tags ?? []) {
+    if (
+      (tag === "unofficial" || tag === "no_official_data") &&
+      !tags.includes(tag)
+    ) {
+      tags.push(tag);
+    }
   }
   return tags;
 }
