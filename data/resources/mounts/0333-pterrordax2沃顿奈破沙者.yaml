@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 沃顿奈破沙者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_pterrordax2mount_purple
+  icon_name: inv_pterrordax2mount_purple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=275840
+  item_wowhead_url: https://www.wowhead.com/cn/item=161667
 dbc:
   creature_model_data:
     id: 104329
@@ -27,6 +29,7 @@ dbc:
     id: 80329
     name: 沃顿奈破沙者
     visual_id: 9140329
+    description: 召唤或解散这种坐骑。
   item:
     id: 161667
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤沃顿奈破沙者。 召唤或解散这种坐骑。
+    flavor_text: "账号通用\n图标：\n inv_pterrordax2mount_purple\n5%角色已完成\n英语：Reins of the Voldunai Dunescraper"
 db:
   creature_template:
     entry: 9140329

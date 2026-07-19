@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 飞天魔像
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_shreddermount
+  icon_name: ability_mount_shreddermount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=139192
+  item_wowhead_url: https://www.wowhead.com/cn/item=95416
 dbc:
   creature_model_data:
     id: 104375
@@ -36,6 +38,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会驾驭飞天魔像。这是一种飞行坐骑。 骑乘一座飞天魔像，使你能够以非常快的速度飞行。其机械爪做工精密，草药师还可以骑着它们来采集草药！这是一种飞行坐骑。
 db:
   creature_template:
     entry: 9140375

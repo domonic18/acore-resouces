@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 挑战者的作战雪人
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_misc_pet_pandaren_yeti
+  icon_name: inv_misc_pet_pandaren_yeti
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171848
+  item_wowhead_url: https://www.wowhead.com/cn/item=116791
 dbc:
   creature_model_data:
     id: 104313
@@ -27,6 +29,7 @@ dbc:
     id: 80313
     name: 挑战者的作战雪人
     visual_id: 9140313
+    description: 召唤或解散你的挑战者的作战雪人。
   item:
     id: 116791
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的挑战者的作战雪人。
+    flavor_text: 幸亏它们跑得够快，可以把自己的臭味甩在身后。
 db:
   creature_template:
     entry: 9140313

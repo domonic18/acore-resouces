@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 翠绿熊猫人凤凰
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_pandarenphoenix_yellow
+  icon_name: ability_mount_pandarenphoenix_yellow
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=132118
+  item_wowhead_url: https://www.wowhead.com/cn/item=90711
 dbc:
   creature_model_data:
     id: 104299
@@ -27,6 +29,7 @@ dbc:
     id: 80299
     name: 翠绿熊猫人凤凰
     visual_id: 9140299
+    description: 召唤或解散一头可供骑乘的翠绿熊猫人凤凰。这是一种飞行坐骑。
   item:
     id: 90711
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这是一种飞行坐骑。 召唤或解散一头可供骑乘的翠绿熊猫人凤凰。这是一种飞行坐骑。
 db:
   creature_template:
     entry: 9140299
