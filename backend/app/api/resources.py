@@ -29,6 +29,8 @@ class ResourceUpdateRequest(BaseModel):
     name: str | None = None
     icon_name: str | None = None
     spell_icon_name: str | None = None
+    spell_wowhead_url: str | None = None
+    item_wowhead_url: str | None = None
     mount_type: str | None = None
     star_rating: str | None = None
     subtype: str | None = None
@@ -122,6 +124,10 @@ def update_resource_endpoint(
         resource.official_db.icon_name = body.icon_name
     if "spell_icon_name" in body.model_fields_set:
         resource.official_db.spell_icon_name = body.spell_icon_name
+    if "spell_wowhead_url" in body.model_fields_set:
+        resource.official_db.spell_wowhead_url = body.spell_wowhead_url
+    if "item_wowhead_url" in body.model_fields_set:
+        resource.official_db.item_wowhead_url = body.item_wowhead_url
     if "mount_type" in body.model_fields_set and resource.resource_type == "mount":
         resource.mount_type = body.mount_type
     if "star_rating" in body.model_fields_set and resource.resource_type == "mount":
