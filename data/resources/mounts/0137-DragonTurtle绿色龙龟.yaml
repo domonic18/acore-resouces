@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 巨型棕色龙龟
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_pandaranmountepicbrown
+  icon_name: ability_mount_pandaranmountepicbrown
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127308
+  item_wowhead_url: https://www.wowhead.com/item=87804
 dbc:
   creature_model_data:
     id: 104132
@@ -27,6 +29,7 @@ dbc:
     id: 80132
     name: 巨型棕色龙龟
     visual_id: 9140132
+    description: 召唤或解散一只可供骑乘的巨型棕色龙龟。
   item:
     id: 87804
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的巨型棕色龙龟。
 db:
   creature_template:
     entry: 9140132

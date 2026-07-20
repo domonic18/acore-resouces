@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 末日迷沼飞虫
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_devourersmallmount_dark
+  icon_name: inv_devourersmallmount_dark
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=332905
+  item_wowhead_url: https://www.wowhead.com/cn/item=180582
 dbc:
   creature_model_data:
     id: 104108
@@ -27,6 +29,7 @@ dbc:
     id: 80108
     name: 末日迷沼飞虫
     visual_id: 9140108
+    description: 召唤或解散这种坐骑。
   item:
     id: 180582
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤末日迷沼飞虫。 召唤或解散这种坐骑。
+    flavor_text: 这些会飞的吞噬者穿过传送门而来，除此以外人们对它们知之甚少。它们在雷文德斯的末日迷沼安家落户，以那里潜藏的心能为食。
 db:
   creature_template:
     entry: 9140108

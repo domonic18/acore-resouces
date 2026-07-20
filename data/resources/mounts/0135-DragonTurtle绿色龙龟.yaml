@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 巨型绿色龙龟
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_pandaranmountepic
+  icon_name: ability_mount_pandaranmountepic
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127293
+  item_wowhead_url: https://www.wowhead.com/cn/item=87801
 dbc:
   creature_model_data:
     id: 104130
@@ -27,8 +29,9 @@ dbc:
     id: 80130
     name: 巨型绿色龙龟
     visual_id: 9140130
+    description: 召唤或解散一只可供骑乘的巨型绿色龙龟。
   item:
-    id: 91012
+    id: 87801
     class: 15
     subclass: 5
     material: -1
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的巨型绿色龙龟。
 db:
   creature_template:
     entry: 9140130
@@ -52,7 +56,7 @@ db:
   creature_model_info:
     display_id: 140130
   item_template:
-    entry: 91012
+    entry: 87801
     name: 巨型绿色龙龟
     spellid_2: 80130
     Quality: 3
