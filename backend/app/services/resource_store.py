@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
 
@@ -39,8 +39,8 @@ def _file_timestamps(path: Path) -> tuple[datetime | None, datetime | None]:
         stat = path.stat()
         created = getattr(stat, "st_birthtime", stat.st_ctime)
         return (
-            datetime.fromtimestamp(created, tz=timezone.utc),
-            datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc),
+            datetime.fromtimestamp(created, tz=UTC),
+            datetime.fromtimestamp(stat.st_mtime, tz=UTC),
         )
     except OSError:
         return None, None

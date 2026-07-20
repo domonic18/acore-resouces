@@ -139,7 +139,8 @@ def validate_resource(
             continue
         if not r.model_folder:
             errors.append(f"ID={r.id} 缺少 model_folder")
-        if not r.official_db.name:
+        tags = getattr(r, "tags", None) or []
+        if not r.official_db.name and "no_official_data" not in tags:
             errors.append(f"ID={r.id} 缺少 official_db.name")
 
         for check in check_resource_relationships(r):

@@ -9,6 +9,12 @@ from app.services import wowhead
 app = typer.Typer(help="Wowhead 官方数据查询")
 
 
+@app.command("lookup-pet", help="查询 Wowhead 宠物官方数据（自动回退 WotLK/零售版与中英文）")
+def lookup_pet(query: str = typer.Argument(..., help="宠物中文或英文名称")) -> None:
+    """以 JSON 格式输出 Wowhead 宠物查询结果。"""
+    print(wowhead.search_pet_json(query))
+
+
 @app.command("lookup-mount", help="查询 Wowhead 坐骑官方数据（自动回退 WotLK/零售版与中英文）")
 def lookup_mount(query: str = typer.Argument(..., help="坐骑中文或英文名称")) -> None:
     """以 JSON 格式输出 Wowhead 查询结果。"""

@@ -631,3 +631,295 @@ def search_mount_json(query: str) -> str:
         JSON 字符串，便于 CLI 直接打印。
     """
     return json.dumps(search_mount(query), ensure_ascii=False, indent=2)
+
+
+def _find_pet_item_link(
+    page: Page,
+    query: str,
+    prefixes: list[str],
+) -> str | None:
+    """在搜索结果页定位第一个宠物物品（学习物品）链接。"""
+    links = page.locator("a[href*='/item=']").all()
+    query_lower = query.lower()
+
+    # 优先匹配链接文本包含查询词
+    for link in links:
+        href = link.get_attribute("href")
+        if not href:
+            continue
+        if any(href.startswith(prefix) for prefix in prefixes):
+            text = (link.inner_text() or "").strip()
+            if query_lower in text.lower():
+                return href
+
+    # 其次匹配“教你学会召唤”/Teaches companion 等宠物物品提示
+    for link in links:
+        href = link.get_attribute("href")
+        if not href:
+            continue
+        if any(href.startswith(prefix) for prefix in prefixes):
+            text = (link.inner_text() or "").strip()
+            if "companion" in text.lower() or "宠物" in text or "伙伴" in text:
+                return href
+
+    # 最后返回第一个符合前缀的链接
+    for link in links:
+        href = link.get_attribute("href")
+        if href and any(href.startswith(prefix) for prefix in prefixes):
+            return href
+
+    return None
+
+
+def _find_pet_npc_link(
+    page: Page,
+    query: str,
+    prefixes: list[str],
+) -> str | None:
+    """在搜索结果页定位第一个宠物 NPC 链接。"""
+    links = page.locator("a[href*='/npc=']").all()
+    query_lower = query.lower()
+
+    for link in links:
+        href = link.get_attribute("href")
+        if not href:
+            continue
+        if any(href.startswith(prefix) for prefix in prefixes):
+            text = (link.inner_text() or "").strip()
+            if query_lower in text.lower():
+                return href
+
+    for link in links:
+        href = link.get_attribute("href")
+        if href and any(href.startswith(prefix) for prefix in prefixes):
+            return href
+
+    return None
+
+
+def _parse_pet_item_page(
+    page: Page,
+    query: str,
+    expansion: str,
+    locale: str,
+) -> dict[str, object]:
+    """解析宠物物品详情页，提取字段。"""
+    body_text = page.inner_text("body")
+    name = _safe_inner_text(page.locator("h1").first) or query
+    item_id = _extract_id_from_href(page.url, "item")
+
+    name_en = _extract_english_name(body_text)
+    icon_name = _extract_icon_name(body_text)
+    item_description = _extract_item_description(body_text)
+    flavor_text = _extract_flavor_text(body_text)
+
+    if locale == "en":
+        icon_name = _extract_icon_name_en(body_text) or icon_name
+        item_description = _extract_item_description_en(body_text) or item_description
+        flavor_text = _extract_flavor_text_en(body_text) or flavor_text
+        name_en = name_en or name
+
+    # 尝试从物品页提取相关 spell/npc 信息
+    spell_id: int | None = None
+    npc_id: int | None = None
+    for link in page.locator("a[href*='/spell=']").all():
+        href = link.get_attribute("href")
+        if href:
+            spell_id = _extract_id_from_href(href, "spell")
+            if spell_id:
+                break
+    for link in page.locator("a[href*='/npc=']").all():
+        href = link.get_attribute("href")
+        if href:
+            npc_id = _extract_id_from_href(href, "npc")
+            if npc_id:
+                break
+
+    return {
+        "name_zh": name if locale == "zh" else None,
+        "name_en": name_en,
+        "icon_name": icon_name,
+        "item_id": item_id,
+        "item_wowhead_url": _item_wowhead_url(item_id, expansion, locale),
+        "item_description": item_description,
+        "flavor_text": flavor_text,
+        "spell_id": spell_id,
+        "npc_id": npc_id,
+    }
+
+
+def _parse_pet_npc_page(
+    page: Page,
+    locale: str,
+) -> dict[str, object]:
+    """解析宠物 NPC 详情页，补全图标与描述。"""
+    body_text = page.inner_text("body")
+    icon_name = _extract_icon_name(body_text)
+    if locale == "en":
+        icon_name = _extract_icon_name_en(body_text) or icon_name
+    return {"icon_name": icon_name}
+
+
+def _search_pet_single(query: str, expansion: str, locale: str) -> dict:
+    """单次查询：指定版本与语言。"""
+    result: dict[str, object] = {
+        "query": query,
+        "expansion": expansion,
+        "locale": locale,
+        "url": None,
+        "name_zh": None,
+        "name_en": None,
+        "icon_name": None,
+        "spell_id": None,
+        "npc_id": None,
+        "item_id": None,
+        "item_wowhead_url": None,
+        "item_description": None,
+        "flavor_text": None,
+        "source": None,
+        "confidence": "low",
+        "error": None,
+    }
+
+    config = EXPANSIONS[expansion]
+    item_prefixes = config["item_prefixes"] if locale == "zh" else [config["item_prefixes"][-1]]
+    npc_prefixes = config["item_prefixes"] if locale == "zh" else [config["item_prefixes"][-1]]
+
+    try:
+        page = _new_browser_page()
+        try:
+            search_url = _build_search_url(query, expansion, locale)
+            _goto_with_retry(page, search_url)
+
+            item_href = _find_pet_item_link(page, query, item_prefixes)
+            if not item_href:
+                result["error"] = f"未在 {expansion} {locale} 搜索结果中找到宠物物品链接"
+                return result
+
+            item_href = _make_absolute_url(item_href, locale)
+            _goto_with_retry(page, item_href)
+            result["url"] = page.url
+
+            parsed = _parse_pet_item_page(page, query, expansion, locale)
+            result.update(parsed)
+
+            # 若物品页图标缺失，尝试取 NPC 页补全
+            if not result.get("icon_name"):
+                npc_href = _find_pet_npc_link(page, query, npc_prefixes)
+                if npc_href:
+                    npc_href = _make_absolute_url(npc_href, locale)
+                    _goto_with_retry(page, npc_href)
+                    npc_data = _parse_pet_npc_page(page, locale)
+                    if npc_data.get("icon_name"):
+                        result["icon_name"] = npc_data["icon_name"]
+
+            source = _extract_source(page.inner_text("body"))
+            if locale == "en":
+                source = _extract_source_en(page.inner_text("body")) or source
+            result["source"] = source
+
+            confidence = "low"
+            if result["name_en"] and result["item_description"]:
+                confidence = "high"
+            elif result["name_zh"] or result["name_en"]:
+                confidence = "medium"
+            result["confidence"] = confidence
+
+        finally:
+            _close_browser_page(page)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("查询 Wowhead 宠物时发生错误")
+        result["error"] = f"查询异常: {exc}"
+
+    return result
+
+
+def _fetch_pet_item_cn(item_id: int) -> dict[str, object]:
+    """根据 item_id 获取零售版中文物品页数据，用于补全中文名称。"""
+    result: dict[str, object] = {
+        "name_zh": None,
+        "icon_name": None,
+        "item_description": None,
+        "flavor_text": None,
+        "source": None,
+        "url": None,
+        "item_wowhead_url": None,
+        "error": None,
+    }
+
+    try:
+        page = _new_browser_page()
+        try:
+            url = f"https://www.wowhead.com/cn/item={item_id}?locale=zh"
+            _goto_with_retry(page, url)
+            parsed = _parse_pet_item_page(page, "", "retail", "zh")
+            result.update(parsed)
+            result["url"] = page.url
+            result["item_wowhead_url"] = _item_wowhead_url(item_id, "retail", "zh")
+            result["source"] = _extract_source(page.inner_text("body")) or result.get("source")
+        finally:
+            _close_browser_page(page)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("获取宠物中文物品页失败: %s", exc)
+        result["error"] = f"查询异常: {exc}"
+
+    return result
+
+
+def search_pet(query: str) -> dict:
+    """查询 Wowhead 获取宠物数据，自动回退版本与语言。
+
+    回退顺序：
+    1. WotLK 简体中文；
+    2. 零售版简体中文；
+    3. 零售版英文，若成功再用 item_id 取回零售版中文数据核对中文名称。
+
+    Args:
+        query: 宠物中文或英文名称。
+
+    Returns:
+        包含查询结果的字典；失败时包含 `error` 字段。
+    """
+    # 1. WotLK 中文
+    result = _search_pet_single(query, "wotlk", "zh")
+    if not result.get("error"):
+        return result
+
+    # 2. 零售版中文
+    result = _search_pet_single(query, "retail", "zh")
+    if not result.get("error"):
+        return result
+
+    # 3. 零售版英文
+    result = _search_pet_single(query, "retail", "en")
+    if not result.get("error"):
+        item_id = result.get("item_id")
+        if item_id:
+            cn_data = _fetch_pet_item_cn(int(item_id))
+            if not cn_data.get("error"):
+                result["name_zh"] = cn_data.get("name_zh") or result.get("name_zh")
+                result["icon_name"] = cn_data.get("icon_name") or result.get("icon_name")
+                result["item_description"] = cn_data.get("item_description") or result.get(
+                    "item_description"
+                )
+                result["flavor_text"] = cn_data.get("flavor_text") or result.get("flavor_text")
+                result["url"] = cn_data.get("url") or result.get("url")
+                result["item_wowhead_url"] = cn_data.get("item_wowhead_url") or result.get(
+                    "item_wowhead_url"
+                )
+                result["source"] = cn_data.get("source") or result.get("source")
+        return result
+
+    return result
+
+
+def search_pet_json(query: str) -> str:
+    """查询 Wowhead 宠物并以 JSON 字符串返回结果。
+
+    Args:
+        query: 宠物中文或英文名称。
+
+    Returns:
+        JSON 字符串，便于 CLI 直接打印。
+    """
+    return json.dumps(search_pet(query), ensure_ascii=False, indent=2)
