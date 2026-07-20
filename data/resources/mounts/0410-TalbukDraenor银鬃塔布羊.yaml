@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 暗鬃冲锋者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_talbukdraenormount
+  icon_name: ability_mount_talbukdraenormount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171829
+  item_wowhead_url: https://www.wowhead.com/cn/item=116772
 dbc:
   creature_model_data:
     id: 104406
@@ -27,6 +29,7 @@ dbc:
     id: 80406
     name: 暗鬃冲锋者
     visual_id: 9140406
+    description: 召唤或解散你的暗鬃冲锋者。
   item:
     id: 116772
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的暗鬃冲锋者。
+    flavor_text: 德莱尼诗人喜欢把这种塔布羊的颜色比作月光照在灰色的森林上投下的阴影。
 db:
   creature_template:
     entry: 9140406

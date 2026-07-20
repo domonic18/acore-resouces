@@ -68,3 +68,5 @@ db:
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 双头狗
+tags:
+- no_official_data

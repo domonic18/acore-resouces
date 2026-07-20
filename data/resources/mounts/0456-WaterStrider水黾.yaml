@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 天蓝水黾
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_waterstridermount
+  icon_name: ability_mount_waterstridermount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=118089
+  item_wowhead_url: https://www.wowhead.com/cn/item=81354
 dbc:
   creature_model_data:
     id: 104452
@@ -27,6 +29,7 @@ dbc:
     id: 80452
     name: 天蓝水黾
     visual_id: 9140452
+    description: 召唤或解散一只可供骑乘的天蓝水黾。这种坐骑可以在除战场之外的水面上行走，直到受到伤害为止。
   item:
     id: 81354
     class: 15
@@ -36,6 +39,7 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。这种坐骑可以在除战场之外的水面上行走。 召唤或解散一只可供骑乘的天蓝水黾。这种坐骑可以在除战场之外的水面上行走，直到受到伤害为止。
 db:
   creature_template:
     entry: 9140452

@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 靛蓝沼泽跃蛙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ivn_toadloamount
+  icon_name: ivn_toadloamount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=288587
+  item_wowhead_url: https://www.wowhead.com/cn/item=166442
 dbc:
   creature_model_data:
     id: 104414
@@ -27,6 +29,7 @@ dbc:
     id: 80414
     name: 靛蓝沼泽跃蛙
     visual_id: 9140414
+    description: 召唤或解散一只靛蓝沼泽跃蛙。
   item:
     id: 166442
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只靛蓝沼泽跃蛙。
+    flavor_text: 每一步都会发出咯吱声？这可是卖点！
 db:
   creature_template:
     entry: 9140414
