@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 孢林抱齿兽
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_bloodtrollbeast_mount_pale
+  icon_name: inv_bloodtrollbeast_mount_pale
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=273541
+  item_wowhead_url: https://www.wowhead.com/cn/item=160829
 dbc:
   creature_model_data:
     id: 104075
@@ -27,6 +29,7 @@ dbc:
     id: 80075
     name: 孢林抱齿兽
     visual_id: 9140075
+    description: 召唤或解散你的孢林抱齿兽坐骑。
   item:
     id: 160829
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤一头孢林抱齿兽。 召唤或解散你的孢林抱齿兽坐骑。
+    flavor_text: "账号通用\n图标：\n inv_archaeology_ogres_chimera_riding_harness\n4%角色已完成\n英语：Underrot Crawg Harness"
 db:
   creature_template:
     entry: 9140075

@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 灰白土狼
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_hyena2mount_light
+  icon_name: inv_hyena2mount_light
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=237287
+  item_wowhead_url: https://www.wowhead.com/cn/item=161773
 dbc:
   creature_model_data:
     id: 104443
@@ -27,6 +29,7 @@ dbc:
     id: 80443
     name: 灰白土狼
     visual_id: 9140443
+    description: 召唤或解散你的灰白土狼。
   item:
     id: 161773
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤灰白土狼。 召唤或解散你的灰白土狼。
+    flavor_text: "账号通用\n图标：\n inv_hyena2mount_light\n27%角色已完成\n英语：Reins of the Alabaster Hyena"
 db:
   creature_template:
     entry: 9140443
