@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 地穴加尔贡
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_deathwargmountwhite
+  icon_name: inv_deathwargmountwhite
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=332932
+  item_wowhead_url: https://www.wowhead.com/cn/item=180945
 dbc:
   creature_model_data:
     id: 104102
@@ -27,6 +29,7 @@ dbc:
     id: 80102
     name: 地穴加尔贡
     visual_id: 9140102
+    description: 召唤或解散这种坐骑。
   item:
     id: 180945
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 照管者的忠犬，会在地穴和古墓中巡逻，威慑想擅闯或者逃离的人。
 db:
   creature_template:
     entry: 9140102
