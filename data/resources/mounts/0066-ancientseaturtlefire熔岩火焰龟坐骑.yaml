@@ -58,3 +58,5 @@ db:
 mount_type: 水上坐骑
 star_rating: 四星
 subtype: 龟
+tags:
+- no_official_data
