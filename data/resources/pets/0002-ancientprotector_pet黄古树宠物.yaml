@@ -9,16 +9,23 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 繁花古树
+  spell_icon_name: inv_pet_ancientprotector
+  icon_name: inv_pet_ancientprotector
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 繁花古树
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的繁花古树。该宠物会随着四季变换而改变。 [Gather info with the Wowhead Client]
+  item:
+    id: 98550
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的繁花古树。该宠物会随着四季变换而改变。 [Gather info with the Wowhead Client]
 db:
-  creature_template: {}
+  creature_template:
+    name: 繁花古树
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 98550
+    name: 繁花古树
 rarity: 二星

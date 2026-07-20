@@ -9,16 +9,23 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 矮脚幼犬
+  spell_icon_name: inv_corgi2
+  icon_name: inv_corgi2
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 矮脚幼犬
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
+  item:
+    id: 136925
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
 db:
-  creature_template: {}
+  creature_template:
+    name: 矮脚幼犬
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 136925
+    name: 矮脚幼犬
 rarity: 二星

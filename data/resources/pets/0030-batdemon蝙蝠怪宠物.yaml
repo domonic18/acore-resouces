@@ -9,16 +9,23 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 吸血蝙蝠宝宝
+  spell_icon_name: ability_hunter_pet_bat
+  icon_name: ability_hunter_pet_bat
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 吸血蝙蝠宝宝
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的吸血蝙蝠宝宝。
+  item:
+    id: 38658
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的吸血蝙蝠宝宝。
 db:
-  creature_template: {}
+  creature_template:
+    name: 吸血蝙蝠宝宝
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 38658
+    name: 吸血蝙蝠宝宝
 rarity: 二星
