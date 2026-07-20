@@ -12,6 +12,8 @@ official_db:
   name: 犰狳幼崽
   spell_icon_name: inv_misc_babyarmadillopet
   icon_name: inv_misc_babyarmadillopet
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=89670
+  item_wowhead_url: https://www.wowhead.com/cn/item=63398
 dbc:
   creature_model_data: {}
   creature_display_info: {}

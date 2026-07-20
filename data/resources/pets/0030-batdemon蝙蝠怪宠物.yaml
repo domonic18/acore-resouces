@@ -12,6 +12,8 @@ official_db:
   name: 吸血蝙蝠宝宝
   spell_icon_name: ability_hunter_pet_bat
   icon_name: ability_hunter_pet_bat
+  spell_wowhead_url: https://www.wowhead.com/wotlk/cn/spell=51851
+  item_wowhead_url: https://www.wowhead.com/wotlk/cn/item=38658
 dbc:
   creature_model_data: {}
   creature_display_info: {}

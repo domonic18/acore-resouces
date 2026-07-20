@@ -12,6 +12,8 @@ official_db:
   name: 矮脚幼犬
   spell_icon_name: inv_corgi2
   icon_name: inv_corgi2
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=210701
+  item_wowhead_url: https://www.wowhead.com/cn/item=136925
 dbc:
   creature_model_data: {}
   creature_display_info: {}

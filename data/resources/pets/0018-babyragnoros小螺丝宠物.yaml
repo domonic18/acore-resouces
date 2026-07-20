@@ -12,6 +12,8 @@ official_db:
   name: 小拉格
   spell_icon_name: achievement_boss_ragnaros
   icon_name: achievement_boss_ragnaros
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=95787
+  item_wowhead_url: https://www.wowhead.com/cn/item=68385
 dbc:
   creature_model_data: {}
   creature_display_info: {}

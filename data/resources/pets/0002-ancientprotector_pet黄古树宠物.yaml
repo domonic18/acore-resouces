@@ -12,6 +12,8 @@ official_db:
   name: 繁花古树
   spell_icon_name: inv_pet_ancientprotector
   icon_name: inv_pet_ancientprotector
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=142880
+  item_wowhead_url: https://www.wowhead.com/cn/item=98550
 dbc:
   creature_model_data: {}
   creature_display_info: {}
