@@ -39,6 +39,12 @@ export function useResourceForm(resource?: Resource) {
   const [spellIcon, setSpellIcon] = useState(
     resource?.official_db.spell_icon_name || "",
   );
+  const [itemWowheadUrl, setItemWowheadUrl] = useState(
+    resource?.official_db.item_wowhead_url || "",
+  );
+  const [spellWowheadUrl, setSpellWowheadUrl] = useState(
+    resource?.official_db.spell_wowhead_url || "",
+  );
   const [itemDbc, setItemDbc] = useState<Record<string, unknown>>(
     resource?.dbc.item ?? {},
   );
@@ -57,6 +63,8 @@ export function useResourceForm(resource?: Resource) {
     setForm(buildForm(resource));
     setItemIcon(resource.official_db.icon_name || "");
     setSpellIcon(resource.official_db.spell_icon_name || "");
+    setItemWowheadUrl(resource.official_db.item_wowhead_url || "");
+    setSpellWowheadUrl(resource.official_db.spell_wowhead_url || "");
     setItemDbc(resource.dbc.item ?? {});
     setItemDb(resource.db.item_template ?? {});
     setSpellDbc(resource.dbc.spell ?? {});
@@ -76,6 +84,10 @@ export function useResourceForm(resource?: Resource) {
     if (JSON.stringify(form) !== JSON.stringify(baseForm)) return true;
     if (itemIcon !== (resource.official_db.icon_name || "")) return true;
     if (spellIcon !== (resource.official_db.spell_icon_name || "")) return true;
+    if (itemWowheadUrl !== (resource.official_db.item_wowhead_url || ""))
+      return true;
+    if (spellWowheadUrl !== (resource.official_db.spell_wowhead_url || ""))
+      return true;
     if (JSON.stringify(itemDbc) !== JSON.stringify(resource.dbc.item ?? {}))
       return true;
     if (
@@ -90,7 +102,18 @@ export function useResourceForm(resource?: Resource) {
     )
       return true;
     return false;
-  }, [form, resource, itemIcon, spellIcon, itemDbc, itemDb, spellDbc, spellDb]);
+  }, [
+    form,
+    resource,
+    itemIcon,
+    spellIcon,
+    itemWowheadUrl,
+    spellWowheadUrl,
+    itemDbc,
+    itemDb,
+    spellDbc,
+    spellDb,
+  ]);
 
   const liveDbc = useMemo(
     () => ({
@@ -118,6 +141,10 @@ export function useResourceForm(resource?: Resource) {
     setItemIcon,
     spellIcon,
     setSpellIcon,
+    itemWowheadUrl,
+    setItemWowheadUrl,
+    spellWowheadUrl,
+    setSpellWowheadUrl,
     itemDbc,
     setItemDbc,
     itemDb,

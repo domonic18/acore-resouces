@@ -7,6 +7,8 @@ import { IconEditor } from "./IconEditor";
 interface SpellInfoSectionProps {
   spellIcon: string;
   setSpellIcon: (value: string) => void;
+  spellWowheadUrl: string;
+  setSpellWowheadUrl: (value: string) => void;
   setPickerTarget: (target: "item" | "spell") => void;
   iconNames: string[];
   spellDbc: Record<string, unknown>;
@@ -19,6 +21,8 @@ interface SpellInfoSectionProps {
 export function SpellInfoSection({
   spellIcon,
   setSpellIcon,
+  spellWowheadUrl,
+  setSpellWowheadUrl,
   setPickerTarget,
   iconNames,
   spellDbc,
@@ -56,6 +60,16 @@ export function SpellInfoSection({
             </FormGroup>
           </div>
         </div>
+
+        <FormGroup label="Wowhead 法术页 URL" compact={compact}>
+          <input
+            type="text"
+            className={cn(compact ? "form-input-compact" : "form-input")}
+            value={spellWowheadUrl}
+            onChange={(e) => setSpellWowheadUrl(e.target.value)}
+            placeholder="https://www.wowhead.com/spell=..."
+          />
+        </FormGroup>
 
         <div className="grid gap-3 lg:grid-cols-2">
           <div className="rounded-md border border-border bg-bg-surface/50 p-3">

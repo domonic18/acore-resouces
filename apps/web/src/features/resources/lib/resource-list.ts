@@ -239,15 +239,12 @@ export function pageButtons(
 
 export function computeResourceTags(resource: Resource): ResourceTagValue[] {
   const tags: ResourceTagValue[] = [];
-  if (!resource.official_db.name) {
-    tags.push("unofficial");
-  }
   for (const tag of resource.tags ?? []) {
     if (
       (tag === "unofficial" || tag === "no_official_data") &&
-      !tags.includes(tag)
+      !tags.includes("unofficial")
     ) {
-      tags.push(tag);
+      tags.push("unofficial");
     }
   }
   return tags;

@@ -8,6 +8,8 @@ interface SaveableState {
   form: FormState;
   itemIcon: string;
   spellIcon: string;
+  itemWowheadUrl: string;
+  spellWowheadUrl: string;
   itemDbc: Record<string, unknown>;
   itemDb: Record<string, unknown>;
   spellDbc: Record<string, unknown>;
@@ -29,8 +31,17 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
   });
 
   const handleSave = (resource: Resource, state: SaveableState) => {
-    const { form, itemIcon, spellIcon, itemDbc, itemDb, spellDbc, spellDb } =
-      state;
+    const {
+      form,
+      itemIcon,
+      spellIcon,
+      itemWowheadUrl,
+      spellWowheadUrl,
+      itemDbc,
+      itemDb,
+      spellDbc,
+      spellDb,
+    } = state;
 
     const update: ResourceUpdate = {};
     const baseline = buildForm(resource);
@@ -73,6 +84,12 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
     }
     if (spellIcon !== (resource.official_db.spell_icon_name || "")) {
       update.spell_icon_name = spellIcon || null;
+    }
+    if (itemWowheadUrl !== (resource.official_db.item_wowhead_url || "")) {
+      update.item_wowhead_url = itemWowheadUrl || null;
+    }
+    if (spellWowheadUrl !== (resource.official_db.spell_wowhead_url || "")) {
+      update.spell_wowhead_url = spellWowheadUrl || null;
     }
 
     if (JSON.stringify(itemDbc) !== JSON.stringify(resource.dbc.item ?? {})) {

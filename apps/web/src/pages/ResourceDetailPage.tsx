@@ -193,6 +193,8 @@ export function ResourceDetailPage() {
             <ItemInfoSection
               itemIcon={formState.itemIcon}
               setItemIcon={formState.setItemIcon}
+              itemWowheadUrl={formState.itemWowheadUrl}
+              setItemWowheadUrl={formState.setItemWowheadUrl}
               setPickerTarget={setPickerTarget}
               iconNames={iconNames}
               itemDbc={formState.itemDbc}
@@ -207,6 +209,8 @@ export function ResourceDetailPage() {
             <SpellInfoSection
               spellIcon={formState.spellIcon}
               setSpellIcon={formState.setSpellIcon}
+              spellWowheadUrl={formState.spellWowheadUrl}
+              setSpellWowheadUrl={formState.setSpellWowheadUrl}
               setPickerTarget={setPickerTarget}
               iconNames={iconNames}
               spellDbc={formState.spellDbc}

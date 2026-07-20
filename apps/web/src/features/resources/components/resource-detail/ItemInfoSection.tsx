@@ -19,6 +19,8 @@ import { normalizeInt } from "../../lib/detail-helpers";
 interface ItemInfoSectionProps {
   itemIcon: string;
   setItemIcon: (value: string) => void;
+  itemWowheadUrl: string;
+  setItemWowheadUrl: (value: string) => void;
   setPickerTarget: (target: "item" | "spell") => void;
   iconNames: string[];
   itemDbc: Record<string, unknown>;
@@ -31,6 +33,8 @@ interface ItemInfoSectionProps {
 export function ItemInfoSection({
   itemIcon,
   setItemIcon,
+  itemWowheadUrl,
+  setItemWowheadUrl,
   setPickerTarget,
   iconNames,
   itemDbc,
@@ -68,6 +72,16 @@ export function ItemInfoSection({
             </FormGroup>
           </div>
         </div>
+
+        <FormGroup label="Wowhead 物品页 URL" compact={compact}>
+          <input
+            type="text"
+            className={cn(compact ? "form-input-compact" : "form-input")}
+            value={itemWowheadUrl}
+            onChange={(e) => setItemWowheadUrl(e.target.value)}
+            placeholder="https://www.wowhead.com/item=..."
+          />
+        </FormGroup>
 
         <div className="grid gap-3 lg:grid-cols-2">
           <div className="rounded-md border border-border bg-bg-surface/50 p-3">
