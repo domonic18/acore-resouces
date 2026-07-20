@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 枯木恐翼蝠
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_hunter_pet_bat
+  icon_name: ability_hunter_pet_bat
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=279868
+  item_wowhead_url: https://www.wowhead.com/cn/item=163706
 dbc:
   creature_model_data:
     id: 104190
@@ -27,6 +29,7 @@ dbc:
     id: 80190
     name: 枯木恐翼蝠
     visual_id: 9140190
+    description: 召唤或解散这种坐骑。
   item:
     id: 163706
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: "账号通用\n图标：\n ability_hunter_pet_bat\n29%角色已完成\n英语：Witherbark Direwing"
 db:
   creature_template:
     entry: 9140190

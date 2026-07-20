@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 装甲刀脊野猪
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_giantboarmount_brown
+  icon_name: inv_giantboarmount_brown
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171630
+  item_wowhead_url: https://www.wowhead.com/cn/item=116669
 dbc:
   creature_model_data:
     id: 104186
@@ -27,6 +29,7 @@ dbc:
     id: 80186
     name: 装甲刀脊野猪
     visual_id: 9140186
+    description: 召唤或解散你的装甲刀脊野猪。
   item:
     id: 116669
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散你的装甲刀脊野猪。
+    flavor_text: 绝对、绝对、绝对不要让它闻到你身上有培根的味道。
 db:
   creature_template:
     entry: 9140186

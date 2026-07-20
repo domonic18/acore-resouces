@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 回廊潜行猎犬
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_jailerhoundmount_black
+  icon_name: inv_jailerhoundmount_black
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=344578
+  item_wowhead_url: https://www.wowhead.com/cn/item=184166
 dbc:
   creature_model_data:
     id: 104242
@@ -27,6 +29,7 @@ dbc:
     id: 80242
     name: 回廊潜行猎犬
     visual_id: 9140242
+    description: 召唤或解散这种坐骑。
   item:
     id: 184166
     class: 15
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 典狱长忠实的猎犬会在回廊里暗中潜行，搜索灵魂的气味。
 db:
   creature_template:
     entry: 9140242
