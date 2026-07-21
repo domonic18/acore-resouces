@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 诱惑魔女
+  spell_icon_name: ability_warlock_ancientgrimoire
+  icon_name: ability_warlock_ancientgrimoire
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=179835
+  item_wowhead_url: https://www.wowhead.com/cn/item=122110
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 诱惑魔女
+    description: 教你学会召唤诱惑魔女。 右键点击以召唤或解散你的诱惑魔女。
+  item:
+    id: 122110
+    description: 教你学会召唤诱惑魔女。 右键点击以召唤或解散你的诱惑魔女。
 db:
-  creature_template: {}
+  creature_template:
+    name: 诱惑魔女
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 122110
+    name: 热辣魔典
 rarity: 四星

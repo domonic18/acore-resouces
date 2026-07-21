@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 淘气机器人
+  spell_icon_name: inv_worserobot
+  icon_name: inv_worserobot
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=143703
+  item_wowhead_url: https://www.wowhead.com/cn/item=100905
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 淘气机器人
+    description: 教你学会召唤和解散这个小伙伴。 右键点击以召唤或解散你的淘气机器人。
+  item:
+    id: 100905
+    description: 教你学会召唤和解散这个小伙伴。 右键点击以召唤或解散你的淘气机器人。
 db:
-  creature_template: {}
+  creature_template:
+    name: 淘气机器人
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 100905
+    name: 淘气机器人
 rarity: 四星
