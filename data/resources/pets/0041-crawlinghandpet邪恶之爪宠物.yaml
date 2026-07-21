@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 蠕行之爪
+  spell_icon_name: inv_offhand_stratholme_a_02
+  icon_name: inv_offhand_stratholme_a_02
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=84263
+  item_wowhead_url: https://www.wowhead.com/cn/item=60847
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 蠕行之爪
+    description: Teaches you how to summon this companion. Right Click to summon and dismiss your crawling claw.
+  item:
+    id: 60847
+    description: Teaches you how to summon this companion. Right Click to summon and dismiss your crawling claw.
 db:
-  creature_template: {}
+  creature_template:
+    name: 蠕行之爪
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 60847
+    name: 蠕行之爪
 rarity: 二星
