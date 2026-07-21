@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 便携式火炮
+  spell_icon_name: ability_rogue_cannonballbarrage
+  icon_name: ability_rogue_cannonballbarrage
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=244345
+  item_wowhead_url: https://www.wowhead.com/cn/item=150739
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 便携式火炮
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散便携式火炮。
+  item:
+    id: 150739
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散便携式火炮。
+    flavor_text: The Tomb of Sargeras
 db:
-  creature_template: {}
+  creature_template:
+    name: 便携式火炮
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 150739
+    name: 便携式火炮
 rarity: 四星
