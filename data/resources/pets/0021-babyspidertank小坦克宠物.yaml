@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 迷你蜘蛛坦克
+  spell_icon_name: ability_mount_gyrocoptorelite
+  icon_name: ability_mount_gyrocoptorelite
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=286790
+  item_wowhead_url: https://www.wowhead.com/cn/item=165894
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 迷你蜘蛛坦克
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
+  item:
+    id: 165894
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
 db:
-  creature_template: {}
+  creature_template:
+    name: 迷你蜘蛛坦克
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 165894
+    name: 迷你蜘蛛坦克
 rarity: 四星
