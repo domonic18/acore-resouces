@@ -84,7 +84,7 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
-    title: `ACore 资源库 v${APP_VERSION}`,
+    title: `探险者宝库 v${APP_VERSION}`,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
