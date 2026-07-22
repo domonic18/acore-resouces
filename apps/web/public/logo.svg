@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- 宝箱主体 -->
+  <path
+    d="M4 12h24v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V12z"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linejoin="round"
+  />
+  <!-- 宝箱盖 -->
+  <path
+    d="M3 12l2.5-5h21L29 12H3z"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linejoin="round"
+  />
+  <!-- 箱锁 -->
+  <circle cx="16" cy="14" r="2.5" fill="currentColor" />
+  <!-- 资源宝石 -->
+  <path
+    d="M16 18l3 3-3 3-3-3 3-3z"
+    fill="currentColor"
+    opacity="0.85"
+  />
+</svg>

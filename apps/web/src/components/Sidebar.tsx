@@ -8,6 +8,8 @@ import {
   Settings,
 } from "lucide-react";
 import { cn } from "@/shared/utils";
+import { LogoIcon } from "@/shared/components/ui/LogoIcon";
+import { SHORT_VERSION } from "@/shared/config/version";
 
 interface NavItem {
   label: string;
@@ -62,12 +64,17 @@ export function Sidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-50 flex w-60 flex-col border-r border-border bg-bg-elevated">
       <div className="flex h-16 items-center gap-3 border-b border-border px-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-accent to-purple-500 text-sm font-bold text-white">
-          A
+        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-white">
+          <LogoIcon className="h-5 w-5" />
         </div>
-        <div>
-          <div className="text-[15px] font-bold tracking-tight">
-            acore-resouces
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <div className="text-[15px] font-bold tracking-tight truncate">
+              ACore 资源库
+            </div>
+            <span className="text-[10px] font-medium text-text-tertiary">
+              {SHORT_VERSION}
+            </span>
           </div>
           <div className="text-[10px] text-text-tertiary">
             AzerothCore 资源管理
