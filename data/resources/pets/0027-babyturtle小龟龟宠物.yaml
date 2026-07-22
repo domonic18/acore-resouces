@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 飞毛腿
+  spell_icon_name: inv_crate_03
+  icon_name: inv_crate_03
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=28738
+  item_wowhead_url: https://www.wowhead.com/cn/item=23002
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 飞毛腿
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散飞毛腿。
+  item:
+    id: 23002
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散飞毛腿。
+    flavor_text: Shadow of the Necropolis
 db:
-  creature_template: {}
+  creature_template:
+    name: 飞毛腿
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 23002
+    name: 乌龟盒
 rarity: 二星

@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 吸血蛛幼虫
+  spell_icon_name: inv_bloodticklarvaegreen
+  icon_name: inv_bloodticklarvaegreen
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=279216
+  item_wowhead_url: https://www.wowhead.com/cn/item=163500
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 吸血蛛幼虫
+    description: 教你学会召唤这种小伙伴。 右键点击召唤或解散吸血蛛幼虫。
+  item:
+    id: 163500
+    description: 教你学会召唤这种小伙伴。 右键点击召唤或解散吸血蛛幼虫。
 db:
-  creature_template: {}
+  creature_template:
+    name: 吸血蛛幼虫
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 163500
+    name: 吸血蛛幼虫
 rarity: 一星

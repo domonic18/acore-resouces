@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 艾米苟萨
+  spell_icon_name: inv_misc_head_dragon_blue
+  icon_name: inv_misc_head_dragon_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=193388
+  item_wowhead_url: https://www.wowhead.com/cn/item=129178
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 艾米苟萨
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散艾米苟萨。
+  item:
+    id: 129178
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散艾米苟萨。
 db:
-  creature_template: {}
+  creature_template:
+    name: 艾米苟萨
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 129178
+    name: 艾米苟萨
 rarity: 四星

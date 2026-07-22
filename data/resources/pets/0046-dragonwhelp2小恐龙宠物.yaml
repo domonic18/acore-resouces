@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 蓝龙宝宝
+  spell_icon_name: inv_misc_head_dragon_blue
+  icon_name: inv_misc_head_dragon_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=10696
+  item_wowhead_url: https://www.wowhead.com/cn/item=34535
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 蓝龙宝宝
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的龙宝宝。
+  item:
+    id: 34535
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的龙宝宝。
+    flavor_text: The Gods of Zul'Aman
 db:
-  creature_template: {}
+  creature_template:
+    name: 蓝龙宝宝
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 34535
+    name: 蓝龙宝宝
 rarity: 三星

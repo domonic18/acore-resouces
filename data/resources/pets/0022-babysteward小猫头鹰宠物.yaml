@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 棕色猫头鹰
+  spell_icon_name: ability_eyeoftheowl
+  icon_name: ability_eyeoftheowl
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=10707
+  item_wowhead_url: https://www.wowhead.com/cn/item=8500
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 棕色猫头鹰
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的猫头鹰。
+  item:
+    id: 8500
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的猫头鹰。
+    flavor_text: Shadow of the Necropolis
 db:
-  creature_template: {}
+  creature_template:
+    name: 棕色猫头鹰
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 8500
+    name: 棕色猫头鹰
 rarity: 二星
