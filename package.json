@@ -7,6 +7,7 @@
     "dev:web": "cd apps/web && npm run dev",
     "dev:desktop": "cd apps/desktop && npm run dev",
     "build:web": "cd apps/web && npm run build",
+    "build:ci:web": "cd apps/web && npm run build:ci",
     "build:desktop": "cd apps/desktop && npm run build",
     "type-check:web": "cd apps/web && npm run type-check",
     "lint:web": "cd apps/web && npm run lint"
