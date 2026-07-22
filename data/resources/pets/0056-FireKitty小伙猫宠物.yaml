@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 燃烬猫仔
+  spell_icon_name: inv_misc_firekitty
+  icon_name: inv_misc_firekitty
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=134538
+  item_wowhead_url: https://www.wowhead.com/cn/item=92707
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 燃烬猫仔
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的燃烬猫仔。
+  item:
+    id: 92707
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的燃烬猫仔。
 db:
-  creature_template: {}
+  creature_template:
+    name: 燃烬猫仔
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 92707
+    name: 燃烬猫仔
 rarity: 五星

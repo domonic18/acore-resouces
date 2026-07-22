@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 赞达拉撕踝者
+  spell_icon_name: inv_zandalaribabyraptorblue
+  icon_name: inv_zandalaribabyraptorblue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=139932
+  item_wowhead_url: https://www.wowhead.com/cn/item=95422
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 赞达拉撕踝者
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的赞达拉雏龙。
+  item:
+    id: 95422
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的赞达拉雏龙。
 db:
-  creature_template: {}
+  creature_template:
+    name: 赞达拉撕踝者
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 95422
+    name: 赞达拉撕踝者
 rarity: 三星

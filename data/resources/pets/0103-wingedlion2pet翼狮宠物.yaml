@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 守护者宝宝
+  spell_icon_name: inv_pet_wingedlion
+  icon_name: inv_pet_wingedlion
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=98736
+  item_wowhead_url: https://www.wowhead.com/cn/item=69847
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 守护者宝宝
+    description: 教你学会召唤这种小伙伴。24小时后解除绑定。 右键点击以召唤或解散你的守护者宝宝。
+  item:
+    id: 69847
+    description: 教你学会召唤这种小伙伴。24小时后解除绑定。 右键点击以召唤或解散你的守护者宝宝。
+    flavor_text: Rise of the Zandalari
 db:
-  creature_template: {}
+  creature_template:
+    name: 守护者宝宝
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 69847
+    name: 守护者宝宝
 rarity: 三星
