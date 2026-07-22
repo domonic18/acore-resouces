@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 小达尔特
+  spell_icon_name: ability_hunter_pet_raptor
+  icon_name: ability_hunter_pet_raptor
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=67413
+  item_wowhead_url: https://www.wowhead.com/cn/item=48112
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 小达尔特
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小龙。
+  item:
+    id: 48112
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小龙。
 db:
-  creature_template: {}
+  creature_template:
+    name: 小达尔特
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 48112
+    name: 小达尔特
 rarity: 一星

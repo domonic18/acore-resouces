@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 幼狐
+  spell_icon_name: inv_misc_foxkit
+  icon_name: inv_misc_foxkit
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=90637
+  item_wowhead_url: https://www.wowhead.com/cn/item=64403
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 幼狐
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的幼狐。
+  item:
+    id: 64403
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的幼狐。
 db:
-  creature_template: {}
+  creature_template:
+    name: 幼狐
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 64403
+    name: 幼狐
 rarity: 三星
