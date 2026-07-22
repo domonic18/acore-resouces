@@ -22,3 +22,5 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 四星
+tags:
+- no_official_data

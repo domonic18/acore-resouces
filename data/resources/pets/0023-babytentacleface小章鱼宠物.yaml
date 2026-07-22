@@ -22,3 +22,5 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 二星
+tags:
+- no_official_data
