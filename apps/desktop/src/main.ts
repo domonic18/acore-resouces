@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron';
 import { spawn, type ChildProcess } from 'child_process';
 import path from 'path';
+import fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 let backendProcess: ChildProcess | null = null;
@@ -10,6 +11,16 @@ const BACKEND_COMMAND =
   process.env.ACORE_BACKEND_COMMAND || 'uv run uvicorn backend.app.main:app --port 8000';
 const BACKEND_URL = process.env.ACORE_BACKEND_URL || 'http://localhost:8000';
 const FRONTEND_DEV_URL = process.env.ACORE_FRONTEND_URL || 'http://localhost:5173';
+
+function getAppVersion(): string {
+  const versionFile = path.join(PROJECT_ROOT, 'VERSION');
+  if (fs.existsSync(versionFile)) {
+    return fs.readFileSync(versionFile, 'utf-8').trim();
+  }
+  return app.getVersion() || '0.1.0';
+}
+
+const APP_VERSION = getAppVersion();
 
 function log(message: string) {
   const ts = new Date().toISOString();
@@ -73,6 +84,7 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
+    title: `ACore 资源库 v${APP_VERSION}`,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
