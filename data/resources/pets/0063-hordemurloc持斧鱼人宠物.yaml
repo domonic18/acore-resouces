@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 莫叽姆斯的小矛
+  spell_icon_name: inv_spear_05
+  icon_name: inv_spear_05
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=63318
+  item_wowhead_url: https://www.wowhead.com/cn/item=46892
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 莫叽姆斯的小矛
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散角斗士莫叽姆斯。
+  item:
+    id: 46892
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散角斗士莫叽姆斯。
 db:
-  creature_template: {}
+  creature_template:
+    name: 莫叽姆斯的小矛
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 46892
+    name: 莫叽姆斯的小矛
 rarity: 三星

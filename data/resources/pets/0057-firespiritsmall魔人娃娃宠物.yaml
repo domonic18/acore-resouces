@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 熊猫人火灵
+  spell_icon_name: inv_pet_pandarenelemental_fire
+  icon_name: inv_pet_pandarenelemental_fire
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=134892
+  item_wowhead_url: https://www.wowhead.com/cn/item=92798
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 熊猫人火灵
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的熊猫人火灵。
+  item:
+    id: 92798
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的熊猫人火灵。
 db:
-  creature_template: {}
+  creature_template:
+    name: 熊猫人火灵
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 92798
+    name: 熊猫人火灵
 rarity: 五星

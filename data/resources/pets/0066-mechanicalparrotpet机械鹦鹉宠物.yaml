@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 乱羽
+  spell_icon_name: inv_mechanicalparrotpet
+  icon_name: inv_mechanicalparrotpet
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=286474
+  item_wowhead_url: https://www.wowhead.com/cn/item=165845
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 乱羽
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散乱羽。
+  item:
+    id: 165845
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散乱羽。
 db:
-  creature_template: {}
+  creature_template:
+    name: 乱羽
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 165845
+    name: 乱羽
 rarity: 三星

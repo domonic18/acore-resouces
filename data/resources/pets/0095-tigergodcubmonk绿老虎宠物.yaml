@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
-  spell_icon_name: null
-  icon_name: null
+  name: 班福，班禄的幼崽
+  spell_icon_name: inv_tigergodcubmonk
+  icon_name: inv_tigergodcubmonk
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=240794
+  item_wowhead_url: https://www.wowhead.com/cn/item=147542
 dbc:
   creature_model_data: {}
   creature_display_info: {}
-  spell: {}
-  item: {}
+  spell:
+    name: 班福，班禄的幼崽
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散可爱型斑禄。
+  item:
+    id: 147542
+    description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散可爱型斑禄。
+    flavor_text: The Tomb of Sargeras
 db:
-  creature_template: {}
+  creature_template:
+    name: 班福，班禄的幼崽
   creature_model_info: {}
-  item_template: {}
+  item_template:
+    entry: 147542
+    name: 班福，班禄的幼崽
 rarity: 四星
