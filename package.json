@@ -10,8 +10,5 @@
     "build:desktop": "cd apps/desktop && npm run build",
     "type-check:web": "cd apps/web && npm run type-check",
     "lint:web": "cd apps/web && npm run lint"
-  },
-  "workspaces": [
-    "apps/*"
-  ]
+  }
 }
