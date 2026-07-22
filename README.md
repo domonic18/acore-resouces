@@ -64,7 +64,14 @@ uv run uvicorn app.main:app --reload --port 8000
 cd apps/web
 npm install
 npm run dev
+
+# 桌面端（在 apps/desktop/ 目录下）
+cd apps/desktop
+npm install
+npm run dev
 ```
+
+根目录 `package.json` 仅作为命令编排入口，不存放依赖，因此**不要在根目录执行 `npm install`**。
 
 ## 版本管理
 
