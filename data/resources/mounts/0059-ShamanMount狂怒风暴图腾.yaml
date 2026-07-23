@@ -30,7 +30,7 @@ dbc:
     texture_variation_2: shamanmount_fire
     texture_variation_3: shamanmount_fire
   spell:
-    id: 80056
+    id: 231442
     name: 先知的狂怒风暴
     description: 召唤或解散你的先知的狂怒风暴。这是一种飞行坐骑。
     visual_id: 9140056
@@ -62,10 +62,10 @@ db:
   creature_model_info:
     display_id: 140056
   item_template:
-    entry: 91056
+    entry: 143489
     name: 狂怒风暴图腾
     displayid: 21583
-    spellid_2: 80056
+    spellid_2: 231442
     Quality: 4
     AllowableClass: -1
     AllowableRace: 2047
