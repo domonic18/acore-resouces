@@ -26,15 +26,46 @@ export function LogoIcon({ className }: LogoIconProps) {
         </linearGradient>
       </defs>
 
-      <rect x="4" y="14" width="24" height="12" rx="1.5" fill="url(#resWood)" stroke="#3d1f08" strokeWidth="1" />
-      <path d="M3 14l3.5-7h19l3.5 7H3z" fill="url(#resWood)" stroke="#3d1f08" strokeWidth="1" strokeLinejoin="round" />
+      <rect
+        x="4"
+        y="14"
+        width="24"
+        height="12"
+        rx="1.5"
+        fill="url(#resWood)"
+        stroke="#3d1f08"
+        strokeWidth="1"
+      />
+      <path
+        d="M3 14l3.5-7h19l3.5 7H3z"
+        fill="url(#resWood)"
+        stroke="#3d1f08"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
       <rect x="7" y="14" width="2" height="12" fill="url(#resGold)" />
       <rect x="23" y="14" width="2" height="12" fill="url(#resGold)" />
       <rect x="4" y="14" width="24" height="2.5" fill="url(#resGold)" />
-      <circle cx="16" cy="17" r="3" fill="url(#resGold)" stroke="#6b4e0a" strokeWidth="0.5" />
+      <circle
+        cx="16"
+        cy="17"
+        r="3"
+        fill="url(#resGold)"
+        stroke="#6b4e0a"
+        strokeWidth="0.5"
+      />
       <rect x="15" y="16" width="2" height="2.5" rx="0.3" fill="#3d1f08" />
-      <path d="M16 19l2.5 2.5-2.5 2.5-2.5-2.5 2.5-2.5z" fill="url(#resGlow)" opacity="0.95" />
-      <path d="M10 11l1-2M22 11l-1-2M16 9v-2" stroke="url(#resGlow)" strokeWidth="1" strokeLinecap="round" />
+      <path
+        d="M16 19l2.5 2.5-2.5 2.5-2.5-2.5 2.5-2.5z"
+        fill="url(#resGlow)"
+        opacity="0.95"
+      />
+      <path
+        d="M10 11l1-2M22 11l-1-2M16 9v-2"
+        stroke="url(#resGlow)"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
