@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 深海水母
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_fishing_lure_starfish
+  icon_name: inv_fishing_lure_starfish
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=223018
+  item_wowhead_url: https://www.wowhead.com/item=138201
 dbc:
   creature_model_data:
     id: 104151
@@ -26,6 +28,7 @@ dbc:
   spell:
     id: 80151
     name: 深海水母
+    description: 召唤或解散一只可供骑乘的深海水母。
     visual_id: 9140151
   item:
     id: 138201
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散一只可供骑乘的深海水母。
+    flavor_text: Deep within the hungering chasms of the Great Sea, swarms of Fathom Dwellers sway like a great floating carpet, sightlessly in the dark.
 db:
   creature_template:
     entry: 9140151
@@ -59,5 +64,4 @@ db:
 mount_type: 水上坐骑
 star_rating: 二星
 subtype: 水母
-tags:
-- no_official_data
+tags: []

@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 罪触死亡行者
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_deathelementalmount_black
+  icon_name: inv_deathelementalmount_black
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=340068
+  item_wowhead_url: https://www.wowhead.com/cn/item=182717
 dbc:
   creature_model_data:
     id: 104096
@@ -26,6 +28,7 @@ dbc:
   spell:
     id: 80096
     name: 罪触死亡行者
+    description: 召唤或解散这种坐骑。
     visual_id: 9140096
   item:
     id: 182717
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 由无数罪大恶极的地下城居民的罪孽铸造而成。只有那些用高超的技巧征服他们的人才能握住这条缰绳。
 db:
   creature_template:
     entry: 9140096
@@ -59,5 +64,4 @@ db:
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 怪物
-tags:
-- no_official_data
+tags: []
