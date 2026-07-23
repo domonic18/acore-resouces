@@ -26,7 +26,7 @@ dbc:
     scale: 1
     opacity: 255
   spell:
-    id: 80265
+    id: 296788
     name: 机轮车W型
     description: 召唤或解散这种坐骑。
     visual_id: 9140265
@@ -59,7 +59,7 @@ db:
   item_template:
     entry: 168329
     name: 机轮车W型
-    spellid_2: 80265
+    spellid_2: 296788
     Quality: 4
 mount_type: 陆地坐骑
 star_rating: 四星
