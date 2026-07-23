@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 机轮车W型
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mechacycle
+  icon_name: inv_mechacycle
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=296788
+  item_wowhead_url: https://www.wowhead.com/item=168329
 dbc:
   creature_model_data:
     id: 104265
@@ -26,6 +28,7 @@ dbc:
   spell:
     id: 80265
     name: 机轮车W型
+    description: 召唤或解散这种坐骑。
     visual_id: 9140265
   item:
     id: 168329
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 米米尔隆的后裔迅猛的技术进步始于一种新齿轮，于是便产生了这种奇迹般的W型坐骑，虽然产量低得惊人。
 db:
   creature_template:
     entry: 9140265
@@ -59,5 +64,4 @@ db:
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
-tags:
-- no_official_data
+tags: []
