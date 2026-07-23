@@ -10,8 +10,10 @@ drop:
   rate: null
 official_db:
   name: 奇迹之翼2.0版
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mechanicalparrotmount
+  icon_name: inv_mechanicalparrotmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=290328
+  item_wowhead_url: https://www.wowhead.com/item=169162
 dbc:
   creature_model_data:
     id: 104270
@@ -26,6 +28,7 @@ dbc:
   spell:
     id: 80270
     name: 奇迹之翼2.0版
+    description: 召唤或解散这种坐骑。
     visual_id: 9140270
   item:
     id: 169162
@@ -36,6 +39,8 @@ dbc:
     display_id: 0
     inventory_type: 0
     sheath: 0
+    description: 教你学会召唤这种坐骑。 召唤或解散这种坐骑。
+    flavor_text: 别问1.0版在哪——麦卡贡科技依然属于侏儒科技的范畴！
 db:
   creature_template:
     entry: 9140270
@@ -59,5 +64,4 @@ db:
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 飞龙
-tags:
-- no_official_data
+tags: []
