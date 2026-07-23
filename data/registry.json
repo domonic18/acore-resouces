@@ -3607,14 +3607,6 @@
       "added": false
     },
     {
-      "id": 461,
-      "name": "纳沙塔尔狼鳗",
-      "model_folder": "wolfeel沃菲尔德坐骑",
-      "file": "data/resources/mounts/0461-wolfeel沃菲尔德坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 462,
       "name": "火焰耗牛",
       "model_folder": "yakgod火焰耗牛坐骑",
