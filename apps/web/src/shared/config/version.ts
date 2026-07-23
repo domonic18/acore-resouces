@@ -15,7 +15,7 @@
 export const APP_VERSION: string = import.meta.env.VITE_APP_VERSION || "0.1.0";
 
 /**
- * 短版本号（不带构建号），用于 UI 紧凑显示
- * 例如 "0.1.0.42" → "v0.1.0"
+ * 短版本号，用于 UI 紧凑显示
+ * 保留第四位构建号，例如 "0.1.0.42" → "v0.1.0.42"
  */
-export const SHORT_VERSION: string = `v${APP_VERSION.split(".").slice(0, 3).join(".")}`;
+export const SHORT_VERSION: string = `v${APP_VERSION.split(".").slice(0, 4).join(".")}`;

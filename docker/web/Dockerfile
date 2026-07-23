@@ -9,6 +9,9 @@
 # --------------------------------------------------
 FROM node:20-alpine AS frontend-builder
 
+ARG VITE_APP_VERSION
+ENV VITE_APP_VERSION=${VITE_APP_VERSION}
+
 WORKDIR /app
 
 COPY apps/web/package.json ./
