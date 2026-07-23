@@ -207,14 +207,6 @@
       "added": true
     },
     {
-      "id": 28,
-      "name": "熔岩蝎子坐骑",
-      "model_folder": "crystalscorpion熔岩蝎子坐骑",
-      "file": "data/resources/mounts/0028-crystalscorpion熔岩蝎子坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 29,
       "name": "战缝黑暗犬",
       "model_folder": "darkhoundmount_draka狼坐骑",
@@ -279,14 +271,6 @@
       "added": false
     },
     {
-      "id": 37,
-      "name": "迷彩熊",
-      "model_folder": "druidbeartroll迷彩熊坐骑",
-      "file": "data/resources/mounts/0037-druidbeartroll迷彩熊坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 38,
       "name": "深蓝恐角熊",
       "model_folder": "druidbearzandalaritroll_noarmor深蓝恐角熊坐骑",
@@ -303,36 +287,12 @@
       "added": false
     },
     {
-      "id": 40,
-      "name": "武装熊",
-      "model_folder": "DruidBear武装熊坐骑",
-      "file": "data/resources/mounts/0040-DruidBear武装熊坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 41,
-      "name": "绿皮豹",
-      "model_folder": "druidcat2绿皮豹坐骑",
-      "file": "data/resources/mounts/0041-druidcat2绿皮豹坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 42,
       "name": "拉风豹子",
       "model_folder": "druidcattroll拉风豹子坐骑",
       "file": "data/resources/mounts/0042-druidcattroll拉风豹子坐骑.yaml",
       "debug_passed": true,
       "added": true
-    },
-    {
-      "id": 43,
-      "name": "暗月豹子",
-      "model_folder": "druidcatworgen暗月豹子坐骑",
-      "file": "data/resources/mounts/0043-druidcatworgen暗月豹子坐骑.yaml",
-      "debug_passed": false,
-      "added": false
     },
     {
       "id": 44,
@@ -1811,14 +1771,6 @@
       "name": "野生梦境角马",
       "model_folder": "Horse2纯心骏马",
       "file": "data/resources/mounts/0229-Horse2纯心骏马.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 230,
-      "name": "斑点马",
-      "model_folder": "horse3斑点马坐骑",
-      "file": "data/resources/mounts/0230-horse3斑点马坐骑.yaml",
       "debug_passed": false,
       "added": false
     },
