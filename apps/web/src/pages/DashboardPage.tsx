@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
-import { Upload, Download, Eye, Search } from "lucide-react";
+import {
+  Upload,
+  Download,
+  Eye,
+  Search,
+  Compass,
+  PawPrint,
+  Users,
+  Bug,
+} from "lucide-react";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { StatCard } from "@/components/cards/StatCard";
 import { QuickActionCard } from "@/components/cards/QuickActionCard";
@@ -16,28 +25,28 @@ export function DashboardPage() {
     {
       label: "坐骑资源",
       value: stats.mount,
-      icon: "🐎",
+      icon: <Compass className="h-5 w-5" />,
       colorClass: "bg-blue-500/15 text-blue-400",
       change: "+来自合并单元格子行",
     },
     {
       label: "宠物资源",
       value: stats.pet,
-      icon: "🐾",
+      icon: <PawPrint className="h-5 w-5" />,
       colorClass: "bg-purple-500/15 text-purple-400",
       change: "已对齐 Excel",
     },
     {
       label: "NPC 资源",
       value: stats.npc,
-      icon: "🧙",
+      icon: <Users className="h-5 w-5" />,
       colorClass: "bg-green-500/15 text-green-400",
       change: "已对齐 Excel",
     },
     {
       label: "待调试资源",
       value: stats.pending,
-      icon: "⚡",
+      icon: <Bug className="h-5 w-5" />,
       colorClass: "bg-orange-500/15 text-orange-400",
       change: "debug_passed = false",
     },
