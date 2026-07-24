@@ -4,6 +4,7 @@ import { DashboardPage } from "@/pages/DashboardPage";
 import { ResourceListPage } from "@/pages/ResourceListPage";
 import { ResourceDetailPage } from "@/pages/ResourceDetailPage";
 import { PreviewPage } from "@/pages/PreviewPage";
+import { ResourceFolderPage } from "@/pages/ResourceFolderPage";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
 
 export const router = createBrowserRouter([
@@ -13,6 +14,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       { path: "resources", element: <ResourceListPage /> },
+      { path: "resources/folders", element: <ResourceFolderPage /> },
       { path: "resources/:resourceType/:id", element: <ResourceDetailPage /> },
       { path: "preview", element: <PreviewPage /> },
       { path: "preview/:resourceType/:id", element: <PreviewPage /> },

@@ -51,7 +51,7 @@ export function ResourceListPage() {
   return (
     <div className="content">
       <header className="topbar">
-        <h1 className="page-title">资源列表</h1>
+        <h1 className="page-title">资源表格</h1>
         <div className="topbar-actions">
           <div className="search-box">
             <input

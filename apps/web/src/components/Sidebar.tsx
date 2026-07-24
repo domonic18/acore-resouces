@@ -4,7 +4,7 @@ import {
   Boxes,
   Upload,
   Download,
-  Eye,
+  FolderTree,
   Settings,
 } from "lucide-react";
 import { cn } from "@/shared/utils";
@@ -24,7 +24,7 @@ const mainNav: NavItem[] = [
     icon: <LayoutDashboard className="h-[18px] w-[18px]" />,
   },
   {
-    label: "资源列表",
+    label: "资源表格",
     path: "/resources",
     icon: <Boxes className="h-[18px] w-[18px]" />,
   },
@@ -39,9 +39,9 @@ const mainNav: NavItem[] = [
     icon: <Download className="h-[18px] w-[18px]" />,
   },
   {
-    label: "资源预览",
-    path: "/preview",
-    icon: <Eye className="h-[18px] w-[18px]" />,
+    label: "资源列表",
+    path: "/resources/folders",
+    icon: <FolderTree className="h-[18px] w-[18px]" />,
   },
 ];
 
@@ -55,7 +55,14 @@ const systemNav: NavItem[] = [
 
 function isActive(path: string, pathname: string): boolean {
   if (path === "/") return pathname === "/";
-  return pathname === path || pathname.startsWith(`${path}/`);
+  if (pathname === path) return true;
+  if (path === "/resources") {
+    return (
+      pathname.startsWith("/resources/") &&
+      !pathname.startsWith("/resources/folders")
+    );
+  }
+  return pathname.startsWith(`${path}/`);
 }
 
 export function Sidebar() {
