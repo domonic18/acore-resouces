@@ -73,6 +73,10 @@ export function getIconPreviewUrl(iconName: string, size?: number): string {
   return buildPreviewUrl(`/api/preview/icon/${encodeURIComponent(iconName)}`);
 }
 
+export function getIconWowheadUrl(iconName: string): string {
+  return `https://wow.zamimg.com/images/wow/icons/medium/${encodeURIComponent(iconName)}.jpg`;
+}
+
 export function getFilePreviewUrl(path: string): string {
   return buildPreviewUrl(`/api/preview/file/${encodeURIComponent(path)}`);
 }
