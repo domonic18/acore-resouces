@@ -5,6 +5,8 @@ import {
   ChevronDown,
   Folder,
   File,
+  Image,
+  Box,
   Loader2,
   AlertCircle,
 } from "lucide-react";
@@ -15,19 +17,33 @@ import type { FileTreeNode } from "@/shared/files";
 interface FolderTreeProps {
   nodes: FileTreeNode[];
   root: "sources" | "resources";
+  selectedPath?: string;
+  onSelectFile?: (node: FileTreeNode) => void;
+}
+
+function getFileIcon(name: string) {
+  const lower = name.toLowerCase();
+  if (lower.endsWith(".blp")) return <Image className="h-4 w-4 text-accent" />;
+  if (lower.endsWith(".m2")) return <Box className="h-4 w-4 text-purple-400" />;
+  return <File className="h-4 w-4 text-text-tertiary" />;
 }
 
 function TreeNode({
   node,
   root,
   depth = 0,
+  selectedPath,
+  onSelectFile,
 }: {
   node: FileTreeNode;
   root: "sources" | "resources";
   depth?: number;
+  selectedPath?: string;
+  onSelectFile?: (node: FileTreeNode) => void;
 }) {
   const [expanded, setExpanded] = useState(depth < 1);
   const isDirectory = node.type === "directory";
+  const isSelected = selectedPath === node.path;
   const hasKnownChildren = node.children !== undefined;
   const initialEmpty = hasKnownChildren && node.children!.length === 0;
   const shouldFetch = isDirectory && expanded && !hasKnownChildren;
@@ -44,6 +60,14 @@ function TreeNode({
   const showChevron =
     isDirectory && (!hasKnownChildren || hasChildren || initialEmpty);
 
+  function handleClick() {
+    if (isDirectory) {
+      setExpanded((v) => !v);
+      return;
+    }
+    onSelectFile?.(node);
+  }
+
   return (
     <div>
       <button
@@ -51,9 +75,10 @@ function TreeNode({
         className={cn(
           "file-tree-item w-full",
           isDirectory && "hover:bg-bg-hover",
+          isSelected && "bg-accent-soft text-accent",
         )}
         style={{ paddingLeft: `${12 + depth * 16}px` }}
-        onClick={() => isDirectory && setExpanded((v) => !v)}
+        onClick={handleClick}
       >
         {showChevron ? (
           expanded ? (
@@ -67,7 +92,7 @@ function TreeNode({
         {isDirectory ? (
           <Folder className="h-4 w-4 text-accent" />
         ) : (
-          <File className="h-4 w-4 text-text-tertiary" />
+          getFileIcon(node.name)
         )}
         <span className="truncate text-left">{node.name}</span>
         {node.truncated && (
@@ -110,6 +135,8 @@ function TreeNode({
                 node={child}
                 root={root}
                 depth={depth + 1}
+                selectedPath={selectedPath}
+                onSelectFile={onSelectFile}
               />
             ))}
           {!isLoading && !error && initialEmpty && (
@@ -126,11 +153,22 @@ function TreeNode({
   );
 }
 
-export function FolderTree({ nodes, root }: FolderTreeProps) {
+export function FolderTree({
+  nodes,
+  root,
+  selectedPath,
+  onSelectFile,
+}: FolderTreeProps) {
   return (
     <div className="file-tree">
       {nodes.map((node) => (
-        <TreeNode key={node.path} node={node} root={root} />
+        <TreeNode
+          key={node.path}
+          node={node}
+          root={root}
+          selectedPath={selectedPath}
+          onSelectFile={onSelectFile}
+        />
       ))}
     </div>
   );

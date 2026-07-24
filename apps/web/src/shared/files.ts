@@ -25,3 +25,19 @@ export function getFileTreeChildren(
     `/api/files/tree/${root}?path=${encodeURIComponent(relativePath)}&depth=${depth}`,
   );
 }
+
+const TYPE_MAP: Record<string, string> = {
+  mounts: "mount",
+  pets: "pet",
+  npcs: "npc",
+};
+
+export function parseModelPath(
+  path: string,
+): { resourceType: string; modelFolder: string } | null {
+  const parts = path.split("/");
+  if (parts.length < 4) return null;
+  const type = TYPE_MAP[parts[1]];
+  if (!type) return null;
+  return { resourceType: type, modelFolder: parts[2] };
+}
