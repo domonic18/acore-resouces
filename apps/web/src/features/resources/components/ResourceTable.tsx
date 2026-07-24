@@ -54,6 +54,9 @@ interface ResourceTableProps {
   setSort: (key: SortKey) => void;
   isLoading: boolean;
   error: Error | null;
+  selectedIds?: number[];
+  onSelect?: (id: number, selected: boolean) => void;
+  onSelectAll?: (selected: boolean) => void;
 }
 
 export function ResourceTable({
@@ -63,6 +66,9 @@ export function ResourceTable({
   setSort,
   isLoading,
   error,
+  selectedIds = [],
+  onSelect,
+  onSelectAll,
 }: ResourceTableProps) {
   const location = useLocation();
 
@@ -85,13 +91,30 @@ export function ResourceTable({
     );
   }
 
+  const allSelected =
+    currentItems.length > 0 &&
+    currentItems.every((r) => selectedIds.includes(r.id));
+  const someSelected =
+    currentItems.some((r) => selectedIds.includes(r.id)) && !allSelected;
+
+  const handleSelectAll = () => {
+    onSelectAll?.(!allSelected);
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="data-table w-full">
         <thead>
           <tr>
             <th style={{ width: 40 }}>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={allSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = someSelected;
+                }}
+                onChange={handleSelectAll}
+              />
             </th>
             <SortHeader
               label="资源"
@@ -144,7 +167,11 @@ export function ResourceTable({
           {currentItems.map((resource) => (
             <tr key={`${resource.resource_type}-${resource.id}`}>
               <td>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={selectedIds.includes(resource.id)}
+                  onChange={(e) => onSelect?.(resource.id, e.target.checked)}
+                />
               </td>
               <td>
                 <div className="flex items-center gap-2">

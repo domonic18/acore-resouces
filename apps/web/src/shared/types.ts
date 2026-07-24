@@ -102,3 +102,34 @@ export interface ModelPreview {
   anim_files: string[];
   metadata: Record<string, unknown> | null;
 }
+
+export interface PatchJob {
+  job_id: string;
+  created_at: string;
+  created_by: string;
+  resource_type: string;
+  resource_id: number;
+  resource_name: string;
+  resource_model_folder: string;
+  status: "requested" | "generated" | "applied" | "failed";
+  input_dir: string;
+  output_dir: string;
+  artifacts: {
+    input: Record<string, string>;
+    output: Record<string, string>;
+  };
+  completed_at: string | null;
+  summary: string | null;
+}
+
+export interface PatchExportResponse {
+  jobs: PatchJob[];
+  total: number;
+}
+
+export interface Paginated<T> {
+  total: number;
+  page: number;
+  page_size: number;
+  items: T[];
+}

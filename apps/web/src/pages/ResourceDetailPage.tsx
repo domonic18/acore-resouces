@@ -14,6 +14,7 @@ import { RawDataSection } from "@/features/resources/components/resource-detail/
 import { RelationshipCheckSection } from "@/features/resources/components/resource-detail/RelationshipCheckSection";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
+import { PatchExportButton } from "@/features/resources/components/PatchExportButton";
 import { uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
 
@@ -128,6 +129,13 @@ export function ResourceDetailPage() {
           <h1 className="page-title">编辑资源</h1>
         </div>
         <div className="topbar-actions">
+          {isMount && (
+            <PatchExportButton
+              resourceType={resourceType}
+              resourceId={resourceId}
+              resourceName={resource.name || resource.model_folder}
+            />
+          )}
           <button className="btn btn-danger" disabled title="删除功能开发中">
             删除
           </button>

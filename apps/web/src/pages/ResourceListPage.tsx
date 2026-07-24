@@ -1,13 +1,14 @@
 import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { Search, Plus } from "lucide-react";
 import { cn } from "@/shared/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TYPES } from "@/features/resources/lib/resource-list";
 import { useResourceListData } from "@/features/resources/hooks/useResourceListData";
 import { useResourceListFilters } from "@/features/resources/hooks/useResourceListFilters";
 import { ResourceFilters } from "@/features/resources/components/ResourceFilters";
 import { ResourceTable } from "@/features/resources/components/ResourceTable";
 import { ResourcePagination } from "@/features/resources/components/ResourcePagination";
+import { BulkPatchExportButton } from "@/features/resources/components/BulkPatchExportButton";
 
 const PAGE_SIZE = 20;
 
@@ -47,6 +48,24 @@ export function ResourceListPage() {
     tierOptions,
     tagOptions,
   } = useResourceListFilters(allItems);
+
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const handleSelect = (id: number, selected: boolean) => {
+    setSelectedIds((prev) =>
+      selected ? [...prev, id] : prev.filter((itemId) => itemId !== id),
+    );
+  };
+
+  const handleSelectAll = (selected: boolean) => {
+    const pageIds = currentItems.map((r) => r.id);
+    setSelectedIds((prev) => {
+      const withoutPage = prev.filter((id) => !pageIds.includes(id));
+      return selected ? [...withoutPage, ...pageIds] : withoutPage;
+    });
+  };
+
+  const selectedType = typeParam === "all" ? "mount" : typeParam;
 
   return (
     <div className="content">
@@ -92,6 +111,20 @@ export function ResourceListPage() {
           toggleParamValue={toggleParamValue}
         />
 
+        <div className="flex items-center justify-between border-b border-border bg-bg-surface px-5 py-3">
+          <div className="text-xs text-text-secondary">
+            已选择{" "}
+            <span className="font-semibold text-text-primary">
+              {selectedIds.length}
+            </span>{" "}
+            项
+          </div>
+          <BulkPatchExportButton
+            resourceType={selectedType}
+            resourceIds={selectedIds}
+          />
+        </div>
+
         <ResourceTable
           currentItems={currentItems}
           sortKey={sortKey}
@@ -99,6 +132,9 @@ export function ResourceListPage() {
           setSort={setSort}
           isLoading={isLoading}
           error={error}
+          selectedIds={selectedIds}
+          onSelect={handleSelect}
+          onSelectAll={handleSelectAll}
         />
 
         {!isLoading && !error && (
