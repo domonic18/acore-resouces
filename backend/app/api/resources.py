@@ -58,6 +58,8 @@ def list_resources_endpoint(
     debug_passed: bool | None = Query(None, description="是否调试通过"),
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
+    sort_by: str | None = Query(None, description="排序字段，如 updated_at"),
+    sort_order: str = Query("desc", description="排序方向：asc 或 desc"),
 ) -> dict[str, Any]:
     """分页列出资源。"""
     resources = list_resources(resource_type)
@@ -75,6 +77,15 @@ def list_resources_endpoint(
         resources = [r for r in resources if r.added == added]
     if debug_passed is not None:
         resources = [r for r in resources if r.debug_passed == debug_passed]
+
+    if sort_by:
+        reverse = sort_order.lower() == "desc"
+
+        def _sort_key(r: Resource) -> tuple[bool, Any]:
+            value = getattr(r, sort_by, None)
+            return (value is None, value)
+
+        resources.sort(key=_sort_key, reverse=reverse)
 
     total = len(resources)
     start = (page - 1) * page_size

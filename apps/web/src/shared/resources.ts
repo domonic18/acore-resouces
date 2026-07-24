@@ -19,6 +19,8 @@ export function listResources(
     debug_passed?: boolean;
     page?: number;
     page_size?: number;
+    sort_by?: string;
+    sort_order?: "asc" | "desc";
   },
 ): Promise<PaginatedResources> {
   const query = new URLSearchParams();
@@ -28,6 +30,8 @@ export function listResources(
     query.set("debug_passed", String(params.debug_passed));
   if (params.page) query.set("page", String(params.page));
   if (params.page_size) query.set("page_size", String(params.page_size));
+  if (params.sort_by) query.set("sort_by", params.sort_by);
+  if (params.sort_order) query.set("sort_order", params.sort_order);
   return apiGetJson(`/api/resources/${resourceType}?${query.toString()}`);
 }
 

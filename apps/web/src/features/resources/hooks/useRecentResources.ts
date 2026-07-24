@@ -8,15 +8,30 @@ export function useRecentResources() {
     queries: [
       {
         queryKey: ["recent", "mount"],
-        queryFn: () => listResources("mount", { page_size: 5 }),
+        queryFn: () =>
+          listResources("mount", {
+            page_size: 5,
+            sort_by: "updated_at",
+            sort_order: "desc",
+          }),
       },
       {
         queryKey: ["recent", "pet"],
-        queryFn: () => listResources("pet", { page_size: 5 }),
+        queryFn: () =>
+          listResources("pet", {
+            page_size: 5,
+            sort_by: "updated_at",
+            sort_order: "desc",
+          }),
       },
       {
         queryKey: ["recent", "npc"],
-        queryFn: () => listResources("npc", { page_size: 5 }),
+        queryFn: () =>
+          listResources("npc", {
+            page_size: 5,
+            sort_by: "updated_at",
+            sort_order: "desc",
+          }),
       },
     ],
   });
@@ -26,6 +41,12 @@ export function useRecentResources() {
     for (const res of results) {
       if (res.data) all.push(...res.data.items);
     }
-    return all.sort((a, b) => b.id - a.id).slice(0, 5);
+    return all
+      .sort(
+        (a, b) =>
+          new Date(b.updated_at ?? 0).getTime() -
+          new Date(a.updated_at ?? 0).getTime(),
+      )
+      .slice(0, 5);
   }, [results]);
 }

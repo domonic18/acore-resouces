@@ -129,7 +129,11 @@ export function DashboardPage() {
                     <td>
                       <ResourceStatusBadge resource={resource} verbose />
                     </td>
-                    <td className="text-text-tertiary">—</td>
+                    <td className="text-text-tertiary">
+                      {resource.updated_at
+                        ? new Date(resource.updated_at).toLocaleString()
+                        : "—"}
+                    </td>
                   </tr>
                 ))}
                 {recent.length === 0 && (
