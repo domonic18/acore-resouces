@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     imports_dir: Path = Path("imports")
     assets_dir: Path = Path("workspace/assets")
     patches_dir: Path = Path("patches")
+    patch_jobs_dir: Path = Path("workspace/patch-jobs")
 
     db_url: str = ""
 
@@ -36,6 +37,7 @@ class Settings(BaseSettings):
         self.imports_dir = root / "imports"
         self.assets_dir = self.workspace_dir / "assets"
         self.patches_dir = root / "patches"
+        self.patch_jobs_dir = root / "workspace" / "patch-jobs"
 
         self.db_url = f"sqlite:///{self.workspace_dir / 'data' / 'acore_resource.db'}"
 
