@@ -18,7 +18,7 @@
 ## 整体架构（轻量版）
 
 ```
-.claude/commands/fix-mount-data.md      # Skill / Slash Command 定义
+.claude/commands/enrich-mount-data.md      # Skill / Slash Command 定义
 backend/app/services/wowhead.py         # Playwright 查询服务
 backend/app/cli/wowhead.py              # Typer CLI 入口
 backend/app/cli/main.py                 # CLI 注册
@@ -39,7 +39,7 @@ sources/mounts/{model_folder}/*.png     # 坐骑预览图，用于多模态识�
 
 ### 触发方式
 
-1. **Slash Command**：`/fix-mount-data`
+1. **Slash Command**：`/enrich-mount-data`
 2. **自然语言**：
    - "补全 `data/resources/mounts/0003-*.yaml` 的官方数据"
    - "用 Wowhead 更新这几个坐骑文件的 name 和 description"
@@ -233,7 +233,7 @@ def search_mount(query: str) -> dict:
 ## Skill Prompt 草案
 
 ```markdown
-# /fix-mount-data
+# /enrich-mount-data
 
 根据用户指定的坐骑 YAML 文件，使用 Playwright 查询 Wowhead 官方数据库，补全缺失的字段。
 
@@ -330,7 +330,7 @@ Claude：
 2. `backend/app/cli/wowhead.py`
    - Typer CLI 入口，提供 `lookup-mount` 命令
 
-3. `.claude/commands/fix-mount-data.md`
+3. `.claude/commands/enrich-mount-data.md`
    - Skill / Slash Command 定义
    - 包含图片识别触发条件、查询路径和交叉验证规则
 
@@ -443,7 +443,7 @@ Claude：
 
 1. 创建 `backend/app/services/wowhead.py`。
 2. 创建 `backend/app/cli/wowhead.py` 并在 `backend/app/cli/main.py` 注册。
-3. 创建 `.claude/commands/fix-mount-data.md`（包含图片识别触发条件和交叉验证规则）。
+3. 创建 `.claude/commands/enrich-mount-data.md`（包含图片识别触发条件和交叉验证规则）。
 4. 在 3~5 个样本文件上测试 skill 流程，包括：
    - 已知中文名称直接补全
    - `official_db.name` 为空时通过图片识别补全

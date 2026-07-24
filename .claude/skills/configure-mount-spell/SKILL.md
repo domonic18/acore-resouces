@@ -1,5 +1,5 @@
 ---
-name: mount-config
+name: configure-mount-spell
 description: >
   Configure WoW 3.3.5a custom mounts via Spell.dbc editing.
   Covers land, flying, water, and hybrid mounts with field-level guidance

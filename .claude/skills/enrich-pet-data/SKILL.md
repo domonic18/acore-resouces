@@ -1,9 +1,9 @@
 ---
-name: fix-pet-data
+name: enrich-pet-data
 description: 根据用户指定的宠物 YAML 文件，结合多模态图片识别与 Playwright Wowhead 查询，补全缺失的官方数据字段。
 ---
 
-# fix-pet-data
+# enrich-pet-data
 
 根据用户指定的宠物 YAML 文件，结合多模态图片识别与 Playwright Wowhead 查询，补全缺失的官方数据字段。
 

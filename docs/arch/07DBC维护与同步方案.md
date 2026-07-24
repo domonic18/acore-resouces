@@ -86,7 +86,7 @@ acore-deploy/               # 纯部署仓库
 ### 4. 推荐工作流
 
 ```text
-1. 在 acore-resouces 中编辑资源 YAML 或使用 /fix-mount-data、/mount-config skill。
+1. 在 acore-resouces 中编辑资源 YAML 或使用 /enrich-mount-data、/configure-mount-spell skill。
 2. 校验：uv run python -m app.cli resource validate --type mount --id 3
 3. 导出 DBC 补丁：uv run python -m app.cli export dbc --type mount --id 3 --output patches/mount_0003_dbc.py
 4. 导出 SQL 补丁：uv run python -m app.cli export sql --type mount --id 3 --output patches/mount_0003_db.sql
@@ -236,6 +236,6 @@ patches/
 
 ## 与现有 skill 的关系
 
-- `/fix-mount-data`：继续补全 YAML 官方数据，完成后可接 `export dbc/sql`。
-- `/mount-config`：继续指导 Spell.dbc 字段配置，完成后可接 `export dbc`。
+- `/enrich-mount-data`：继续补全 YAML 官方数据，完成后可接 `export dbc/sql`。
+- `/configure-mount-spell`：继续指导 Spell.dbc 字段配置，完成后可接 `export dbc`。
 - 新增 skill（可选）：`/sync-dbc` 一键执行 `deploy sync-dbc --dry-run` / `--yes`。
