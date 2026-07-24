@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   Upload,
   Download,
@@ -18,8 +19,16 @@ import { useResourceStats } from "@/features/resources/hooks/useResourceStats";
 import { useRecentResources } from "@/features/resources/hooks/useRecentResources";
 
 export function DashboardPage() {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const { data: stats, isLoading } = useResourceStats();
   const recent = useRecentResources();
+
+  const handleSearch = () => {
+    const query = searchQuery.trim();
+    if (!query) return;
+    navigate(`/resources?search=${encodeURIComponent(query)}`);
+  };
 
   const statItems = [
     {
@@ -58,8 +67,17 @@ export function DashboardPage() {
         <h1 className="page-title">仪表盘</h1>
         <div className="topbar-actions">
           <div className="search-box">
-            <input type="text" placeholder="搜索资源、ID、模型..." />
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              placeholder="搜索资源、ID、模型..."
+            />
+            <Search
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 cursor-pointer text-text-tertiary hover:text-text-secondary"
+              onClick={handleSearch}
+            />
           </div>
           <Link to="/import" className="btn btn-primary">
             <Upload className="h-4 w-4" /> 导入
