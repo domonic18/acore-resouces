@@ -37,6 +37,9 @@ Desktop.ini
 # 本地参考文档/下载资料
 /docs/references/
 
+# 本地开发环境软链接（AzerothCore updates 目录）
+/data/sql/azerothcore-updates
+
 # Python
 __pycache__/
 *.py[cod]
