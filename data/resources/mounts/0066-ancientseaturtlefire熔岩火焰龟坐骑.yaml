@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 泰罗佩内
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_viciousdragonturtlemount
+  icon_name: inv_viciousdragonturtlemount
 dbc:
   creature_model_data:
     id: 104061

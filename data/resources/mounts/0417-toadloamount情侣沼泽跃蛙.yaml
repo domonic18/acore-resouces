@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 情侣沼泽跃蛙
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ivn_toadloamount
+  icon_name: ivn_toadloamount
 dbc:
   creature_model_data:
     id: 104413

@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 黄金狮王的缰绳
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_allianceliong
+  icon_name: inv_mount_allianceliong
 dbc:
   creature_model_data:
     id: 104058

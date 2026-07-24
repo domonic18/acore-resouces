@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 安度因的战马
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_charger
+  icon_name: ability_mount_charger
 dbc:
   creature_model_data:
     id: 104062

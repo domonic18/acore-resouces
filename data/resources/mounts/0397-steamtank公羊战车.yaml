@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: null
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_mountainram
+  icon_name: ability_mount_mountainram
 dbc:
   creature_model_data:
     id: 104393

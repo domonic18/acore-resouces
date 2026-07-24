@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 熔岩犬的缰绳
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_mount_felcorehoundmoun
+  icon_name: inv_mount_felcorehoundmoun
 dbc:
   creature_model_data:
     id: 104202

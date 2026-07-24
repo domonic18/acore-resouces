@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 地精改装车
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_vehicle_rocketboost
+  icon_name: ability_vehicle_rocketboost
 dbc:
   creature_model_data:
     id: 104197

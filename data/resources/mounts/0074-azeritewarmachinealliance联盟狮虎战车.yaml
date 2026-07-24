@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 联盟狮虎战车
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_automatonlionmount
+  icon_name: inv_automatonlionmount
 dbc:
   creature_model_data:
     id: 104069

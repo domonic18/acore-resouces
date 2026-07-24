@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 火焰耗牛
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_yakmountbrown
+  icon_name: ability_mount_yakmountbrown
 dbc:
   creature_model_data:
     id: 104458

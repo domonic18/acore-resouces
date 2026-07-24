@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 深蓝恐角熊
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_polarbear_black
+  icon_name: ability_mount_polarbear_black
 dbc:
   creature_model_data:
     id: 4035

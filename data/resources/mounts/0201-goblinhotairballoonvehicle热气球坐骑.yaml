@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 地精热气球
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_hordezeppelinmount
+  icon_name: inv_hordezeppelinmount
 dbc:
   creature_model_data:
     id: 104196

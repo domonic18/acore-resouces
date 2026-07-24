@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: 地精挖掘机
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: ability_mount_shreddermount
+  icon_name: ability_mount_shreddermount
 dbc:
   creature_model_data:
     id: 104191
