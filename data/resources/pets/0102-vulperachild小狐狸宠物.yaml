@@ -10,8 +10,8 @@ drop:
   rate: null
 official_db:
   name: null
-  spell_icon_name: null
-  icon_name: null
+  spell_icon_name: inv_foxpet
+  icon_name: inv_foxpet
 dbc:
   creature_model_data: {}
   creature_display_info: {}
