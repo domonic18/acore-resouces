@@ -66,7 +66,9 @@ export function ResourceFolderPage() {
               {error instanceof Error ? error.message : "加载失败"}
             </p>
           )}
-          {data && data.children && <FolderTree nodes={data.children} />}
+          {data && data.children && (
+            <FolderTree nodes={data.children} root={root} />
+          )}
           {data && !data.children?.length && (
             <p className="text-text-secondary">暂无文件</p>
           )}
