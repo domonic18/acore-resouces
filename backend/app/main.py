@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from app.api import preview, resources
+from app.api import files, preview, resources
 
 app = FastAPI(title="acore-resouces API", version="0.1.0")
 
@@ -19,6 +19,7 @@ app.add_middleware(
 
 app.include_router(resources.router)
 app.include_router(preview.router)
+app.include_router(files.router)
 
 
 @app.get("/health")
