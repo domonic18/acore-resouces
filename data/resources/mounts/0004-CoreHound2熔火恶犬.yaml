@@ -10,7 +10,7 @@ drop:
   rate: 0.035
 official_db:
   name: 熔火恶犬
-  spell_icon_name: ability-hunter-pet-corehound
+  spell_icon_name: ability_hunter_pet_corehound
   icon_name: inv_belt_45
 dbc:
   creature_model_data:
