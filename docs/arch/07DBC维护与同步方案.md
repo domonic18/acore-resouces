@@ -32,9 +32,9 @@ acore-resouces/                          # 资源与 DBC 编辑主仓库
 ├── tools/
 │   ├── wow-dbc-tool/       # 已有：DBC 读写 CLI 工具
 │   └── wow-mpq-cli/        # 已有：MPQ 打包 CLI 工具
-├── backend/app/exporters/  # NEW: DBC/SQL 补丁生成器
-├── backend/app/cli/        # 已有：新增 export / dbc / deploy 命令组
-├── patches/                # NEW: 生成的 DBC/SQL 补丁脚本
+├── backend/app/exporters/  # DBC/SQL 补丁生成器（当前由 patch_exporter 服务实现）
+├── backend/app/cli/        # 已有：新增 patch 命令组
+├── workspace/patch-jobs/   # 运行时补丁任务目录（不入 Git）
 └── docs/                   # 维护方案文档
 
 acore-deploy/               # 纯部署仓库
@@ -55,14 +55,16 @@ acore-deploy/               # 纯部署仓库
 
 在 `backend/app/cli/main.py` 注册三个新命令组：
 
-#### `export` 组（仅生成补丁，不直接改 DBC）
+#### `patch` 组（补丁任务管理）
 
 | 命令 | 用途 |
 |---|---|
-| `export dbc --type mount --id 3 --output patches/mount_0003_dbc.py` | 生成修改 DBC 的 Python 脚本 |
-| `export dbc --type mount --since-tag v1.0.0` | 批量生成自某 tag 以来的 DBC 补丁 |
-| `export sql --type mount --id 3 --output patches/mount_0003_db.sql` | 生成 AzerothCore SQL 补丁 |
-| `export all --since-tag v1.0.0 --output-dir patches/` | 一键生成 DBC + SQL 补丁 |
+| `patch export --type mount --id 3` | 为单个资源生成补丁任务原料包 |
+| `patch list --status requested` | 列出补丁任务 |
+| `patch get {job_id}` | 查看单个补丁任务详情 |
+| `patch update {job_id} generated` | 更新补丁任务状态 |
+
+Claude Skill `/build-mount-patch` 读取原料包后生成最终 `.sql`、`.dbc`、`.mpq` 产物。
 
 #### `dbc` 组（子模块管理）
 
@@ -86,58 +88,61 @@ acore-deploy/               # 纯部署仓库
 ### 4. 推荐工作流
 
 ```text
-1. 在 acore-resouces 中编辑资源 YAML 或使用 /enrich-mount-data、/configure-mount-spell skill。
-2. 校验：uv run python -m app.cli resource validate --type mount --id 3
-3. 导出 DBC 补丁：uv run python -m app.cli export dbc --type mount --id 3 --output patches/mount_0003_dbc.py
-4. 导出 SQL 补丁：uv run python -m app.cli export sql --type mount --id 3 --output patches/mount_0003_db.sql
-5. 人工审查 patches/ 下生成的脚本。
-6. 应用 DBC 补丁：uv run python patches/mount_0003_dbc.py
-7. 提交 data/wow-dbc 子模块变更。
-8. 同步到 acore-deploy：uv run python -m app.cli deploy sync-dbc --yes
-9. 在 acore-deploy 中重启 worldserver 验证。
+1. 在 acore-resouces 中编辑资源 YAML 或使用 `/enrich-mount-data`、`/configure-mount-spell` skill。
+2. 校验：`uv run python -m app.cli resource validate --type mount --id 3`
+3. 导出补丁原料包：`uv run python -m app.cli patch export --type mount --id 3`
+4. Claude Skill `/build-mount-patch {job_id}` 生成最终 DBC/SQL/MPQ 产物。
+5. 人工审查 `workspace/patch-jobs/{job_id}/output/` 下产物。
+6. 提交 `data/wow-dbc` 子模块变更。
+7. 同步到 acore-deploy：`uv run python -m app.cli deploy sync-dbc --yes`
+8. 在 acore-deploy 中重启 worldserver 验证。
 ```
 
-### 5. `patches/` 目录作用与使用流程
+### 5. `workspace/patch-jobs/` 目录作用与使用流程
 
-`patches/` 是 **生成的、可审查的、可重放的 DBC/SQL 补丁脚本存放目录**。
+`workspace/patch-jobs/` 是 **按任务隔离的补丁原料与产物目录**，每个资源导出请求生成一个独立子目录。
 
 #### 定位
 
 - 它不是最终真相源：真相源是 `data/resources/*.yaml` 和 `data/wow-dbc/src/dbc/*.dbc`。
-- 它是中间产物：把 YAML 中的资源变更，转换为可执行的 `wow-dbc-tool` Python 脚本或 `.sql` 文件。
-- 它应当纳入 Git：方便代码审查、回滚、追溯某次资源变更对应的 DBC/SQL 操作。
+- 它是运行时工作区：系统在此存放原料包，Claude Skill `/build-mount-patch` 在此产出最终 DBC/SQL/MPQ。
+- 它**不入 Git**：属于运行时产物，可由 `manifest.json` 追溯历史。
 
 #### 目录内容示例
 
 ```text
-patches/
-├── mount_0003_dbc.py          # 单个坐骑的 DBC 修改脚本
-├── mount_0003_db.sql          # 单个坐骑的数据库 SQL 补丁
-├── mounts_since_v1.0.0_dbc.py # 批量 DBC 修改脚本
-└── README.md                  # 说明文件
+workspace/patch-jobs/
+└── 20250724_143022_mount_0003_梦光符文牡鹿/
+    ├── manifest.json              # 任务元数据与状态
+    ├── input/                     # 系统生成的原料
+    │   ├── resource.yaml
+    │   ├── assets.json
+    │   ├── dbc-plan.yaml
+    │   ├── sql-plan.yaml
+    │   └── README.md
+    └── output/                    # Skill 生成的产物
+        ├── dbc/
+        │   ├── Spell.dbc
+        │   ├── CreatureDisplayInfo.dbc
+        │   └── ...
+        ├── db_patch.sql
+        └── patch-mount-0003.mpq
 ```
 
 #### 典型使用流程
 
-1. **生成**：通过 `export dbc/sql` 命令从 YAML 资源生成。
-2. **审查**：人工打开 `.py` 或 `.sql` 文件，确认修改的 ID、字段值正确。
-3. **应用 DBC**：
-   ```bash
-   uv run python patches/mount_0003_dbc.py
-   ```
-   这会调用 `wow-dbc-tool` 修改 `data/wow-dbc/src/dbc/*.dbc`。
-4. **应用 SQL**：
-   ```bash
-   /Users/deadwalk/Workspace/acore-deploy/scripts/acore-update-db.sh \
-     --sql-file patches/mount_0003_db.sql --database acore_world
-   ```
-5. **提交**：把 `patches/` 下新增/修改的脚本与 `data/wow-dbc` 子模块一起提交。
-6. **清理（可选）**：稳定运行后，可将过期补丁归档或删除；新的变更重新生成即可。
+1. **生成原料**：Web 前端点击"导出补丁原料"或调用 `patch export`。
+2. **生成产物**：Claude Skill `/build-mount-patch` 读取原料，调用外部工具生成产物。
+3. **审查**：人工打开 `output/` 下文件，确认 ID、字段值正确。
+4. **应用 DBC**：将 `output/dbc/*.dbc` 同步到 `acore-deploy/data/dbc/`。
+5. **应用 SQL**：通过 `acore-update-db.sh` 执行 `output/db_patch.sql`。
+6. **部署 MPQ**：将 `output/patch-mount-0003.mpq` 放入客户端 `Data/` 目录。
 
 #### 与 Agent 的关系
 
-- Agent **只生成** `patches/` 脚本，**不直接执行** DBC/SQL 写入。
-- 应用脚本、同步部署需要人工确认或显式 `--yes` 参数。
+- Agent/Web 系统**只生成原料包**到 `workspace/patch-jobs/{job_id}/input/`。
+- Skill `/build-mount-patch` 负责生成最终产物。
+- 应用 DBC/SQL、同步部署需要人工确认或显式 `--yes` 参数。
 
 ### 6. acore-deploy 侧改动
 
@@ -158,16 +163,10 @@ patches/
 
 | 文件 | 用途 |
 |---|---|
-| `backend/pyproject.toml` | 增加 `wow-dbc-tool @ file:./tools/wow-dbc-tool` 路径依赖 |
-| `backend/app/cli/main.py` | 注册 `export`、`dbc`、`deploy` 命令组 |
-| `backend/app/cli/export.py` | `export dbc` / `export sql` / `export all` |
-| `backend/app/cli/dbc.py` | `dbc status` / `dbc pull` / `dbc diff` |
-| `backend/app/cli/deploy.py` | `deploy sync-dbc` |
-| `backend/app/exporters/common.py` | 字段映射加载、tag diff 辅助 |
-| `backend/app/exporters/dbc.py` | 生成 wow-dbc-tool Python 补丁脚本 |
-| `backend/app/exporters/sql.py` | 生成 AzerothCore SQL 补丁 |
-| `data/mapping/dbc_field_mapping.yaml` | YAML 语义字段 ↔ wow-dbc-tool 物理字段映射 |
-| `patches/README.md` | 说明补丁脚本用途与提交流程 |
+| `backend/app/services/patch_exporter.py` | 创建补丁任务目录、生成原料包、维护 manifest |
+| `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request` 等 |
+| `backend/app/cli/patch.py` | `patch export/list/get/update` CLI 命令 |
+| `.claude/skills/build-mount-patch/SKILL.md` | Claude Skill：读取原料包生成最终 DBC/SQL/MPQ |
 | `docs/arch/07DBC维护与同步方案.md` | 本方案文档 |
 
 ## 实施步骤
@@ -184,21 +183,18 @@ patches/
 2. `git submodule update --init --recursive data/wow-dbc`
 3. 在 `backend/pyproject.toml` 增加 `wow-dbc-tool` 路径依赖。
 4. `uv sync` 验证导入。
-5. 创建 `patches/` 目录与 `patches/README.md`。
 
-### 第三阶段：导出器引擎
+### 第三阶段：补丁任务服务
 
-1. 创建 `data/mapping/dbc_field_mapping.yaml`。
-2. 实现 `backend/app/exporters/common.py`。
-3. 实现 `backend/app/exporters/dbc.py`。
-4. 实现 `backend/app/exporters/sql.py`。
+1. 实现 `backend/app/services/patch_exporter.py`。
+2. 实现 `backend/app/schemas/patch.py`。
+3. 实现 `backend/app/api/patches.py`。
+4. 实现 `backend/app/cli/patch.py`。
 
-### 第四阶段：CLI 命令
+### 第四阶段：Claude Skill
 
-1. 实现 `backend/app/cli/export.py`。
-2. 实现 `backend/app/cli/dbc.py`。
-3. 实现 `backend/app/cli/deploy.py`。
-4. 在 `backend/app/cli/main.py` 注册。
+1. 创建 `.claude/skills/build-mount-patch/SKILL.md`。
+2. 配置 Skill 权限（`wow-dbc-tool`、`mpqcli`）。
 
 ### 第五阶段：acore-deploy 侧适配
 
@@ -222,16 +218,16 @@ patches/
 ## 验证清单
 
 - [ ] `data/wow-dbc/src/dbc/Spell.dbc` 存在。
-- [ ] `export dbc --type mount --id 3` 成功生成可审查的 Python 脚本。
-- [ ] 运行生成的脚本后，`dbc diff` 能显示变更。
+- [ ] `patch export --type mount --id 3` 成功生成原料包。
+- [ ] `/build-mount-patch {job_id}` 成功生成 `output/dbc/`、`output/db_patch.sql`、`output/patch-mount-0003.mpq`。
 - [ ] `deploy sync-dbc --dry-run` 正确指向 `acore-deploy/data/dbc/`。
 - [ ] `deploy sync-dbc --yes` 同步文件并更新 `acore-deploy/configs/dbc-version.json`。
 - [ ] 类型检查与测试通过。
 
 ## 安全约束
 
-- Agent **不直接修改** `data/wow-dbc/src/dbc/*.dbc`，只生成 `patches/` 脚本。
-- DBC 脚本应用、子模块提交、部署同步均需人工确认或显式 `--yes` 参数。
+- Agent **不直接修改** `data/wow-dbc/src/dbc/*.dbc`，只生成 `workspace/patch-jobs/{job_id}/input/` 原料包。
+- DBC/SQL/MPQ 最终产物生成、子模块提交、部署同步均需人工确认或显式 `--yes` 参数。
 - 子模块更新提交使用 `chore(dbc): update data/wow-dbc submodule to <short-sha>`。
 
 ## 与现有 skill 的关系

@@ -14,7 +14,6 @@ acore-resouces/
 ├── apps/desktop/          # Electron 桌面外壳
 ├── tools/model-converter/ # Rust M2 → glTF 转换工具
 ├── data/                  # 纳入 Git 的结构化数据（YAML/JSON/Schema/映射）
-├── patches/               # 生成的 DBC/SQL 补丁（纳入 Git）
 ├── sources/               # 原始资源（不入 Git）
 │   ├── mounts/            # 坐骑预览图与原始模型/贴图
 │   ├── pets/              # 宠物预览图与原始模型/贴图

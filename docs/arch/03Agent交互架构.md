@@ -128,9 +128,10 @@ Agent
 | `resource validate` | 校验资源 | `python -m backend.app.cli resource validate --type mount --id 1` |
 | `xlsx export` | YAML 导出 xlsx（只读展示） | `python -m backend.app.cli xlsx export --type mount --output 坐骑列表.xlsx` |
 | `validate` | 全量校验 | `python -m backend.app.cli validate` |
-| `export dbc` | 导出 DBC 修改脚本 | `python -m backend.app.cli export dbc --type mount --id 1` |
-| `export sql` | 导出 SQL 补丁 | `python -m backend.app.cli export sql --type mount --id 1` |
-| `export all` | 一键导出所有变更 | `python -m backend.app.cli export all --since-tag v1.0.0` |
+| `patch export` | 导出补丁原料包 | `python -m app.cli patch export --type mount --id 3` |
+| `patch list` | 列出补丁任务 | `python -m app.cli patch list --status requested` |
+| `patch get` | 查看补丁任务详情 | `python -m app.cli patch get {job_id}` |
+| `patch update` | 更新补丁任务状态 | `python -m app.cli patch update {job_id} generated` |
 
 ### 3.3 资源 CRUD 接口
 
@@ -170,25 +171,39 @@ python -m backend.app.cli xlsx export \
   --output 坐骑列表.xlsx
 ```
 
-### 3.5 DBC/SQL 导出接口
+### 3.5 补丁任务导出接口
+
+系统通过 `patch export` 为单个资源生成补丁任务目录（原料包），由 Claude Skill `/build-mount-patch` 进一步生成最终 DBC/SQL/MPQ 产物。
 
 ```bash
-# 导出单个资源的 DBC 修改脚本
-python -m backend.app.cli export dbc --type mount --id 1 \
-  --output patches/mount_1_dbc.py
+# 导出单个资源的补丁原料包
+python -m app.cli patch export --type mount --id 3
 
-# 导出单个资源的 SQL 补丁
-python -m backend.app.cli export sql --type mount --id 1 \
-  --output patches/mount_1_db.sql
+# 列出最近的补丁任务
+python -m app.cli patch list --status requested
 
-# 导出自某标签以来的所有变更
-python -m backend.app.cli export dbc --type mount --since-tag v1.0.0 \
-  --output patches/update_mount_dbc.py
-python -m backend.app.cli export sql --type mount --since-tag v1.0.0 \
-  --output patches/update_mount_db.sql
+# 查看任务详情
+python -m app.cli patch get 20250724_143022_mount_0003_梦光符文牡鹿
 
-# 一键导出所有变更
-python -m backend.app.cli export all --since-tag v1.0.0 --output-dir patches/
+# 更新任务状态（通常由 Skill 调用）
+python -m app.cli patch update 20250724_143022_mount_0003_梦光符文牡鹿 generated
+```
+
+原料包结构：
+
+```text
+workspace/patch-jobs/{job_id}/
+├── manifest.json
+├── input/
+│   ├── resource.yaml
+│   ├── assets.json
+│   ├── dbc-plan.yaml
+│   ├── sql-plan.yaml
+│   └── README.md
+└── output/          # 由 /build-mount-patch Skill 填充
+    ├── dbc/
+    ├── db_patch.sql
+    └── patch-mount-{id}.mpq
 ```
 
 ---
@@ -229,32 +244,42 @@ Agent 收到修改指令
 Git diff 展示变更
 ```
 
-### 4.3 生成 DBC/SQL 补丁工作流
+### 4.3 生成 DBC/SQL/MPQ 补丁工作流
 
 ```
-Agent 收到“把坐骑 X 加入游戏”指令
+Agent 收到”把坐骑 X 加入游戏”指令
    ↓
 读取资源 YAML
    ↓
 校验 ID 关联一致性
    ↓
-调用 CLI export dbc 生成 Python 脚本
+调用 CLI patch export 生成原料包到 workspace/patch-jobs/{job_id}/
    ↓
-调用 CLI export sql 生成 SQL 文件
+或用户在 Web 前端点击”导出补丁原料”生成原料包
    ↓
-展示补丁 diff，等待人工确认
+Claude Skill /build-mount-patch 读取原料包
    ↓
-人工确认后执行：
-   python patches/mount_x_dbc.py
-   /Users/deadwalk/Workspace/acore-deploy/scripts/acore-update-dbc.sh
-   /Users/deadwalk/Workspace/acore-deploy/scripts/acore-update-db.sh \
-     --sql-file patches/mount_x_db.sql --database acore_world
+检查 ID 冲突、调用 wow-dbc-tool 生成 DBC
+   ↓
+生成 db_patch.sql
+   ↓
+调用 mpqcli 打包 MPQ
+   ↓
+更新 manifest.json 状态为 generated
+   ↓
+展示结果与 output/ 下文件路径
 ```
+
+最终产物位于 `workspace/patch-jobs/{job_id}/output/`：
+
+- `dbc/*.dbc`：修改后的 DBC 文件
+- `db_patch.sql`：AzerothCore SQL 补丁
+- `patch-mount-{id}.mpq`：客户端 MPQ 补丁包
 
 ### 4.4 Agent 元数据驱动开发流程
 
 ```
-Agent 接到开发任务（如“把咒缚恒龙加入游戏”）
+Agent 接到开发任务（如”把咒缚恒龙加入游戏”）
    ↓
 调用 CLI resource get / 读取 YAML 获取资源完整元数据
    ↓
@@ -266,11 +291,13 @@ Agent 接到开发任务（如“把咒缚恒龙加入游戏”）
    ↓
 系统校验并记录变更
    ↓
-调用 CLI export dbc / export sql 生成补丁
+导出补丁原料包：CLI patch export 或 Web 前端导出
    ↓
-人工审查 patches/ 目录 diff
+Claude Skill /build-mount-patch 生成最终 DBC/SQL/MPQ
    ↓
-人工执行 acore-update-dbc.sh / acore-update-db.sh
+人工审查 workspace/patch-jobs/{job_id}/output/ 产物
+   ↓
+人工执行 acore-update-dbc.sh / acore-update-db.sh 部署
    ↓
 测试服验证
 ```
@@ -296,9 +323,8 @@ Agent **不得**直接执行以下操作：
 | 读取资源 | 直接读取 YAML 或调用 CLI `resource get` |
 | 修改资源 | CLI `resource update` / 直接写 YAML + `validate` |
 | 导出 xlsx | `python -m backend.app.cli xlsx export` |
-| 导出 DBC | `python -m backend.app.cli export dbc` |
-| 导出 SQL | `python -m backend.app.cli export sql` |
-| 应用 DBC | 人工执行生成的脚本 + `acore-update-dbc.sh` |
+| 导出 DBC/SQL/MPQ | Web 前端导出原料包 + `/build-mount-patch` Skill |
+| 应用 DBC | 人工复制 `workspace/patch-jobs/{job_id}/output/dbc/` 并执行 `acore-update-dbc.sh` |
 | 应用 SQL | 人工执行 `acore-update-db.sh --dry-run` 后再执行 |
 
 ### 5.3 大文件处理
@@ -357,13 +383,18 @@ print("校验通过")
 python -m backend.app.cli resource get --type mount --id 1
 ```
 
-### 6.5 通过 CLI 校验并导出资源
+### 6.5 通过 CLI 校验并导出补丁原料包
 
 ```bash
 # 校验单个资源
-python -m backend.app.cli resource validate --type mount --id 1
+python -m app.cli resource validate --type mount --id 3
 
-# 导出 DBC/SQL 补丁
-python -m backend.app.cli export dbc --type mount --id 1 --output patches/mount_1_dbc.py
-python -m backend.app.cli export sql --type mount --id 1 --output patches/mount_1_db.sql
+# 导出补丁原料包
+python -m app.cli patch export --type mount --id 3
+```
+
+### 6.6 通过 Skill 生成最终补丁
+
+```bash
+/build-mount-patch 0003
 ```
