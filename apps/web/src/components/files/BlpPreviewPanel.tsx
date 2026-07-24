@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { ImageOff, Loader2 } from "lucide-react";
-import { getBlpPreviewUrl } from "@/shared/resources";
+import { getBlpPreviewUrl, getFilePreviewUrl } from "@/shared/resources";
 
 interface BlpPreviewPanelProps {
   path: string;
   name: string;
 }
 
+function getImagePreviewUrl(path: string): string {
+  const lower = path.toLowerCase();
+  if (lower.endsWith(".blp")) {
+    return getBlpPreviewUrl(path, 1024);
+  }
+  return getFilePreviewUrl(path);
+}
+
 export function BlpPreviewPanel({ path, name }: BlpPreviewPanelProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const url = getBlpPreviewUrl(path, 1024);
+  const url = getImagePreviewUrl(path);
 
   return (
     <div className="flex h-full flex-col">
@@ -19,13 +27,13 @@ export function BlpPreviewPanel({ path, name }: BlpPreviewPanelProps) {
         {loading && !error && (
           <div className="flex flex-col items-center gap-2 text-text-tertiary">
             <Loader2 className="h-8 w-8 animate-spin" />
-            <span className="text-sm">加载贴图中...</span>
+            <span className="text-sm">加载图片中...</span>
           </div>
         )}
         {error ? (
           <div className="flex flex-col items-center gap-2 text-danger">
             <ImageOff className="h-10 w-10" />
-            <span className="text-sm">无法加载贴图</span>
+            <span className="text-sm">无法加载图片</span>
           </div>
         ) : (
           <img

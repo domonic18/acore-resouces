@@ -28,6 +28,10 @@ function isBlp(node: FileTreeNode): boolean {
   return node.name.toLowerCase().endsWith(".blp");
 }
 
+function isImage(node: FileTreeNode): boolean {
+  return /\.(png|jpg|jpeg|webp|gif|blp)$/i.test(node.name.toLowerCase());
+}
+
 function isM2(node: FileTreeNode): boolean {
   return node.name.toLowerCase().endsWith(".m2");
 }
@@ -92,6 +96,12 @@ export function ResourceFolderPage() {
       return;
     }
 
+    if (isImage(node)) {
+      setSelectedFile(node);
+      setSelectedTexture(null);
+      return;
+    }
+
     setSelectedFile(node);
     setSelectedTexture(null);
   }
@@ -102,12 +112,14 @@ export function ResourceFolderPage() {
         <div className="flex h-full flex-col items-center justify-center text-text-tertiary">
           <FolderOpen className="mb-4 h-16 w-16" />
           <p>在左侧选择一个文件以预览</p>
-          <p className="mt-1 text-sm">支持 .blp 贴图和 .m2 模型</p>
+          <p className="mt-1 text-sm">
+            支持 .blp/.png/.jpg/.webp/.gif 图片和 .m2 模型
+          </p>
         </div>
       );
     }
 
-    if (isBlp(selectedFile)) {
+    if (isImage(selectedFile)) {
       return (
         <BlpPreviewPanel path={selectedFile.path} name={selectedFile.name} />
       );

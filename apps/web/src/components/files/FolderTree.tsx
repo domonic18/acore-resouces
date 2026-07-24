@@ -23,7 +23,9 @@ interface FolderTreeProps {
 
 function getFileIcon(name: string) {
   const lower = name.toLowerCase();
-  if (lower.endsWith(".blp")) return <Image className="h-4 w-4 text-accent" />;
+  if (/\.(png|jpg|jpeg|webp|gif|blp)$/i.test(lower)) {
+    return <Image className="h-4 w-4 text-accent" />;
+  }
   if (lower.endsWith(".m2")) return <Box className="h-4 w-4 text-purple-400" />;
   return <File className="h-4 w-4 text-text-tertiary" />;
 }
