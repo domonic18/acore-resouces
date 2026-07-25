@@ -15,10 +15,8 @@ services:
     volumes:
       - ./sources:/app/sources
       - ./data:/app/data
-      - ./assets:/app/assets
       - ./workspace:/app/workspace
       - ./imports:/app/imports
-      - ./patches:/app/patches
       - ./backend/app:/app/app
       - ./apps/web/dist:/app/app/static
     networks:
@@ -48,10 +46,10 @@ services:
   #   volumes:
   #     - ./sources:/app/sources
   #     - ./data:/app/data
-  #     - ./assets:/app/assets
   #     - ./workspace:/app/workspace
   #     - ./imports:/app/imports
-  #     - ./patches:/app/patches
+  #     - ./backend/app:/app/app
+  #     - ./apps/web/dist:/app/app/static
   #   networks:
   #     - acore-resources-network
   #   restart: unless-stopped

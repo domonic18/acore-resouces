@@ -46,13 +46,12 @@ COPY --from=backend-builder /usr/local/bin /usr/local/bin
 
 # 复制后端代码
 COPY backend/app ./app
-COPY backend/scripts ./scripts
 
 # 复制前端构建产物到后端 static 目录，由 main.py 挂载
 COPY --from=frontend-builder /app/dist ./app/static
 
 # 创建运行时目录
-RUN mkdir -p /app/workspace/data /app/workspace/logs /app/assets /app/patches
+RUN mkdir -p /app/workspace/data /app/workspace/logs /app/workspace/assets /app/workspace/patch-jobs
 
 EXPOSE 8000
 
