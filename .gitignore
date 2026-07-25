@@ -33,6 +33,8 @@ Desktop.ini
 
 # 运行时数据（SQLite、日志、运行时缓存）
 /workspace/
+# 显式忽略 MPQ 分发产物
+/workspace/dist/
 
 # 本地参考文档/下载资料
 /docs/references/
