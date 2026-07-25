@@ -23,6 +23,7 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "typer" },
     { name = "uvicorn", extra = ["standard"] },
+    { name = "wow-dbc-tool" },
 ]
 
 [package.optional-dependencies]
@@ -65,6 +66,7 @@ requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0.25" },
     { name = "typer", specifier = ">=0.12.0" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.29.0" },
+    { name = "wow-dbc-tool", directory = "../tools/wow-dbc-tool" },
 ]
 provides-extras = ["dev"]
 
@@ -1498,3 +1500,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/31/6a/0da1eb8c8da2ace7b578c8523d32618af85e62a9ebad56051d4a14a38a1c/websockets-16.1-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:81495f9c0085361c582efbc3207fb877174cfe03370f17d9cd70624404aa526f", size = 180546, upload-time = "2026-07-10T06:32:54.619Z" },
     { url = "https://files.pythonhosted.org/packages/66/58/bd83247f39ddc26ffc2c24eb05087a3b749e00cb4509fc6d19daa23c8495/websockets-16.1-py3-none-any.whl", hash = "sha256:c5149dfe490ec7e5ee5dbf624c642fb725f93a5575c7f00ab594ca9eddb8dd81", size = 174031, upload-time = "2026-07-10T06:32:56.079Z" },
 ]
+
+[[package]]
+name = "wow-dbc-tool"
+version = "0.1.0"
+source = { directory = "../tools/wow-dbc-tool" }
+
+[package.metadata]
+requires-dist = [
+    { name = "black", marker = "extra == 'dev'", specifier = ">=23.0" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
+]
+provides-extras = ["dev"]

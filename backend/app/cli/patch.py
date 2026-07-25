@@ -6,12 +6,18 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from app.services.mount_patch_builder import (
+    DBCConflictError,
+    MountPatchBuilderError,
+    build_mount_patches,
+)
 from app.services.patch_exporter import (
     create_patch_job,
     get_patch_job,
     list_patch_jobs,
     update_patch_job_status,
 )
+from app.services.patch_publisher import PatchPublisherError, publish_patches
 
 app = typer.Typer(help="补丁任务管理命令")
 console = Console()
@@ -32,6 +38,58 @@ def export_patch(
     console.print(f"[green]已创建补丁任务: {manifest.job_id}[/green]")
     console.print(f"输入目录: {manifest.input_dir}")
     console.print(f"输出目录: {manifest.output_dir}")
+
+
+@app.command("build", help="构建坐骑补丁（DBC/SQL/MPQ）")
+def build_patch(
+    all_requested: bool = typer.Option(False, "--all-requested", help="处理所有可处理状态的任务"),
+    jobs: list[str] | None = typer.Option(None, "--jobs", help="指定任务 ID 列表"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="仅校验冲突，不修改文件"),
+) -> None:
+    """读取补丁任务并批量构建坐骑补丁。"""
+    if not all_requested and not jobs:
+        console.print("[red]请指定 --all-requested 或 --jobs[/red]")
+        raise typer.Exit(1)
+
+    try:
+        result = build_mount_patches(
+            all_requested=all_requested,
+            job_ids=jobs,
+            dry_run=dry_run,
+        )
+    except DBCConflictError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(2) from e
+    except MountPatchBuilderError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    console.print(f"[green]处理任务: {', '.join(result['jobs'])}[/green]")
+    console.print(f"SQL: {result['sql_file']}")
+    console.print(f"MPQ: {result['mpq_path']}")
+    console.print(f"校验报告: {result['report_path']}")
+    if result["dry_run"]:
+        console.print("[yellow]干跑完成，未修改任何文件。[/yellow]")
+
+
+@app.command("publish", help="发布 MPQ 补丁到分发目录")
+def publish_patch(
+    start_number: int = typer.Option(5, "--start-number", help="补丁编号起始值"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="仅预览，不执行复制"),
+) -> None:
+    """将 workspace/mpq/ 下未发布的批次复制到 workspace/dist/。"""
+    try:
+        result = publish_patches(start_number=start_number, dry_run=dry_run)
+    except PatchPublisherError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    if result["published"]:
+        console.print("[green]已发布批次:[/green]")
+        for item in result["published"]:
+            console.print(f"  {item['batch']} -> {item['path']}")
+    if result["skipped"]:
+        console.print(f"[yellow]已跳过（已发布）: {', '.join(result['skipped'])}[/yellow]")
 
 
 @app.command("list", help="列出补丁任务")
