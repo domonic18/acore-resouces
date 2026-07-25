@@ -17,6 +17,8 @@ docs/
 │   └── 07DBC维护与同步方案.md
 ├── references/                     # 参考资料
 │   └── 06资源DBC与SQL实现参考.md
+├── workflows/                      # 操作流程手册
+│   └── mount-patch-runbook.md
 └── README.md                       # 本文件
 ```
 
@@ -32,6 +34,7 @@ docs/
 | 测试分层、fixtures、CI 流程 | [`arch/05测试策略.md`](./arch/05测试策略.md) |
 | DBC 维护职责划分、补丁生成与部署同步 | [`arch/07DBC维护与同步方案.md`](./arch/07DBC维护与同步方案.md) |
 | 坐骑/宠物/NPC 所需的 DBC 文件、字段与 SQL 实现清单 | [`references/06资源DBC与SQL实现参考.md`](./references/06资源DBC与SQL实现参考.md) |
+| 从编辑坐骑到发布 MPQ 的端到端操作手册 | [`workflows/mount-patch-runbook.md`](./workflows/mount-patch-runbook.md) |
 
 ## 相关项目
 
