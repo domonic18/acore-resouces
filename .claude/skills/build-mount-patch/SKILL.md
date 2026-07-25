@@ -53,34 +53,30 @@ ls -1 workspace/patch-jobs | sort -r | head -20
 - `input/sql-plan.yaml`
 - `input/assets.json`
 
-### 2. 调用批量构建脚本
+### 2. 调用批量构建命令
 
-统一调用 `tools/build_mount_patch.py`：
+统一调用后端 CLI 的 `patch build`：
 
 ```bash
 cd backend
-PYTHONPATH=/Users/deadwalk/Code/acore-resouces/tools/wow-dbc-tool/src \
-  uv run python ../tools/build_mount_patch.py --all-requested
+uv run python -m app.cli patch build --all-requested
 ```
 
 或处理指定任务：
 
 ```bash
 cd backend
-PYTHONPATH=/Users/deadwalk/Code/acore-resouces/tools/wow-dbc-tool/src \
-  uv run python ../tools/build_mount_patch.py \
-  --jobs 20260724_143022_mount_0003_梦光符文牡鹿
+uv run python -m app.cli patch build --jobs 20260724_143022_mount_0003_梦光符文牡鹿
 ```
 
 先使用 `--dry-run` 只做冲突校验：
 
 ```bash
 cd backend
-PYTHONPATH=/Users/deadwalk/Code/acore-resouces/tools/wow-dbc-tool/src \
-  uv run python ../tools/build_mount_patch.py --all-requested --dry-run
+uv run python -m app.cli patch build --all-requested --dry-run
 ```
 
-脚本内部完成以下步骤：
+命令内部完成以下步骤：
 
 1. **ID 冲突检查**：对 `dbc-plan.yaml` 中每个 `add` 操作的 `record_id`，检查源 DBC 是否已存在。已处理过的任务（`status=generated`）会按重建模式编辑已有记录，不视为冲突。
 2. **路径清理**：自动去除 `model_folder` 中的中文、空格及其他非 ASCII 字符，确保 DBC 与 MPQ 中的模型路径全英文。自动为 `CreatureModelData.dbc` 计算 `ModelName`（`Creature\<sanitized_folder>\<main_model>.m2`）。
@@ -163,14 +159,14 @@ workspace/reports/20260724_123045/
 
 ## 注意事项
 
-- `tools/build_mount_patch.py` 不执行任何 `git commit`，DBC 源文件修改后需用户手动提交 `data/wow-dbc` 子模块。
+- `patch build` 命令不执行任何 `git commit`，DBC 源文件修改后需用户手动提交 `data/wow-dbc` 子模块。
 - `data/sql/azerothcore-updates` 是本地软链接，已加入 `.gitignore`，不会提交到仓库。
-- 脚本需要 backend 的 `uv` 环境（提供 PyYAML），并通过 `PYTHONPATH` 加载 `tools/wow-dbc-tool/src`。
+- backend 已将 `tools/wow-dbc-tool` 作为路径依赖引入，无需再手动设置 `PYTHONPATH`。
 
 ## 依赖
 
 - `uv`（backend 环境）
-- `tools/wow-dbc-tool/src`（通过 PYTHONPATH 加载）
+- `tools/wow-dbc-tool/`（backend 已将其作为路径依赖引入）
 - `tools/wow-mpq-cli/build/bin/mpqcli`
 - `data/wow-dbc/src/dbc/` 原始 DBC 文件
 
