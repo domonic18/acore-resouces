@@ -41,7 +41,7 @@ class PatchJobManifest(BaseModel):
     resource_model_folder: str
     status: Literal["requested", "generated", "applied", "failed"]
     input_dir: str
-    output_dir: str
+    output_dir: str | None = None
     artifacts: PatchArtifacts = Field(default_factory=PatchArtifacts)
     completed_at: str | None = None
     summary: str | None = None

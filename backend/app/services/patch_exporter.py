@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
@@ -105,11 +106,8 @@ def _load_yaml(path: Path) -> dict[str, Any]:
 
 
 def _build_job_id(resource: Resource) -> str:
-    """生成任务 ID。"""
-    timestamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
-    name = resource.official_db.name or resource.model_folder
-    safe_name = "".join(c if c.isalnum() or c in ("_", "-") else "_" for c in name)[:40]
-    return f"{timestamp}_{resource.resource_type}_{resource.id:04d}_{safe_name}"
+    """生成固定任务 ID，仅按资源类型与 ID 命名，避免重复目录。"""
+    return f"{resource.resource_type}_{resource.id:04d}"
 
 
 def _asset_file_to_dict(asset: Any) -> dict[str, str]:
@@ -373,7 +371,7 @@ def _build_readme(job_id: str, resource: Resource) -> str:
     """生成 input/README.md。"""
     return f"""# Patch Job: {job_id}
 
-本目录由 acore-resouces 系统导出，供 Claude `/build-mount-patch` Skill 使用。
+本目录由 acore-resouces 系统导出，供 `/build-mount-patch` 等 Skill 使用。
 
 ## 资源信息
 
@@ -389,15 +387,12 @@ def _build_readme(job_id: str, resource: Resource) -> str:
 - `dbc-plan.yaml`: 建议修改的 DBC 文件和字段
 - `sql-plan.yaml`: 建议生成的 SQL 表和字段
 
-## Skill 工作步骤
+## 工作流程
 
 1. 读取 `resource.yaml` 和 `assets.json`。
 2. 检查 `dbc-plan.yaml` 中的 ID 是否冲突。
 3. 根据 `mount_type` 调整 Spell.dbc 相关字段。
-4. 调用 `wow-dbc-tool` 生成 `output/dbc/*.dbc`。
-5. 生成 `output/db_patch.sql`。
-6. 调用 `mpqcli` 创建 `output/patch-{resource.resource_type}-{resource.id:04d}.mpq`。
-7. 更新 `../manifest.json` 状态为 `generated`。
+4. 运行 `patch build` 生成批次 DBC/SQL/MPQ 与校验报告。
 """
 
 
@@ -426,10 +421,11 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     job_id = _build_job_id(resource)
     job_dir = settings.patch_jobs_dir / job_id
     input_dir = job_dir / "input"
-    output_dir = job_dir / "output"
 
+    # 固定目录完全重置，避免历史产物与重复目录
+    if job_dir.exists():
+        shutil.rmtree(job_dir)
     _ensure_dir(input_dir)
-    _ensure_dir(output_dir)
 
     # 写入 resource.yaml
     resource_data = resource.model_dump(exclude_none=False)
@@ -463,7 +459,6 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
         resource_model_folder=resource.model_folder,
         status="requested",
         input_dir="input",
-        output_dir="output",
         artifacts=PatchArtifacts(
             input={
                 "resource_yaml": "input/resource.yaml",
@@ -472,7 +467,6 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
                 "sql_plan": "input/sql-plan.yaml",
                 "readme": "input/README.md",
             },
-            output={},
         ),
     )
     _write_json(job_dir / "manifest.json", manifest.model_dump(exclude_none=False))

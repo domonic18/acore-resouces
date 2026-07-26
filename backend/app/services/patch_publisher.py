@@ -9,7 +9,6 @@
 
 from __future__ import annotations
 
-import re
 import shutil
 from pathlib import Path
 from typing import Any
@@ -18,26 +17,11 @@ from app.core.config import settings
 
 MPQ_DIR = settings.project_root / "workspace" / "mpq"
 DIST_DIR = settings.project_root / "workspace" / "dist"
-PATCH_NAME_PATTERN = re.compile(r"^patch-zhCN-(\d+)\.mpq$", re.IGNORECASE)
 DEFAULT_START_NUMBER = 5
 
 
 class PatchPublisherError(Exception):
     """补丁发布过程中的通用错误。"""
-
-
-def find_next_patch_number(dist_dir: Path, start_number: int) -> int:
-    """扫描已发布的 patch-zhCN-*.mpq，返回下一个可用编号。"""
-    max_number = 0
-    if not dist_dir.exists():
-        return start_number
-
-    for mpq_file in dist_dir.rglob("patch-zhCN-*.mpq"):
-        match = PATCH_NAME_PATTERN.match(mpq_file.name)
-        if match:
-            max_number = max(max_number, int(match.group(1)))
-
-    return max_number + 1 if max_number >= start_number else start_number
 
 
 def collect_source_batches() -> list[Path]:
@@ -101,7 +85,7 @@ def publish_patches(
     """发布 MPQ 补丁到分发目录。
 
     Args:
-        start_number: 补丁编号起始值。
+        start_number: 补丁编号起始值，默认固定为 5。
         dry_run: 为 True 时只预览，不执行复制。
 
     Returns:
@@ -116,7 +100,6 @@ def publish_patches(
             "next_number": start_number,
         }
 
-    next_number = find_next_patch_number(DIST_DIR, start_number)
     published: list[tuple[str, Path]] = []
     skipped: list[str] = []
 
@@ -127,15 +110,13 @@ def publish_patches(
 
         if dry_run:
             target_dir = DIST_DIR / batch_dir.name
-            mpq_target = target_dir / f"patch-zhCN-{next_number}.mpq"
+            mpq_target = target_dir / f"patch-zhCN-{start_number}.mpq"
             print(f"[干跑] 将发布: {batch_dir.name} -> {mpq_target}")
-            next_number += 1
             continue
 
-        mpq_target = publish_batch(batch_dir, DIST_DIR, next_number)
+        mpq_target = publish_batch(batch_dir, DIST_DIR, start_number)
         published.append((batch_dir.name, mpq_target))
         print(f"已发布: {batch_dir.name} -> {mpq_target.relative_to(settings.project_root)}")
-        next_number += 1
 
     if skipped:
         print(f"\n已跳过（已发布）: {', '.join(skipped)}")
@@ -150,5 +131,5 @@ def publish_patches(
             {"batch": name, "path": str(path)} for name, path in published
         ],
         "skipped": skipped,
-        "next_number": next_number,
+        "next_number": start_number,
     }

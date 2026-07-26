@@ -37,7 +37,8 @@ def export_patch(
 
     console.print(f"[green]已创建补丁任务: {manifest.job_id}[/green]")
     console.print(f"输入目录: {manifest.input_dir}")
-    console.print(f"输出目录: {manifest.output_dir}")
+    if manifest.output_dir:
+        console.print(f"输出目录: {manifest.output_dir}")
 
 
 @app.command("build", help="构建坐骑补丁（DBC/SQL/MPQ）")

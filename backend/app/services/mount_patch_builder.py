@@ -23,6 +23,8 @@ from typing import Any, cast
 
 import yaml
 from wow_dbc_tool import DBCFile
+from wow_dbc_tool.core.dbc_record import DBCRecord
+from wow_dbc_tool.schema.registry import SchemaRegistry
 
 from app.core.config import settings
 
@@ -43,6 +45,25 @@ REQUIRED_DBC_FILES = [
 ]
 
 _MODEL_LOD_SUFFIXES = ("_low.m2", "_high.m2", "_lod.m2")
+
+
+def _load_wow_dbc_schemas() -> None:
+    """从项目本地 tools/wow-dbc-tool/schemas/ 加载 DBC 字段定义。
+
+    wow-dbc-tool 作为 uv 路径依赖安装时，可能无法自动定位 schema 目录，
+    因此手动注册项目内的 schema 文件。
+    """
+    schemas_dir = settings.project_root / "tools" / "wow-dbc-tool" / "schemas"
+    if not schemas_dir.exists():
+        return
+    for schema_path in schemas_dir.glob("*.schema.json"):
+        try:
+            SchemaRegistry.load_from_file(schema_path)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+
+_load_wow_dbc_schemas()
 
 
 @dataclasses.dataclass
@@ -121,6 +142,26 @@ def sanitize_model_folder(name: str) -> str:
     no_spaces = ascii_only.replace(" ", "")
     cleaned = re.sub(r"_+", "_", no_spaces.strip("_"))
     return cleaned or "model"
+
+
+def _normalize_field_value(key: str, value: Any) -> str:
+    """规范化字段值用于幂等比较，路径字段统一分隔符与大小写。"""
+    text = str(value) if value is not None else ""
+    if key.lower() == "modelname":
+        text = text.replace("\\", "/").lower()
+    return text
+
+
+def _fields_match(existing: DBCRecord | dict[str, Any], planned: dict[str, Any]) -> bool:
+    """判断现有记录中的字段是否与计划字段一致（忽略大小写、路径分隔符）。"""
+    if isinstance(existing, DBCRecord):
+        existing = existing.to_dict()
+    for key, planned_value in planned.items():
+        if key not in existing:
+            return False
+        if _normalize_field_value(key, existing[key]) != _normalize_field_value(key, planned_value):
+            return False
+    return True
 
 
 def is_lod_model(file_name: str) -> bool:
@@ -206,22 +247,23 @@ def _model_name_field(
     dbc_file: str,
     op_fields: dict[str, Any],
 ) -> dict[str, Any]:
-    """如果操作是 CreatureModelData 且未指定 ModelName，自动计算并注入。"""
+    """如果操作是 CreatureModelData，自动根据实际资源计算 ModelName。
+
+    dbc-plan.yaml 中显式写出的 ModelName 可能不是最新/最准确的（例如资源
+    目录后来调整过），因此优先根据 assets.json 中的实际 m2 文件计算。
+    """
     if dbc_file != "CreatureModelData.dbc":
         return op_fields
-
-    fields = dict(op_fields)
-    if fields.get("ModelName"):
-        return fields
 
     assets = load_json(job_dir / "input" / "assets.json")
     raw_folder = assets.get("model_folder") or ""
     folder = sanitize_model_folder(raw_folder)
     main_model = resolve_main_model(assets.get("m2_files", []), folder)
-    if main_model:
-        fields["ModelName"] = f"Creature\\{folder}\\{main_model}"
-    else:
-        fields["ModelName"] = ""
+    if not main_model:
+        return op_fields
+
+    fields = dict(op_fields)
+    fields["ModelName"] = f"creature\\{folder}\\{main_model}"
     return fields
 
 
@@ -256,31 +298,27 @@ def check_conflicts(
 ) -> dict[str, list[tuple[str, int]]]:
     """检查 DBC 记录 ID 冲突。
 
-    需要重建的任务中已存在的记录不视为冲突。
+    由于源 DBC 已包含目标记录时我们不会覆盖，仅将同一批次内重复出现的
+    record_id 视为冲突。
 
     Args:
         grouped_ops: 按 DBC 文件分组的操作。
-        rebuild_jobs: 需要重建的任务目录名集合。
+        rebuild_jobs: 需要重建的任务目录名集合（当前未使用，保留兼容）。
 
     Returns:
         {job_name: [(dbc_file, record_id), ...]}
     """
     conflicts: dict[str, list[tuple[str, int]]] = {}
+    seen: dict[str, set[int]] = {}
     for dbc_file, operations in grouped_ops.items():
-        dbc_path = WOW_DBC_DIR / dbc_file
-        if not dbc_path.exists():
-            continue
-        dbc = DBCFile(dbc_path)
-        dbc.load()
+        seen.setdefault(dbc_file, set())
         for job_dir, op in operations:
+            if op.get("action", "add") != "add":
+                continue
             record_id = int(op["record_id"])
-            is_rebuild = job_dir.name in rebuild_jobs
-            if (
-                op.get("action", "add") == "add"
-                and dbc.get(ID=record_id) is not None
-                and not is_rebuild
-            ):
+            if record_id in seen[dbc_file]:
                 conflicts.setdefault(job_dir.name, []).append((dbc_file, record_id))
+            seen[dbc_file].add(record_id)
     return conflicts
 
 
@@ -288,7 +326,10 @@ def apply_dbc_operations(
     grouped_ops: dict[str, list[tuple[Path, dict[str, Any]]]],
     dry_run: bool = False,
 ) -> None:
-    """应用 DBC 操作。"""
+    """应用 DBC 操作。
+
+    源 DBC 中已存在的记录直接跳过，避免覆盖历史数据；仅新增缺失记录。
+    """
     for dbc_file, operations in grouped_ops.items():
         dbc_path = WOW_DBC_DIR / dbc_file
         dbc = DBCFile(dbc_path)
@@ -303,8 +344,7 @@ def apply_dbc_operations(
             if action == "add":
                 if existing is None and not dry_run:
                     dbc.add(**fields)
-                elif existing is not None and not dry_run:
-                    dbc.edit(existing, **fields)
+                # 已存在则跳过，不执行 edit
             elif action == "edit":
                 if existing is not None and not dry_run:
                     dbc.edit(existing, **fields)
@@ -409,26 +449,46 @@ def _guess_primary_key_value(table_name: str, record: dict[str, Any]) -> Any | N
     return record.get(pk)
 
 
+_GAME_ASSET_EXTENSIONS = {".m2", ".blp", ".anim", ".skin", ".phys"}
+_NON_GAME_ASSET_EXTENSIONS = {".png", ".gif", ".jpg", ".jpeg", ".txt", ".md", ".ini"}
+
+
 def _copy_assets_to_staging(job_dir: Path, staging: Path) -> list[Path]:
-    """将任务的客户端资源复制到 MPQ staging，返回写入的相对路径列表。"""
+    """将任务的客户端资源按原始目录结构复制到 MPQ staging，返回写入的相对路径列表。"""
     assets = load_json(job_dir / "input" / "assets.json")
-    raw_folder = assets.get("model_folder") or ""
-    model_folder = sanitize_model_folder(raw_folder)
-
-    creature_dir = staging / "Creature" / model_folder
-    creature_dir.mkdir(parents=True, exist_ok=True)
-
     written: list[Path] = []
-    for key in ("m2_files", "blp_files", "anim_files"):
-        for file_info in assets.get(key, []):
-            rel_path = file_info.get("relative_path")
-            if not rel_path:
+
+    source_dir = settings.project_root / (assets.get("source_dir") or "")
+    if source_dir.exists():
+        creature_root = staging / "creature"
+        creature_root.mkdir(parents=True, exist_ok=True)
+        for src in sorted(source_dir.rglob("*")):
+            if not src.is_file():
                 continue
-            src = settings.project_root / rel_path
-            if src.exists():
-                dst = creature_dir / src.name
-                shutil.copy2(src, dst)
-                written.append(Path("Creature") / model_folder / src.name)
+            ext = src.suffix.lower()
+            if ext in _NON_GAME_ASSET_EXTENSIONS or ext not in _GAME_ASSET_EXTENSIONS:
+                continue
+            rel = src.relative_to(source_dir)
+            dst = creature_root / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+            written.append(Path("creature") / rel)
+
+    icon_root = staging / "Interface" / "icons"
+    icon_root.mkdir(parents=True, exist_ok=True)
+    copied_icons: set[Path] = set()
+    for icon in assets.get("icon_files", []):
+        rel_path = icon.get("relative_path")
+        if not rel_path:
+            continue
+        src = settings.project_root / rel_path
+        if not src.exists() or src in copied_icons:
+            continue
+        dst = icon_root / src.name
+        shutil.copy2(src, dst)
+        copied_icons.add(src)
+        written.append(Path("Interface") / "icons" / src.name)
+
     return written
 
 
@@ -472,6 +532,7 @@ def build_mpq(
         [str(MPQCLI), "create", str(staging), "--output", str(mpq_path), "--game", "wow-wotlk"],
         check=True,
     )
+    shutil.rmtree(staging, ignore_errors=True)
 
     readme = mpq_dir / "readme.txt"
     mount_names = ", ".join(
@@ -666,7 +727,8 @@ def validate_job(job_dir: Path, mpq_assets: list[Path]) -> JobValidation:
             passed=all_mpq_ascii,
             expected="所有路径均为 ASCII 且无空格",
             actual=[str(p) for p in mpq_assets if not _is_ascii_path(str(p))],
-            message="MPQ 中的模型文件路径必须全英文、无空格、无中文",
+            message="MPQ 中的模型文件路径包含非 ASCII 或空格；历史补丁中可能存在此类文件",
+            severity="warning",
         )
     )
 
