@@ -83,15 +83,16 @@ cd backend
 uv run python -m app.cli patch export --type mount --id 3
 ```
 
-系统会在 `workspace/patch-jobs/{job_id}/input/` 下生成：
+系统会在 `workspace/patch-jobs/mount_0003/` 下生成原料包：
 
-- `resource.yaml`
-- `assets.json`
-- `dbc-plan.yaml`
-- `sql-plan.yaml`
-- `README.md`
+- `input/resource.yaml`
+- `input/assets.json`
+- `input/dbc-plan.yaml`
+- `input/sql-plan.yaml`
+- `input/README.md`
+- `manifest.json`
 
-并创建 `manifest.json`，状态为 `requested`。
+目录名固定为 `{type}_{id:04d}`，重复导出时会完全重置该目录，避免同一坐骑出现多个时间戳目录。任务目录不再包含 `output/`。
 
 - 原料包结构：[`docs/plan/坐骑补丁自动化制作流程.md`](./plan/坐骑补丁自动化制作流程.md)
 - Agent 交互与 CLI 设计：[`docs/arch/03Agent交互架构.md`](./arch/03Agent交互架构.md)
@@ -122,9 +123,17 @@ cd backend
 uv run python -m app.cli patch build --all-requested
 ```
 
+构建行为：
+
+- `workspace/patch-jobs/` 按固定目录读取任务，天然避免同一坐骑被处理多次。
+- 源 DBC（`data/wow-dbc/src/dbc/*.dbc`）中已存在的记录会被跳过，不会被覆盖；仅新增缺失记录。
+- 自动根据 `assets.json` 中的实际资源计算 `CreatureModelData.ModelName`（统一使用小写 `creature\...` 前缀），使其与 MPQ 内路径一致。
+- MPQ 打包时按资源 `source_dir` 完整复制游戏文件（`.m2`、`.blp`、`.anim`、`.skin`、`.phys`）到 `creature/`，保留原目录结构与文件名；坐骑图标复制到 `Interface\icons\`。
+- MPQ 打包完成后自动清理 `workspace/mpq/{timestamp}/staging/`，只保留 `patch-mounts.mpq` 与 `readme.txt`。
+
 构建产物：
 
-- DBC 直接编辑：`data/wow-dbc/src/dbc/*.dbc`
+- DBC 直接编辑：`data/wow-dbc/src/dbc/*.dbc`（仅新增缺失记录）
 - SQL：`data/sql/azerothcore-updates/YYYY_MM_DD_NN_mcc_custom_mounts.sql`
 - MPQ：`workspace/mpq/{timestamp}/patch-mounts.mpq`
 - 校验报告：`workspace/reports/{timestamp}/validation-report.json`
@@ -208,8 +217,8 @@ uv run python -m app.cli deploy sync-dbc --yes
 
 完成补丁后，按以下顺序提交：
 
-1. `data/resources/mounts/*.yaml`（资源定义变更）。
-2. `data/wow-dbc` 子模块（DBC 源文件变更）。
+1. `data/resources/mounts/*.yaml`（资源定义变更，例如修正了 `model_folder`）。
+2. `data/wow-dbc` 子模块（若构建过程中新增了缺失的 DBC 记录）。
    ```bash
    cd data/wow-dbc
    git add src/dbc/*.dbc
@@ -217,6 +226,8 @@ uv run python -m app.cli deploy sync-dbc --yes
    ```
 3. 服务端 SQL 文件（如果在仓库中维护）。
 4. （可选）`workspace/dist/` 下的 MPQ 发布产物通常不入 Git，由分发站点管理。
+
+`workspace/patch-jobs/` 下的固定目录为运行时产物，通常也不入 Git。
 
 ---
 
