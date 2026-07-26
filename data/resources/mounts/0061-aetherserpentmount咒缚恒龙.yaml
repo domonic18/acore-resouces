@@ -18,7 +18,7 @@ dbc:
     id: 104056
     flags: 2
   creature_display_info:
-    id: 140056
+    id: 140450
     model_id: 104056
     sound_id: 0
     extra_display_information_id: 0
@@ -27,7 +27,7 @@ dbc:
   spell:
     id: 80056
     name: 咒缚恒龙
-    visual_id: 9140056
+    visual_id: 9140462
     description: 召唤或解散这种坐骑。
   item:
     id: 0
@@ -40,9 +40,9 @@ dbc:
     sheath: 0
 db:
   creature_template:
-    entry: 9140056
+    entry: 9140462
     name: 咒缚恒龙
-    modelid1: 140056
+    modelid1: 140450
     faction: 35
     type: 1
     unit_class: 1
@@ -52,7 +52,7 @@ db:
     gender: 2
     display_id_other_gender: 0
   creature_model_info:
-    display_id: 140056
+    display_id: 140450
   item_template:
     name: 咒缚恒龙
     spellid_2: 80056

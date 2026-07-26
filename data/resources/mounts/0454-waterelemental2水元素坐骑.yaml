@@ -19,7 +19,7 @@ dbc:
     id: 104450
     flags: 2
   creature_display_info:
-    id: 140450
+    id: 140462
     model_id: 104450
     sound_id: 0
     extra_display_information_id: 0
@@ -45,7 +45,7 @@ db:
   creature_template:
     entry: 9140450
     name: 冰川狂潮
-    modelid1: 140450
+    modelid1: 140462
     faction: 35
     type: 1
     unit_class: 1
@@ -55,7 +55,7 @@ db:
     gender: 2
     display_id_other_gender: 0
   creature_model_info:
-    display_id: 140450
+    display_id: 140462
   item_template:
     entry: 166705
     name: 冰川狂潮

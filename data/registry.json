@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "counts": {
-    "mounts": 461,
+    "mounts": 451,
     "pets": 107,
     "npcs": 226
   },
@@ -97,8 +97,8 @@
     {
       "id": 14,
       "name": "拳手的健壮蜥蜴",
-      "model_folder": "basilisk2老鳄鱼坐骑",
-      "file": "data/resources/mounts/0014-basilisk2老鳄鱼坐骑.yaml",
+      "model_folder": "basiliskmount拳手的健壮蜥蜴",
+      "file": "data/resources/mounts/0014-basiliskmount拳手的健壮蜥蜴.yaml",
       "debug_passed": true,
       "added": true
     },
@@ -168,7 +168,7 @@
     },
     {
       "id": 23,
-      "name": "跃泽吮血蛛",
+      "name": "跃泽巨蛛",
       "model_folder": "bloodtickmount跃泽吮血蛛",
       "file": "data/resources/mounts/0023-bloodtickmount跃泽吮血蛛.yaml",
       "debug_passed": false,
@@ -215,14 +215,6 @@
       "added": true
     },
     {
-      "id": 30,
-      "name": "好狗",
-      "model_folder": "darkhoundmount好狗坐骑",
-      "file": "data/resources/mounts/0030-darkhoundmount好狗坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 31,
       "name": "月狼",
       "model_folder": "darkmoondirewolfboss月狼坐骑",
@@ -232,7 +224,7 @@
     },
     {
       "id": 32,
-      "name": "粘够",
+      "name": "勇猛的战狼",
       "model_folder": "deathwargmount粘够",
       "file": "data/resources/mounts/0032-deathwargmount粘够.yaml",
       "debug_passed": true,
@@ -275,14 +267,6 @@
       "name": "深蓝恐角熊",
       "model_folder": "druidbearzandalaritroll_noarmor深蓝恐角熊坐骑",
       "file": "data/resources/mounts/0038-druidbearzandalaritroll_noarmor深蓝恐角熊坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 39,
-      "name": "恐角熊",
-      "model_folder": "druidbearzandalaritroll恐角熊坐骑",
-      "file": "data/resources/mounts/0039-druidbearzandalaritroll恐角熊坐骑.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -400,7 +384,7 @@
     },
     {
       "id": 57,
-      "name": "火元素",
+      "name": "先知的狂怒风暴",
       "model_folder": "shamanmount_fire火元素坐骑",
       "file": "data/resources/mounts/0057-shamanmount_fire火元素坐骑.yaml",
       "debug_passed": true,
@@ -416,7 +400,7 @@
     },
     {
       "id": 59,
-      "name": "狂怒风暴图腾",
+      "name": "先知的狂怒风暴",
       "model_folder": "ShamanMount狂怒风暴图腾",
       "file": "data/resources/mounts/0059-ShamanMount狂怒风暴图腾.yaml",
       "debug_passed": false,
@@ -512,7 +496,7 @@
     },
     {
       "id": 72,
-      "name": "褐色废墟游荡者缰绳",
+      "name": "棕色废墟游荡者",
       "model_folder": "argustalbukmount褐色废墟游荡者",
       "file": "data/resources/mounts/0072-argustalbukmount褐色废墟游荡者.yaml",
       "debug_passed": false,
@@ -584,7 +568,7 @@
     },
     {
       "id": 81,
-      "name": "血牙蛛茧",
+      "name": "血牙寡妇蛛",
       "model_folder": "bonespider2蜘蛛坐骑",
       "file": "data/resources/mounts/0081-bonespider2蜘蛛坐骑.yaml",
       "debug_passed": false,
@@ -592,7 +576,7 @@
     },
     {
       "id": 82,
-      "name": "雄壮商队雷龙的缰绳",
+      "name": "雄壮商队雷龙",
       "model_folder": "brontosauruspack蛇颈龙坐骑",
       "file": "data/resources/mounts/0082-brontosauruspack蛇颈龙坐骑.yaml",
       "debug_passed": false,
@@ -608,7 +592,7 @@
     },
     {
       "id": 84,
-      "name": "褐色骑乘骆驼缰绳",
+      "name": "褐色骑乘骆驼",
       "model_folder": "camelmount2行脚骆驼坐骑",
       "file": "data/resources/mounts/0084-camelmount2行脚骆驼坐骑.yaml",
       "debug_passed": false,
@@ -816,7 +800,7 @@
     },
     {
       "id": 110,
-      "name": "炽炎幼龙的缰绳",
+      "name": "燃烬巨龙",
       "model_folder": "deathwingdungeon死亡飞龙坐骑",
       "file": "data/resources/mounts/0110-deathwingdungeon死亡飞龙坐骑.yaml",
       "debug_passed": false,
@@ -877,14 +861,6 @@
       "file": "data/resources/mounts/0117-draenorkaliri火乌鸦坐骑.yaml",
       "debug_passed": true,
       "added": true
-    },
-    {
-      "id": 118,
-      "name": "艾卓曼德斯的缰绳",
-      "model_folder": "dragonatramedes铁笼坐骑",
-      "file": "data/resources/mounts/0118-dragonatramedes铁笼坐骑.yaml",
-      "debug_passed": false,
-      "added": false
     },
     {
       "id": 119,
@@ -1056,7 +1032,7 @@
     },
     {
       "id": 140,
-      "name": "实验体12B",
+      "name": "实验体12-B",
       "model_folder": "DRAKEMOUNT邪能幼龙",
       "file": "data/resources/mounts/0140-DRAKEMOUNT邪能幼龙.yaml",
       "debug_passed": false,
@@ -1376,7 +1352,7 @@
     },
     {
       "id": 180,
-      "name": "幽灵军马的颅骨",
+      "name": "幽灵军马",
       "model_folder": "ghostlycharger幽灵军马",
       "file": "data/resources/mounts/0180-ghostlycharger幽灵军马.yaml",
       "debug_passed": false,
@@ -1392,7 +1368,7 @@
     },
     {
       "id": 182,
-      "name": "黑色斗猪",
+      "name": "霜原斗猪",
       "model_folder": "GiantBoar霜原野猪",
       "file": "data/resources/mounts/0182-GiantBoar霜原野猪.yaml",
       "debug_passed": false,
@@ -1664,7 +1640,7 @@
     },
     {
       "id": 216,
-      "name": "跳跳大王",
+      "name": "骑乘巨鼠",
       "model_folder": "hoptallus大耗子坐骑",
       "file": "data/resources/mounts/0216-hoptallus大耗子坐骑.yaml",
       "debug_passed": true,
@@ -1800,7 +1776,7 @@
     },
     {
       "id": 234,
-      "name": "R-21X型空中单位",
+      "name": "R-21/X型空中单位",
       "model_folder": "hunterkillership锈栓抵抗者",
       "file": "data/resources/mounts/0234-hunterkillership锈栓抵抗者.yaml",
       "debug_passed": false,
@@ -2024,7 +2000,7 @@
     },
     {
       "id": 262,
-      "name": "灰色奇美拉",
+      "name": "灰谷奇美拉",
       "model_folder": "maldraxxusflyermount髓牙",
       "file": "data/resources/mounts/0262-maldraxxusflyermount髓牙.yaml",
       "debug_passed": false,
@@ -2056,7 +2032,7 @@
     },
     {
       "id": 266,
-      "name": "芭美兹拉之链",
+      "name": "芭美兹拉之手",
       "model_folder": "mawguardhandmount巴赫麦特之手缰绳",
       "file": "data/resources/mounts/0266-mawguardhandmount巴赫麦特之手缰绳.yaml",
       "debug_passed": false,
@@ -2064,7 +2040,7 @@
     },
     {
       "id": 267,
-      "name": "灵魂羁绊阴郁军马的缰绳",
+      "name": "灵魂羁绊阴郁军马",
       "model_folder": "mawhorsespikes麦林特战马",
       "file": "data/resources/mounts/0267-mawhorsespikes麦林特战马.yaml",
       "debug_passed": false,
@@ -2256,7 +2232,7 @@
     },
     {
       "id": 291,
-      "name": "nightmarespider夜蜘蛛坐骑",
+      "name": "血牙寡妇蛛",
       "model_folder": "nightmarespider夜蜘蛛坐骑",
       "file": "data/resources/mounts/0291-nightmarespider夜蜘蛛坐骑.yaml",
       "debug_passed": false,
@@ -2272,7 +2248,7 @@
     },
     {
       "id": 293,
-      "name": "nozdormudragon黄龙坐骑",
+      "name": "青铜幼龙",
       "model_folder": "nozdormudragon黄龙坐骑",
       "file": "data/resources/mounts/0293-nozdormudragon黄龙坐骑.yaml",
       "debug_passed": false,
@@ -2304,7 +2280,7 @@
     },
     {
       "id": 297,
-      "name": "OnyxPanther黄金宝石豹",
+      "name": "日长石猎豹",
       "model_folder": "OnyxPanther黄金宝石豹",
       "file": "data/resources/mounts/0297-OnyxPanther黄金宝石豹.yaml",
       "debug_passed": false,
@@ -2368,7 +2344,7 @@
     },
     {
       "id": 305,
-      "name": "燃灰熊猫人凤凰缰绳",
+      "name": "燃灰熊猫人凤凰",
       "model_folder": "pandarenphoenixmount熊猫人凤凰",
       "file": "data/resources/mounts/0305-pandarenphoenixmount熊猫人凤凰.yaml",
       "debug_passed": false,
@@ -2408,7 +2384,7 @@
     },
     {
       "id": 310,
-      "name": "神圣猩红云端祥龙",
+      "name": "神圣猩红云端翔龙",
       "model_folder": "PandarenSerpentGod神圣云端翔龙",
       "file": "data/resources/mounts/0310-PandarenSerpentGod神圣云端翔龙.yaml",
       "debug_passed": false,
@@ -2488,7 +2464,7 @@
     },
     {
       "id": 320,
-      "name": "鲨鱼饵",
+      "name": "召唤鲨鱼饵",
       "model_folder": "parrotmount呱呱鹦鹉",
       "file": "data/resources/mounts/0320-parrotmount呱呱鹦鹉.yaml",
       "debug_passed": false,
@@ -2664,7 +2640,7 @@
     },
     {
       "id": 342,
-      "name": "raptorloa斩龙坐骑",
+      "name": "奢华暴掠龙",
       "model_folder": "raptorloa斩龙坐骑",
       "file": "data/resources/mounts/0342-raptorloa斩龙坐骑.yaml",
       "debug_passed": false,
@@ -2976,7 +2952,7 @@
     },
     {
       "id": 381,
-      "name": "SIBERIANTIGERGOD狮子2",
+      "name": "幽灵虎",
       "model_folder": "SIBERIANTIGERGOD狮子2",
       "file": "data/resources/mounts/0381-SIBERIANTIGERGOD狮子2.yaml",
       "debug_passed": false,
@@ -3008,7 +2984,7 @@
     },
     {
       "id": 385,
-      "name": "siegeengineer机器人坐骑",
+      "name": "火箭伐木机9001型",
       "model_folder": "siegeengineer机器人坐骑",
       "file": "data/resources/mounts/0385-siegeengineer机器人坐骑.yaml",
       "debug_passed": false,
@@ -3072,7 +3048,7 @@
     },
     {
       "id": 393,
-      "name": "spectralgryphon幽灵狮鹫",
+      "name": "迅捷幽灵狮鹫",
       "model_folder": "spectralgryphon幽灵狮鹫",
       "file": "data/resources/mounts/0393-spectralgryphon幽灵狮鹫.yaml",
       "debug_passed": false,
@@ -3080,7 +3056,7 @@
     },
     {
       "id": 394,
-      "name": "spectralwyvern幽灵驭风者",
+      "name": "幽灵驭风者",
       "model_folder": "spectralwyvern幽灵驭风者",
       "file": "data/resources/mounts/0394-spectralwyvern幽灵驭风者.yaml",
       "debug_passed": false,
@@ -3144,7 +3120,7 @@
     },
     {
       "id": 402,
-      "name": "stormcrowmountbase风暴乌蕥2",
+      "name": "萨伊尔，海妖之目",
       "model_folder": "stormcrowmountbase风暴乌蕥2",
       "file": "data/resources/mounts/0402-stormcrowmountbase风暴乌蕥2.yaml",
       "debug_passed": false,
@@ -3544,7 +3520,7 @@
     },
     {
       "id": 453,
-      "name": "虚空领主的诅咒愤怒战马",
+      "name": "扭曲虚空之王的混沌愤怒战马",
       "model_folder": "warriormount愤怒战马1",
       "file": "data/resources/mounts/0453-warriormount愤怒战马1.yaml",
       "debug_passed": false,
@@ -3624,7 +3600,7 @@
     },
     {
       "id": 464,
-      "name": "翡翠原始恐角龙缰绳",
+      "name": "翡翠原始恐角龙",
       "model_folder": "zandalaritriceratops犍牛坐骑",
       "file": "data/resources/mounts/0464-zandalaritriceratops犍牛坐骑.yaml",
       "debug_passed": false,
@@ -3650,7 +3626,7 @@
     },
     {
       "id": 2,
-      "name": "ancientprotector_pet黄古树宠物",
+      "name": "繁花古树",
       "model_folder": "ancientprotector_pet黄古树宠物",
       "file": "data/resources/pets/0002-ancientprotector_pet黄古树宠物.yaml",
       "debug_passed": false,
@@ -3666,7 +3642,7 @@
     },
     {
       "id": 4,
-      "name": "armadillo穿山甲宠物",
+      "name": "犰狳幼崽",
       "model_folder": "armadillo穿山甲宠物",
       "file": "data/resources/pets/0004-armadillo穿山甲宠物.yaml",
       "debug_passed": false,
@@ -3674,7 +3650,7 @@
     },
     {
       "id": 5,
-      "name": "babydeer梅花鹿宠物",
+      "name": "小鹿",
       "model_folder": "babydeer梅花鹿宠物",
       "file": "data/resources/pets/0005-babydeer梅花鹿宠物.yaml",
       "debug_passed": false,
@@ -3682,7 +3658,7 @@
     },
     {
       "id": 6,
-      "name": "babyfox小绿狐宠物",
+      "name": "幼狐",
       "model_folder": "babyfox小绿狐宠物",
       "file": "data/resources/pets/0006-babyfox小绿狐宠物.yaml",
       "debug_passed": false,
@@ -3690,7 +3666,7 @@
     },
     {
       "id": 7,
-      "name": "babyfox小绿狐宠物",
+      "name": "幼狐",
       "model_folder": "babyfox小绿狐宠物",
       "file": "data/resources/pets/0007-babyfox小绿狐宠物.yaml",
       "debug_passed": false,
@@ -3698,7 +3674,7 @@
     },
     {
       "id": 8,
-      "name": "babyfox小绿狐宠物",
+      "name": "幼狐",
       "model_folder": "babyfox小绿狐宠物",
       "file": "data/resources/pets/0008-babyfox小绿狐宠物.yaml",
       "debug_passed": false,
@@ -3706,7 +3682,7 @@
     },
     {
       "id": 9,
-      "name": "babyfox小绿狐宠物",
+      "name": "幼狐",
       "model_folder": "babyfox小绿狐宠物",
       "file": "data/resources/pets/0009-babyfox小绿狐宠物.yaml",
       "debug_passed": false,
@@ -3714,7 +3690,7 @@
     },
     {
       "id": 10,
-      "name": "babyhippo小河马宠物",
+      "name": "天界河马幼崽",
       "model_folder": "babyhippo小河马宠物",
       "file": "data/resources/pets/0010-babyhippo小河马宠物.yaml",
       "debug_passed": false,
@@ -3722,7 +3698,7 @@
     },
     {
       "id": 11,
-      "name": "babykomododragon小龙怪宠物",
+      "name": "暴掠幼龙",
       "model_folder": "babykomododragon小龙怪宠物",
       "file": "data/resources/pets/0011-babykomododragon小龙怪宠物.yaml",
       "debug_passed": false,
@@ -3730,7 +3706,7 @@
     },
     {
       "id": 12,
-      "name": "babymoonkin小鹌鹑宠物",
+      "name": "枭兽宝宝",
       "model_folder": "babymoonkin小鹌鹑宠物",
       "file": "data/resources/pets/0012-babymoonkin小鹌鹑宠物.yaml",
       "debug_passed": false,
@@ -3738,7 +3714,7 @@
     },
     {
       "id": 13,
-      "name": "babymoonkin小鹌鹑宠物",
+      "name": "枭兽宝宝",
       "model_folder": "babymoonkin小鹌鹑宠物",
       "file": "data/resources/pets/0013-babymoonkin小鹌鹑宠物.yaml",
       "debug_passed": false,
@@ -3746,7 +3722,7 @@
     },
     {
       "id": 14,
-      "name": "babymoose小四不像宠物",
+      "name": "草地践踏者幼崽",
       "model_folder": "babymoose小四不像宠物",
       "file": "data/resources/pets/0014-babymoose小四不像宠物.yaml",
       "debug_passed": false,
@@ -3754,7 +3730,7 @@
     },
     {
       "id": 15,
-      "name": "babymurloc3小鱼人宠物",
+      "name": "塔吉",
       "model_folder": "babymurloc3小鱼人宠物",
       "file": "data/resources/pets/0015-babymurloc3小鱼人宠物.yaml",
       "debug_passed": false,
@@ -3770,7 +3746,7 @@
     },
     {
       "id": 17,
-      "name": "babypig小猪宠物",
+      "name": "扭扭先生",
       "model_folder": "babypig小猪宠物",
       "file": "data/resources/pets/0017-babypig小猪宠物.yaml",
       "debug_passed": false,
@@ -3778,7 +3754,7 @@
     },
     {
       "id": 18,
-      "name": "babyragnoros小螺丝宠物",
+      "name": "小拉格",
       "model_folder": "babyragnoros小螺丝宠物",
       "file": "data/resources/pets/0018-babyragnoros小螺丝宠物.yaml",
       "debug_passed": false,
@@ -3786,7 +3762,7 @@
     },
     {
       "id": 19,
-      "name": "babyraptor小恐龙宠物",
+      "name": "小塔克",
       "model_folder": "babyraptor小恐龙宠物",
       "file": "data/resources/pets/0019-babyraptor小恐龙宠物.yaml",
       "debug_passed": false,
@@ -3794,7 +3770,7 @@
     },
     {
       "id": 20,
-      "name": "babysaurolophus小鸡宠物",
+      "name": "小达尔特",
       "model_folder": "babysaurolophus小鸡宠物",
       "file": "data/resources/pets/0020-babysaurolophus小鸡宠物.yaml",
       "debug_passed": false,
@@ -3802,7 +3778,7 @@
     },
     {
       "id": 21,
-      "name": "babyspidertank小坦克宠物",
+      "name": "迷你蜘蛛坦克",
       "model_folder": "babyspidertank小坦克宠物",
       "file": "data/resources/pets/0021-babyspidertank小坦克宠物.yaml",
       "debug_passed": false,
@@ -3810,7 +3786,7 @@
     },
     {
       "id": 22,
-      "name": "babysteward小猫头鹰宠物",
+      "name": "棕色猫头鹰",
       "model_folder": "babysteward小猫头鹰宠物",
       "file": "data/resources/pets/0022-babysteward小猫头鹰宠物.yaml",
       "debug_passed": false,
@@ -3834,7 +3810,7 @@
     },
     {
       "id": 25,
-      "name": "babytortollan小龟宠物",
+      "name": "小托",
       "model_folder": "babytortollan小龟宠物",
       "file": "data/resources/pets/0025-babytortollan小龟宠物.yaml",
       "debug_passed": false,
@@ -3842,7 +3818,7 @@
     },
     {
       "id": 26,
-      "name": "babytriceratops小犀牛宠物",
+      "name": "小小恐角龙",
       "model_folder": "babytriceratops小犀牛宠物",
       "file": "data/resources/pets/0026-babytriceratops小犀牛宠物.yaml",
       "debug_passed": false,
@@ -3850,7 +3826,7 @@
     },
     {
       "id": 27,
-      "name": "babyturtle小龟龟宠物",
+      "name": "飞毛腿",
       "model_folder": "babyturtle小龟龟宠物",
       "file": "data/resources/pets/0027-babyturtle小龟龟宠物.yaml",
       "debug_passed": false,
@@ -3858,7 +3834,7 @@
     },
     {
       "id": 28,
-      "name": "babywinston小猩猩宠物",
+      "name": "小温斯顿",
       "model_folder": "babywinston小猩猩宠物",
       "file": "data/resources/pets/0028-babywinston小猩猩宠物.yaml",
       "debug_passed": false,
@@ -3866,7 +3842,7 @@
     },
     {
       "id": 29,
-      "name": "banelingpet邪恶虫宠物",
+      "name": "跳跳虫",
       "model_folder": "banelingpet邪恶虫宠物",
       "file": "data/resources/pets/0029-banelingpet邪恶虫宠物.yaml",
       "debug_passed": false,
@@ -3874,7 +3850,7 @@
     },
     {
       "id": 30,
-      "name": "batdemon蝙蝠怪宠物",
+      "name": "吸血蝙蝠宝宝",
       "model_folder": "batdemon蝙蝠怪宠物",
       "file": "data/resources/pets/0030-batdemon蝙蝠怪宠物.yaml",
       "debug_passed": false,
@@ -3890,7 +3866,7 @@
     },
     {
       "id": 32,
-      "name": "blingtron2机器娃娃宠物",
+      "name": "小布",
       "model_folder": "blingtron2机器娃娃宠物",
       "file": "data/resources/pets/0032-blingtron2机器娃娃宠物.yaml",
       "debug_passed": false,
@@ -3898,7 +3874,7 @@
     },
     {
       "id": 33,
-      "name": "blingtron金娃娃宠物",
+      "name": "小布",
       "model_folder": "blingtron金娃娃宠物",
       "file": "data/resources/pets/0033-blingtron金娃娃宠物.yaml",
       "debug_passed": false,
@@ -3906,7 +3882,7 @@
     },
     {
       "id": 34,
-      "name": "bloodtrollbeastpet包子虫宠物",
+      "name": "吸血蛛幼虫",
       "model_folder": "bloodtrollbeastpet包子虫宠物",
       "file": "data/resources/pets/0034-bloodtrollbeastpet包子虫宠物.yaml",
       "debug_passed": false,
@@ -3914,7 +3890,7 @@
     },
     {
       "id": 35,
-      "name": "CAT圣诞猫宠物",
+      "name": "猫笼（灰猫）",
       "model_folder": "CAT圣诞猫宠物",
       "file": "data/resources/pets/0035-CAT圣诞猫宠物.yaml",
       "debug_passed": false,
@@ -3922,7 +3898,7 @@
     },
     {
       "id": 36,
-      "name": "chromaticdragonpet小金龙宠物",
+      "name": "守护巨龙之魂",
       "model_folder": "chromaticdragonpet小金龙宠物",
       "file": "data/resources/pets/0036-chromaticdragonpet小金龙宠物.yaml",
       "debug_passed": false,
@@ -3930,7 +3906,7 @@
     },
     {
       "id": 37,
-      "name": "corgi2贵宾犬宠物",
+      "name": "矮脚幼犬",
       "model_folder": "corgi2贵宾犬宠物",
       "file": "data/resources/pets/0037-corgi2贵宾犬宠物.yaml",
       "debug_passed": false,
@@ -3938,7 +3914,7 @@
     },
     {
       "id": 38,
-      "name": "corgi2贵宾犬宠物",
+      "name": "矮脚幼犬",
       "model_folder": "corgi2贵宾犬宠物",
       "file": "data/resources/pets/0038-corgi2贵宾犬宠物.yaml",
       "debug_passed": false,
@@ -3946,7 +3922,7 @@
     },
     {
       "id": 39,
-      "name": "cornpet小萝卜宠物",
+      "name": "疯狂的萝卜",
       "model_folder": "cornpet小萝卜宠物",
       "file": "data/resources/pets/0039-cornpet小萝卜宠物.yaml",
       "debug_passed": false,
@@ -3954,7 +3930,7 @@
     },
     {
       "id": 40,
-      "name": "cranegodpet小孔雀宠物",
+      "name": "永茂小孔雀",
       "model_folder": "cranegodpet小孔雀宠物",
       "file": "data/resources/pets/0040-cranegodpet小孔雀宠物.yaml",
       "debug_passed": false,
@@ -3962,7 +3938,7 @@
     },
     {
       "id": 41,
-      "name": "crawlinghandpet邪恶之爪宠物",
+      "name": "蠕行之爪",
       "model_folder": "crawlinghandpet邪恶之爪宠物",
       "file": "data/resources/pets/0041-crawlinghandpet邪恶之爪宠物.yaml",
       "debug_passed": false,
@@ -3970,7 +3946,7 @@
     },
     {
       "id": 42,
-      "name": "darkphoenixpet紫乌鸦宠物",
+      "name": "暗色凤凰宝宝",
       "model_folder": "darkphoenixpet紫乌鸦宠物",
       "file": "data/resources/pets/0042-darkphoenixpet紫乌鸦宠物.yaml",
       "debug_passed": false,
@@ -3978,7 +3954,7 @@
     },
     {
       "id": 43,
-      "name": "DeepSeaCrab绿螃蟹宠物",
+      "name": "沙滩蟹",
       "model_folder": "DeepSeaCrab绿螃蟹宠物",
       "file": "data/resources/pets/0043-DeepSeaCrab绿螃蟹宠物.yaml",
       "debug_passed": false,
@@ -3986,7 +3962,7 @@
     },
     {
       "id": 44,
-      "name": "DeepSeaCrab绿螃蟹宠物",
+      "name": "沙滩蟹",
       "model_folder": "DeepSeaCrab绿螃蟹宠物",
       "file": "data/resources/pets/0044-DeepSeaCrab绿螃蟹宠物.yaml",
       "debug_passed": false,
@@ -3994,7 +3970,7 @@
     },
     {
       "id": 45,
-      "name": "DeepSeaCrab绿螃蟹宠物",
+      "name": "沙滩蟹",
       "model_folder": "DeepSeaCrab绿螃蟹宠物",
       "file": "data/resources/pets/0045-DeepSeaCrab绿螃蟹宠物.yaml",
       "debug_passed": false,
@@ -4002,7 +3978,7 @@
     },
     {
       "id": 46,
-      "name": "dragonwhelp2小恐龙宠物",
+      "name": "蓝龙宝宝",
       "model_folder": "dragonwhelp2小恐龙宠物",
       "file": "data/resources/pets/0046-dragonwhelp2小恐龙宠物.yaml",
       "debug_passed": false,
@@ -4010,7 +3986,7 @@
     },
     {
       "id": 47,
-      "name": "dragonwhelpcataclysm小死亡之翼宠物",
+      "name": "超小版死亡之翼",
       "model_folder": "dragonwhelpcataclysm小死亡之翼宠物",
       "file": "data/resources/pets/0047-dragonwhelpcataclysm小死亡之翼宠物.yaml",
       "debug_passed": false,
@@ -4018,7 +3994,7 @@
     },
     {
       "id": 48,
-      "name": "dragonwhelpelementium骁龙宠物",
+      "name": "小泰蕾苟萨",
       "model_folder": "dragonwhelpelementium骁龙宠物",
       "file": "data/resources/pets/0048-dragonwhelpelementium骁龙宠物.yaml",
       "debug_passed": false,
@@ -4026,7 +4002,7 @@
     },
     {
       "id": 49,
-      "name": "dragonwhelpnightmare熔岩龙宠物",
+      "name": "梦魇龙宝宝",
       "model_folder": "dragonwhelpnightmare熔岩龙宠物",
       "file": "data/resources/pets/0049-dragonwhelpnightmare熔岩龙宠物.yaml",
       "debug_passed": false,
@@ -4034,7 +4010,7 @@
     },
     {
       "id": 50,
-      "name": "DRAGONWHELP小马沟里斯宠物",
+      "name": "奥妮克希亚龙宝宝",
       "model_folder": "DRAGONWHELP小马沟里斯宠物",
       "file": "data/resources/pets/0050-DRAGONWHELP小马沟里斯宠物.yaml",
       "debug_passed": false,
@@ -4042,7 +4018,7 @@
     },
     {
       "id": 51,
-      "name": "encrypted12小飞龙宠物",
+      "name": "艾米苟萨",
       "model_folder": "encrypted12小飞龙宠物",
       "file": "data/resources/pets/0051-encrypted12小飞龙宠物.yaml",
       "debug_passed": false,
@@ -4050,7 +4026,7 @@
     },
     {
       "id": 52,
-      "name": "faeriedragon2变色龙宠物",
+      "name": "精龙宝宝",
       "model_folder": "faeriedragon2变色龙宠物",
       "file": "data/resources/pets/0052-faeriedragon2变色龙宠物.yaml",
       "debug_passed": false,
@@ -4058,7 +4034,7 @@
     },
     {
       "id": 53,
-      "name": "felkitten邪能猫宠物",
+      "name": "淘气包",
       "model_folder": "felkitten邪能猫宠物",
       "file": "data/resources/pets/0053-felkitten邪能猫宠物.yaml",
       "debug_passed": false,
@@ -4082,7 +4058,7 @@
     },
     {
       "id": 56,
-      "name": "FireKitty小伙猫宠物",
+      "name": "燃烬猫仔",
       "model_folder": "FireKitty小伙猫宠物",
       "file": "data/resources/pets/0056-FireKitty小伙猫宠物.yaml",
       "debug_passed": false,
@@ -4090,7 +4066,7 @@
     },
     {
       "id": 57,
-      "name": "firespiritsmall魔人娃娃宠物",
+      "name": "熊猫人火灵",
       "model_folder": "firespiritsmall魔人娃娃宠物",
       "file": "data/resources/pets/0057-firespiritsmall魔人娃娃宠物.yaml",
       "debug_passed": false,
@@ -4098,7 +4074,7 @@
     },
     {
       "id": 58,
-      "name": "firespiritsmall魔人娃娃宠物",
+      "name": "熊猫人火灵",
       "model_folder": "firespiritsmall魔人娃娃宠物",
       "file": "data/resources/pets/0058-firespiritsmall魔人娃娃宠物.yaml",
       "debug_passed": false,
@@ -4106,7 +4082,7 @@
     },
     {
       "id": 59,
-      "name": "FoxPet紫色狐狸宠物",
+      "name": "幼狐",
       "model_folder": "FoxPet紫色狐狸宠物",
       "file": "data/resources/pets/0059-FoxPet紫色狐狸宠物.yaml",
       "debug_passed": false,
@@ -4114,7 +4090,7 @@
     },
     {
       "id": 60,
-      "name": "FrostwolfPup哈士奇宠物",
+      "name": "霜狼幼崽",
       "model_folder": "FrostwolfPup哈士奇宠物",
       "file": "data/resources/pets/0060-FrostwolfPup哈士奇宠物.yaml",
       "debug_passed": false,
@@ -4122,7 +4098,7 @@
     },
     {
       "id": 61,
-      "name": "FrostwolfPup哈士奇宠物",
+      "name": "霜狼幼崽",
       "model_folder": "FrostwolfPup哈士奇宠物",
       "file": "data/resources/pets/0061-FrostwolfPup哈士奇宠物.yaml",
       "debug_passed": false,
@@ -4138,7 +4114,7 @@
     },
     {
       "id": 63,
-      "name": "hordemurloc持斧鱼人宠物",
+      "name": "莫叽姆斯的小矛",
       "model_folder": "hordemurloc持斧鱼人宠物",
       "file": "data/resources/pets/0063-hordemurloc持斧鱼人宠物.yaml",
       "debug_passed": false,
@@ -4162,7 +4138,7 @@
     },
     {
       "id": 66,
-      "name": "mechanicalparrotpet机械鹦鹉宠物",
+      "name": "乱羽",
       "model_folder": "mechanicalparrotpet机械鹦鹉宠物",
       "file": "data/resources/pets/0066-mechanicalparrotpet机械鹦鹉宠物.yaml",
       "debug_passed": false,
@@ -4170,7 +4146,7 @@
     },
     {
       "id": 67,
-      "name": "mechanicalrabbit机械兔子宠物",
+      "name": "春季兔脚",
       "model_folder": "mechanicalrabbit机械兔子宠物",
       "file": "data/resources/pets/0067-mechanicalrabbit机械兔子宠物.yaml",
       "debug_passed": false,
@@ -4178,7 +4154,7 @@
     },
     {
       "id": 68,
-      "name": "moltengiant金色小旺财宠物",
+      "name": "小拉格",
       "model_folder": "moltengiant金色小旺财宠物",
       "file": "data/resources/pets/0068-moltengiant金色小旺财宠物.yaml",
       "debug_passed": false,
@@ -4186,7 +4162,7 @@
     },
     {
       "id": 69,
-      "name": "monstrouseel电鳗宠物",
+      "name": "滑震幼鳗",
       "model_folder": "monstrouseel电鳗宠物",
       "file": "data/resources/pets/0069-monstrouseel电鳗宠物.yaml",
       "debug_passed": false,
@@ -4194,7 +4170,7 @@
     },
     {
       "id": 70,
-      "name": "mysticmanakitty紫豹子宠物1",
+      "name": "亮爪",
       "model_folder": "mysticmanakitty紫豹子宠物1",
       "file": "data/resources/pets/0070-mysticmanakitty紫豹子宠物1.yaml",
       "debug_passed": false,
@@ -4202,7 +4178,7 @@
     },
     {
       "id": 71,
-      "name": "pandarenserpentpet翔龙宠物",
+      "name": "机械熊猫人幼龙",
       "model_folder": "pandarenserpentpet翔龙宠物",
       "file": "data/resources/pets/0071-pandarenserpentpet翔龙宠物.yaml",
       "debug_passed": false,
@@ -4210,7 +4186,7 @@
     },
     {
       "id": 72,
-      "name": "peacock小孔雀宠物",
+      "name": "永茂小孔雀",
       "model_folder": "peacock小孔雀宠物",
       "file": "data/resources/pets/0072-peacock小孔雀宠物.yaml",
       "debug_passed": false,
@@ -4218,7 +4194,7 @@
     },
     {
       "id": 73,
-      "name": "podling小绿菜宠物",
+      "name": "被捕获的森林幼苗",
       "model_folder": "podling小绿菜宠物",
       "file": "data/resources/pets/0073-podling小绿菜宠物.yaml",
       "debug_passed": false,
@@ -4226,7 +4202,7 @@
     },
     {
       "id": 74,
-      "name": "porcupine小刺猬宠物",
+      "name": "豪猪仔",
       "model_folder": "porcupine小刺猬宠物",
       "file": "data/resources/pets/0074-porcupine小刺猬宠物.yaml",
       "debug_passed": false,
@@ -4234,7 +4210,7 @@
     },
     {
       "id": 75,
-      "name": "pufferfish2小河豚宠物",
+      "name": "绿色小金鱼",
       "model_folder": "pufferfish2小河豚宠物",
       "file": "data/resources/pets/0075-pufferfish2小河豚宠物.yaml",
       "debug_passed": false,
@@ -4242,7 +4218,7 @@
     },
     {
       "id": 76,
-      "name": "rabbit2小兔子宠物",
+      "name": "暗月兔子",
       "model_folder": "rabbit2小兔子宠物",
       "file": "data/resources/pets/0076-rabbit2小兔子宠物.yaml",
       "debug_passed": false,
@@ -4258,7 +4234,7 @@
     },
     {
       "id": 78,
-      "name": "RAPTOR小恐龙宠物",
+      "name": "拉扎什幼龙",
       "model_folder": "RAPTOR小恐龙宠物",
       "file": "data/resources/pets/0078-RAPTOR小恐龙宠物.yaml",
       "debug_passed": false,
@@ -4266,7 +4242,7 @@
     },
     {
       "id": 79,
-      "name": "ravenlordpet小乌鸦宠物",
+      "name": "恐惧雏鸦",
       "model_folder": "ravenlordpet小乌鸦宠物",
       "file": "data/resources/pets/0079-ravenlordpet小乌鸦宠物.yaml",
       "debug_passed": false,
@@ -4274,7 +4250,7 @@
     },
     {
       "id": 80,
-      "name": "redbird小鹦鹉宠物",
+      "name": "咸饼干船长",
       "model_folder": "redbird小鹦鹉宠物",
       "file": "data/resources/pets/0080-redbird小鹦鹉宠物.yaml",
       "debug_passed": false,
@@ -4282,7 +4258,7 @@
     },
     {
       "id": 81,
-      "name": "redpanda小熊猫宠物",
+      "name": "红色小熊猫",
       "model_folder": "redpanda小熊猫宠物",
       "file": "data/resources/pets/0081-redpanda小熊猫宠物.yaml",
       "debug_passed": false,
@@ -4290,7 +4266,7 @@
     },
     {
       "id": 82,
-      "name": "RobotPet小钢炮宠物",
+      "name": "便携式火炮",
       "model_folder": "RobotPet小钢炮宠物",
       "file": "data/resources/pets/0082-RobotPet小钢炮宠物.yaml",
       "debug_passed": false,
@@ -4298,7 +4274,7 @@
     },
     {
       "id": 83,
-      "name": "robot_doberman木头狗宠物",
+      "name": "淘气机器人",
       "model_folder": "robot_doberman木头狗宠物",
       "file": "data/resources/pets/0083-robot_doberman木头狗宠物.yaml",
       "debug_passed": false,
@@ -4314,7 +4290,7 @@
     },
     {
       "id": 85,
-      "name": "shadowstalkerpantherpet小紫豹宠物",
+      "name": "夜刃豹幼崽",
       "model_folder": "shadowstalkerpantherpet小紫豹宠物",
       "file": "data/resources/pets/0085-shadowstalkerpantherpet小紫豹宠物.yaml",
       "debug_passed": false,
@@ -4338,7 +4314,7 @@
     },
     {
       "id": 88,
-      "name": "smallgargoyle小石像鬼宠物",
+      "name": "怪诞魔",
       "model_folder": "smallgargoyle小石像鬼宠物",
       "file": "data/resources/pets/0088-smallgargoyle小石像鬼宠物.yaml",
       "debug_passed": false,
@@ -4346,7 +4322,7 @@
     },
     {
       "id": 89,
-      "name": "snowkid雪孩子宠物",
+      "name": "翁帕尔",
       "model_folder": "snowkid雪孩子宠物",
       "file": "data/resources/pets/0089-snowkid雪孩子宠物.yaml",
       "debug_passed": false,
@@ -4354,7 +4330,7 @@
     },
     {
       "id": 90,
-      "name": "spacegoat太空山羊宠物",
+      "name": "阿吉",
       "model_folder": "spacegoat太空山羊宠物",
       "file": "data/resources/pets/0090-spacegoat太空山羊宠物.yaml",
       "debug_passed": false,
@@ -4370,7 +4346,7 @@
     },
     {
       "id": 92,
-      "name": "stbernarddogpet哈巴狗宠物",
+      "name": "奥特兰克负酒犬",
       "model_folder": "stbernarddogpet哈巴狗宠物",
       "file": "data/resources/pets/0092-stbernarddogpet哈巴狗宠物.yaml",
       "debug_passed": false,
@@ -4378,7 +4354,7 @@
     },
     {
       "id": 93,
-      "name": "succubus2魅魔宠物",
+      "name": "诱惑魔女",
       "model_folder": "succubus2魅魔宠物",
       "file": "data/resources/pets/0093-succubus2魅魔宠物.yaml",
       "debug_passed": false,
@@ -4394,7 +4370,7 @@
     },
     {
       "id": 95,
-      "name": "tigergodcubmonk绿老虎宠物",
+      "name": "班福，班禄的幼崽",
       "model_folder": "tigergodcubmonk绿老虎宠物",
       "file": "data/resources/pets/0095-tigergodcubmonk绿老虎宠物.yaml",
       "debug_passed": false,
@@ -4402,7 +4378,7 @@
     },
     {
       "id": 96,
-      "name": "tigergodcub蓝老虎宠物",
+      "name": "雪福，雪怒的幼崽",
       "model_folder": "tigergodcub蓝老虎宠物",
       "file": "data/resources/pets/0096-tigergodcub蓝老虎宠物.yaml",
       "debug_passed": false,
@@ -4410,7 +4386,7 @@
     },
     {
       "id": 97,
-      "name": "toucan小鹦鹉宠物",
+      "name": "小食虱鸟",
       "model_folder": "toucan小鹦鹉宠物",
       "file": "data/resources/pets/0097-toucan小鹦鹉宠物.yaml",
       "debug_passed": false,
@@ -4418,7 +4394,7 @@
     },
     {
       "id": 98,
-      "name": "TREASUREGOBLINPET炸弹人宠物",
+      "name": "财宝地精",
       "model_folder": "TREASUREGOBLINPET炸弹人宠物",
       "file": "data/resources/pets/0098-TREASUREGOBLINPET炸弹人宠物.yaml",
       "debug_passed": false,
@@ -4426,7 +4402,7 @@
     },
     {
       "id": 99,
-      "name": "turnippet胡萝卜宠物",
+      "name": "疯狂的萝卜",
       "model_folder": "turnippet胡萝卜宠物",
       "file": "data/resources/pets/0099-turnippet胡萝卜宠物.yaml",
       "debug_passed": false,
@@ -4442,7 +4418,7 @@
     },
     {
       "id": 101,
-      "name": "VALKIERPET飞人宠物",
+      "name": "Unborn Val'kyr",
       "model_folder": "VALKIERPET飞人宠物",
       "file": "data/resources/pets/0101-VALKIERPET飞人宠物.yaml",
       "debug_passed": false,
@@ -4458,7 +4434,7 @@
     },
     {
       "id": 103,
-      "name": "wingedlion2pet翼狮宠物",
+      "name": "守护者宝宝",
       "model_folder": "wingedlion2pet翼狮宠物",
       "file": "data/resources/pets/0103-wingedlion2pet翼狮宠物.yaml",
       "debug_passed": false,
@@ -4466,7 +4442,7 @@
     },
     {
       "id": 104,
-      "name": "wingedlionpet小翼狮宠物",
+      "name": "守护者宝宝",
       "model_folder": "wingedlionpet小翼狮宠物",
       "file": "data/resources/pets/0104-wingedlionpet小翼狮宠物.yaml",
       "debug_passed": false,
@@ -4474,7 +4450,7 @@
     },
     {
       "id": 105,
-      "name": "worserobot发条机器人宠物",
+      "name": "炸弹宠物",
       "model_folder": "worserobot发条机器人宠物",
       "file": "data/resources/pets/0105-worserobot发条机器人宠物.yaml",
       "debug_passed": false,
@@ -4490,7 +4466,7 @@
     },
     {
       "id": 107,
-      "name": "zandalaribabyraptor大嘴龙宠物",
+      "name": "赞达拉撕踝者",
       "model_folder": "zandalaribabyraptor大嘴龙宠物",
       "file": "data/resources/pets/0107-zandalaribabyraptor大嘴龙宠物.yaml",
       "debug_passed": false,
