@@ -8,6 +8,11 @@ from openpyxl import load_workbook
 
 from app.core.config import settings
 from app.schemas.resource import Mount, Npc, Pet, Resource
+from app.services.resource_store import list_resources
+from app.services.resource_validation import (
+    check_duplicate_resource_ids,
+    format_duplicate_issue,
+)
 
 SCHEMA_MAP = {
     "mount": Mount,
@@ -175,6 +180,7 @@ def import_xlsx(
     *,
     dry_run: bool = False,
     limit: int | None = None,
+    check_duplicates: bool = True,
 ) -> dict[str, Any]:
     mapping = _load_mapping(resource_type)
 
@@ -184,8 +190,10 @@ def import_xlsx(
     data_start_row = mapping.get("data_start_row", 3)
     created = 0
     updated = 0
+    skipped = 0
     errors: list[dict[str, Any]] = []
     resources: list[Resource] = []
+    resource_rows: list[int] = []
     seen_filenames: set[str] = set()
     last_model_folder: str | None = None
 
@@ -197,7 +205,7 @@ def import_xlsx(
     for row_idx, row in enumerate(
         sheet.iter_rows(min_row=data_start_row, values_only=True), start=data_start_row
     ):
-        if limit is not None and created >= limit:
+        if limit is not None and len(resources) >= limit:
             break
 
         if not row:
@@ -258,19 +266,52 @@ def import_xlsx(
         try:
             resource = _row_to_resource(enriched_row, mapping)
             resources.append(resource)
-            if not dry_run:
-                _save_resource_with_unique_name(resource, seen_filenames)
-            created += 1
+            resource_rows.append(row_idx)
         except Exception as exc:  # noqa: BLE001
             errors.append({"row": row_idx, "error": str(exc)})
 
     workbook.close()
+
+    bad_keys: set[tuple[int, str]] = set()
+    if check_duplicates and resources:
+        existing = list_resources(resource_type)
+        combined = existing + resources
+        all_issues = check_duplicate_resource_ids(combined)
+        imported_keys = {(r.id, r.model_folder) for r in resources}
+        for issue in all_issues:
+            issue_keys = set(issue.resources)
+            if issue_keys.isdisjoint(imported_keys):
+                continue
+            bad_keys.update(issue_keys & imported_keys)
+            for resource_id, model_folder in issue_keys & imported_keys:
+                errors.append(
+                    {
+                        "row": resource_rows[
+                            next(
+                                i
+                                for i, r in enumerate(resources)
+                                if r.id == resource_id and r.model_folder == model_folder
+                            )
+                        ],
+                        "error": format_duplicate_issue(issue),
+                    }
+                )
+
+    if not dry_run:
+        for resource in resources:
+            if (resource.id, resource.model_folder) in bad_keys:
+                continue
+            _save_resource_with_unique_name(resource, seen_filenames)
+
+    skipped = len(bad_keys)
+    created = len(resources) - skipped
 
     return {
         "resource_type": resource_type,
         "dry_run": dry_run,
         "created": created,
         "updated": updated,
+        "skipped": skipped,
         "errors": errors,
         "sample": resources[:3] if dry_run else [],
     }

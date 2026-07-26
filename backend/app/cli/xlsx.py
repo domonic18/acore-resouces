@@ -18,6 +18,11 @@ def import_xlsx_cmd(
     input: Path | None = typer.Option(None, "--input", "-i", help="xlsx 文件路径"),
     dry_run: bool = typer.Option(False, "--dry-run", "-d", help="仅预览，不写入"),
     limit: int | None = typer.Option(None, "--limit", "-l", help="限制处理行数（测试用）"),
+    check_duplicates: bool = typer.Option(
+        True,
+        "--check-duplicates/--no-check-duplicates",
+        help="是否检查资源间重复 ID",
+    ),
 ) -> None:
     if input is None:
         filename = {"mount": "坐骑列表.xlsx", "pet": "宠物列表.xlsx", "npc": "NPC列表.xlsx"}[type]
@@ -27,14 +32,20 @@ def import_xlsx_cmd(
         console.print(f"[red]文件不存在：{input}[/red]")
         raise typer.Exit(1)
 
-    result = import_xlsx(input, type, dry_run=dry_run, limit=limit)
+    result = import_xlsx(
+        input, type, dry_run=dry_run, limit=limit, check_duplicates=check_duplicates
+    )
     console.print(f"资源类型：{result['resource_type']}")
     console.print(f"dry_run：{result['dry_run']}")
     console.print(f"成功导入：{result['created']} 条")
     console.print(f"错误数：{len(result['errors'])}")
+    if result.get("skipped"):
+        console.print(f"因重复跳过：{result['skipped']} 条")
     if result["errors"]:
         for err in result["errors"]:
-            console.print(f"[red]行 {err['row']}: {err['error']}[/red]")
+            row = err.get("row")
+            prefix = f"行 {row}:" if row is not None else ""
+            console.print(f"[red]{prefix} {err['error']}[/red]")
     if dry_run and result["sample"]:
         console.print("样本数据：")
         for item in result["sample"]:

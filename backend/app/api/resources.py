@@ -10,6 +10,9 @@ from pydantic import BaseModel
 from app.preview.asset_resolver import resolve_resource_assets
 from app.schemas.resource import Resource
 from app.services.resource_store import list_resources, load_resource, save_resource
+from app.services.resource_validation import (
+    check_duplicate_resource_ids,
+)
 
 router = APIRouter(prefix="/api/resources", tags=["resources"])
 
@@ -168,6 +171,29 @@ def update_resource_endpoint(
         resource.debug_passed = body.debug_passed or False
     if "added" in body.model_fields_set:
         resource.added = body.added or False
+
+    duplicate_issues = check_duplicate_resource_ids(
+        [r for r in list_resources("mount") if r.id != resource.id] + [resource],
+        focus_resource=resource,
+    )
+    if duplicate_issues:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "duplicate_id",
+                "issues": [
+                    {
+                        "field": issue.field.path,
+                        "value": issue.value,
+                        "resources": [
+                            f"{resource_id:04d}-{model_folder}"
+                            for resource_id, model_folder in issue.resources
+                        ],
+                    }
+                    for issue in duplicate_issues
+                ],
+            },
+        )
 
     save_resource(resource)
     return _resource_to_dict(resource)

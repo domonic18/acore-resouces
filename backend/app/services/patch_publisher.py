@@ -127,9 +127,7 @@ def publish_patches(
         print(f"\n共发布 {len(published)} 个批次。")
 
     return {
-        "published": [
-            {"batch": name, "path": str(path)} for name, path in published
-        ],
+        "published": [{"batch": name, "path": str(path)} for name, path in published],
         "skipped": skipped,
         "next_number": start_number,
     }

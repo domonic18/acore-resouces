@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
@@ -151,3 +152,101 @@ def check_resource_relationships(resource: Resource) -> list[RelationshipCheck]:
     if resource.resource_type == "mount":
         return check_mount_relationships(resource)
     return []
+
+
+@dataclass
+class UniqueIdField:
+    """需要全局唯一的资源字段定义。"""
+
+    source: str
+    table: str
+    field: str
+
+    @property
+    def path(self) -> str:
+        return f"{self.source}.{self.table}.{self.field}"
+
+
+@dataclass
+class DuplicateIdIssue:
+    """跨资源重复 ID 问题。"""
+
+    field: UniqueIdField
+    value: int
+    resources: list[tuple[int, str]]
+
+
+class DuplicateIdError(Exception):
+    """发现资源间存在重复的唯一 ID。"""
+
+    def __init__(self, issues: list[DuplicateIdIssue]) -> None:
+        self.issues = issues
+        super().__init__(f"发现 {len(issues)} 组重复 ID")
+
+
+# 坐骑资源中需要全局唯一的 ID 字段。
+MOUNT_UNIQUE_ID_FIELDS: list[UniqueIdField] = [
+    UniqueIdField("dbc", "creature_model_data", "id"),
+    UniqueIdField("dbc", "creature_display_info", "id"),
+    UniqueIdField("dbc", "spell", "id"),
+    UniqueIdField("dbc", "spell", "visual_id"),
+    UniqueIdField("dbc", "item", "id"),
+    UniqueIdField("db", "creature_template", "entry"),
+    UniqueIdField("db", "creature_model_info", "display_id"),
+    UniqueIdField("db", "item_template", "entry"),
+]
+
+
+def _is_valid_unique_id(value: int | None) -> bool:
+    """忽略空值、0 和负数。"""
+    return value is not None and value > 0
+
+
+def check_duplicate_resource_ids(
+    resources: Sequence[Resource],
+    *,
+    focus_resource: Resource | None = None,
+    id_fields: list[UniqueIdField] | None = None,
+) -> list[DuplicateIdIssue]:
+    """检查资源列表中是否存在重复的全局唯一 ID。
+
+    Args:
+        resources: 待检查的资源列表。
+        focus_resource: 若指定，只返回涉及该资源的重复项。
+        id_fields: 需要检查的字段列表，默认使用 MOUNT_UNIQUE_ID_FIELDS。
+
+    Returns:
+        发现的重复问题列表。
+    """
+    fields = id_fields or MOUNT_UNIQUE_ID_FIELDS
+    groups: dict[tuple[str, int], list[tuple[int, str]]] = {}
+
+    for resource in resources:
+        resource_key = (resource.id, resource.model_folder)
+        for field in fields:
+            value = _get_field_value(resource, field.source, field.table, field.field)
+            normalized = _normalize_int(value)
+            if normalized is None or normalized <= 0:
+                continue
+            groups.setdefault((field.path, normalized), []).append(resource_key)
+
+    issues: list[DuplicateIdIssue] = []
+    for (field_path, value), resource_keys in groups.items():
+        # 同一资源在 existing + imported 场景中可能出现两次，需要去重。
+        unique_keys = list(dict.fromkeys(resource_keys))
+        if len(unique_keys) < 2:
+            continue
+        if focus_resource is not None:
+            focus_key = (focus_resource.id, focus_resource.model_folder)
+            if focus_key not in unique_keys:
+                continue
+        field = next(f for f in fields if f.path == field_path)
+        issues.append(DuplicateIdIssue(field=field, value=value, resources=unique_keys))
+
+    return issues
+
+
+def format_duplicate_issue(issue: DuplicateIdIssue) -> str:
+    """将重复问题格式化为人类可读字符串。"""
+    names = [f"{resource_id:04d}-{model_folder}" for resource_id, model_folder in issue.resources]
+    return f"重复 ID: {issue.field.path}={issue.value} 出现在 {', '.join(names)}"

@@ -367,17 +367,55 @@ def _sql_value(value: Any) -> str:
     return f"'{escaped}'"
 
 
-def generate_sql(jobs: list[Path], dry_run: bool = False) -> Path:
-    """生成批次 SQL 文件。
+def _collect_existing_sql_entries() -> set[int]:
+    """扫描已有的 SQL 文件，收集其中 item_template 的 entry 值。
+
+    用于判断某个坐骑的 SQL 是否已经生成过，避免重复追加。
+    """
+    entries: set[int] = set()
+    if not SQL_LINK_DIR.exists():
+        return entries
+
+    pattern = re.compile(
+        r"INSERT INTO\s+`item_template`\s+\([^)]*\)\s*VALUES\s*\((\d+)", re.IGNORECASE
+    )
+    for sql_file in SQL_LINK_DIR.glob("*.sql"):
+        try:
+            text = sql_file.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        for match in pattern.finditer(text):
+            try:
+                entries.add(int(match.group(1)))
+            except ValueError:
+                continue
+    return entries
+
+
+def _job_item_entry(job_dir: Path) -> int | None:
+    """从 sql-plan.yaml 中提取该坐骑 item_template 的 entry。"""
+    sql_plan = load_yaml(job_dir / "input" / "sql-plan.yaml")
+    for table in sql_plan.get("tables", []):
+        if table.get("name") == "item_template":
+            records = table.get("records", [])
+            if records:
+                return int(records[0].get("entry") or 0) or None
+    return None
+
+
+def generate_sql(jobs: list[Path], dry_run: bool = False) -> Path | None:
+    """生成批次 SQL 文件，跳过已有 SQL 的坐骑。
 
     Args:
         jobs: 要处理的任务目录列表。
         dry_run: 为 True 时只返回路径，不写入文件。
 
     Returns:
-        SQL 文件路径。
+        SQL 文件路径；如果所有坐骑都已存在 SQL 则返回 None。
     """
     ensure_sql_symlink()
+
+    existing_entries = _collect_existing_sql_entries()
 
     today = datetime.now(UTC).strftime("%Y_%m_%d")
     existing = sorted(SQL_LINK_DIR.glob(f"{today}_*_mcc_custom_mounts.sql"))
@@ -385,29 +423,29 @@ def generate_sql(jobs: list[Path], dry_run: bool = False) -> Path:
     sql_file = SQL_LINK_DIR / f"{today}_{seq:02d}_mcc_custom_mounts.sql"
 
     now_iso = datetime.now(UTC).strftime("%Y-%m-%d")
-    job_names = ", ".join(d.name for d in jobs)
-    mount_names = ", ".join(
-        load_yaml(d / "input" / "resource.yaml").get("official_db", {}).get("name", d.name)
-        for d in jobs
-    )
 
     lines = [
         "-- ============================================================",
         "-- mod-custom-content: 自定义坐骑批次补丁",
         f"-- Date: {now_iso}",
         "-- Author: acore-resouces build-mount-patch",
-        f"-- Jobs: {job_names}",
-        f"-- Mounts: {mount_names}",
         "-- Database: db-world",
         "-- ============================================================",
         "",
     ]
 
+    included_jobs: list[Path] = []
     for job_dir in jobs:
         resource = load_yaml(job_dir / "input" / "resource.yaml")
         sql_plan = load_yaml(job_dir / "input" / "sql-plan.yaml")
         mount_name = resource.get("official_db", {}).get("name", job_dir.name)
+        item_entry = _job_item_entry(job_dir)
 
+        if item_entry is not None and item_entry in existing_entries:
+            print(f"  跳过已有 SQL 的坐骑: {mount_name} (item_template entry={item_entry})")
+            continue
+
+        included_jobs.append(job_dir)
         lines.append("-- --------------------------------------------------------")
         lines.append(f"-- Mount: {mount_name}")
         lines.append(f"-- Job: {job_dir.name}")
@@ -426,6 +464,16 @@ def generate_sql(jobs: list[Path], dry_run: bool = False) -> Path:
                 lines.append(f"INSERT INTO `{table_name}` ({columns})")
                 lines.append(f"VALUES ({values});")
                 lines.append("")
+
+    if not included_jobs:
+        print("所有坐骑的 SQL 均已存在，未生成新文件。")
+        return None
+
+    lines.insert(5, f"-- Jobs: {', '.join(d.name for d in included_jobs)}")
+    lines.insert(
+        6,
+        f"-- Mounts: {', '.join(load_yaml(d / 'input' / 'resource.yaml').get('official_db', {}).get('name', d.name) for d in included_jobs)}",
+    )
 
     content = "\n".join(lines)
     if not dry_run:
@@ -494,14 +542,14 @@ def _copy_assets_to_staging(job_dir: Path, staging: Path) -> list[Path]:
 
 def build_mpq(
     jobs: list[Path],
-    sql_file: Path,
+    sql_file: Path | None,
     dry_run: bool = False,
 ) -> tuple[Path, dict[str, list[Path]]]:
     """构建批次 MPQ。
 
     Args:
         jobs: 要处理的任务目录列表。
-        sql_file: 已生成的 SQL 文件路径。
+        sql_file: 已生成的 SQL 文件路径，可能为 None（所有坐骑 SQL 均已存在）。
         dry_run: 为 True 时只返回路径，不创建文件。
 
     Returns:
@@ -542,7 +590,7 @@ def build_mpq(
     readme.write_text(
         f"Patch: patch-mounts.mpq\n"
         f"Generated: {datetime.now(UTC).isoformat()}\n"
-        f"SQL: {sql_file}\n"
+        f"SQL: {sql_file or '(无新增)'}\n"
         f"Jobs: {', '.join(d.name for d in jobs)}\n"
         f"Mounts: {mount_names}\n",
         encoding="utf-8",
@@ -553,7 +601,7 @@ def build_mpq(
 
 def update_manifests(
     jobs: list[Path],
-    sql_file: Path,
+    sql_file: Path | None,
     mpq_path: Path,
     report_path: Path,
     dry_run: bool = False,
@@ -568,7 +616,7 @@ def update_manifests(
         manifest["summary"] = f"批次处理 {len(jobs)} 个坐骑"
         manifest["artifacts"]["output"] = {
             "dbc_dir": "data/wow-dbc/src/dbc",
-            "sql": str(sql_file.relative_to(settings.project_root)),
+            "sql": str(sql_file.relative_to(settings.project_root)) if sql_file else "",
             "mpq": str(mpq_path.relative_to(settings.project_root)),
             "validation_report": str(report_path.relative_to(settings.project_root)),
         }
@@ -845,7 +893,10 @@ def build_mount_patches(
 
     print("生成批次 SQL...")
     sql_file = generate_sql(jobs, dry_run=dry_run)
-    print(f"  {sql_file}\n")
+    if sql_file:
+        print(f"  {sql_file}\n")
+    else:
+        print("  无新增 SQL（所有坐骑均已存在 SQL 文件）。\n")
 
     print("构建批次 MPQ...")
     mpq_path, job_assets = build_mpq(jobs, sql_file, dry_run=dry_run)

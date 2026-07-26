@@ -6,7 +6,11 @@ from rich.table import Table
 
 from app.schemas.resource import Mount, Npc, Pet
 from app.services import resource_store
-from app.services.resource_validation import check_resource_relationships
+from app.services.resource_validation import (
+    check_duplicate_resource_ids,
+    check_resource_relationships,
+    format_duplicate_issue,
+)
 
 app = typer.Typer(help="资源管理命令")
 console = Console()
@@ -167,7 +171,15 @@ def validate_resource(
         for issue in relationship_issues:
             console.print(f"[yellow]{issue}[/yellow]")
 
-    if errors or relationship_issues:
+    mount_resources = [r for r in resources if isinstance(r, Mount)]
+    duplicate_issues = [
+        format_duplicate_issue(issue) for issue in check_duplicate_resource_ids(mount_resources)
+    ]
+    if duplicate_issues:
+        for issue in duplicate_issues:
+            console.print(f"[red]{issue}[/red]")
+
+    if errors or relationship_issues or duplicate_issues:
         raise typer.Exit(1)
 
     console.print(f"[green]校验通过，共 {len(resources)} 条资源[/green]")
