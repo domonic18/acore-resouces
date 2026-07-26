@@ -128,6 +128,7 @@ uv run python -m app.cli patch build --all-requested
 - `workspace/patch-jobs/` 按固定目录读取任务，天然避免同一坐骑被处理多次。
 - 源 DBC（`data/wow-dbc/src/dbc/*.dbc`）中已存在的记录会被跳过，不会被覆盖；仅新增缺失记录。
 - 自动根据 `assets.json` 中的实际资源计算 `CreatureModelData.ModelName`（统一使用小写 `creature\...` 前缀），使其与 MPQ 内路径一致。
+- 生成 SQL 前会扫描 `data/sql/azerothcore-updates/` 中已有的 `item_template.entry`，已存在的坐骑不会重复生成 SQL；仅对新增坐骑写入 `DELETE` + `INSERT` 语句。
 - MPQ 打包时按资源 `source_dir` 完整复制游戏文件（`.m2`、`.blp`、`.anim`、`.skin`、`.phys`）到 `creature/`，保留原目录结构与文件名；坐骑图标复制到 `Interface\icons\`。
 - MPQ 打包完成后自动清理 `workspace/mpq/{timestamp}/staging/`，只保留 `patch-mounts.mpq` 与 `readme.txt`。
 

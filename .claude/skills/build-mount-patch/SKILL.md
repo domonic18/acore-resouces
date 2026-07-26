@@ -81,7 +81,11 @@ uv run python -m app.cli patch build --all-requested --dry-run
 1. **ID 冲突检查**：对 `dbc-plan.yaml` 中每个 `add` 操作的 `record_id`，检查源 DBC 是否已存在。已处理过的任务（`status=generated`）会按重建模式编辑已有记录，不视为冲突。
 2. **路径清理**：自动去除 `model_folder` 中的中文、空格及其他非 ASCII 字符，确保 DBC 与 MPQ 中的模型路径全英文。自动为 `CreatureModelData.dbc` 计算 `ModelName`（`Creature\<sanitized_folder>\<main_model>.m2`）。
 3. **应用 DBC 操作**：使用 `wow-dbc-tool` Python API 直接在 `data/wow-dbc/src/dbc/*.dbc` 上新增/编辑记录。
-4. **生成批次 SQL**：在 `data/sql/azerothcore-updates/`（指向 AzerothCore updates 目录的软链接）创建 `YYYY_MM_DD_NN_mcc_custom_mounts.sql`，合并所有任务的 `INSERT`，并带 `DELETE` 前缀保证幂等。
+4. **生成批次 SQL**：在 `data/sql/azerothcore-updates/`（指向 AzerothCore updates 目录的软链接）创建 `YYYY_MM_DD_NN_mcc_custom_mounts.sql`。
+   - 生成前会扫描该目录下已有的 `.sql` 文件，收集其中 `item_template.entry` 值。
+   - 若某个坐骑的 `item_template.entry` 已存在，则跳过该坐骑，避免重复生成 SQL。
+   - 仅对真正新增的坐骑写入 `DELETE` + `INSERT` 语句，保证幂等。
+   - 如果批次中所有坐骑都已存在 SQL，则不会创建新的 SQL 文件。
 5. **构建批次 MPQ**：在 `workspace/mpq/YYYYMMDD_HHMMSS/` 下创建 `patch-mounts.mpq` 与 `readme.txt`，包含编辑后的 DBC 与各任务的客户端资源。
 6. **一致性校验**：生成校验报告 `workspace/reports/YYYYMMDD_HHMMSS/validation-report.json`，检查 DBC/SQL/MPQ 之间的 ID 与路径一致性。
 7. **更新 manifest**：将参与批次的每个任务 `status` 改为 `generated`，`artifacts.output` 指向批次 SQL/MPQ/报告路径。
