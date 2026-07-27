@@ -35,7 +35,7 @@ class DBCRecord(BaseModel):
             hint = hints.get(key)
             if value == "":
                 normalized[key] = None
-            elif hint is str | None and value == 0:
+            elif hint == (str | None) and value == 0:
                 normalized[key] = None
             else:
                 normalized[key] = value

@@ -13,7 +13,7 @@ def _normalize_optional_field(value: Any, hint: Any | None) -> Any:
     """归一化可选字段的空值：空字符串或字符串字段的 0 转为 None。"""
     if value == "":
         return None
-    if hint is str | None and value == 0:
+    if hint == (str | None) and value == 0:
         return None
     return value
 
