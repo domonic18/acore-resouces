@@ -28,8 +28,8 @@ RUN npm run build
 # --------------------------------------------------
 FROM python:3.11-slim-bookworm AS backend-builder
 
-# 安装 uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# 安装 uv（通过 PyPI 安装，避免 ghcr.io 网络不稳定导致构建失败）
+RUN pip install --no-cache-dir uv
 
 WORKDIR /app
 
