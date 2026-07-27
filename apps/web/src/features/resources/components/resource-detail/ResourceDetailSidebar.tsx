@@ -1,9 +1,15 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { FolderTree, Layers, RefreshCw, Eye } from "lucide-react";
+import { FolderTree, Layers, Eye, Box, Image as ImageIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { ImageGallery } from "@/components/media/ImageGallery";
+import { ModelViewer } from "@/components/viewer/ModelViewer";
+import { getModelPreview } from "@/shared/resources";
 import { uniqueFiles } from "@/shared/utils";
-import type { AssetFile } from "@/shared/types";
+import type { AssetFile, ModelPreview } from "@/shared/types";
+
+type PreviewTab = "model" | "image";
 
 interface ResourceDetailSidebarProps {
   resourceType: string;
@@ -23,6 +29,44 @@ interface ResourceDetailSidebarProps {
   selectedImage: AssetFile | null;
   onSelectImage: (file: AssetFile) => void;
   allFiles: AssetFile[];
+  selectedVariations?: [string | null, string | null, string | null];
+  scale?: number;
+  modelName?: string | null;
+}
+
+function buildEffectivePreview(
+  preview: ModelPreview | undefined,
+  modelName: string | null | undefined,
+): ModelPreview | undefined {
+  if (!preview || preview.status !== "available") return preview;
+  if (!modelName) return preview;
+
+  const targetBasename = modelName
+    .split(/[\\/]/)
+    .pop()
+    ?.toLowerCase()
+    .replace(/\.m2$/, "");
+  if (!targetBasename) return preview;
+
+  const selectedM2 = preview.m2_files.find((path) => {
+    const base = path.split("/").pop()?.toLowerCase().replace(/\.m2$/, "");
+    return base === targetBasename;
+  });
+  if (!selectedM2) return preview;
+
+  const mainStem = selectedM2.split("/").pop()?.replace(/\.m2$/i, "") ?? "";
+  const skinFiles = preview.skin_files.filter((path) => {
+    const name = path.split("/").pop()?.toLowerCase() ?? "";
+    const stem = name.replace(/\.skin$/, "");
+    const suffix = stem.slice(mainStem.length);
+    return stem.startsWith(mainStem.toLowerCase()) && /^\d+$/.test(suffix);
+  });
+
+  return {
+    ...preview,
+    main_m2: selectedM2,
+    skin_files: skinFiles.length > 0 ? skinFiles : preview.skin_files,
+  };
 }
 
 export function ResourceDetailSidebar({
@@ -32,7 +76,23 @@ export function ResourceDetailSidebar({
   selectedImage,
   onSelectImage,
   allFiles,
+  selectedVariations,
+  scale = 1,
+  modelName,
 }: ResourceDetailSidebarProps) {
+  const [activeTab, setActiveTab] = useState<PreviewTab>("model");
+
+  const { data: modelPreview } = useQuery({
+    queryKey: ["model-preview", assets?.model_folder, resourceType],
+    queryFn: () => getModelPreview(assets!.model_folder, resourceType),
+    enabled: !!assets?.model_folder,
+  });
+
+  const effectivePreview = useMemo(
+    () => buildEffectivePreview(modelPreview, modelName),
+    [modelPreview, modelName],
+  );
+
   const galleryFiles = assets
     ? uniqueFiles([
         ...assets.image_files,
@@ -41,29 +101,78 @@ export function ResourceDetailSidebar({
       ])
     : [];
 
+  const canShowModel = effectivePreview?.status === "available";
+  const canShowImage = galleryFiles.length > 0;
+
   return (
     <div className="detail-sidebar">
       <div className="card">
         <div className="card-header">
           <div className="card-title">模型预览</div>
         </div>
-        <div className="card-body">
-          <ImageGallery
-            files={galleryFiles}
-            selected={selectedImage}
-            onSelect={onSelectImage}
-          />
-          <div className="preview-toolbar">
-            <button className="btn btn-sm w-full" disabled>
-              <RefreshCw className="h-4 w-4" /> 刷新
-            </button>
-            <Link
-              to={`/preview/${resourceType}/${resourceId}`}
-              className="btn btn-sm btn-primary w-full"
-            >
-              <Eye className="h-4 w-4" /> 完整预览
-            </Link>
+        <div className="card-body space-y-3">
+          <div className="flex items-center gap-2">
+            {(canShowModel || !canShowImage) && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("model")}
+                className={`flex flex-1 items-center justify-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                  activeTab === "model"
+                    ? "bg-accent text-white"
+                    : "bg-bg-surface text-text-secondary hover:bg-bg-hover"
+                }`}
+              >
+                <Box className="h-3.5 w-3.5" /> 3D 预览
+              </button>
+            )}
+            {canShowImage && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("image")}
+                className={`flex flex-1 items-center justify-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                  activeTab === "image"
+                    ? "bg-accent text-white"
+                    : "bg-bg-surface text-text-secondary hover:bg-bg-hover"
+                }`}
+              >
+                <ImageIcon className="h-3.5 w-3.5" /> 图片
+              </button>
+            )}
           </div>
+
+          <div className="relative h-[300px] overflow-hidden rounded-lg border border-border bg-bg-elevated">
+            {activeTab === "model" && canShowModel && effectivePreview && (
+              <ModelViewer
+                preview={effectivePreview}
+                resourceType={resourceType}
+                selectedVariations={selectedVariations}
+                scale={scale}
+              />
+            )}
+            {activeTab === "model" && !canShowModel && (
+              <div className="preview-placeholder flex h-full flex-col items-center justify-center px-4 text-center">
+                <p>
+                  {effectivePreview?.status === "skin_missing"
+                    ? "缺少 skin 文件，无法预览"
+                    : "暂无可用的 3D 模型数据"}
+                </p>
+              </div>
+            )}
+            {activeTab === "image" && (
+              <ImageGallery
+                files={galleryFiles}
+                selected={selectedImage}
+                onSelect={onSelectImage}
+              />
+            )}
+          </div>
+
+          <Link
+            to={`/preview/${resourceType}/${resourceId}`}
+            className="btn btn-sm btn-primary w-full"
+          >
+            <Eye className="h-4 w-4" /> 完整预览
+          </Link>
         </div>
       </div>
 

@@ -17,6 +17,7 @@ interface ModelCanvasProps {
   initialCamera: { position: THREE.Vector3; fov: number };
   parsed: ParsedM2;
   textureUrls: Record<number, string>;
+  scale?: number;
   wireframe: boolean;
   animationClip: THREE.AnimationClip | null;
   isPlaying: boolean;
@@ -30,6 +31,7 @@ export function ModelCanvas({
   initialCamera,
   parsed,
   textureUrls,
+  scale = 1,
   wireframe,
   animationClip,
   isPlaying,
@@ -49,6 +51,7 @@ export function ModelCanvas({
       <M2Scene
         parsed={parsed}
         textureUrls={textureUrls}
+        scale={scale}
         wireframe={wireframe}
         animationClip={animationClip}
         isPlaying={isPlaying}
