@@ -102,21 +102,25 @@ def publish_patches(
 
     published: list[tuple[str, Path]] = []
     skipped: list[str] = []
+    next_number = start_number
 
     for batch_dir in batches:
         if is_batch_published(batch_dir, DIST_DIR):
             skipped.append(batch_dir.name)
             continue
 
+        target_dir = DIST_DIR / batch_dir.name
+        mpq_target = target_dir / f"patch-zhCN-{next_number}.mpq"
+
         if dry_run:
-            target_dir = DIST_DIR / batch_dir.name
-            mpq_target = target_dir / f"patch-zhCN-{start_number}.mpq"
             print(f"[干跑] 将发布: {batch_dir.name} -> {mpq_target}")
+            next_number += 1
             continue
 
-        mpq_target = publish_batch(batch_dir, DIST_DIR, start_number)
+        mpq_target = publish_batch(batch_dir, DIST_DIR, next_number)
         published.append((batch_dir.name, mpq_target))
         print(f"已发布: {batch_dir.name} -> {mpq_target.relative_to(settings.project_root)}")
+        next_number += 1
 
     if skipped:
         print(f"\n已跳过（已发布）: {', '.join(skipped)}")
@@ -129,5 +133,5 @@ def publish_patches(
     return {
         "published": [{"batch": name, "path": str(path)} for name, path in published],
         "skipped": skipped,
-        "next_number": start_number,
+        "next_number": next_number,
     }

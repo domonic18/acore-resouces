@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import dataclasses
 import json
-import os
 import re
 import shutil
 import subprocess
@@ -33,9 +32,6 @@ MPQCLI = settings.project_root / "tools" / "wow-mpq-cli" / "build" / "bin" / "mp
 MPQ_OUTPUT_DIR = settings.project_root / "workspace" / "mpq"
 REPORTS_DIR = settings.project_root / "workspace" / "reports"
 SQL_LINK_DIR = settings.project_root / "data" / "sql" / "azerothcore-updates"
-DEFAULT_ACORE_UPDATES_REAL = Path(
-    "/Users/deadwalk/Code/azerothcore-wotlk/modules/mod-custom-content/data/sql/db-world/updates"
-)
 
 REQUIRED_DBC_FILES = [
     "CreatureModelData.dbc",
@@ -121,7 +117,12 @@ def ensure_sql_symlink() -> None:
     if SQL_LINK_DIR.exists() or SQL_LINK_DIR.is_symlink():
         return
 
-    real_dir = Path(os.environ.get("ACORE_SQL_UPDATES_DIR", DEFAULT_ACORE_UPDATES_REAL))
+    real_dir = settings.acore_sql_updates_dir
+    if real_dir is None:
+        raise FileNotFoundError(
+            "未配置 AzerothCore updates 目录。请在 .env 中设置 acore_sql_updates_dir "
+            "或 ACORE_SQL_UPDATES_DIR 环境变量。"
+        )
     if not real_dir.exists():
         raise FileNotFoundError(f"AzerothCore updates 目录不存在: {real_dir}")
 

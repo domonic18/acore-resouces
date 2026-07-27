@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     gltf_dir: Path = Path("workspace/assets/gltf")
     logs_dir: Path = Path("workspace/logs")
 
+    acore_sql_updates_dir: Path | None = None
+
     def model_post_init(self, __context: Any) -> None:
         root = self.project_root
         self.data_dir = root / "data"
@@ -47,6 +49,9 @@ class Settings(BaseSettings):
         self.thumbnails_dir = self.assets_dir / "thumbnails"
         self.gltf_dir = self.assets_dir / "gltf"
         self.logs_dir = self.workspace_dir / "logs"
+
+        if self.acore_sql_updates_dir is not None:
+            self.acore_sql_updates_dir = root / self.acore_sql_updates_dir
 
 
 settings = Settings()
