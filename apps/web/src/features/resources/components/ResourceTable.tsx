@@ -170,191 +170,193 @@ export function ResourceTable({
         <tbody>
           {currentItems.map((resource) => (
             <>
-            <tr key={`${resource.resource_type}-${resource.id}`}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(resource.id)}
-                  onChange={(e) => onSelect?.(resource.id, e.target.checked)}
-                />
-              </td>
-              <td>
-                <div className="flex items-center gap-2">
-                  <Link
-                    to={`/resources/${resource.resource_type}/${resource.id}`}
-                    state={listState}
-                    onClick={saveScrollAndNavigate}
-                    className="name-cell min-w-0 flex-1"
-                    title={resource.name || resource.model_folder}
-                  >
-                    <ResourceThumb resource={resource} />
-                    <div className="min-w-0">
-                      <div className="resource-name truncate">
-                        {resource.name || resource.model_folder}
-                      </div>
-                      <div className="resource-meta truncate">
-                        id: {String(resource.id).padStart(4, "0")} ·{" "}
-                        {resource.model_folder}
-                      </div>
-                    </div>
-                  </Link>
-                  <CopyResourceButton resource={resource} />
-                </div>
-              </td>
-              <td>{String(resource.id).padStart(4, "0")}</td>
-              <td>
-                <ResourceTypeBadge resource={resource} />
-              </td>
-              <td>{resource.star_rating || resource.rarity || "—"}</td>
-              <td>{formatDrop(resource.drop)}</td>
-              <td>
-                <ResourceStatusBadge resource={resource} />
-              </td>
-              <td>
-                <ResourceTagBadge resource={resource} />
-              </td>
-              <td>
-                {resource.duplicate_issues &&
-                resource.duplicate_issues.length > 0 ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setExpandedId(
-                        expandedId === resource.id ? null : resource.id,
-                      )
-                    }
-                    className="inline-flex items-center gap-1 rounded bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger hover:bg-danger/20"
-                    title="点击查看重复 ID 冲突详情"
-                  >
-                    <AlertTriangle className="h-3.5 w-3.5" />
-                    {resource.duplicate_issues.length}
-                  </button>
-                ) : (
-                  <span className="text-text-secondary">—</span>
-                )}
-              </td>
-              <td className="text-text-secondary">
-                {formatDateTime(resource.created_at)}
-              </td>
-              <td className="text-text-secondary">
-                {formatDateTime(resource.updated_at)}
-              </td>
-              <td className="text-right">
-                <div className="inline-flex items-center justify-end gap-1.5">
-                  <Link
-                    to={`/resources/${resource.resource_type}/${resource.id}`}
-                    state={listState}
-                    onClick={saveScrollAndNavigate}
-                    className="btn btn-icon btn-sm"
-                    title="编辑资源"
-                    aria-label="编辑资源"
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </Link>
-                  <Link
-                    to={`/preview/${resource.resource_type}/${resource.id}`}
-                    state={listState}
-                    onClick={saveScrollAndNavigate}
-                    className="btn btn-icon btn-sm btn-primary"
-                    title="预览模型"
-                    aria-label="预览模型"
-                  >
-                    <Eye className="h-3.5 w-3.5" />
-                  </Link>
-                  {resource.official_db.spell_wowhead_url && (
-                    <a
-                      href={resource.official_db.spell_wowhead_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
-                      title="查看 Wowhead 法术页"
-                      aria-label="查看 Wowhead 法术页"
-                      onClick={(e) => e.stopPropagation()}
+              <tr key={`${resource.resource_type}-${resource.id}`}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(resource.id)}
+                    onChange={(e) => onSelect?.(resource.id, e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      to={`/resources/${resource.resource_type}/${resource.id}`}
+                      state={listState}
+                      onClick={saveScrollAndNavigate}
+                      className="name-cell min-w-0 flex-1"
+                      title={resource.name || resource.model_folder}
                     >
-                      <Sparkles className="h-3.5 w-3.5" />
-                    </a>
-                  )}
-                  {resource.official_db.item_wowhead_url && (
-                    <a
-                      href={resource.official_db.item_wowhead_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
-                      title="查看 Wowhead 物品页"
-                      aria-label="查看 Wowhead 物品页"
-                      onClick={(e) => e.stopPropagation()}
+                      <ResourceThumb resource={resource} />
+                      <div className="min-w-0">
+                        <div className="resource-name truncate">
+                          {resource.name || resource.model_folder}
+                        </div>
+                        <div className="resource-meta truncate">
+                          id: {String(resource.id).padStart(4, "0")} ·{" "}
+                          {resource.model_folder}
+                        </div>
+                      </div>
+                    </Link>
+                    <CopyResourceButton resource={resource} />
+                  </div>
+                </td>
+                <td>{String(resource.id).padStart(4, "0")}</td>
+                <td>
+                  <ResourceTypeBadge resource={resource} />
+                </td>
+                <td>{resource.star_rating || resource.rarity || "—"}</td>
+                <td>{formatDrop(resource.drop)}</td>
+                <td>
+                  <ResourceStatusBadge resource={resource} />
+                </td>
+                <td>
+                  <ResourceTagBadge resource={resource} />
+                </td>
+                <td>
+                  {resource.duplicate_issues &&
+                  resource.duplicate_issues.length > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedId(
+                          expandedId === resource.id ? null : resource.id,
+                        )
+                      }
+                      className="inline-flex items-center gap-1 rounded bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger hover:bg-danger/20"
+                      title="点击查看重复 ID 冲突详情"
                     >
-                      <Package className="h-3.5 w-3.5" />
-                    </a>
+                      <AlertTriangle className="h-3.5 w-3.5" />
+                      {resource.duplicate_issues.length}
+                    </button>
+                  ) : (
+                    <span className="text-text-secondary">—</span>
                   )}
-                </div>
-              </td>
-            </tr>
-            {expandedId === resource.id &&
-              resource.duplicate_issues &&
-              resource.duplicate_issues.length > 0 && (
-              <tr key={`${resource.resource_type}-${resource.id}-conflicts`}>
-                <td colSpan={12}>
-                  <div className="bg-danger/5 px-4 py-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-danger">
-                        重复 ID 冲突详情
-                      </h4>
-                      <button
-                        type="button"
-                        onClick={() => setExpandedId(null)}
-                        className="btn btn-icon btn-xs btn-ghost text-text-tertiary hover:text-text-primary"
-                        title="收起"
-                        aria-label="收起"
+                </td>
+                <td className="text-text-secondary">
+                  {formatDateTime(resource.created_at)}
+                </td>
+                <td className="text-text-secondary">
+                  {formatDateTime(resource.updated_at)}
+                </td>
+                <td className="text-right">
+                  <div className="inline-flex items-center justify-end gap-1.5">
+                    <Link
+                      to={`/resources/${resource.resource_type}/${resource.id}`}
+                      state={listState}
+                      onClick={saveScrollAndNavigate}
+                      className="btn btn-icon btn-sm"
+                      title="编辑资源"
+                      aria-label="编辑资源"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Link>
+                    <Link
+                      to={`/preview/${resource.resource_type}/${resource.id}`}
+                      state={listState}
+                      onClick={saveScrollAndNavigate}
+                      className="btn btn-icon btn-sm btn-primary"
+                      title="预览模型"
+                      aria-label="预览模型"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                    </Link>
+                    {resource.official_db.spell_wowhead_url && (
+                      <a
+                        href={resource.official_db.spell_wowhead_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
+                        title="查看 Wowhead 法术页"
+                        aria-label="查看 Wowhead 法术页"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                    <ul className="mt-2 space-y-2">
-                      {resource.duplicate_issues.map((issue, idx) => (
-                        <li key={idx} className="text-sm">
-                          <div className="font-medium text-text-primary">
-                            {issue.field} = {issue.value}
-                          </div>
-                          <div className="text-text-secondary">
-                            冲突资源：
-                            {issue.resources.map((conflict, cidx) => (
-                              <span key={conflict.id}>
-                                {cidx > 0 && "、"}
-                                <Link
-                                  to={`/resources/${conflict.resource_type}/${conflict.id}`}
-                                  state={listState}
-                                  onClick={saveScrollAndNavigate}
-                                  className="text-accent hover:underline"
-                                >
-                                  {String(conflict.id).padStart(4, "0")}-
-                                  {conflict.name || conflict.model_folder}
-                                </Link>
-                              </span>
-                            ))}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                        <Sparkles className="h-3.5 w-3.5" />
+                      </a>
+                    )}
+                    {resource.official_db.item_wowhead_url && (
+                      <a
+                        href={resource.official_db.item_wowhead_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
+                        title="查看 Wowhead 物品页"
+                        aria-label="查看 Wowhead 物品页"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Package className="h-3.5 w-3.5" />
+                      </a>
+                    )}
                   </div>
                 </td>
               </tr>
-            )}
+              {expandedId === resource.id &&
+                resource.duplicate_issues &&
+                resource.duplicate_issues.length > 0 && (
+                  <tr
+                    key={`${resource.resource_type}-${resource.id}-conflicts`}
+                  >
+                    <td colSpan={12}>
+                      <div className="bg-danger/5 px-4 py-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-semibold text-danger">
+                            重复 ID 冲突详情
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedId(null)}
+                            className="btn btn-icon btn-xs btn-ghost text-text-tertiary hover:text-text-primary"
+                            title="收起"
+                            aria-label="收起"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <ul className="mt-2 space-y-2">
+                          {resource.duplicate_issues.map((issue, idx) => (
+                            <li key={idx} className="text-sm">
+                              <div className="font-medium text-text-primary">
+                                {issue.field} = {issue.value}
+                              </div>
+                              <div className="text-text-secondary">
+                                冲突资源：
+                                {issue.resources.map((conflict, cidx) => (
+                                  <span key={conflict.id}>
+                                    {cidx > 0 && "、"}
+                                    <Link
+                                      to={`/resources/${conflict.resource_type}/${conflict.id}`}
+                                      state={listState}
+                                      onClick={saveScrollAndNavigate}
+                                      className="text-accent hover:underline"
+                                    >
+                                      {String(conflict.id).padStart(4, "0")}-
+                                      {conflict.name || conflict.model_folder}
+                                    </Link>
+                                  </span>
+                                ))}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                )}
             </>
           ))}
-        {currentItems.length === 0 && (
-          <tr>
-            <td colSpan={12}>
-              <div className="empty-state">
-                <Search className="mb-3 h-12 w-12 text-text-tertiary" />
-                <h3>暂无资源</h3>
-                <p>当前筛选条件下没有找到资源，请尝试调整搜索或筛选条件。</p>
-              </div>
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-);
+          {currentItems.length === 0 && (
+            <tr>
+              <td colSpan={12}>
+                <div className="empty-state">
+                  <Search className="mb-3 h-12 w-12 text-text-tertiary" />
+                  <h3>暂无资源</h3>
+                  <p>当前筛选条件下没有找到资源，请尝试调整搜索或筛选条件。</p>
+                </div>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 }

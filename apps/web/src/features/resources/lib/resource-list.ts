@@ -8,7 +8,8 @@ export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
     { key: "npc", label: "NPC" },
   ];
 
-export type StatusTagValue = "passed" | "pending" | "added" | "not_added" | "conflict";
+export type StatusTagValue =
+  "passed" | "pending" | "added" | "not_added" | "conflict";
 
 export const STATUS_TAG_OPTIONS: {
   value: StatusTagValue;
@@ -277,8 +278,7 @@ export function matchesStatusFilter(
     if (resource.added !== expected) return false;
   }
   if (selectedConflict.length > 0) {
-    const hasConflict =
-      (resource.duplicate_issues?.length ?? 0) > 0;
+    const hasConflict = (resource.duplicate_issues?.length ?? 0) > 0;
     if (!hasConflict) return false;
   }
   return true;
