@@ -1,4 +1,5 @@
 import type { Resource } from "@/shared/types";
+import { z } from "zod";
 
 export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
   [
@@ -10,6 +11,14 @@ export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
 
 export type StatusTagValue =
   "passed" | "pending" | "added" | "not_added" | "conflict";
+
+export const statusTagValueSchema = z.enum([
+  "passed",
+  "pending",
+  "added",
+  "not_added",
+  "conflict",
+]);
 
 export const STATUS_TAG_OPTIONS: {
   value: StatusTagValue;
@@ -24,6 +33,8 @@ export const STATUS_TAG_OPTIONS: {
 ];
 
 export type ResourceTagValue = "unofficial" | "no_official_data";
+
+export const resourceTagValueSchema = z.enum(["unofficial", "no_official_data"]);
 
 export const RESOURCE_TAG_OPTIONS: {
   value: ResourceTagValue;
@@ -57,8 +68,59 @@ export type SortKey =
   | "updated_at";
 export type SortOrder = "asc" | "desc";
 
+export const sortKeySchema = z.enum([
+  "id",
+  "resource",
+  "resource_type",
+  "tier",
+  "drop",
+  "created_at",
+  "updated_at",
+]);
+
+export const sortOrderSchema = z.enum(["asc", "desc"]);
+
+export const resourceTypeSchema = z.enum(["all", "mount", "pet", "npc"]);
+
 export const DEFAULT_SORT: SortKey = "updated_at";
 export const DEFAULT_ORDER: SortOrder = "desc";
+
+export function parseResourceType(
+  value: string | null,
+): "all" | "mount" | "pet" | "npc" {
+  const result = resourceTypeSchema.safeParse(value);
+  return result.success ? result.data : "all";
+}
+
+export function parseSortKey(value: string | null): SortKey {
+  const result = sortKeySchema.safeParse(value);
+  return result.success ? result.data : DEFAULT_SORT;
+}
+
+export function parseSortOrder(value: string | null): SortOrder {
+  const result = sortOrderSchema.safeParse(value);
+  return result.success ? result.data : DEFAULT_ORDER;
+}
+
+export function parseStatusTagList(value: string | null): StatusTagValue[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v): v is StatusTagValue =>
+      statusTagValueSchema.safeParse(v).success,
+    );
+}
+
+export function parseResourceTagList(value: string | null): ResourceTagValue[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v): v is ResourceTagValue =>
+      resourceTagValueSchema.safeParse(v).success,
+    );
+}
 
 export function formatDrop(drop: Resource["drop"]): string {
   const parts: string[] = [];

@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
-  DEFAULT_SORT,
   DEFAULT_ORDER,
   sortResources,
   pageButtons,
@@ -9,14 +8,13 @@ import {
   matchesStatusFilter,
   matchesTagFilter,
   matchesUpdatedAtFilter,
+  parseSortKey,
+  parseSortOrder,
+  parseStatusTagList,
+  parseResourceTagList,
 } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
-import type {
-  SortKey,
-  SortOrder,
-  StatusTagValue,
-  ResourceTagValue,
-} from "../lib/resource-list";
+import type { SortKey, ResourceTagValue } from "../lib/resource-list";
 
 function parseParamList(value: string | null): string[] {
   if (!value) return [];
@@ -40,8 +38,8 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     searchParams.get("search") || "",
   );
 
-  const sortKey = (searchParams.get("sort") as SortKey) || DEFAULT_SORT;
-  const sortOrder = (searchParams.get("order") as SortOrder) || DEFAULT_ORDER;
+  const sortKey = parseSortKey(searchParams.get("sort"));
+  const sortOrder = parseSortOrder(searchParams.get("order"));
 
   const filtered = useMemo(() => {
     if (!allItems) return [];
@@ -72,14 +70,12 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
       });
     }
 
-    const statuses = parseParamList(
-      searchParams.get("status"),
-    ) as StatusTagValue[];
+    const statuses = parseStatusTagList(searchParams.get("status"));
     if (statuses.length > 0) {
       items = items.filter((r) => matchesStatusFilter(r, statuses));
     }
 
-    const tags = parseParamList(searchParams.get("tags")) as ResourceTagValue[];
+    const tags = parseResourceTagList(searchParams.get("tags"));
     if (tags.length > 0) {
       items = items.filter((r) => matchesTagFilter(r, tags));
     }

@@ -2,7 +2,10 @@ import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { Search, Plus } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { useEffect, useState } from "react";
-import { TYPES } from "@/features/resources/lib/resource-list";
+import {
+  TYPES,
+  parseResourceType,
+} from "@/features/resources/lib/resource-list";
 import { useResourceListData } from "@/features/resources/hooks/useResourceListData";
 import { useResourceListFilters } from "@/features/resources/hooks/useResourceListFilters";
 import { ResourceFilters } from "@/features/resources/components/ResourceFilters";
@@ -15,8 +18,7 @@ const PAGE_SIZE = 20;
 export function ResourceListPage() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const typeParam =
-    (searchParams.get("type") as "all" | "mount" | "pet" | "npc") || "all";
+  const typeParam = parseResourceType(searchParams.get("type"));
 
   useEffect(() => {
     if (location.state?.restoreScroll) {
