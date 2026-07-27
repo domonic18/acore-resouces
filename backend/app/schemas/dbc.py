@@ -7,14 +7,14 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, get_type_hints
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 def _empty_to_none(value: Any) -> Any:
-    """将空字符串归一化为 None，兼容旧 YAML/Excel 数据。"""
-    return None if value == "" else value
+    """将空字符串或 0 归一化为 None，兼容旧 YAML/Excel 数据。"""
+    return None if value == "" or value == 0 else value
 
 
 class DBCRecord(BaseModel):
@@ -26,10 +26,20 @@ class DBCRecord(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def _normalize_empty_strings(cls, data: Any) -> Any:
-        if isinstance(data, dict):
-            return {k: _empty_to_none(v) for k, v in data.items()}
-        return data
+    def _normalize_unset_values(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+        hints = get_type_hints(cls)
+        normalized: dict[str, Any] = {}
+        for key, value in data.items():
+            hint = hints.get(key)
+            if value == "":
+                normalized[key] = None
+            elif hint is str | None and value == 0:
+                normalized[key] = None
+            else:
+                normalized[key] = value
+        return normalized
 
 
 class CreatureModelData(DBCRecord):

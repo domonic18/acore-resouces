@@ -1,12 +1,27 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal, get_type_hints
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
 from app.schemas.sql import CreatureModelInfo, CreatureTemplate, ItemTemplate
+
+
+def _normalize_optional_field(value: Any, hint: Any | None) -> Any:
+    """归一化可选字段的空值：空字符串或字符串字段的 0 转为 None。"""
+    if value == "":
+        return None
+    if hint is str | None and value == 0:
+        return None
+    return value
+
+
+def _normalize_dict_values(data: dict[str, Any], cls: type[BaseModel]) -> dict[str, Any]:
+    """根据模型字段类型归一化字典中的未设置值。"""
+    hints = get_type_hints(cls)
+    return {k: _normalize_optional_field(v, hints.get(k)) for k, v in data.items()}
 
 
 class DropInfo(BaseModel):
@@ -14,6 +29,11 @@ class DropInfo(BaseModel):
     instance: str | None = None
     boss: str | None = None
     rate: float | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_unset_values(cls, data: Any) -> Any:
+        return _normalize_dict_values(data, cls) if isinstance(data, dict) else data
 
 
 class OfficialDbInfo(BaseModel):
@@ -24,6 +44,11 @@ class OfficialDbInfo(BaseModel):
     icon_name: str | None = None
     spell_wowhead_url: str | None = None
     item_wowhead_url: str | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_unset_values(cls, data: Any) -> Any:
+        return _normalize_dict_values(data, cls) if isinstance(data, dict) else data
 
 
 class DbcInfo(BaseModel):
