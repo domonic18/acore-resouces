@@ -45,6 +45,7 @@ export interface Resource {
   subtype?: string | null;
   rarity?: string | null;
   tags?: string[];
+  duplicate_issues?: DuplicateIssue[];
 }
 
 export interface ResourceUpdate {
@@ -64,6 +65,19 @@ export interface ResourceUpdate {
   db_creature_template?: Record<string, unknown>;
   debug_passed?: boolean;
   added?: boolean;
+}
+
+export interface DuplicateIssueResource {
+  id: number;
+  resource_type: "mount" | "pet" | "npc";
+  model_folder: string;
+  name: string | null;
+}
+
+export interface DuplicateIssue {
+  field: string;
+  value: number;
+  resources: DuplicateIssueResource[];
 }
 
 export interface PaginatedResources {

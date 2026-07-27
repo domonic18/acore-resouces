@@ -11,6 +11,7 @@ from app.preview.asset_resolver import resolve_resource_assets
 from app.schemas.resource import Resource
 from app.services.resource_store import list_resources, load_resource, save_resource
 from app.services.resource_validation import (
+    DuplicateIdIssue,
     check_duplicate_resource_ids,
 )
 
@@ -47,9 +48,51 @@ class ResourceUpdateRequest(BaseModel):
     added: bool | None = None
 
 
-def _resource_to_dict(resource: Resource) -> dict[str, Any]:
+def _resource_key(resource: Resource) -> tuple[int, str]:
+    return (resource.id, resource.model_folder)
+
+
+def _build_duplicate_issue_map(
+    resources: list[Resource],
+    issues: list[DuplicateIdIssue],
+) -> dict[tuple[int, str], list[dict[str, Any]]]:
+    """将重复问题按资源 key 分组，并过滤掉自身。"""
+    resource_by_key = {_resource_key(r): r for r in resources}
+    mapping: dict[tuple[int, str], list[dict[str, Any]]] = {}
+    for issue in issues:
+        for res_key in issue.resources:
+            conflicts = []
+            for other_key in issue.resources:
+                if other_key == res_key:
+                    continue
+                other_resource = resource_by_key.get(other_key)
+                conflicts.append(
+                    {
+                        "id": other_key[0],
+                        "resource_type": "mount",
+                        "model_folder": other_key[1],
+                        "name": other_resource.official_db.name
+                        if other_resource
+                        else None,
+                    }
+                )
+            mapping.setdefault(res_key, []).append(
+                {
+                    "field": issue.field.path,
+                    "value": issue.value,
+                    "resources": conflicts,
+                }
+            )
+    return mapping
+
+
+def _resource_to_dict(
+    resource: Resource,
+    duplicate_issues: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     data = resource.model_dump()
     data["name"] = resource.official_db.name or resource.model_folder
+    data["duplicate_issues"] = duplicate_issues or []
     return data
 
 
@@ -66,6 +109,13 @@ def list_resources_endpoint(
 ) -> dict[str, Any]:
     """分页列出资源。"""
     resources = list_resources(resource_type)
+
+    duplicate_issue_map: dict[tuple[int, str], list[dict[str, Any]]] = {}
+    if resource_type == "mount":
+        duplicate_issue_map = _build_duplicate_issue_map(
+            resources,
+            check_duplicate_resource_ids(resources),
+        )
 
     if search:
         search_lower = search.lower()
@@ -99,7 +149,13 @@ def list_resources_endpoint(
         "total": total,
         "page": page,
         "page_size": page_size,
-        "items": [_resource_to_dict(r) for r in items],
+        "items": [
+            _resource_to_dict(
+                r,
+                duplicate_issue_map.get(_resource_key(r)),
+            )
+            for r in items
+        ],
     }
 
 

@@ -7,6 +7,8 @@ import {
   Search,
   Sparkles,
   Package,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { ResourceThumb } from "@/components/ResourceThumb";
@@ -71,6 +73,7 @@ export function ResourceTable({
   onSelectAll,
 }: ResourceTableProps) {
   const location = useLocation();
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const saveScrollAndNavigate = () => {
     sessionStorage.setItem("resourceListScrollY", String(window.scrollY));
@@ -148,6 +151,7 @@ export function ResourceTable({
             />
             <th>状态</th>
             <th>标签</th>
+            <th>冲突</th>
             <SortHeader
               label="添加时间"
               active={sortKey === "created_at"}
@@ -165,6 +169,7 @@ export function ResourceTable({
         </thead>
         <tbody>
           {currentItems.map((resource) => (
+            <>
             <tr key={`${resource.resource_type}-${resource.id}`}>
               <td>
                 <input
@@ -207,6 +212,26 @@ export function ResourceTable({
               </td>
               <td>
                 <ResourceTagBadge resource={resource} />
+              </td>
+              <td>
+                {resource.duplicate_issues &&
+                resource.duplicate_issues.length > 0 ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedId(
+                        expandedId === resource.id ? null : resource.id,
+                      )
+                    }
+                    className="inline-flex items-center gap-1 rounded bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger hover:bg-danger/20"
+                    title="点击查看重复 ID 冲突详情"
+                  >
+                    <AlertTriangle className="h-3.5 w-3.5" />
+                    {resource.duplicate_issues.length}
+                  </button>
+                ) : (
+                  <span className="text-text-secondary">—</span>
+                )}
               </td>
               <td className="text-text-secondary">
                 {formatDateTime(resource.created_at)}
@@ -265,20 +290,71 @@ export function ResourceTable({
                 </div>
               </td>
             </tr>
+            {expandedId === resource.id &&
+              resource.duplicate_issues &&
+              resource.duplicate_issues.length > 0 && (
+              <tr key={`${resource.resource_type}-${resource.id}-conflicts`}>
+                <td colSpan={12}>
+                  <div className="bg-danger/5 px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-semibold text-danger">
+                        重复 ID 冲突详情
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() => setExpandedId(null)}
+                        className="btn btn-icon btn-xs btn-ghost text-text-tertiary hover:text-text-primary"
+                        title="收起"
+                        aria-label="收起"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <ul className="mt-2 space-y-2">
+                      {resource.duplicate_issues.map((issue, idx) => (
+                        <li key={idx} className="text-sm">
+                          <div className="font-medium text-text-primary">
+                            {issue.field} = {issue.value}
+                          </div>
+                          <div className="text-text-secondary">
+                            冲突资源：
+                            {issue.resources.map((conflict, cidx) => (
+                              <span key={conflict.id}>
+                                {cidx > 0 && "、"}
+                                <Link
+                                  to={`/resources/${conflict.resource_type}/${conflict.id}`}
+                                  state={listState}
+                                  onClick={saveScrollAndNavigate}
+                                  className="text-accent hover:underline"
+                                >
+                                  {String(conflict.id).padStart(4, "0")}-
+                                  {conflict.name || conflict.model_folder}
+                                </Link>
+                              </span>
+                            ))}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            )}
+            </>
           ))}
-          {currentItems.length === 0 && (
-            <tr>
-              <td colSpan={11}>
-                <div className="empty-state">
-                  <Search className="mb-3 h-12 w-12 text-text-tertiary" />
-                  <h3>暂无资源</h3>
-                  <p>当前筛选条件下没有找到资源，请尝试调整搜索或筛选条件。</p>
-                </div>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
+        {currentItems.length === 0 && (
+          <tr>
+            <td colSpan={12}>
+              <div className="empty-state">
+                <Search className="mb-3 h-12 w-12 text-text-tertiary" />
+                <h3>暂无资源</h3>
+                <p>当前筛选条件下没有找到资源，请尝试调整搜索或筛选条件。</p>
+              </div>
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+);
 }

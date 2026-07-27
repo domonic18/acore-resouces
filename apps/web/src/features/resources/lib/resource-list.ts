@@ -8,17 +8,18 @@ export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
     { key: "npc", label: "NPC" },
   ];
 
-export type StatusTagValue = "passed" | "pending" | "added" | "not_added";
+export type StatusTagValue = "passed" | "pending" | "added" | "not_added" | "conflict";
 
 export const STATUS_TAG_OPTIONS: {
   value: StatusTagValue;
   label: string;
-  group: "debug" | "added";
+  group: "debug" | "added" | "conflict";
 }[] = [
   { value: "passed", label: "调试通过", group: "debug" },
   { value: "pending", label: "待调试", group: "debug" },
   { value: "added", label: "已添加", group: "added" },
   { value: "not_added", label: "未添加", group: "added" },
+  { value: "conflict", label: "冲突", group: "conflict" },
 ];
 
 export type ResourceTagValue = "unofficial" | "no_official_data";
@@ -262,6 +263,9 @@ export function matchesStatusFilter(
   const selectedAdded = selectedStatuses.filter((s) =>
     STATUS_TAG_OPTIONS.find((o) => o.value === s && o.group === "added"),
   );
+  const selectedConflict = selectedStatuses.filter((s) =>
+    STATUS_TAG_OPTIONS.find((o) => o.value === s && o.group === "conflict"),
+  );
 
   // Within a group, selecting both options is equivalent to no filter for that group.
   if (selectedDebug.length === 1) {
@@ -271,6 +275,11 @@ export function matchesStatusFilter(
   if (selectedAdded.length === 1) {
     const expected = selectedAdded[0] === "added";
     if (resource.added !== expected) return false;
+  }
+  if (selectedConflict.length > 0) {
+    const hasConflict =
+      (resource.duplicate_issues?.length ?? 0) > 0;
+    if (!hasConflict) return false;
   }
   return true;
 }
