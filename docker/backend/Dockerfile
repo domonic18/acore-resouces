@@ -9,10 +9,18 @@
 # --------------------------------------------------
 FROM python:3.11-slim-bookworm AS backend-builder
 
+# 安装 uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 WORKDIR /app
 
-COPY backend/pyproject.toml ./
-RUN pip install --no-cache-dir -e ".[dev]"
+# 复制后端项目文件与本地路径依赖
+COPY backend/pyproject.toml backend/uv.lock ./
+COPY tools/wow-dbc-tool /tools/wow-dbc-tool
+
+# 创建虚拟环境并安装依赖（含 dev 依赖，便于在容器内跑测试）
+RUN uv venv --python 3.11 .venv
+RUN uv sync --frozen
 
 # --------------------------------------------------
 # Stage 2: 生产镜像
@@ -21,11 +29,14 @@ FROM python:3.11-slim-bookworm AS production
 
 WORKDIR /app
 
-COPY --from=backend-builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
-COPY --from=backend-builder /usr/local/bin /usr/local/bin
+# 复制虚拟环境
+COPY --from=backend-builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
 
+# 复制后端代码
 COPY backend/app ./app
 
+# 创建运行时目录
 RUN mkdir -p /app/workspace/data /app/workspace/logs /app/workspace/assets /app/workspace/patch-jobs
 
 EXPOSE 8000
