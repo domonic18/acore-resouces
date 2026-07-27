@@ -42,6 +42,8 @@ class ResourceUpdateRequest(BaseModel):
     drop: DropUpdate | None = None
     dbc_item: dict[str, Any] | None = None
     dbc_spell: dict[str, Any] | None = None
+    dbc_creature_model_data: dict[str, Any] | None = None
+    dbc_creature_display_info: dict[str, Any] | None = None
     db_item_template: dict[str, Any] | None = None
     db_creature_template: dict[str, Any] | None = None
     debug_passed: bool | None = None
@@ -94,6 +96,67 @@ def _resource_to_dict(
     data["name"] = resource.official_db.name or resource.model_folder
     data["duplicate_issues"] = duplicate_issues or []
     return data
+
+
+def _normalize_display_info_value(key: str, value: Any) -> Any:
+    """归一化 creature_display_info 字段值类型。"""
+    if value is None or value == "":
+        return None
+    if key in ("scale", "creature_model_scale"):
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return value
+    int_fields = {
+        "id",
+        "model_id",
+        "sound_id",
+        "extra_display_information_id",
+        "opacity",
+        "creature_model_alpha",
+        "size_class",
+        "blood_id",
+        "npc_sound_id",
+        "particle_color_id",
+        "creature_geoset_data",
+        "object_effect_package_id",
+    }
+    if key in int_fields:
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return value
+    return value
+
+
+def _normalize_model_data_value(key: str, value: Any) -> Any:
+    """归一化 creature_model_data 字段值类型。"""
+    if value is None:
+        return None
+    if key == "model_name":
+        return str(value)
+    if key == "id":
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return value
+    if key == "flags":
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return value
+    float_fields = {
+        "model_scale",
+        "collision_width",
+        "collision_height",
+        "mount_height",
+    }
+    if key in float_fields:
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return value
+    return value
 
 
 @router.get("/{resource_type}")
@@ -219,6 +282,24 @@ def update_resource_endpoint(
         resource.dbc.item = body.dbc_item or {}
     if "dbc_spell" in body.model_fields_set:
         resource.dbc.spell = body.dbc_spell or {}
+    if "dbc_creature_model_data" in body.model_fields_set:
+        model_data_update = body.dbc_creature_model_data or {}
+        existing = resource.dbc.creature_model_data or {}
+        merged = {**existing}
+        for key, value in model_data_update.items():
+            if key == "id":
+                continue
+            merged[key] = _normalize_model_data_value(key, value)
+        resource.dbc.creature_model_data = merged
+    if "dbc_creature_display_info" in body.model_fields_set:
+        display_info_update = body.dbc_creature_display_info or {}
+        existing = resource.dbc.creature_display_info or {}
+        merged = {**existing}
+        for key, value in display_info_update.items():
+            if key in ("id", "model_id"):
+                continue
+            merged[key] = _normalize_display_info_value(key, value)
+        resource.dbc.creature_display_info = merged
     if "db_item_template" in body.model_fields_set:
         resource.db.item_template = body.db_item_template or {}
     if "db_creature_template" in body.model_fields_set:

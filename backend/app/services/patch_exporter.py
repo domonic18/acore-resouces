@@ -181,6 +181,35 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
     # CreatureDisplayInfo.dbc
     cdi = resource.dbc.creature_display_info
     if cdi and cdi.get("id"):
+        # 字段顺序与类型参考 CreatureDisplayInfo.schema.json
+        cdi_fields: list[tuple[str, str, Any, Any]] = [
+            ("ID", "id", int, 0),
+            ("ModelID", "model_id", int, 0),
+            ("SoundID", "sound_id", int, 0),
+            ("ExtendedDisplayInfoID", "extra_display_information_id", int, 0),
+            ("CreatureModelScale", "scale", float, 1.0),
+            ("CreatureModelAlpha", "opacity", int, 255),
+            ("TextureVariation_1", "texture_variation_1", str, ""),
+            ("TextureVariation_2", "texture_variation_2", str, ""),
+            ("TextureVariation_3", "texture_variation_3", str, ""),
+            ("PortraitTextureName", "portrait_texture_name", str, ""),
+            ("SizeClass", "size_class", int, 0),
+            ("BloodID", "blood_id", int, 0),
+            ("NPCSoundID", "npc_sound_id", int, 0),
+            ("ParticleColorID", "particle_color_id", int, 0),
+            ("CreatureGeosetData", "creature_geoset_data", int, 0),
+            ("ObjectEffectPackageID", "object_effect_package_id", int, 0),
+        ]
+        fields: dict[str, Any] = {}
+        for dbc_name, yaml_name, caster, default in cdi_fields:
+            raw = cdi.get(yaml_name, default)
+            if raw is None:
+                raw = default
+            try:
+                fields[dbc_name] = caster(raw)
+            except (ValueError, TypeError):
+                fields[dbc_name] = default
+
         plans.append(
             DBCPlanFile(
                 dbc_file="CreatureDisplayInfo.dbc",
@@ -189,19 +218,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                         action="add",
                         record_id=int(cdi["id"]),
                         reason="新增显示信息",
-                        fields={
-                            "ID": int(cdi["id"]),
-                            "ModelID": int(cdi.get("model_id", 0)),
-                            "SoundID": int(cdi.get("sound_id", 0)),
-                            "ExtendedDisplayInfoID": int(
-                                cdi.get("extra_display_information_id", 0)
-                            ),
-                            "CreatureModelScale": float(cdi.get("scale", 1.0)),
-                            "CreatureModelAlpha": int(cdi.get("opacity", 255)),
-                            "TextureVariation_1": str(cdi.get("texture_variation_1", "")),
-                            "TextureVariation_2": str(cdi.get("texture_variation_2", "")),
-                            "TextureVariation_3": str(cdi.get("texture_variation_3", "")),
-                        },
+                        fields=fields,
                     )
                 ],
             )

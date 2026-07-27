@@ -108,6 +108,17 @@ def list_icons() -> list[str]:
     return icons
 
 
+def _list_files_by_extensions(
+    directory: Path,
+    extensions: set[str],
+) -> list[Path]:
+    """大小写不敏感地收集指定扩展名的文件。"""
+    ext_lower = {ext.lower() for ext in extensions}
+    return sorted(
+        p for p in directory.rglob("*") if p.is_file() and p.suffix.lower() in ext_lower
+    )
+
+
 @router.get("/model/{model_folder:path}")
 def preview_model(
     model_folder: str,
@@ -118,7 +129,7 @@ def preview_model(
         # 依次尝试 mounts/pets/npcs 定位 model_folder
         for candidate in ("mount", "pet", "npc"):
             resource_dir = resolve_resource_dir(candidate, model_folder)
-            m2_files = sorted(resource_dir.rglob("*.m2"))
+            m2_files = _list_files_by_extensions(resource_dir, {".m2"})
             if m2_files:
                 resource_type = candidate
                 break
@@ -130,7 +141,7 @@ def preview_model(
     if not resource_dir.exists():
         raise HTTPException(status_code=404, detail=f"模型目录不存在：{model_folder}")
 
-    m2_files = sorted(resource_dir.rglob("*.m2"))
+    m2_files = _list_files_by_extensions(resource_dir, {".m2"})
     if not m2_files:
         return {
             "model_folder": model_folder,
@@ -151,9 +162,9 @@ def preview_model(
         default=min(m2_files, key=lambda p: len(p.name)),
     )
 
-    skin_files = sorted(resource_dir.rglob("*.skin"))
-    blp_files = sorted(resource_dir.rglob("*.blp"))
-    anim_files = sorted(resource_dir.rglob("*.anim"))
+    skin_files = _list_files_by_extensions(resource_dir, {".skin"})
+    blp_files = _list_files_by_extensions(resource_dir, {".blp"})
+    anim_files = _list_files_by_extensions(resource_dir, {".anim"})
 
     try:
         metadata = read_m2_metadata(main_m2)
