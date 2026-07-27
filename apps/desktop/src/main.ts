@@ -8,7 +8,7 @@ let backendProcess: ChildProcess | null = null;
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const BACKEND_COMMAND =
-  process.env.ACORE_BACKEND_COMMAND || 'uv run uvicorn backend.app.main:app --port 8000';
+  process.env.ACORE_BACKEND_COMMAND || 'uv run --project backend uvicorn app.main:app --port 8000';
 const BACKEND_URL = process.env.ACORE_BACKEND_URL || 'http://localhost:8000';
 const FRONTEND_DEV_URL = process.env.ACORE_FRONTEND_URL || 'http://localhost:5173';
 
