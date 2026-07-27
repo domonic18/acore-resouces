@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+
+from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
+from app.schemas.sql import CreatureModelInfo, CreatureTemplate, ItemTemplate
 
 
 class DropInfo(BaseModel):
@@ -14,6 +17,8 @@ class DropInfo(BaseModel):
 
 
 class OfficialDbInfo(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
     name: str | None = None
     spell_icon_name: str | None = None
     icon_name: str | None = None
@@ -22,23 +27,25 @@ class OfficialDbInfo(BaseModel):
 
 
 class DbcInfo(BaseModel):
-    model_config = ConfigDict(extra="allow")
-    creature_model_data: dict[str, Any] = Field(default_factory=dict)
-    creature_display_info: dict[str, Any] = Field(default_factory=dict)
-    spell: dict[str, Any] = Field(default_factory=dict)
-    item: dict[str, Any] = Field(default_factory=dict)
+    creature_model_data: CreatureModelData = Field(
+        default_factory=CreatureModelData,
+    )
+    creature_display_info: CreatureDisplayInfo = Field(
+        default_factory=CreatureDisplayInfo,
+    )
+    spell: Spell = Field(default_factory=Spell)
+    item: Item = Field(default_factory=Item)
 
 
 class DbInfo(BaseModel):
-    model_config = ConfigDict(extra="allow")
-    creature_template: dict[str, Any] = Field(default_factory=dict)
-    creature_model_info: dict[str, Any] = Field(default_factory=dict)
-    item_template: dict[str, Any] = Field(default_factory=dict)
+    creature_template: CreatureTemplate = Field(default_factory=CreatureTemplate)
+    creature_model_info: CreatureModelInfo = Field(
+        default_factory=CreatureModelInfo,
+    )
+    item_template: ItemTemplate = Field(default_factory=ItemTemplate)
 
 
 class ResourceBase(BaseModel):
-    model_config = ConfigDict(extra="allow")
-
     id: int
     model_folder: str
     preview_image: str | None = None
@@ -69,4 +76,8 @@ class Npc(ResourceBase):
     rarity: str | None = None
 
 
-Resource = Mount | Pet | Npc
+Resource = Annotated[Mount | Pet | Npc, Field(discriminator="resource_type")]
+
+
+# 兼容仍需要 plain union 的场景（如函数返回类型注解）
+ResourceUnion = Mount | Pet | Npc

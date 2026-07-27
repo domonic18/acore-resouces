@@ -134,9 +134,10 @@ def build_assets_json(resource: Resource) -> dict[str, Any]:
         "model_folder": resource.model_folder,
         "source_dir": str(source_dir) if source_dir else None,
         "exists": assets.exists,
-        "model_name": resource.dbc.creature_model_data.get("model_name"),
+        "model_name": resource.dbc.creature_model_data.model_name,
         "texture_variations": [
-            resource.dbc.creature_display_info.get(f"texture_variation_{i}") for i in (1, 2, 3)
+            resource.dbc.creature_display_info.model_dump().get(f"texture_variation_{i}")
+            for i in (1, 2, 3)
         ],
         "m2_files": [_asset_file_to_dict(f) for f in assets.m2_files],
         "blp_files": [_asset_file_to_dict(f) for f in assets.texture_files],
@@ -154,7 +155,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
     plans: list[DBCPlanFile] = []
 
     # CreatureModelData.dbc
-    cmd = resource.dbc.creature_model_data
+    cmd = resource.dbc.creature_model_data.model_dump(exclude_none=True)
     if cmd and cmd.get("id"):
         plans.append(
             DBCPlanFile(
@@ -179,7 +180,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         )
 
     # CreatureDisplayInfo.dbc
-    cdi = resource.dbc.creature_display_info
+    cdi = resource.dbc.creature_display_info.model_dump(exclude_none=True)
     if cdi and cdi.get("id"):
         # 字段顺序与类型参考 CreatureDisplayInfo.schema.json
         cdi_fields: list[tuple[str, str, Any, Any]] = [
@@ -225,7 +226,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         )
 
     # Spell.dbc
-    spell = resource.dbc.spell
+    spell = resource.dbc.spell.model_dump(exclude_none=True)
     if spell and spell.get("id") and cdi and cdi.get("id"):
         display_id = int(cdi["id"])
         spell_fields: dict[str, Any] = {
@@ -265,7 +266,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         )
 
     # Item.dbc
-    item = resource.dbc.item
+    item = resource.dbc.item.model_dump(by_alias=True, exclude_none=True)
     if item and item.get("id"):
         plans.append(
             DBCPlanFile(
@@ -305,7 +306,7 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     tables: list[SQLPlanTable] = []
 
     # creature_model_info
-    cmi = resource.db.creature_model_info
+    cmi = resource.db.creature_model_info.model_dump(exclude_none=True)
     if cmi and cmi.get("display_id"):
         tables.append(
             SQLPlanTable(
@@ -324,7 +325,7 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
         )
 
     # creature_template
-    ct = resource.db.creature_template
+    ct = resource.db.creature_template.model_dump(exclude_none=True)
     if ct and ct.get("entry"):
         tables.append(
             SQLPlanTable(
@@ -349,8 +350,8 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
         )
 
     # item_template
-    it = resource.db.item_template
-    spell_id = resource.dbc.spell.get("id") if resource.dbc.spell else None
+    it = resource.db.item_template.model_dump(by_alias=True, exclude_none=True)
+    spell_id = resource.dbc.spell.id if resource.dbc.spell.id else None
     if it and it.get("entry"):
         tables.append(
             SQLPlanTable(
