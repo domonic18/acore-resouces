@@ -65,7 +65,7 @@ export function ResourceListPage() {
     });
   };
 
-  const selectedType = typeParam === "all" ? "mount" : typeParam;
+  const canBulkExport = typeParam === "mount";
 
   return (
     <div className="content">
@@ -119,10 +119,20 @@ export function ResourceListPage() {
             </span>{" "}
             项
           </div>
-          <BulkPatchExportButton
-            resourceType={selectedType}
-            resourceIds={selectedIds}
-          />
+          <div
+            className="flex items-center gap-3"
+            title={
+              canBulkExport
+                ? undefined
+                : "批量导出当前仅支持坐骑（mount）标签页"
+            }
+          >
+            <BulkPatchExportButton
+              resourceType="mount"
+              resourceIds={selectedIds}
+              disabled={!canBulkExport}
+            />
+          </div>
         </div>
 
         <ResourceTable

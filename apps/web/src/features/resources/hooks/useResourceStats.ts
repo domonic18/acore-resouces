@@ -16,10 +16,23 @@ export function useResourceStats() {
         queryKey: ["stats", "npc"],
         queryFn: () => listResources("npc", { page_size: 1 }),
       },
+      {
+        queryKey: ["stats", "mount", "pending"],
+        queryFn: () => listResources("mount", { page_size: 1, debug_passed: false }),
+      },
+      {
+        queryKey: ["stats", "pet", "pending"],
+        queryFn: () => listResources("pet", { page_size: 1, debug_passed: false }),
+      },
+      {
+        queryKey: ["stats", "npc", "pending"],
+        queryFn: () => listResources("npc", { page_size: 1, debug_passed: false }),
+      },
     ],
   });
 
-  const [mountRes, petRes, npcRes] = results;
+  const [mountRes, petRes, npcRes, mountPending, petPending, npcPending] =
+    results;
   return {
     isLoading: results.some((r) => r.isLoading),
     data: {
@@ -27,9 +40,9 @@ export function useResourceStats() {
       pet: petRes.data?.total ?? 0,
       npc: npcRes.data?.total ?? 0,
       pending:
-        (mountRes.data?.items.filter((r) => !r.debug_passed).length ?? 0) +
-        (petRes.data?.items.filter((r) => !r.debug_passed).length ?? 0) +
-        (npcRes.data?.items.filter((r) => !r.debug_passed).length ?? 0),
+        (mountPending.data?.total ?? 0) +
+        (petPending.data?.total ?? 0) +
+        (npcPending.data?.total ?? 0),
     },
   };
 }

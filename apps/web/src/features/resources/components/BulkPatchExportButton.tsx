@@ -7,11 +7,13 @@ import type { PatchJob } from "@/shared/types";
 interface BulkPatchExportButtonProps {
   resourceType: string;
   resourceIds: number[];
+  disabled?: boolean;
 }
 
 export function BulkPatchExportButton({
   resourceType,
   resourceIds,
+  disabled: disabledProp,
 }: BulkPatchExportButtonProps) {
   const [result, setResult] = useState<{ jobs: PatchJob[] } | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export function BulkPatchExportButton({
     setTimeout(() => setCopiedId(null), 1500);
   };
 
-  const disabled = resourceIds.length === 0 || mutation.isPending;
+  const disabled = resourceIds.length === 0 || mutation.isPending || disabledProp;
 
   return (
     <div className="flex items-center gap-3">

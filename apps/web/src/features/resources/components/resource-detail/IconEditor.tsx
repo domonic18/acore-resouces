@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { Box } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { getIconPreviewUrl } from "@/shared/resources";
@@ -19,6 +20,8 @@ export function IconEditor({
   onOpenPicker,
   compact,
 }: IconEditorProps) {
+  const datalistId = useId();
+
   return (
     <div className={cn("flex items-center gap-4", compact && "gap-3")}>
       <button
@@ -53,14 +56,14 @@ export function IconEditor({
           {label}
         </label>
         <input
-          list="icon-options"
+          list={datalistId}
           type="text"
           className={cn(compact ? "form-input-compact" : "form-input")}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="输入或选择图标"
         />
-        <datalist id="icon-options">
+        <datalist id={datalistId}>
           {iconNames.map((name) => (
             <option key={name} value={name} />
           ))}
