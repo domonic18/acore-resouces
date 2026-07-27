@@ -6,6 +6,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+PatchJobStatus = Literal["requested", "generated", "applied", "failed"]
+
 
 class PatchResourceRef(BaseModel):
     """补丁任务关联的资源引用。"""
@@ -39,7 +41,7 @@ class PatchJobManifest(BaseModel):
     resource_id: int
     resource_name: str
     resource_model_folder: str
-    status: Literal["requested", "generated", "applied", "failed"]
+    status: PatchJobStatus
     input_dir: str
     output_dir: str | None = None
     artifacts: PatchArtifacts = Field(default_factory=PatchArtifacts)
@@ -96,3 +98,11 @@ class SQLPlan(BaseModel):
     target_database: str
     output_sql_file: str
     tables: list[SQLPlanTable] = Field(default_factory=list)
+
+
+class PatchJobUpdateRequest(BaseModel):
+    """更新补丁任务状态请求。"""
+
+    status: PatchJobStatus | None = None
+    artifacts: dict[str, str] | None = None
+    summary: str | None = None

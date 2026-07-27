@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
+from app.schemas.patch import PatchJobStatus, PatchJobUpdateRequest
 from app.services.patch_exporter import (
     create_patch_job,
     get_patch_job,
@@ -22,14 +23,6 @@ class PatchExportRequest(BaseModel):
 
     resource_type: str
     resource_ids: list[int]
-
-
-class PatchJobUpdateRequest(BaseModel):
-    """更新补丁任务状态请求。"""
-
-    status: Literal["requested", "generated", "applied", "failed"] | None = None
-    artifacts: dict[str, str] | None = None
-    summary: str | None = None
 
 
 @router.post("/export-request")
@@ -60,7 +53,7 @@ def export_request(body: PatchExportRequest) -> dict[str, Any]:
 def list_jobs(
     resource_type: str | None = Query(None, description="资源类型"),
     resource_id: int | None = Query(None, description="资源 ID"),
-    status: str | None = Query(None, description="任务状态"),
+    status: PatchJobStatus | None = Query(None, description="任务状态"),
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
 ) -> dict[str, Any]:

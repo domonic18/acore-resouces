@@ -6,6 +6,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from app.schemas.patch import PatchJobStatus
 from app.services.mount_patch_builder import (
     DBCConflictError,
     MountPatchBuilderError,
@@ -97,7 +98,7 @@ def publish_patch(
 def list_patches(
     resource_type: str | None = typer.Option(None, "--type", "-t", help="资源类型"),
     resource_id: int | None = typer.Option(None, "--id", "-i", help="资源 ID"),
-    status: str | None = typer.Option(None, "--status", "-s", help="任务状态"),
+    status: PatchJobStatus | None = typer.Option(None, "--status", "-s", help="任务状态"),
     page: int = typer.Option(1, "--page", "-p", help="页码"),
     page_size: int = typer.Option(20, "--page-size", "-n", help="每页数量"),
 ) -> None:
@@ -146,7 +147,7 @@ def get_patch(
 @app.command("update", help="更新补丁任务状态")
 def update_patch(
     job_id: str = typer.Argument(..., help="任务 ID"),
-    status: str = typer.Argument(..., help="新状态: requested/generated/applied/failed"),
+    status: PatchJobStatus = typer.Argument(..., help="新状态: requested/generated/applied/failed"),
     summary: str | None = typer.Option(None, "--summary", help="摘要"),
 ) -> None:
     """更新补丁任务状态。"""

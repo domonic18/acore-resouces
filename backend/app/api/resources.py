@@ -8,7 +8,9 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from app.preview.asset_resolver import resolve_resource_assets
+from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
 from app.schemas.resource import Resource
+from app.schemas.sql import CreatureTemplate, ItemTemplate
 from app.services.resource_store import list_resources, load_resource, save_resource
 from app.services.resource_validation import (
     DuplicateIdIssue,
@@ -40,12 +42,12 @@ class ResourceUpdateRequest(BaseModel):
     subtype: str | None = None
     rarity: str | None = None
     drop: DropUpdate | None = None
-    dbc_item: dict[str, Any] | None = None
-    dbc_spell: dict[str, Any] | None = None
-    dbc_creature_model_data: dict[str, Any] | None = None
-    dbc_creature_display_info: dict[str, Any] | None = None
-    db_item_template: dict[str, Any] | None = None
-    db_creature_template: dict[str, Any] | None = None
+    dbc_item: Item | None = None
+    dbc_spell: Spell | None = None
+    dbc_creature_model_data: CreatureModelData | None = None
+    dbc_creature_display_info: CreatureDisplayInfo | None = None
+    db_item_template: ItemTemplate | None = None
+    db_creature_template: CreatureTemplate | None = None
     debug_passed: bool | None = None
     added: bool | None = None
 
@@ -73,9 +75,7 @@ def _build_duplicate_issue_map(
                         "id": other_key[0],
                         "resource_type": "mount",
                         "model_folder": other_key[1],
-                        "name": other_resource.official_db.name
-                        if other_resource
-                        else None,
+                        "name": other_resource.official_db.name if other_resource else None,
                     }
                 )
             mapping.setdefault(res_key, []).append(
@@ -92,7 +92,7 @@ def _resource_to_dict(
     resource: Resource,
     duplicate_issues: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    data = resource.model_dump()
+    data = resource.model_dump(by_alias=True)
     data["name"] = resource.official_db.name or resource.model_folder
     data["duplicate_issues"] = duplicate_issues or []
     return data
@@ -279,31 +279,35 @@ def update_resource_endpoint(
         if "rate" in body.drop.model_fields_set:
             resource.drop.rate = body.drop.rate
     if "dbc_item" in body.model_fields_set:
-        resource.dbc.item = body.dbc_item or {}
+        resource.dbc.item = body.dbc_item or Item()
     if "dbc_spell" in body.model_fields_set:
-        resource.dbc.spell = body.dbc_spell or {}
+        resource.dbc.spell = body.dbc_spell or Spell()
     if "dbc_creature_model_data" in body.model_fields_set:
-        model_data_update = body.dbc_creature_model_data or {}
-        existing = resource.dbc.creature_model_data or {}
+        model_data_update = (
+            body.dbc_creature_model_data.model_dump() if body.dbc_creature_model_data else {}
+        )
+        existing = resource.dbc.creature_model_data.model_dump()
         merged = {**existing}
         for key, value in model_data_update.items():
             if key == "id":
                 continue
             merged[key] = _normalize_model_data_value(key, value)
-        resource.dbc.creature_model_data = merged
+        resource.dbc.creature_model_data = CreatureModelData(**merged)
     if "dbc_creature_display_info" in body.model_fields_set:
-        display_info_update = body.dbc_creature_display_info or {}
-        existing = resource.dbc.creature_display_info or {}
+        display_info_update = (
+            body.dbc_creature_display_info.model_dump() if body.dbc_creature_display_info else {}
+        )
+        existing = resource.dbc.creature_display_info.model_dump()
         merged = {**existing}
         for key, value in display_info_update.items():
             if key in ("id", "model_id"):
                 continue
             merged[key] = _normalize_display_info_value(key, value)
-        resource.dbc.creature_display_info = merged
+        resource.dbc.creature_display_info = CreatureDisplayInfo(**merged)
     if "db_item_template" in body.model_fields_set:
-        resource.db.item_template = body.db_item_template or {}
+        resource.db.item_template = body.db_item_template or ItemTemplate()
     if "db_creature_template" in body.model_fields_set:
-        resource.db.creature_template = body.db_creature_template or {}
+        resource.db.creature_template = body.db_creature_template or CreatureTemplate()
     if "debug_passed" in body.model_fields_set:
         resource.debug_passed = body.debug_passed or False
     if "added" in body.model_fields_set:
