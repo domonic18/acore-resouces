@@ -61,6 +61,8 @@ export interface ResourceUpdate {
   drop?: Partial<DropInfo>;
   dbc_item?: Record<string, unknown>;
   dbc_spell?: Record<string, unknown>;
+  dbc_creature_model_data?: Record<string, unknown>;
+  dbc_creature_display_info?: Record<string, unknown>;
   db_item_template?: Record<string, unknown>;
   db_creature_template?: Record<string, unknown>;
   debug_passed?: boolean;

@@ -14,6 +14,8 @@ interface SaveableState {
   itemDb: Record<string, unknown>;
   spellDbc: Record<string, unknown>;
   spellDb: Record<string, unknown>;
+  creatureDisplayInfoDbc: Record<string, unknown>;
+  creatureModelDataDbc: Record<string, unknown>;
 }
 
 export function useResourceUpdate(resourceType: string, resourceId: number) {
@@ -41,6 +43,8 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
       itemDb,
       spellDbc,
       spellDb,
+      creatureDisplayInfoDbc,
+      creatureModelDataDbc,
     } = state;
 
     const update: ResourceUpdate = {};
@@ -108,6 +112,18 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
       JSON.stringify(resource.db.creature_template ?? {})
     ) {
       update.db_creature_template = spellDb;
+    }
+    if (
+      JSON.stringify(creatureDisplayInfoDbc) !==
+      JSON.stringify(resource.dbc.creature_display_info ?? {})
+    ) {
+      update.dbc_creature_display_info = creatureDisplayInfoDbc;
+    }
+    if (
+      JSON.stringify(creatureModelDataDbc) !==
+      JSON.stringify(resource.dbc.creature_model_data ?? {})
+    ) {
+      update.dbc_creature_model_data = creatureModelDataDbc;
     }
 
     updateMutation.mutate(update);

@@ -57,6 +57,12 @@ export function useResourceForm(resource?: Resource) {
   const [spellDb, setSpellDb] = useState<Record<string, unknown>>(
     resource?.db.creature_template ?? {},
   );
+  const [creatureDisplayInfoDbc, setCreatureDisplayInfoDbc] = useState<
+    Record<string, unknown>
+  >(resource?.dbc.creature_display_info ?? {});
+  const [creatureModelDataDbc, setCreatureModelDataDbc] = useState<
+    Record<string, unknown>
+  >(resource?.dbc.creature_model_data ?? {});
 
   useEffect(() => {
     if (!resource) return;
@@ -69,6 +75,8 @@ export function useResourceForm(resource?: Resource) {
     setItemDb(resource.db.item_template ?? {});
     setSpellDbc(resource.dbc.spell ?? {});
     setSpellDb(resource.db.creature_template ?? {});
+    setCreatureDisplayInfoDbc(resource.dbc.creature_display_info ?? {});
+    setCreatureModelDataDbc(resource.dbc.creature_model_data ?? {});
   }, [resource]);
 
   const updateField = <K extends keyof FormState>(
@@ -101,6 +109,16 @@ export function useResourceForm(resource?: Resource) {
       JSON.stringify(resource.db.creature_template ?? {})
     )
       return true;
+    if (
+      JSON.stringify(creatureDisplayInfoDbc) !==
+      JSON.stringify(resource.dbc.creature_display_info ?? {})
+    )
+      return true;
+    if (
+      JSON.stringify(creatureModelDataDbc) !==
+      JSON.stringify(resource.dbc.creature_model_data ?? {})
+    )
+      return true;
     return false;
   }, [
     form,
@@ -113,6 +131,8 @@ export function useResourceForm(resource?: Resource) {
     itemDb,
     spellDbc,
     spellDb,
+    creatureDisplayInfoDbc,
+    creatureModelDataDbc,
   ]);
 
   const liveDbc = useMemo(
@@ -120,8 +140,16 @@ export function useResourceForm(resource?: Resource) {
       ...resource?.dbc,
       item: itemDbc,
       spell: spellDbc,
+      creature_display_info: creatureDisplayInfoDbc,
+      creature_model_data: creatureModelDataDbc,
     }),
-    [resource?.dbc, itemDbc, spellDbc],
+    [
+      resource?.dbc,
+      itemDbc,
+      spellDbc,
+      creatureDisplayInfoDbc,
+      creatureModelDataDbc,
+    ],
   );
 
   const liveDb = useMemo(
@@ -153,6 +181,10 @@ export function useResourceForm(resource?: Resource) {
     setSpellDbc,
     spellDb,
     setSpellDb,
+    creatureDisplayInfoDbc,
+    setCreatureDisplayInfoDbc,
+    creatureModelDataDbc,
+    setCreatureModelDataDbc,
     hasChanges,
     liveDbc,
     liveDb,

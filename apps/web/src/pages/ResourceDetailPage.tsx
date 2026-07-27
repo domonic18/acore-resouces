@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { ArrowLeft, Save } from "lucide-react";
 import { useResourceDetail } from "@/features/resources/hooks/useResourceDetail";
@@ -6,12 +6,15 @@ import { useResourceAssets } from "@/features/resources/hooks/useResourceAssets"
 import { useResourceIcons } from "@/features/resources/hooks/useResourceIcons";
 import { useResourceForm } from "@/features/resources/hooks/useResourceForm";
 import { useResourceUpdate } from "@/features/resources/hooks/useResourceUpdate";
+import { normalizeFloat } from "@/features/resources/lib/detail-helpers";
 import { BasicInfoSection } from "@/features/resources/components/resource-detail/BasicInfoSection";
 import { ItemInfoSection } from "@/features/resources/components/resource-detail/ItemInfoSection";
 import { SpellInfoSection } from "@/features/resources/components/resource-detail/SpellInfoSection";
 import { DropSection } from "@/features/resources/components/resource-detail/DropSection";
 import { RawDataSection } from "@/features/resources/components/resource-detail/RawDataSection";
 import { RelationshipCheckSection } from "@/features/resources/components/resource-detail/RelationshipCheckSection";
+import { CreatureDisplayInfoSection } from "@/features/resources/components/resource-detail/CreatureDisplayInfoSection";
+import { CreatureModelDataSection } from "@/features/resources/components/resource-detail/CreatureModelDataSection";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
 import { PatchExportButton } from "@/features/resources/components/PatchExportButton";
@@ -20,10 +23,12 @@ import type { AssetFile } from "@/shared/types";
 
 const DETAIL_NAV_ITEMS = [
   { id: "section-basic", label: "基础信息" },
-  { id: "section-relationships", label: "关联校验" },
+  { id: "section-model", label: "模型数据" },
+  { id: "section-display", label: "显示信息" },
   { id: "section-item", label: "物品信息" },
   { id: "section-spell", label: "技能信息" },
   { id: "section-drop", label: "掉落信息" },
+  { id: "section-relationships", label: "关联校验" },
   { id: "section-rawdata", label: "明细数据" },
 ];
 
@@ -80,6 +85,48 @@ export function ResourceDetailPage() {
     resourceType,
     resourceId,
   );
+
+  const liveScale = useMemo(() => {
+    if (!resource) return 1;
+    const value =
+      "scale" in formState.creatureDisplayInfoDbc
+        ? formState.creatureDisplayInfoDbc.scale
+        : resource.dbc.creature_display_info.scale;
+    return normalizeFloat(value) ?? 1;
+  }, [formState.creatureDisplayInfoDbc, resource]);
+
+  const liveVariations = useMemo(() => {
+    if (!resource)
+      return [null, null, null] as [
+        string | null,
+        string | null,
+        string | null,
+      ];
+    const getValue = (key: string) =>
+      key in formState.creatureDisplayInfoDbc
+        ? formState.creatureDisplayInfoDbc[key]
+        : resource.dbc.creature_display_info[key];
+    return [
+      getValue("texture_variation_1")
+        ? String(getValue("texture_variation_1"))
+        : null,
+      getValue("texture_variation_2")
+        ? String(getValue("texture_variation_2"))
+        : null,
+      getValue("texture_variation_3")
+        ? String(getValue("texture_variation_3"))
+        : null,
+    ] as [string | null, string | null, string | null];
+  }, [formState.creatureDisplayInfoDbc, resource]);
+
+  const liveModelName = useMemo(() => {
+    if (!resource) return null;
+    const value =
+      "model_name" in formState.creatureModelDataDbc
+        ? formState.creatureModelDataDbc.model_name
+        : resource.dbc.creature_model_data.model_name;
+    return value ? String(value) : null;
+  }, [formState.creatureModelDataDbc, resource]);
 
   if (isLoading) {
     return (
@@ -188,14 +235,29 @@ export function ResourceDetailPage() {
             />
           </div>
 
-          <div id="section-relationships" className="scroll-mt-20">
-            <RelationshipCheckSection
-              liveDbc={formState.liveDbc}
-              liveDb={formState.liveDb}
-              compact
-              onSelectTab={setActiveTab}
-            />
-          </div>
+          {isMount && (
+            <div id="section-model" className="scroll-mt-20">
+              <CreatureModelDataSection
+                resource={resource}
+                creatureModelDataDbc={formState.creatureModelDataDbc}
+                setCreatureModelDataDbc={formState.setCreatureModelDataDbc}
+                assets={assets}
+                compact
+              />
+            </div>
+          )}
+
+          {isMount && (
+            <div id="section-display" className="scroll-mt-20">
+              <CreatureDisplayInfoSection
+                resource={resource}
+                creatureDisplayInfoDbc={formState.creatureDisplayInfoDbc}
+                setCreatureDisplayInfoDbc={formState.setCreatureDisplayInfoDbc}
+                assets={assets}
+                compact
+              />
+            </div>
+          )}
 
           <div id="section-item" className="scroll-mt-20">
             <ItemInfoSection
@@ -237,6 +299,15 @@ export function ResourceDetailPage() {
             />
           </div>
 
+          <div id="section-relationships" className="scroll-mt-20">
+            <RelationshipCheckSection
+              liveDbc={formState.liveDbc}
+              liveDb={formState.liveDb}
+              compact
+              onSelectTab={setActiveTab}
+            />
+          </div>
+
           <div id="section-rawdata" className="scroll-mt-20">
             <RawDataSection
               activeTab={activeTab}
@@ -255,6 +326,9 @@ export function ResourceDetailPage() {
           selectedImage={selectedImage}
           onSelectImage={setSelectedImage}
           allFiles={allFiles}
+          selectedVariations={liveVariations}
+          scale={liveScale}
+          modelName={liveModelName}
         />
       </div>
 
