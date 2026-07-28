@@ -34,8 +34,7 @@
 原型反映的是早期设计，与正式实现存在以下关键差异：
 
 - **补丁工作流**：原型展示的是单步导出；正式实现拆分为 `patch export → patch build → patch publish` 三段式（见 [Agent 交互架构](../arch/03Agent交互架构.md)）。
-- **模型渲染**：原型仅展示静态预览；正式实现使用 Three.js + `@react-three/fiber` 直接在浏览器解析并渲染 M2，无需 glTF 中间格式（见 [模型与贴图渲染架构](../arch/04模型与贴图渲染架构.md)）。
-- **模型转换工具**：原型 `settings.html` 提到的 Rust `model-converter` 已废弃，改为前端原生渲染。
+- **模型渲染**：原型仅展示静态预览；正式实现使用 Three.js + `@react-three/fiber` 直接在浏览器解析并渲染 M2（见 [模型与贴图渲染架构](../arch/04模型与贴图渲染架构.md)）。
 - **DBC 真相源**：通过 `data/wow-dbc` git 子模块维护，SQL 通过 `data/sql/azerothcore-updates` 软链接同步到 AzerothCore（见 [DBC 维护与同步方案](../arch/07DBC维护与同步方案.md)）。
 
 ## 相关文档

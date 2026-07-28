@@ -77,8 +77,8 @@ npm run lint
 
 ### 3D 渲染
 
-- `ModelViewer` 使用 `@react-three/fiber` + `@react-three/drei` 加载 glTF。
-- 转换失败时自动降级为 `AssetFileTree` + `TextureViewer`。
+- `ModelViewer` 使用 `@react-three/fiber` + `@react-three/drei`，前端原生解析 M2/skin 二进制并直接构建 `THREE.Group` 渲染（不经过 glTF 中间格式）。
+- 渲染失败时自动降级为 `AssetFileTree` + `TextureViewer`。
 - 高清贴图异步加载，避免阻塞首屏。
 
 ## 5. 任务完成后检查清单

@@ -16,15 +16,14 @@ acore-resouces 采用 **Electron 桌面外壳 + Python FastAPI 后端 + React/Vi
 - **后端**: Python 3.11+ + FastAPI 0.110+ + SQLAlchemy 2.0+ + Pydantic 2.5+ + Typer 0.12+
 - **桌面**: Electron 33+（启动时托管 Python 后端）
 - **数据存储**: YAML/JSON 资源文件（Git 版本控制）+ SQLite（运行时缓存）
-- **模型转换**: Rust `warcraft-rs` 封装为 `tools/model-converter` CLI
 - **包管理**: 后端统一使用 `uv`，前端使用 `npm`
 
 ### 核心模块
 
 - **资源管理**: 坐骑 / 宠物 / NPC 的 CRUD、搜索、筛选、校验
-- **xlsx 导入/导出**: 一次性 `.xlsx` 导入为 YAML，按需导出为 `.xlsx` 展示
+- **xlsx 导入**: 一次性 `.xlsx` 导入为 YAML
 - **DBC/SQL 导出**: 根据资源定义生成 `wow-dbc-tool` 脚本和 AzerothCore SQL 补丁
-- **预览服务**: `.blp` 解码、`.m2` 元数据读取、`.m2` → `.glb`/`.gltf` 转换
+- **预览服务**: `.blp` 解码、`.m2` 元数据读取、前端原生 M2/skin 渲染
 - **Agent 接口**: Typer CLI，供 Claude Code 等 Agent 读取和操作资源
 
 ### 完整目录结构
