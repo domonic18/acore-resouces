@@ -67,7 +67,12 @@ def build_patch(
         raise typer.Exit(1) from e
 
     console.print(f"[green]处理任务: {', '.join(result['jobs'])}[/green]")
-    console.print(f"SQL: {result['sql_file']}")
+    sql_files = result.get("sql_files", [])
+    if sql_files:
+        for sql_file in sql_files:
+            console.print(f"SQL: {sql_file}")
+    else:
+        console.print("SQL: (无新增)")
     console.print(f"MPQ: {result['mpq_path']}")
     console.print(f"校验报告: {result['report_path']}")
     if result["dry_run"]:

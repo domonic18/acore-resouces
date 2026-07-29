@@ -327,52 +327,87 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     # creature_template
     ct = resource.db.creature_template.model_dump(exclude_none=True)
     if ct and ct.get("entry"):
+        # 保持 entry 在首位，便于阅读；其余字段顺序由 YAML 决定。
+        ct_record: dict[str, Any] = {"entry": int(ct["entry"])}
+        for key, value in ct.items():
+            if key == "entry":
+                continue
+            ct_record[key] = value
         tables.append(
             SQLPlanTable(
                 name="creature_template",
                 operation="insert",
+                records=[ct_record],
+            )
+        )
+
+    # item_template
+    it_full = resource.db.item_template.model_dump(by_alias=True, exclude_none=False)
+    spell_id = resource.dbc.spell.id if resource.dbc.spell.id else None
+    if it_full and it_full.get("entry"):
+        # spellid_2 默认从 dbc.spell.id 推导；若 YAML 已显式填写则保留 YAML 值。
+        if spell_id and not it_full.get("spellid_2"):
+            it_full["spellid_2"] = int(spell_id)
+        # entry 置首，过滤 None 字段
+        it_record: dict[str, Any] = {"entry": int(it_full["entry"])}
+        for key, value in it_full.items():
+            if key == "entry":
+                continue
+            if value is None:
+                continue
+            it_record[key] = value
+        tables.append(
+            SQLPlanTable(
+                name="item_template",
+                operation="insert",
+                records=[it_record],
+            )
+        )
+
+    # creature_template_model：CreatureID 与 creature_template.entry 一一对应，
+    # 单显示模型固定 Idx=0；DisplayScale/Probability=1.0，VerifiedBuild=0。
+    cdi_id = resource.dbc.creature_display_info.id
+    if ct and ct.get("entry") and cdi_id:
+        tables.append(
+            SQLPlanTable(
+                name="creature_template_model",
+                operation="insert",
                 records=[
                     {
-                        "entry": int(ct["entry"]),
-                        "name": str(ct.get("name", "")),
-                        "modelid1": int(ct.get("modelid1", 0)),
-                        "faction": int(ct.get("faction", 35)),
-                        "type": int(ct.get("type", 1)),
-                        "unit_class": int(ct.get("unit_class", 1)),
-                        "unit_flag2": int(ct.get("unit_flag2", 2048)),
-                        "bounding_radius": float(ct.get("bounding_radius", 0.0)),
-                        "combat_reach": float(ct.get("combat_reach", 0.0)),
-                        "gender": int(ct.get("gender", 2)),
-                        "display_id_other_gender": int(ct.get("display_id_other_gender", 0)),
+                        "CreatureID": int(ct["entry"]),
+                        "Idx": 0,
+                        "CreatureDisplayID": int(cdi_id),
+                        "DisplayScale": 1.0,
+                        "Probability": 1.0,
+                        "VerifiedBuild": 0,
                     }
                 ],
             )
         )
 
-    # item_template
-    it = resource.db.item_template.model_dump(by_alias=True, exclude_none=True)
-    spell_id = resource.dbc.spell.id if resource.dbc.spell.id else None
-    if it and it.get("entry"):
+    # creature_loot_template（仅当 DropInfo 提供掉落来源 entry 时生成）
+    # DropInfo.rate 为小数表示（0.01 = 1%），而 creature_loot_template.Chance
+    # 字段是 0-100 的百分比（参考 LootMgr.cpp:318 _chance >= 100.0f 视为必掉），
+    # 因此生成 SQL 时需把 rate 乘以 100。
+    drop = resource.drop
+    if drop and drop.entry and it_full and it_full.get("entry"):
+        item_entry = int(it_full["entry"])
+        chance = drop.rate * 100.0 if drop.rate is not None else 100.0
         tables.append(
             SQLPlanTable(
-                name="item_template",
+                name="creature_loot_template",
                 operation="insert",
                 records=[
                     {
-                        "entry": int(it["entry"]),
-                        "name": str(it.get("name", "")),
-                        "class": int(it.get("class", 15)),
-                        "subclass": int(it.get("subclass", 5)),
-                        "displayid": int(it.get("displayid", 0)),
-                        "spellid_1": int(it.get("spellid_1", 0)),
-                        "spelltrigger_1": int(it.get("spelltrigger_1", 0)),
-                        "spellcharges_1": int(it.get("spellcharges_1", 0)),
-                        "spellid_2": int(spell_id) if spell_id else int(it.get("spellid_2", 0)),
-                        "spelltrigger_2": int(it.get("spelltrigger_2", 0)),
-                        "spellcharges_2": int(it.get("spellcharges_2", 0)),
-                        "Quality": int(it.get("Quality", 4)),
-                        "AllowableClass": int(it.get("AllowableClass", -1)),
-                        "AllowableRace": int(it.get("AllowableRace", 2047)),
+                        "Entry": int(drop.entry),
+                        "Item": item_entry,
+                        "Reference": 0,
+                        "Chance": chance,
+                        "QuestRequired": 0,
+                        "LootMode": 1,
+                        "GroupId": 0,
+                        "MinCount": 1,
+                        "MaxCount": 1,
                     }
                 ],
             )

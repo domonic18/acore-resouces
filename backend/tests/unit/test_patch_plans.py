@@ -7,7 +7,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from app.schemas.resource import Mount
+from app.schemas.resource import DropInfo, Mount
+from app.services import mount_patch_builder as mpb
 from app.services.patch_exporter import build_assets_json, build_dbc_plan, build_sql_plan
 
 
@@ -68,15 +69,10 @@ def sample_mount() -> Mount:
             "creature_template": {
                 "entry": 9140000,
                 "name": "测试符文牡鹿",
-                "modelid1": 140000,
                 "faction": 35,
                 "type": 1,
                 "unit_class": 1,
-                "unit_flag2": 2048,
-                "bounding_radius": 0.0,
-                "combat_reach": 0.0,
-                "gender": 2,
-                "display_id_other_gender": 0,
+                "unit_flags2": 2048,
             },
             "creature_model_info": {
                 "display_id": 140000,
@@ -110,7 +106,12 @@ def test_build_dbc_plan_structure(sample_mount: Mount) -> None:
     assert plan.spell_profile["mount_type"] == "陆地坐骑"
 
     dbc_files = {p.dbc_file for p in plan.plans}
-    assert dbc_files == {"CreatureModelData.dbc", "CreatureDisplayInfo.dbc", "Spell.dbc", "Item.dbc"}
+    assert dbc_files == {
+        "CreatureModelData.dbc",
+        "CreatureDisplayInfo.dbc",
+        "Spell.dbc",
+        "Item.dbc",
+    }
 
 
 def test_build_dbc_plan_spell_fields(sample_mount: Mount) -> None:
@@ -157,7 +158,118 @@ def test_build_sql_plan_structure(sample_mount: Mount) -> None:
     assert plan.output_sql_file == "output/db_patch.sql"
 
     table_names = {t.name for t in plan.tables}
-    assert table_names == {"creature_model_info", "creature_template", "item_template"}
+    assert table_names == {
+        "creature_model_info",
+        "creature_template",
+        "creature_template_model",
+        "item_template",
+    }
+
+
+def test_build_sql_plan_creature_template_model(sample_mount: Mount) -> None:
+    """creature_template_model 关联 creature_template.entry 与 creature_display_info.id。"""
+    plan = build_sql_plan(sample_mount)
+    ctm_table = next(t for t in plan.tables if t.name == "creature_template_model")
+    record = ctm_table.records[0]
+
+    assert record["CreatureID"] == 9140000
+    assert record["CreatureDisplayID"] == 140000
+    assert record["Idx"] == 0
+    assert record["DisplayScale"] == 1.0
+    assert record["Probability"] == 1.0
+    assert record["VerifiedBuild"] == 0
+
+
+def test_build_sql_plan_mount_spell_defaults(sample_mount: Mount) -> None:
+    """坐骑物品 spellid_1=55884、spelltrigger_2=6 等 mount 默认值被强制填充。"""
+    plan = build_sql_plan(sample_mount)
+    item_table = next(t for t in plan.tables if t.name == "item_template")
+    record = item_table.records[0]
+
+    assert record["spellid_1"] == 55884
+    assert record["spelltrigger_2"] == 6
+    assert record["spellcharges_1"] == -1
+    assert record["spellcooldown_1"] == -1
+    assert record["spellcategory_1"] == 330
+    assert record["spellcategorycooldown_1"] == 3000
+    assert record["spellcooldown_2"] == -1
+    assert record["spellcategorycooldown_2"] == -1
+
+
+def test_build_sql_plan_creature_template_batch1_fields(sample_mount: Mount) -> None:
+    """creature_template 输出包含 batch1 写入的所有非默认字段。"""
+    plan = build_sql_plan(sample_mount)
+    ct_table = next(t for t in plan.tables if t.name == "creature_template")
+    record = ct_table.records[0]
+
+    assert record["entry"] == 9140000
+    assert record["name"] == "测试符文牡鹿"
+    assert record["faction"] == 35
+    assert record["type"] == 1
+    assert record["unit_class"] == 1
+    assert record["unit_flags2"] == 2048
+    # 新增的 batch1 默认字段
+    assert record["minlevel"] == 1
+    assert record["maxlevel"] == 2
+    assert record["speed_walk"] == 1.0
+    assert record["speed_run"] == 1.14286
+    assert record["speed_swim"] == 1.0
+    assert record["speed_flight"] == 1.0
+    assert record["detection_range"] == 1.0
+    assert record["HoverHeight"] == 1.0
+    assert record["DamageModifier"] == 1.0
+    assert record["HealthModifier"] == 1.0
+    assert record["ManaModifier"] == 1.0
+    assert record["ArmorModifier"] == 1.0
+    assert record["ExperienceModifier"] == 1.0
+    assert record["RegenHealth"] == 1
+    assert record["flags_extra"] == 2
+
+
+def test_build_sql_plan_item_template_batch1_fields(sample_mount: Mount) -> None:
+    """item_template 输出包含 batch1 写入的所有非默认字段。"""
+    plan = build_sql_plan(sample_mount)
+    item_table = next(t for t in plan.tables if t.name == "item_template")
+    record = item_table.records[0]
+
+    assert record["entry"] == 91000
+    assert record["class"] == 15
+    assert record["subclass"] == 5
+    assert record["displayid"] == 95357
+    assert record["Quality"] == 4
+    assert record["AllowableClass"] == -1
+    assert record["AllowableRace"] == 2047
+    # 新增的 batch1 默认字段
+    assert record["BuyCount"] == 1
+    assert record["BuyPrice"] == 1000000
+    assert record["SellPrice"] == 250000
+    assert record["InventoryType"] == 0
+    assert record["ItemLevel"] == 40
+    assert record["RequiredLevel"] == 40
+    assert record["RequiredSkill"] == 762
+    assert record["RequiredSkillRank"] == 150
+    assert record["bonding"] == 1
+    assert record["Material"] == 4
+    assert record["sheath"] == 0
+    assert record["stackable"] == 1
+    assert record["description"] == " 教你学会召唤这种坐骑。这是一种非常快速的坐骑。"
+
+
+def test_build_sql_plan_respects_yaml_overrides_for_new_fields(sample_mount: Mount) -> None:
+    """YAML 中显式设置的新字段应保留用户值，而非使用默认。"""
+    sample_mount.db.creature_template.speed_run = 1.0  # 慢速坐骑
+    sample_mount.db.creature_template.flags_extra = 0
+    sample_mount.db.item_template.RequiredSkillRank = 75  # 初级骑术
+    sample_mount.db.item_template.BuyPrice = 500000
+
+    plan = build_sql_plan(sample_mount)
+    ct_record = next(t for t in plan.tables if t.name == "creature_template").records[0]
+    it_record = next(t for t in plan.tables if t.name == "item_template").records[0]
+
+    assert ct_record["speed_run"] == 1.0
+    assert ct_record["flags_extra"] == 0
+    assert it_record["RequiredSkillRank"] == 75
+    assert it_record["BuyPrice"] == 500000
 
 
 def test_build_sql_plan_item_spell_link(sample_mount: Mount) -> None:
@@ -195,3 +307,206 @@ def test_dbc_plan_yaml_roundtrip(sample_mount: Mount, tmp_path: Path) -> None:
 
     assert data["plans"][0]["dbc_file"] == "CreatureModelData.dbc"
     assert data["plans"][2]["operations"][0]["fields"]["Mechanic"] == 21
+
+
+# ---------------------------------------------------------------------------
+# Loot SQL 生成（DropInfo -> creature_loot_template）
+# ---------------------------------------------------------------------------
+
+
+def test_build_sql_plan_includes_loot_when_drop_entry_present(sample_mount: Mount) -> None:
+    """DropInfo.entry 存在时生成 creature_loot_template 表。"""
+    sample_mount.drop = DropInfo(entry=1853, instance="通灵学院", boss="黑暗院长加丁", rate=0.01)
+    plan = build_sql_plan(sample_mount)
+
+    loot_table = next((t for t in plan.tables if t.name == "creature_loot_template"), None)
+    assert loot_table is not None
+    record = loot_table.records[0]
+    assert record["Entry"] == 1853
+    assert record["Item"] == 91000
+    # rate=0.01 (1%) 转换为 SQL Chance 字段时乘以 100 → 1.0
+    assert record["Chance"] == 1.0
+    assert record["MinCount"] == 1
+    assert record["MaxCount"] == 1
+
+
+def test_build_sql_plan_skips_loot_when_drop_entry_missing(sample_mount: Mount) -> None:
+    """DropInfo.entry 缺失时不生成 creature_loot_template。"""
+    sample_mount.drop = DropInfo()
+    plan = build_sql_plan(sample_mount)
+
+    loot_table = next((t for t in plan.tables if t.name == "creature_loot_template"), None)
+    assert loot_table is None
+
+
+def test_build_sql_plan_loot_default_chance_when_rate_missing(sample_mount: Mount) -> None:
+    """DropInfo.rate 缺失时使用 100.0 作为默认 Chance。"""
+    sample_mount.drop = DropInfo(entry=1853)
+    plan = build_sql_plan(sample_mount)
+
+    loot_table = next(t for t in plan.tables if t.name == "creature_loot_template")
+    assert loot_table.records[0]["Chance"] == 100.0
+
+
+def test_build_sql_plan_loot_chance_percent_conversion(sample_mount: Mount) -> None:
+    """DropInfo.rate=0.035 (3.5%) 转换为 SQL Chance 字段时为 3.5。"""
+    sample_mount.drop = DropInfo(entry=1853, rate=0.035)
+    plan = build_sql_plan(sample_mount)
+
+    loot_table = next(t for t in plan.tables if t.name == "creature_loot_template")
+    assert loot_table.records[0]["Chance"] == pytest.approx(3.5)
+
+
+# ---------------------------------------------------------------------------
+# generate_sql：单 job 子目录写入
+# ---------------------------------------------------------------------------
+
+
+def _prepare_job_dir(
+    job_dir: Path,
+    resource: Mount,
+) -> None:
+    """构造测试用 patch job 目录，写入 resource.yaml 与 sql-plan.yaml。"""
+    input_dir = job_dir / "input"
+    input_dir.mkdir(parents=True, exist_ok=True)
+
+    resource_data = resource.model_dump(exclude_none=False)
+    resource_data.pop("created_at", None)
+    resource_data.pop("updated_at", None)
+    with (input_dir / "resource.yaml").open("w", encoding="utf-8") as f:
+        yaml.dump(resource_data, f, allow_unicode=True, sort_keys=False)
+
+    sql_plan = build_sql_plan(resource)
+    with (input_dir / "sql-plan.yaml").open("w", encoding="utf-8") as f:
+        yaml.dump(sql_plan.model_dump(exclude_none=False), f, allow_unicode=True, sort_keys=False)
+
+
+def _patch_sql_dirs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, Path]:
+    """把 mount_patch_builder 的 SQL 输出目录指向 tmp_path。"""
+    sql_link_dir = tmp_path / "sql" / "azerothcore-updates"
+    sql_mounts_dir = sql_link_dir / "mounts"
+    sql_link_dir.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr(mpb, "SQL_LINK_DIR", sql_link_dir)
+    monkeypatch.setattr(mpb, "SQL_MOUNTS_DIR", sql_mounts_dir)
+    monkeypatch.setattr(mpb, "ensure_sql_symlink", lambda: None)
+    return sql_link_dir, sql_mounts_dir
+
+
+def test_generate_sql_writes_to_mount_subdir(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """单 job 调用 generate_sql 写入 mounts/{id:04d}_{slug}/ 子目录。"""
+    _, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    _prepare_job_dir(job_dir, sample_mount)
+
+    written = mpb.generate_sql(job_dir)
+
+    assert len(written) == 1
+    add_file = written[0]
+    assert add_file.parent == sql_mounts_dir / "0003_ardenwealdstagmount_test"
+    assert add_file.name == "0003_mount_add.sql"
+
+    content = add_file.read_text(encoding="utf-8")
+    assert "INSERT INTO `item_template`" in content
+    assert "INSERT INTO `creature_template`" in content
+    assert "INSERT INTO `creature_model_info`" in content
+
+
+def test_generate_sql_writes_loot_when_drop_present(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """DropInfo.entry 存在时同时生成 _mount_add.sql 与 _mount_loot.sql。"""
+    _, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+    sample_mount.drop = DropInfo(entry=1853, instance="通灵学院", boss="黑暗院长加丁", rate=0.01)
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    _prepare_job_dir(job_dir, sample_mount)
+
+    written = mpb.generate_sql(job_dir)
+
+    assert len(written) == 2
+    add_file, loot_file = written
+    assert add_file.name == "0003_mount_add.sql"
+    assert loot_file.name == "0003_mount_loot.sql"
+    assert add_file.parent == loot_file.parent
+
+    loot_content = loot_file.read_text(encoding="utf-8")
+    assert "INSERT INTO `creature_loot_template`" in loot_content
+    assert "`Entry` = 1853 AND `Item` = 91000" in loot_content
+
+    # add.sql 不应包含 loot 表
+    add_content = add_file.read_text(encoding="utf-8")
+    assert "creature_loot_template" not in add_content
+
+
+def test_generate_sql_skips_when_item_entry_exists(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """item_template entry 已在历史 SQL 中时跳过生成。"""
+    sql_link_dir, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+
+    historical = sql_link_dir / "2024_01_01_00_mcc_custom_mounts_batch1.sql"
+    historical.write_text(
+        "INSERT INTO `item_template` (`entry`, `name`) VALUES (91000, '历史坐骑');",
+        encoding="utf-8",
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    _prepare_job_dir(job_dir, sample_mount)
+
+    written = mpb.generate_sql(job_dir)
+
+    assert written == []
+    assert not (sql_mounts_dir / "0003_ardenwealdstagmount_test").exists()
+
+
+def test_collect_existing_sql_entries_scans_subdirs(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """_collect_existing_sql_entries 递归扫描根目录历史批次与 mounts/ 子目录。"""
+    sql_link_dir, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+
+    (sql_link_dir / "2024_01_01_00_mcc_custom_mounts_batch1.sql").write_text(
+        "INSERT INTO `item_template` (`entry`) VALUES (91000);",
+        encoding="utf-8",
+    )
+    sub = sql_mounts_dir / "0005_other_mount"
+    sub.mkdir(parents=True)
+    (sub / "0005_mount_add.sql").write_text(
+        "INSERT INTO `item_template` (`entry`) VALUES (91005);",
+        encoding="utf-8",
+    )
+
+    entries = mpb._collect_existing_sql_entries()
+    assert 91000 in entries
+    assert 91005 in entries
+
+
+def test_generate_sql_dry_run_returns_expected_paths(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """dry_run 模式下返回预期路径但不创建文件。"""
+    _, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+    sample_mount.drop = DropInfo(entry=1853, rate=0.02)
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    _prepare_job_dir(job_dir, sample_mount)
+
+    written = mpb.generate_sql(job_dir, dry_run=True)
+
+    assert len(written) == 2
+    assert all(not f.exists() for f in written)
+    assert written[0].name == "0003_mount_add.sql"
+    assert written[1].name == "0003_mount_loot.sql"

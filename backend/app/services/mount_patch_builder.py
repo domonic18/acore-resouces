@@ -32,6 +32,7 @@ MPQCLI = settings.project_root / "tools" / "wow-mpq-cli" / "build" / "bin" / "mp
 MPQ_OUTPUT_DIR = settings.project_root / "workspace" / "mpq"
 REPORTS_DIR = settings.project_root / "workspace" / "reports"
 SQL_LINK_DIR = settings.project_root / "data" / "sql" / "azerothcore-updates"
+SQL_MOUNTS_DIR = SQL_LINK_DIR / settings.acore_sql_mounts_subdir
 
 REQUIRED_DBC_FILES = [
     "CreatureModelData.dbc",
@@ -372,6 +373,7 @@ def _collect_existing_sql_entries() -> set[int]:
     """扫描已有的 SQL 文件，收集其中 item_template 的 entry 值。
 
     用于判断某个坐骑的 SQL 是否已经生成过，避免重复追加。
+    递归扫描 SQL_LINK_DIR，覆盖根目录的历史批次文件与 mounts/ 子目录。
     """
     entries: set[int] = set()
     if not SQL_LINK_DIR.exists():
@@ -380,7 +382,7 @@ def _collect_existing_sql_entries() -> set[int]:
     pattern = re.compile(
         r"INSERT INTO\s+`item_template`\s+\([^)]*\)\s*VALUES\s*\((\d+)", re.IGNORECASE
     )
-    for sql_file in SQL_LINK_DIR.glob("*.sql"):
+    for sql_file in SQL_LINK_DIR.rglob("*.sql"):
         try:
             text = sql_file.read_text(encoding="utf-8")
         except OSError:
@@ -404,82 +406,142 @@ def _job_item_entry(job_dir: Path) -> int | None:
     return None
 
 
-def generate_sql(jobs: list[Path], dry_run: bool = False) -> Path | None:
-    """生成批次 SQL 文件，跳过已有 SQL 的坐骑。
+def generate_sql(job_dir: Path, dry_run: bool = False, force: bool = False) -> list[Path]:
+    """为单个坐骑生成 SQL 文件，写入 mounts/{id:04d}_{slug}/ 子目录。
+
+    生成的文件：
+    - {id:04d}_mount_add.sql：creature_model_info / creature_template / item_template
+    - {id:04d}_mount_loot.sql：creature_loot_template（仅当 DropInfo.entry 存在）
 
     Args:
-        jobs: 要处理的任务目录列表。
-        dry_run: 为 True 时只返回路径，不写入文件。
+        job_dir: 单个任务目录。
+        dry_run: 为 True 时只返回预期路径，不写入文件。
+        force: 为 True 时跳过幂等检查，即使 item_template entry 已存在于历史 SQL 也强制生成。
+            用于迁移场景（把历史 batch 中的坐骑搬到新结构）。默认 False 保留幂等行为。
 
     Returns:
-        SQL 文件路径；如果所有坐骑都已存在 SQL 则返回 None。
+        生成的 SQL 文件路径列表；若该坐骑 SQL 已存在且 force=False 则返回空列表。
     """
     ensure_sql_symlink()
 
-    existing_entries = _collect_existing_sql_entries()
+    existing_entries = set() if force else _collect_existing_sql_entries()
 
-    today = datetime.now(UTC).strftime("%Y_%m_%d")
-    existing = sorted(SQL_LINK_DIR.glob(f"{today}_*_mcc_custom_mounts.sql"))
-    seq = len(existing) + 1
-    sql_file = SQL_LINK_DIR / f"{today}_{seq:02d}_mcc_custom_mounts.sql"
+    resource = load_yaml(job_dir / "input" / "resource.yaml")
+    sql_plan = load_yaml(job_dir / "input" / "sql-plan.yaml")
+    mount_id = int(resource.get("id") or 0)
+    if mount_id <= 0:
+        print(f"  跳过：资源缺少合法 ID ({job_dir.name})")
+        return []
 
+    slug = sanitize_model_folder(str(resource.get("model_folder") or job_dir.name))
+    mount_dir = SQL_MOUNTS_DIR / f"{mount_id:04d}_{slug}"
+    mount_name = resource.get("official_db", {}).get("name", job_dir.name)
+
+    item_entry = _job_item_entry(job_dir)
+    if item_entry is not None and item_entry in existing_entries:
+        print(f"  跳过已有 SQL 的坐骑: {mount_name} (item_template entry={item_entry})")
+        return []
+
+    add_tables: list[dict[str, Any]] = []
+    loot_tables: list[dict[str, Any]] = []
+    for table in sql_plan.get("tables", []):
+        if table.get("name") == "creature_loot_template":
+            loot_tables.append(table)
+        else:
+            add_tables.append(table)
+
+    add_file = mount_dir / f"{mount_id:04d}_mount_add.sql"
+    loot_file = mount_dir / f"{mount_id:04d}_mount_loot.sql" if loot_tables else None
+
+    if dry_run:
+        expected: list[Path] = [add_file]
+        if loot_file is not None:
+            expected.append(loot_file)
+        return expected
+
+    mount_dir.mkdir(parents=True, exist_ok=True)
     now_iso = datetime.now(UTC).strftime("%Y-%m-%d")
 
+    add_content = _build_sql_file_content(
+        title=f"自定义坐骑：{mount_name}",
+        mount_id=mount_id,
+        job_id=job_dir.name,
+        date_iso=now_iso,
+        tables=add_tables,
+    )
+    add_file.write_text(add_content, encoding="utf-8")
+    written: list[Path] = [add_file]
+
+    if loot_file is not None:
+        loot_content = _build_sql_file_content(
+            title=f"坐骑掉落：{mount_name}",
+            mount_id=mount_id,
+            job_id=job_dir.name,
+            date_iso=now_iso,
+            tables=loot_tables,
+        )
+        loot_file.write_text(loot_content, encoding="utf-8")
+        written.append(loot_file)
+
+    return written
+
+
+def _build_sql_file_content(
+    title: str,
+    mount_id: int,
+    job_id: str,
+    date_iso: str,
+    tables: list[dict[str, Any]],
+) -> str:
+    """构造单个 SQL 文件的内容。"""
     lines = [
         "-- ============================================================",
-        "-- mod-custom-content: 自定义坐骑批次补丁",
-        f"-- Date: {now_iso}",
+        f"-- mod-custom-content: {title}",
+        f"-- Mount ID: {mount_id:04d}",
+        f"-- Job: {job_id}",
+        f"-- Date: {date_iso}",
         "-- Author: acore-resouces build-mount-patch",
         "-- Database: db-world",
         "-- ============================================================",
         "",
     ]
 
-    included_jobs: list[Path] = []
-    for job_dir in jobs:
-        resource = load_yaml(job_dir / "input" / "resource.yaml")
-        sql_plan = load_yaml(job_dir / "input" / "sql-plan.yaml")
-        mount_name = resource.get("official_db", {}).get("name", job_dir.name)
-        item_entry = _job_item_entry(job_dir)
+    for table in tables:
+        table_name = table["name"]
+        for record in table.get("records", []):
+            where_clause = _build_delete_where_clause(table_name, record)
+            if where_clause is not None:
+                lines.append(f"DELETE FROM `{table_name}` WHERE {where_clause};")
+            columns = ", ".join(f"`{k}`" for k in record.keys())
+            values = ", ".join(_sql_value(v) for v in record.values())
+            lines.append(f"INSERT INTO `{table_name}` ({columns})")
+            lines.append(f"VALUES ({values});")
+            lines.append("")
 
-        if item_entry is not None and item_entry in existing_entries:
-            print(f"  跳过已有 SQL 的坐骑: {mount_name} (item_template entry={item_entry})")
-            continue
+    return "\n".join(lines)
 
-        included_jobs.append(job_dir)
-        lines.append("-- --------------------------------------------------------")
-        lines.append(f"-- Mount: {mount_name}")
-        lines.append(f"-- Job: {job_dir.name}")
-        lines.append("-- --------------------------------------------------------")
-        lines.append("")
 
-        for table in sql_plan.get("tables", []):
-            table_name = table["name"]
-            for record in table.get("records", []):
-                pk_value = _guess_primary_key_value(table_name, record)
-                if pk_value is not None:
-                    pk_column = _primary_key_column(table_name)
-                    lines.append(f"DELETE FROM `{table_name}` WHERE `{pk_column}` = {pk_value};")
-                columns = ", ".join(f"`{k}`" for k in record.keys())
-                values = ", ".join(_sql_value(v) for v in record.values())
-                lines.append(f"INSERT INTO `{table_name}` ({columns})")
-                lines.append(f"VALUES ({values});")
-                lines.append("")
+def _build_delete_where_clause(table_name: str, record: dict[str, Any]) -> str | None:
+    """根据表名构造 DELETE WHERE 子句；不支持主键推断时返回 None。"""
+    if table_name == "creature_loot_template":
+        entry = record.get("Entry")
+        item = record.get("Item")
+        if entry is None or item is None:
+            return None
+        return f"`Entry` = {_sql_value(entry)} AND `Item` = {_sql_value(item)}"
 
-    if not included_jobs:
-        print("所有坐骑的 SQL 均已存在，未生成新文件。")
+    if table_name == "creature_template_model":
+        creature_id = record.get("CreatureID")
+        idx = record.get("Idx")
+        if creature_id is None or idx is None:
+            return None
+        return f"`CreatureID` = {_sql_value(creature_id)} AND `Idx` = {_sql_value(idx)}"
+
+    pk_column = _primary_key_column(table_name)
+    pk_value = record.get(pk_column)
+    if pk_value is None:
         return None
-
-    lines.insert(5, f"-- Jobs: {', '.join(d.name for d in included_jobs)}")
-    lines.insert(
-        6,
-        f"-- Mounts: {', '.join(load_yaml(d / 'input' / 'resource.yaml').get('official_db', {}).get('name', d.name) for d in included_jobs)}",
-    )
-
-    content = "\n".join(lines)
-    if not dry_run:
-        sql_file.write_text(content, encoding="utf-8")
-    return sql_file
+    return f"`{pk_column}` = {_sql_value(pk_value)}"
 
 
 def _primary_key_column(table_name: str) -> str:
@@ -490,12 +552,6 @@ def _primary_key_column(table_name: str) -> str:
         "item_template": "entry",
     }
     return mapping.get(table_name, "ID")
-
-
-def _guess_primary_key_value(table_name: str, record: dict[str, Any]) -> Any | None:
-    """根据表名和记录推断主键值，用于生成 DELETE 语句。"""
-    pk = _primary_key_column(table_name)
-    return record.get(pk)
 
 
 _GAME_ASSET_EXTENSIONS = {".m2", ".blp", ".anim", ".skin", ".phys"}
@@ -543,14 +599,14 @@ def _copy_assets_to_staging(job_dir: Path, staging: Path) -> list[Path]:
 
 def build_mpq(
     jobs: list[Path],
-    sql_file: Path | None,
+    sql_files: list[Path],
     dry_run: bool = False,
 ) -> tuple[Path, dict[str, list[Path]]]:
     """构建批次 MPQ。
 
     Args:
         jobs: 要处理的任务目录列表。
-        sql_file: 已生成的 SQL 文件路径，可能为 None（所有坐骑 SQL 均已存在）。
+        sql_files: 已生成的 SQL 文件路径列表（可能为空，表示所有坐骑 SQL 均已存在）。
         dry_run: 为 True 时只返回路径，不创建文件。
 
     Returns:
@@ -588,10 +644,11 @@ def build_mpq(
         load_yaml(d / "input" / "resource.yaml").get("official_db", {}).get("name", d.name)
         for d in jobs
     )
+    sql_section = "\n".join(f"SQL: {f}" for f in sql_files) or "SQL: (无新增)"
     readme.write_text(
         f"Patch: patch-mounts.mpq\n"
         f"Generated: {datetime.now(UTC).isoformat()}\n"
-        f"SQL: {sql_file or '(无新增)'}\n"
+        f"{sql_section}\n"
         f"Jobs: {', '.join(d.name for d in jobs)}\n"
         f"Mounts: {mount_names}\n",
         encoding="utf-8",
@@ -602,22 +659,23 @@ def build_mpq(
 
 def update_manifests(
     jobs: list[Path],
-    sql_file: Path | None,
+    sql_files: list[Path],
     mpq_path: Path,
     report_path: Path,
     dry_run: bool = False,
 ) -> None:
     """更新各任务 manifest 为 generated 状态。"""
     now = datetime.now(UTC).isoformat()
+    relative_sql_files = [str(f.relative_to(settings.project_root)) for f in sql_files]
     for job_dir in jobs:
         manifest_path = job_dir / "manifest.json"
         manifest = load_json(manifest_path)
         manifest["status"] = "generated"
         manifest["completed_at"] = now
-        manifest["summary"] = f"批次处理 {len(jobs)} 个坐骑"
+        manifest["summary"] = f"处理 {len(jobs)} 个坐骑"
         manifest["artifacts"]["output"] = {
             "dbc_dir": "data/wow-dbc/src/dbc",
-            "sql": str(sql_file.relative_to(settings.project_root)) if sql_file else "",
+            "sql_files": relative_sql_files,
             "mpq": str(mpq_path.relative_to(settings.project_root)),
             "validation_report": str(report_path.relative_to(settings.project_root)),
         }
@@ -863,7 +921,7 @@ def build_mount_patches(
         dry_run: 为 True 时只做校验，不修改文件。
 
     Returns:
-        包含 jobs, sql_file, mpq_path, report_path 的字典。
+        包含 jobs, sql_files, mpq_path, report_path 的字典。
 
     Raises:
         DBCConflictError: 检测到 DBC ID 冲突。
@@ -892,15 +950,19 @@ def build_mount_patches(
     print("应用 DBC 操作（直接编辑源 DBC）...")
     apply_dbc_operations(grouped_ops, dry_run=dry_run)
 
-    print("生成批次 SQL...")
-    sql_file = generate_sql(jobs, dry_run=dry_run)
-    if sql_file:
-        print(f"  {sql_file}\n")
-    else:
-        print("  无新增 SQL（所有坐骑均已存在 SQL 文件）。\n")
+    print("生成坐骑 SQL（每只坐骑独立目录）...")
+    sql_files: list[Path] = []
+    for job_dir in jobs:
+        written = generate_sql(job_dir, dry_run=dry_run)
+        for f in written:
+            print(f"  {f}")
+            sql_files.append(f)
+    if not sql_files:
+        print("  无新增 SQL（所有坐骑均已存在 SQL 文件）。")
+    print()
 
-    print("构建批次 MPQ...")
-    mpq_path, job_assets = build_mpq(jobs, sql_file, dry_run=dry_run)
+    print("构建 MPQ...")
+    mpq_path, job_assets = build_mpq(jobs, sql_files, dry_run=dry_run)
     print(f"  {mpq_path}\n")
 
     timestamp = mpq_path.parent.name
@@ -909,7 +971,7 @@ def build_mount_patches(
     print(f"  {report_path}\n")
 
     print("更新任务 manifest...")
-    update_manifests(jobs, sql_file, mpq_path, report_path, dry_run=dry_run)
+    update_manifests(jobs, sql_files, mpq_path, report_path, dry_run=dry_run)
 
     if dry_run:
         print("干跑完成，未修改任何文件。")
@@ -919,7 +981,7 @@ def build_mount_patches(
 
     return {
         "jobs": [d.name for d in jobs],
-        "sql_file": str(sql_file),
+        "sql_files": [str(f) for f in sql_files],
         "mpq_path": str(mpq_path),
         "report_path": str(report_path),
         "dry_run": dry_run,

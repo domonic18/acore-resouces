@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     logs_dir: Path = Path("workspace/logs")
 
     acore_sql_updates_dir: Path | None = None
+    acore_sql_mounts_subdir: Path = Path("mounts")
 
     def model_post_init(self, __context: Any) -> None:
         root = self.project_root
