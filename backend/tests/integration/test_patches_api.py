@@ -49,12 +49,14 @@ def test_create_patch_job(client: TestClient, patch_jobs_dir: Path) -> None:
     assert job["status"] == "requested"
 
     job_dir = patch_jobs_dir / job["job_id"]
-    assert (job_dir / "input" / "resource.yaml").exists()
-    assert (job_dir / "input" / "assets.json").exists()
-    assert (job_dir / "input" / "dbc-plan.yaml").exists()
-    assert (job_dir / "input" / "sql-plan.yaml").exists()
-    assert (job_dir / "input" / "README.md").exists()
-    assert (job_dir / "manifest.json").exists()
+    assert (job_dir / "job.json").exists()
+    job_data = json.loads((job_dir / "job.json").read_text(encoding="utf-8"))
+    assert job_data["resource_type"] == "mount"
+    assert job_data["resource_id"] == 3
+    assert job_data["status"] == "requested"
+    # 任务目录不应包含任何快照产物
+    assert not (job_dir / "input").exists()
+    assert not (job_dir / "manifest.json").exists()
 
 
 def test_create_patch_job_non_mount(client: TestClient, patch_jobs_dir: Path) -> None:
@@ -130,10 +132,11 @@ def test_update_patch_job(client: TestClient, patch_jobs_dir: Path) -> None:
     assert data["summary"] == "测试生成完成"
     assert data["completed_at"] is not None
 
-    # 验证 manifest.json 已持久化
-    manifest_path = patch_jobs_dir / job_id / "manifest.json"
-    manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert manifest_data["status"] == "generated"
+    # 验证 job.json 已持久化
+    job_path = patch_jobs_dir / job_id / "job.json"
+    job_data = json.loads(job_path.read_text(encoding="utf-8"))
+    assert job_data["status"] == "generated"
+    assert job_data["updated_at"] is not None
 
 
 def test_list_patch_jobs(client: TestClient, patch_jobs_dir: Path) -> None:

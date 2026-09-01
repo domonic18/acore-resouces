@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -362,23 +363,34 @@ def test_build_sql_plan_loot_chance_percent_conversion(sample_mount: Mount) -> N
 # ---------------------------------------------------------------------------
 
 
-def _prepare_job_dir(
+def _write_job_json(job_dir: Path, resource: Mount) -> None:
+    """在任务目录写入 job.json 元数据。"""
+    job_dir.mkdir(parents=True, exist_ok=True)
+    manifest = {
+        "job_id": job_dir.name,
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "created_by": "test",
+        "resource_type": "mount",
+        "resource_id": resource.id,
+        "resource_name": resource.official_db.name or resource.model_folder,
+        "resource_model_folder": resource.model_folder,
+        "status": "requested",
+    }
+    with (job_dir / "job.json").open("w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False)
+
+
+def _make_job_context(
     job_dir: Path,
     resource: Mount,
-) -> None:
-    """构造测试用 patch job 目录，写入 resource.yaml 与 sql-plan.yaml。"""
-    input_dir = job_dir / "input"
-    input_dir.mkdir(parents=True, exist_ok=True)
-
-    resource_data = resource.model_dump(exclude_none=False)
-    resource_data.pop("created_at", None)
-    resource_data.pop("updated_at", None)
-    with (input_dir / "resource.yaml").open("w", encoding="utf-8") as f:
-        yaml.dump(resource_data, f, allow_unicode=True, sort_keys=False)
-
-    sql_plan = build_sql_plan(resource)
-    with (input_dir / "sql-plan.yaml").open("w", encoding="utf-8") as f:
-        yaml.dump(sql_plan.model_dump(exclude_none=False), f, allow_unicode=True, sort_keys=False)
+    monkeypatch: pytest.MonkeyPatch,
+) -> mpb.JobContext:
+    """构造测试用 patch job 目录并现场构建 JobContext。"""
+    _write_job_json(job_dir, resource)
+    monkeypatch.setattr(
+        "app.services.resource_store.load_resource", lambda t, i: resource
+    )
+    return mpb.build_job_context(job_dir)
 
 
 def _patch_sql_dirs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, Path]:
@@ -401,9 +413,9 @@ def test_generate_sql_writes_to_mount_subdir(
     _, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
 
     job_dir = tmp_path / "patch-jobs" / "mount_0003"
-    _prepare_job_dir(job_dir, sample_mount)
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
 
-    written = mpb.generate_sql(job_dir)
+    written = mpb.generate_sql(ctx)
 
     assert len(written) == 1
     add_file = written[0]
@@ -426,9 +438,9 @@ def test_generate_sql_writes_loot_when_drop_present(
     sample_mount.drop = DropInfo(entry=1853, instance="通灵学院", boss="黑暗院长加丁", rate=0.01)
 
     job_dir = tmp_path / "patch-jobs" / "mount_0003"
-    _prepare_job_dir(job_dir, sample_mount)
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
 
-    written = mpb.generate_sql(job_dir)
+    written = mpb.generate_sql(ctx)
 
     assert len(written) == 2
     add_file, loot_file = written
@@ -460,9 +472,9 @@ def test_generate_sql_skips_when_item_entry_exists(
     )
 
     job_dir = tmp_path / "patch-jobs" / "mount_0003"
-    _prepare_job_dir(job_dir, sample_mount)
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
 
-    written = mpb.generate_sql(job_dir)
+    written = mpb.generate_sql(ctx)
 
     assert written == []
     assert not (sql_mounts_dir / "0003_ardenwealdstagmount_test").exists()
@@ -502,11 +514,67 @@ def test_generate_sql_dry_run_returns_expected_paths(
     sample_mount.drop = DropInfo(entry=1853, rate=0.02)
 
     job_dir = tmp_path / "patch-jobs" / "mount_0003"
-    _prepare_job_dir(job_dir, sample_mount)
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
 
-    written = mpb.generate_sql(job_dir, dry_run=True)
+    written = mpb.generate_sql(ctx, dry_run=True)
 
     assert len(written) == 2
     assert all(not f.exists() for f in written)
     assert written[0].name == "0003_mount_add.sql"
     assert written[1].name == "0003_mount_loot.sql"
+
+
+# ---------------------------------------------------------------------------
+# JobContext：现场读取真相源（重构核心价值回归测试）
+# ---------------------------------------------------------------------------
+
+
+def test_build_job_context_reads_latest_values(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """资源变更后重新构建上下文，计划应反映最新值（无快照滞留）。"""
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx1 = _make_job_context(job_dir, sample_mount, monkeypatch)
+    assert mpb._job_item_entry(ctx1) == 91000
+
+    sample_mount.db.item_template.entry = 91999
+    monkeypatch.setattr(
+        "app.services.resource_store.load_resource", lambda t, i: sample_mount
+    )
+    ctx2 = mpb.build_job_context(job_dir)
+    assert mpb._job_item_entry(ctx2) == 91999
+
+
+def test_build_job_context_missing_resource_raises(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """job.json 引用的资源不存在时抛出 MountPatchBuilderError。"""
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    _write_job_json(job_dir, sample_mount)
+    monkeypatch.setattr("app.services.resource_store.load_resource", lambda t, i: None)
+
+    with pytest.raises(mpb.MountPatchBuilderError):
+        mpb.build_job_context(job_dir)
+
+
+def test_dry_run_dumps_plans(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """dry-run 把计划写入任务目录 plans/，清理函数可移除遗留 plans/。"""
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    mpb._dump_plans([ctx])
+    plans_dir = job_dir / "plans"
+    assert (plans_dir / "dbc-plan.yaml").exists()
+    assert (plans_dir / "sql-plan.yaml").exists()
+    assert (plans_dir / "assets.json").exists()
+
+    mpb._clear_plans([ctx])
+    assert not plans_dir.exists()
