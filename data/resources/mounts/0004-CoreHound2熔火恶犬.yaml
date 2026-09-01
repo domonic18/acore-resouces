@@ -3,7 +3,7 @@ model_folder: CoreHound2熔火恶犬
 debug_passed: true
 added: true
 drop:
-  entry: 11982
+  entry: 11990
   instance: 熔火之心
   boss: 玛格曼达
   rate: 0.035
