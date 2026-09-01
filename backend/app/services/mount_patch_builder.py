@@ -797,8 +797,11 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
     ct_entry = resource.db.creature_template.entry
     it_record = _find_sql_record(sql_plan, "item_template") or {}
     it_spellid_2 = it_record.get("spellid_2")
-    ct_record = _find_sql_record(sql_plan, "creature_template") or {}
-    ct_modelid1 = ct_record.get("modelid1")
+    # AzerothCore 的 creature_template 已无 modelid1 列，显示模型关联由
+    # creature_template_model 表（CreatureID ↔ CreatureDisplayID）承担。
+    ctm_record = _find_sql_record(sql_plan, "creature_template_model") or {}
+    ctm_creature_id = ctm_record.get("CreatureID")
+    ctm_display_id = ctm_record.get("CreatureDisplayID")
     cmi_record = _find_sql_record(sql_plan, "creature_model_info") or {}
     cmi_display_id_sql = cmi_record.get("DisplayID") or cmi_record.get("display_id")
 
@@ -829,11 +832,18 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
 
     checks.append(
         ValidationResult(
-            name="creature_display_info_id_matches_creature_template_modelid1",
-            passed=cdi_id is not None and cdi_id == ct_modelid1,
-            expected=cdi_id,
-            actual=ct_modelid1,
-            message="CreatureDisplayInfo.ID 必须与 creature_template.modelid1 一致",
+            name="creature_display_info_id_matches_creature_template_model",
+            passed=(
+                cdi_id is not None
+                and ctm_display_id == cdi_id
+                and (ct_entry is None or ctm_creature_id == ct_entry)
+            ),
+            expected={"CreatureID": ct_entry, "CreatureDisplayID": cdi_id},
+            actual={"CreatureID": ctm_creature_id, "CreatureDisplayID": ctm_display_id},
+            message=(
+                "creature_template_model.CreatureDisplayID 必须与 CreatureDisplayInfo.ID 一致，"
+                "CreatureID 必须与 creature_template.entry 一致"
+            ),
         )
     )
     checks.append(

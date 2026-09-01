@@ -578,3 +578,26 @@ def test_dry_run_dumps_plans(
 
     mpb._clear_plans([ctx])
     assert not plans_dir.exists()
+
+
+def test_validate_job_checks_creature_template_model_link(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """显示信息校验基于 creature_template_model 关联（AC 已无 modelid1 列）。"""
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+
+    names = [c.name for c in result.checks]
+    assert "creature_display_info_id_matches_creature_template_model" in names
+    assert "creature_display_info_id_matches_creature_template_modelid1" not in names
+    check = next(
+        c
+        for c in result.checks
+        if c.name == "creature_display_info_id_matches_creature_template_model"
+    )
+    assert check.passed is True
+    assert check.expected == {"CreatureID": 9140000, "CreatureDisplayID": 140000}
