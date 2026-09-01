@@ -116,7 +116,7 @@ cat workspace/reports/YYYYMMDD_HHMMSS/validation-report.json
 
 - **法术 ID 一致性**：`Spell.dbc.ID` 必须与 `item_template.spellid_2` 一致。
 - **模型数据一致性**：`CreatureModelData.dbc.ID` 必须与 `CreatureDisplayInfo.dbc.ModelID` 一致。
-- **显示信息一致性**：`CreatureDisplayInfo.dbc.ID` 必须与 `creature_template.modelid1` 和 `creature_model_info.display_id` 一致。
+- **显示信息一致性**：`CreatureDisplayInfo.dbc.ID` 必须与 `creature_model_info.display_id` 一致；`creature_template_model` 的 `CreatureDisplayID` 必须与 `CreatureDisplayInfo.ID` 一致、`CreatureID` 必须与 `creature_template.entry` 一致（AzerothCore 已无 `creature_template.modelid1` 列）。
 - **视觉 ID 一致性**：`creature_template.entry` 必须与 `Spell.dbc.SpellVisualID_1`（即 `spell.visual_id`）一致。
 - **模型路径一致性**：`CreatureModelData.dbc.ModelName` 必须对应 MPQ 中实际存在的文件路径。
 - **路径字符约束**：DBC 与 MPQ 中的模型路径必须全英文、无空格、无中文。

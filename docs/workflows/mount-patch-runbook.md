@@ -140,7 +140,7 @@ uv run python -m app.cli patch build --all-requested
 
 - Spell ID 与 `item_template.spellid_2` 一致
 - `CreatureModelData.ID` 与 `CreatureDisplayInfo.ModelID` 一致
-- `CreatureDisplayInfo.ID` 与 `creature_template.modelid1` 一致
+- `CreatureDisplayInfo.ID` 与 `creature_model_info.display_id` 一致，且 `creature_template_model`（CreatureID ↔ CreatureDisplayID）与 `creature_template.entry` 关联一致
 - 模型路径全英文、无空格、与 MPQ 内实际路径一致
 
 - DBC/SQL 实现参考：[`docs/references/06资源DBC与SQL实现参考.md`](./references/06资源DBC与SQL实现参考.md)
