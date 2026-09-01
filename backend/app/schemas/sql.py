@@ -30,10 +30,7 @@ class SQLRecord(BaseModel):
         hints = get_type_hints(cls)
         # 字段默认值为空串的场景（如 subname/IconName），空串是合法值，
         # 不应被归一化为 None；其余字段保持原有 "" / 0 -> None 的兼容行为。
-        empty_str_fields = {
-            name for name, f in cls.model_fields.items()
-            if f.default == ""
-        }
+        empty_str_fields = {name for name, f in cls.model_fields.items() if f.default == ""}
         normalized: dict[str, Any] = {}
         for key, value in data.items():
             hint = hints.get(key)
@@ -145,9 +142,7 @@ class ItemTemplate(SQLRecord):
     Material: int | None = Field(default=4)
     sheath: int | None = Field(default=0)
     stackable: int | None = Field(default=1)
-    description: str | None = Field(
-        default=" 教你学会召唤这种坐骑。这是一种非常快速的坐骑。"
-    )
+    description: str | None = Field(default=" 教你学会召唤这种坐骑。这是一种非常快速的坐骑。")
     # batch1 显式写 0，但 DB DEFAULT 为 NULL/1000，需显式写出以保持一致
     delay: int | None = Field(default=0)
     holy_res: int | None = Field(default=0)
