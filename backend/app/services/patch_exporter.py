@@ -1,12 +1,9 @@
-"""补丁原料包导出服务。
+"""补丁任务元数据导出服务。
 
-负责为单个资源创建补丁任务目录，生成并写入：
-- resource.yaml
-- assets.json
-- dbc-plan.yaml
-- sql-plan.yaml
-- README.md
-- manifest.json
+补丁任务目录仅包含轻量的 job.json（任务元数据与状态），
+资源定义的唯一真相源始终是 data/resources/ 下的 YAML 文件；
+DBC/SQL 计划由补丁构建阶段（mount_patch_builder）现场从真相源生成，
+本模块只提供 build_dbc_plan / build_sql_plan / build_assets_json 三个纯函数。
 
 同时提供补丁任务的查询和状态更新能力。
 """
@@ -17,9 +14,7 @@ import json
 import shutil
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, cast
-
-import yaml
+from typing import Any
 
 from app.core.config import settings
 from app.preview.asset_resolver import resolve_resource_assets
@@ -27,7 +22,6 @@ from app.schemas.patch import (
     DBCPlan,
     DBCPlanFile,
     DBCPlanOperation,
-    PatchArtifacts,
     PatchJobManifest,
     SQLPlan,
     SQLPlanTable,
@@ -78,31 +72,11 @@ def _ensure_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def _write_yaml(path: Path, data: dict[str, Any]) -> None:
-    """写入 YAML 文件。"""
-    _ensure_dir(path.parent)
-    with path.open("w", encoding="utf-8") as f:
-        yaml.safe_dump(data, f, allow_unicode=True, sort_keys=False)
-
-
 def _write_json(path: Path, data: dict[str, Any]) -> None:
     """写入 JSON 文件。"""
     _ensure_dir(path.parent)
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-def _write_text(path: Path, content: str) -> None:
-    """写入文本文件。"""
-    _ensure_dir(path.parent)
-    with path.open("w", encoding="utf-8") as f:
-        f.write(content)
-
-
-def _load_yaml(path: Path) -> dict[str, Any]:
-    """读取 YAML 文件。"""
-    with path.open("r", encoding="utf-8") as f:
-        return cast(dict[str, Any], yaml.safe_load(f) or {})
 
 
 def _build_job_id(resource: Resource) -> str:
@@ -420,37 +394,11 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     )
 
 
-def _build_readme(job_id: str, resource: Resource) -> str:
-    """生成 input/README.md。"""
-    return f"""# Patch Job: {job_id}
-
-本目录由 acore-resouces 系统导出，供 `/build-mount-patch` 等 Skill 使用。
-
-## 资源信息
-
-- 类型：{resource.resource_type}
-- ID：{resource.id}
-- 名称：{resource.official_db.name or resource.model_folder}
-- 模型文件夹：{resource.model_folder}
-
-## 文件说明
-
-- `resource.yaml`: 坐骑完整元数据
-- `assets.json`: 客户端资源（.m2/.blp）位置与打包建议
-- `dbc-plan.yaml`: 建议修改的 DBC 文件和字段
-- `sql-plan.yaml`: 建议生成的 SQL 表和字段
-
-## 工作流程
-
-1. 读取 `resource.yaml` 和 `assets.json`。
-2. 检查 `dbc-plan.yaml` 中的 ID 是否冲突。
-3. 根据 `mount_type` 调整 Spell.dbc 相关字段。
-4. 运行 `patch build` 生成批次 DBC/SQL/MPQ 与校验报告。
-"""
-
-
 def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     """为单个资源创建补丁任务。
+
+    任务目录仅写入 job.json 元数据；资源定义以 data/resources/ 下的
+    YAML 为唯一真相源，构建阶段现场读取。
 
     Args:
         resource_type: 资源类型，如 mount。
@@ -470,38 +418,14 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     if resource.resource_type != "mount":
         raise ValueError(f"第一阶段仅支持 mount，当前类型 {resource.resource_type}")
 
-    mount = cast(Mount, resource)
     job_id = _build_job_id(resource)
     job_dir = settings.patch_jobs_dir / job_id
-    input_dir = job_dir / "input"
 
     # 固定目录完全重置，避免历史产物与重复目录
     if job_dir.exists():
         shutil.rmtree(job_dir)
-    _ensure_dir(input_dir)
+    _ensure_dir(job_dir)
 
-    # 写入 resource.yaml
-    resource_data = resource.model_dump(exclude_none=False)
-    resource_data.pop("created_at", None)
-    resource_data.pop("updated_at", None)
-    _write_yaml(input_dir / "resource.yaml", resource_data)
-
-    # 写入 assets.json
-    assets_json = build_assets_json(resource)
-    _write_json(input_dir / "assets.json", assets_json)
-
-    # 写入 dbc-plan.yaml
-    dbc_plan = build_dbc_plan(mount)
-    _write_yaml(input_dir / "dbc-plan.yaml", dbc_plan.model_dump(exclude_none=False))
-
-    # 写入 sql-plan.yaml
-    sql_plan = build_sql_plan(mount)
-    _write_yaml(input_dir / "sql-plan.yaml", sql_plan.model_dump(exclude_none=False))
-
-    # 写入 README.md
-    _write_text(input_dir / "README.md", _build_readme(job_id, resource))
-
-    # 写入 manifest.json
     manifest = PatchJobManifest(
         job_id=job_id,
         created_at=datetime.now(UTC).isoformat(),
@@ -511,25 +435,15 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
         resource_name=resource.official_db.name or resource.model_folder,
         resource_model_folder=resource.model_folder,
         status="requested",
-        input_dir="input",
-        artifacts=PatchArtifacts(
-            input={
-                "resource_yaml": "input/resource.yaml",
-                "assets_json": "input/assets.json",
-                "dbc_plan": "input/dbc-plan.yaml",
-                "sql_plan": "input/sql-plan.yaml",
-                "readme": "input/README.md",
-            },
-        ),
     )
-    _write_json(job_dir / "manifest.json", manifest.model_dump(exclude_none=False))
+    _write_json(job_dir / "job.json", manifest.model_dump(exclude_none=False))
 
     return manifest
 
 
 def _load_manifest_file(job_dir: Path) -> PatchJobManifest | None:
-    """从目录读取 manifest。"""
-    manifest_path = job_dir / "manifest.json"
+    """从任务目录读取 job.json。"""
+    manifest_path = job_dir / "job.json"
     if not manifest_path.exists():
         return None
     try:
@@ -619,9 +533,10 @@ def update_patch_job_status(
         manifest.artifacts.output = output_artifacts
     if summary:
         manifest.summary = summary
+    manifest.updated_at = datetime.now(UTC).isoformat()
     if status in ("generated", "applied", "failed"):
         manifest.completed_at = datetime.now(UTC).isoformat()
 
     job_dir = settings.patch_jobs_dir / job_id
-    _write_json(job_dir / "manifest.json", manifest.model_dump(exclude_none=False))
+    _write_json(job_dir / "job.json", manifest.model_dump(exclude_none=False))
     return manifest
