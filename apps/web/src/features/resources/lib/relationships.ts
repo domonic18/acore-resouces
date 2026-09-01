@@ -67,12 +67,10 @@ export const MOUNT_RELATIONSHIPS: RelationshipRule[] = [
   },
   {
     key: "display_template_info",
-    name: "Display ↔ Template ↔ ModelInfo",
-    description:
-      "CreatureDisplayInfo.ID 必须与 creature_template.modelid1 和 creature_model_info.display_id 一致",
+    name: "Display ↔ ModelInfo",
+    description: "CreatureDisplayInfo.ID 必须与 creature_model_info.display_id 一致",
     fields: [
       { source: "dbc", table: "creature_display_info", field: "id" },
-      { source: "db", table: "creature_template", field: "modelid1" },
       { source: "db", table: "creature_model_info", field: "display_id" },
     ],
   },
