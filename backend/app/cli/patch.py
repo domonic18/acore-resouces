@@ -24,12 +24,12 @@ app = typer.Typer(help="补丁任务管理命令")
 console = Console()
 
 
-@app.command("export", help="导出补丁原料包")
+@app.command("export", help="创建补丁任务（仅写任务元数据，构建时现场读取真相源）")
 def export_patch(
     resource_type: str = typer.Option("mount", "--type", "-t", help="资源类型"),
     resource_id: int = typer.Option(..., "--id", "-i", help="资源 ID"),
 ) -> None:
-    """为单个资源导出补丁原料包。"""
+    """为单个资源创建补丁任务。"""
     try:
         manifest = create_patch_job(resource_type, resource_id)
     except ValueError as e:
@@ -37,16 +37,19 @@ def export_patch(
         raise typer.Exit(1) from e
 
     console.print(f"[green]已创建补丁任务: {manifest.job_id}[/green]")
-    console.print(f"输入目录: {manifest.input_dir}")
-    if manifest.output_dir:
-        console.print(f"输出目录: {manifest.output_dir}")
+    console.print(f"任务目录: workspace/patch-jobs/{manifest.job_id}/（仅含 job.json）")
+    console.print(
+        f"资源真相源: data/resources/{manifest.resource_type}s/{manifest.resource_id:04d}-*.yaml"
+    )
 
 
 @app.command("build", help="构建坐骑补丁（DBC/SQL/MPQ）")
 def build_patch(
     all_requested: bool = typer.Option(False, "--all-requested", help="处理所有可处理状态的任务"),
     jobs: list[str] | None = typer.Option(None, "--jobs", help="指定任务 ID 列表"),
-    dry_run: bool = typer.Option(False, "--dry-run", help="仅校验冲突，不修改文件"),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="仅校验冲突并落盘审查计划到任务目录 plans/，不修改源文件"
+    ),
 ) -> None:
     """读取补丁任务并批量构建坐骑补丁。"""
     if not all_requested and not jobs:
