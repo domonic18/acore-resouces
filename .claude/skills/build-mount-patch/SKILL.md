@@ -1,8 +1,9 @@
 ---
 name: build-mount-patch
 description: >
-  读取 acore-resouces 生成的补丁原料包，批量生成 WoW 3.3.5a 自定义坐骑补丁：
-  直接编辑源 DBC、追加 SQL 到 AzerothCore updates 目录、生成批次 MPQ。
+  根据补丁任务（job.json 引用资源 ID），现场读取 data/resources/ 真相源 YAML，
+  批量生成 WoW 3.3.5a 自定义坐骑补丁：直接编辑源 DBC、追加 SQL 到
+  AzerothCore updates 目录、生成批次 MPQ。
 argument-hint: <resource-id-or-job-id-or-batch>
 allowed-tools: [Read, Edit, Write, Bash]
 model: sonnet
@@ -10,9 +11,13 @@ model: sonnet
 
 # /build-mount-patch
 
-根据 acore-resouces 系统导出的补丁原料包，批量为 WoW 3.3.5a 自定义坐骑生成服务端 SQL、客户端 DBC 与 MPQ 补丁。
+根据补丁任务，批量为 WoW 3.3.5a 自定义坐骑生成服务端 SQL、客户端 DBC 与 MPQ 补丁。
 
-与旧版按坐骑独立输出不同，新版工作流采用**集中编辑、批次输出**：
+**单一真相源**：资源定义始终以 `data/resources/mounts/*.yaml` 为准；任务目录
+`workspace/patch-jobs/{job_id}/` 仅含轻量 `job.json`（任务元数据与状态），
+构建时现场读取最新 YAML 并在内存中生成 DBC/SQL 计划，不落盘任何快照。
+
+工作流采用**集中编辑、批次输出**：
 
 - DBC 直接修改 `data/wow-dbc/src/dbc/` 下的源文件（wow-dbc 子模块，由用户手动提交）。
 - SQL 追加为单份文件到 AzerothCore updates 目录。
@@ -22,40 +27,46 @@ model: sonnet
 
 用户可提供以下任意一种：
 
-- **`--all-requested`**：处理当前所有 `status=requested` 的任务（推荐）。
-- **任务 ID 列表**：`20250724_143022_mount_0003_梦光符文牡鹿`
-- **资源 ID**：`0003`、`3`、`坐骑 0003`（匹配该资源最近的 requested 任务）
-- 资源名：最近一条匹配该资源名的 `requested` 任务
+- **`--all-requested`**：处理当前所有可处理状态的任务（推荐）。
+- **任务 ID 列表**：`mount_0003`
+- **资源 ID**：`0003`、`3`、`坐骑 0003`（对应任务 `mount_0003`）
 
 若未提供或无法解析，询问用户。
 
 ## 执行流程
 
-### 1. 定位任务目录
+### 1. 定位任务
 
 项目根目录假设为当前工作目录 `/Users/deadwalk/Code/acore-resouces`。
 
-列出最近的补丁任务：
+列出补丁任务：
 
 ```bash
-ls -1 workspace/patch-jobs | sort -r | head -20
+cd backend && uv run python -m app.cli patch list
 ```
 
-- 若输入为 `--all-requested`，收集所有 `status=requested` 的任务。
-- 若输入像任务 ID，直接匹配 `workspace/patch-jobs/{job_id}/`。
-- 若输入是资源 ID，查找该资源最近 `status=requested` 的任务。
-
-读取每个任务目录下的文件：
-
-- `manifest.json`
-- `input/resource.yaml`
-- `input/dbc-plan.yaml`
-- `input/sql-plan.yaml`
-- `input/assets.json`
+- 任务目录 `workspace/patch-jobs/{job_id}/` 仅含 `job.json`（记录 resource_type、
+  resource_id、status 等元数据）。
+- 资源定义读取 `data/resources/mounts/{id:04d}-*.yaml` 真相源。
 
 ### 2. 调用批量构建命令
 
-统一调用后端 CLI 的 `patch build`：
+先使用 `--dry-run` 校验冲突并生成审查计划（写入各任务目录 `plans/` 子目录）：
+
+```bash
+cd backend
+uv run python -m app.cli patch build --all-requested --dry-run
+```
+
+审查计划内容（现场从真相源生成）：
+
+```bash
+cat workspace/patch-jobs/mount_0003/plans/dbc-plan.yaml
+cat workspace/patch-jobs/mount_0003/plans/sql-plan.yaml
+cat workspace/patch-jobs/mount_0003/plans/assets.json
+```
+
+确认无误后正式执行（会清理遗留 plans/ 并写入 DBC/SQL/MPQ）：
 
 ```bash
 cd backend
@@ -66,29 +77,23 @@ uv run python -m app.cli patch build --all-requested
 
 ```bash
 cd backend
-uv run python -m app.cli patch build --jobs 20260724_143022_mount_0003_梦光符文牡鹿
-```
-
-先使用 `--dry-run` 只做冲突校验：
-
-```bash
-cd backend
-uv run python -m app.cli patch build --all-requested --dry-run
+uv run python -m app.cli patch build --jobs mount_0003
 ```
 
 命令内部完成以下步骤：
 
-1. **ID 冲突检查**：对 `dbc-plan.yaml` 中每个 `add` 操作的 `record_id`，检查源 DBC 是否已存在。已处理过的任务（`status=generated`）会按重建模式编辑已有记录，不视为冲突。
-2. **路径清理**：自动去除 `model_folder` 中的中文、空格及其他非 ASCII 字符，确保 DBC 与 MPQ 中的模型路径全英文。自动为 `CreatureModelData.dbc` 计算 `ModelName`（`Creature\<sanitized_folder>\<main_model>.m2`）。
-3. **应用 DBC 操作**：使用 `wow-dbc-tool` Python API 直接在 `data/wow-dbc/src/dbc/*.dbc` 上新增/编辑记录。
-4. **生成批次 SQL**：在 `data/sql/azerothcore-updates/`（指向 AzerothCore updates 目录的软链接）创建 `YYYY_MM_DD_NN_mcc_custom_mounts.sql`。
-   - 生成前会扫描该目录下已有的 `.sql` 文件，收集其中 `item_template.entry` 值。
+1. **现场构建上下文**：按 `job.json` 中的资源 ID 读取 `data/resources/` 最新 YAML，
+   在内存中生成 DBC/SQL 计划与资源清单（资源 YAML 已删除的任务会警告跳过）。
+2. **ID 冲突检查**：对 DBC 计划中每个 `add` 操作的 `record_id`，检查同一批次内是否重复。
+3. **路径清理**：自动去除 `model_folder` 中的中文、空格及其他非 ASCII 字符，确保 DBC 与 MPQ 中的模型路径全英文。自动按实际 m2 文件计算 `CreatureModelData.dbc` 的 `ModelName`（`creature\<sanitized_folder>\<main_model>`）。
+4. **应用 DBC 操作**：使用 `wow-dbc-tool` Python API 直接在 `data/wow-dbc/src/dbc/*.dbc` 上新增/编辑记录（源 DBC 已存在的记录跳过，不覆盖）。
+5. **生成坐骑 SQL**：为每只坐骑在 `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/` 创建 `{id:04d}_mount_add.sql`（及 `_mount_loot.sql`）。
+   - 生成前会扫描已有 `.sql` 文件，收集其中 `item_template.entry` 值。
    - 若某个坐骑的 `item_template.entry` 已存在，则跳过该坐骑，避免重复生成 SQL。
    - 仅对真正新增的坐骑写入 `DELETE` + `INSERT` 语句，保证幂等。
-   - 如果批次中所有坐骑都已存在 SQL，则不会创建新的 SQL 文件。
-5. **构建批次 MPQ**：在 `workspace/mpq/YYYYMMDD_HHMMSS/` 下创建 `patch-mounts.mpq` 与 `readme.txt`，包含编辑后的 DBC 与各任务的客户端资源。
-6. **一致性校验**：生成校验报告 `workspace/reports/YYYYMMDD_HHMMSS/validation-report.json`，检查 DBC/SQL/MPQ 之间的 ID 与路径一致性。
-7. **更新 manifest**：将参与批次的每个任务 `status` 改为 `generated`，`artifacts.output` 指向批次 SQL/MPQ/报告路径。
+6. **构建批次 MPQ**：在 `workspace/mpq/YYYYMMDD_HHMMSS/` 下创建 `patch-mounts.mpq` 与 `readme.txt`，包含编辑后的 DBC 与各任务的客户端资源。
+7. **一致性校验**：生成校验报告 `workspace/reports/YYYYMMDD_HHMMSS/validation-report.json`，检查 DBC/SQL/MPQ 之间的 ID 与路径一致性。
+8. **更新任务状态**：将参与批次的每个任务 `status` 改为 `generated`，`artifacts.output` 指向批次 SQL/MPQ/报告路径。
 
 ### 3. 验证产物
 
@@ -144,7 +149,8 @@ data/wow-dbc/src/dbc/
 └── Item.dbc                (已新增记录)
 
 data/sql/azerothcore-updates/ -> /Users/deadwalk/Code/azerothcore-wotlk/.../updates/
-└── 2026_07_24_01_mcc_custom_mounts.sql
+└── mounts/0003_ardenwealdstagmount/
+    └── 0003_mount_add.sql
 
 workspace/mpq/20260724_123045/
 ├── patch-mounts.mpq
@@ -152,14 +158,27 @@ workspace/mpq/20260724_123045/
 
 workspace/reports/20260724_123045/
 └── validation-report.json
+
+workspace/patch-jobs/mount_0003/
+└── job.json                (status=generated，artifacts.output 指向批次产物)
+```
+
+dry-run 时额外生成（正式 build 前会清理）：
+
+```
+workspace/patch-jobs/mount_0003/plans/
+├── dbc-plan.yaml
+├── sql-plan.yaml
+└── assets.json
 ```
 
 ## 失败处理
 
 - **ID 冲突**：脚本报错退出，不修改任何文件。向用户报告冲突的任务、DBC 文件与 ID，等待决策（跳过、换 ID 或改为 edit）。
-- **wow-dbc-tool 失败**：输出原始错误，不回写 manifest。
-- **mpqcli 失败**：保留已生成的 DBC/SQL，仅报告 MPQ 打包失败，manifest 可标记为 `failed`。
-- **部分成功**：建议将失败任务 manifest 状态改为 `failed`，summary 记录失败原因。
+- **资源 YAML 缺失**：任务被警告并跳过，不阻塞批次内其他任务。
+- **wow-dbc-tool 失败**：输出原始错误，不回写任务状态。
+- **mpqcli 失败**：保留已生成的 DBC/SQL，仅报告 MPQ 打包失败，任务状态可标记为 `failed`。
+- **部分成功**：建议将失败任务状态改为 `failed`，summary 记录失败原因。
 
 ## 注意事项
 
@@ -178,6 +197,6 @@ workspace/reports/20260724_123045/
 
 ```
 /build-mount-patch --all-requested
-/build-mount-patch 20250724_143022_mount_0003_梦光符文牡鹿
+/build-mount-patch mount_0003
 /build-mount-patch 0003
 ```

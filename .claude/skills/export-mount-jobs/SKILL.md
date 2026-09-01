@@ -2,7 +2,8 @@
 name: export-mount-jobs
 description: >
   根据用户指定的条件从 acore-resouces 资源库中筛选坐骑，
-  导出指定数量的补丁原料包，并可选择直接构建/发布为 patch-zhCN-5.mpq。
+  为指定数量坐骑创建补丁任务（仅写 job.json 元数据），
+  并可选择直接构建/发布为 patch-zhCN-5.mpq。
   支持按星级、调试状态、已发布状态、坐骑类型等条件组合筛选。
 argument-hint: [--star <星级>] [--debug <true|false>] [--added <true|false>] [--type <坐骑类型>] [--count N]
 allowed-tools: [Read, Bash]
@@ -11,7 +12,7 @@ model: sonnet
 
 # /export-mount-jobs
 
-按条件筛选坐骑资源，导出前 N 个满足条件的补丁原料包。
+按条件筛选坐骑资源，为前 N 个满足条件的坐骑创建补丁任务。
 条件可组合使用，未指定条件时不应执行导出，需向用户确认。
 
 ## 输入格式
@@ -62,9 +63,10 @@ for m in mounts[:5]:
 
 如果匹配数量为 0，停止并告知用户。
 
-### 2. 导出补丁原料包
+### 2. 创建补丁任务
 
-对筛选出的前 N 个坐骑逐个导出固定目录的原料包：
+对筛选出的前 N 个坐骑逐个创建补丁任务（任务目录仅含 `job.json`，
+资源定义以 `data/resources/mounts/*.yaml` 真相源为准，构建时现场读取）：
 
 ```bash
 cd backend
@@ -80,7 +82,7 @@ for m in mounts:
 "
 ```
 
-导出前会完全重置对应 `mount_{id:04d}` 目录。
+创建前会完全重置对应 `mount_{id:04d}` 目录。
 
 ### 3. （可选）构建并发布
 
@@ -104,10 +106,10 @@ uv run python -m app.cli patch publish
 
 ## 输出产物
 
-- `workspace/patch-jobs/mount_{id:04d}/`：原料包（固定目录）。
+- `workspace/patch-jobs/mount_{id:04d}/`：补丁任务目录（固定目录，仅含 job.json）。
 - （可选）`workspace/mpq/{timestamp}/patch-mounts.mpq`：批次 MPQ。
 - （可选）`workspace/dist/{timestamp}/patch-zhCN-5.mpq`：客户端补丁。
-- （可选）`data/sql/azerothcore-updates/YYYY_MM_DD_NN_mcc_custom_mounts.sql`：仅新增坐骑的 SQL。
+- （可选）`data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`：仅新增坐骑的 SQL。
 - （可选）`workspace/reports/{timestamp}/validation-report.json`：校验报告。
 
 ## 注意事项

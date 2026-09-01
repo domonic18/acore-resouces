@@ -36,7 +36,7 @@ acore-resouces/                          # 资源与 DBC 编辑主仓库
 │   └── wow-mpq-cli/        # 已有：MPQ 打包 CLI 工具（子模块）
 ├── backend/app/
 │   ├── services/
-│   │   ├── patch_exporter.py       # ✅ 原料包生成
+│   │   ├── patch_exporter.py       # ✅ 补丁任务创建（写 job.json）
 │   │   ├── mount_patch_builder.py  # ✅ DBC/SQL/MPQ 构建
 │   │   └── patch_publisher.py      # ✅ MPQ 发布
 │   └── cli/patch.py        # ✅ patch export/build/publish/list/get/update
@@ -70,7 +70,7 @@ data/sql/azerothcore-updates → /Users/deadwalk/Code/azerothcore-wotlk/modules/
 ```
 
 - 由 `ACORE_SQL_UPDATES_DIR` 环境变量配置（默认值见 `backend/app/config.py`）。
-- `patch build` 生成的 `db_patch.sql` 会被**追加写入**此目录下的 `patch_world.sql`，AzerothCore 重启时自动加载。
+- `patch build` 生成的 SQL 会按坐骑写入此目录下的 `mounts/{id:04d}_{slug}/{id:04d}_mount_add.sql`（如需掉落另有 `{id:04d}_mount_loot.sql`），AzerothCore 重启时自动加载。
 - 软链接断开时 `patch build` 会跳过 SQL 同步并记录 warning，但 DBC/MPQ 产物仍正常输出。
 
 ## 四、CLI 命令：`patch` 组（已实现）
@@ -83,7 +83,7 @@ uv run --project backend python -m app.cli patch <command> [options]
 
 | 命令 | 用途 | 关键参数 |
 |------|------|---------|
-| `patch export` | 为单个资源生成补丁原料包 | `--type`、`--id` |
+| `patch export` | 为单个资源创建补丁任务 | `--type`、`--id` |
 | `patch build` | 批量构建 DBC/SQL/MPQ | `--all-requested` 或 `--jobs` 多次；`--dry-run` |
 | `patch publish` | 发布 MPQ 到 `workspace/dist/` | `--start-number`、`--dry-run` |
 | `patch list` | 分页列出补丁任务 | `--status`、`--type`、`--limit` |
@@ -98,7 +98,7 @@ uv run --project backend python -m app.cli patch <command> [options]
 # 1. 校验资源
 uv run --project backend python -m app.cli resource validate --type mount --id 3
 
-# 2. 导出补丁原料包
+# 2. 创建补丁任务（仅写 job.json，资源以 data/resources/ 真相源为准）
 uv run --project backend python -m app.cli patch export --type mount --id 3
 
 # 3. 批量构建（处理所有 requested 状态的任务）
@@ -107,7 +107,7 @@ uv run --project backend python -m app.cli patch build --all-requested
 # 或指定任务 ID
 uv run --project backend python -m app.cli patch build --jobs mount_0003 --jobs mount_0004
 
-# 仅校验冲突，不修改文件
+# 仅校验冲突，现场生成的计划写入各任务 plans/ 子目录供审查
 uv run --project backend python -m app.cli patch build --all-requested --dry-run
 
 # 4. 发布到 workspace/dist/
@@ -121,35 +121,29 @@ uv run --project backend python -m app.cli patch publish --start-number 5
 
 ## 五、`workspace/patch-jobs/` 目录结构
 
-`workspace/patch-jobs/` 是 **按任务隔离的补丁原料与产物目录**，每个资源导出请求生成一个独立子目录。
+`workspace/patch-jobs/` 是 **按任务隔离的补丁任务与产物目录**，每个资源导出请求生成一个独立子目录。
 
 ### 5.1 定位
 
 - 它不是最终真相源：真相源是 `data/resources/*.yaml` 和 `data/wow-dbc/src/dbc/*.dbc`。
-- 它是运行时工作区：系统在此存放原料包，`patch build` 在此产出最终 DBC/SQL/MPQ。
-- 它**不入 Git**：属于运行时产物，可由 `manifest.json` 追溯历史。
+- 它是运行时工作区：`patch export` 只写入任务元数据 `job.json`；`patch build` 按 `job.json` 中的 `resource_id` 现场读取最新 YAML，在内存中生成 DBC/SQL 计划与资源清单（不落盘快照），产物写入各自目录。
+- 它**不入 Git**：属于运行时产物，可由 `job.json` 追溯历史。
 
 ### 5.2 目录内容示例
 
 ```text
 workspace/patch-jobs/mount_0003/
-├── manifest.json              # 任务元数据、状态、产物路径
-├── input/                     # patch export 生成
-│   ├── resource.yaml          # 资源 YAML 快照
-│   ├── assets.json            # 模型/贴图/图标文件清单
-│   ├── dbc-plan.yaml          # 每个 DBC 文件的 add/edit 操作
-│   ├── sql-plan.yaml          # 目标表与记录
-│   └── README.md              # 给 Skill / 人工的说明
-└── output/                    # patch build 生成
-    ├── dbc/                   # 修改后的 *.dbc
-    ├── db_patch.sql           # AzerothCore SQL 补丁（已追加到 azerothcore-updates）
-    └── patch-mount-0003.mpq   # 客户端 MPQ（位于 workspace/mpq/{batch}/）
+├── job.json                   # 任务元数据、状态、产物路径（patch export 仅写此文件）
+└── plans/                     # 仅 patch build --dry-run 生成，供审查；正式 build 会清理
+    ├── dbc-plan.yaml          # 现场生成的 DBC add/edit 计划
+    ├── sql-plan.yaml          # 现场生成的目标表与记录
+    └── assets.json            # 现场生成的模型/贴图/图标文件清单
 ```
 
 ### 5.3 与 Agent 的关系
 
-- Agent/Web 系统**只生成原料包**到 `workspace/patch-jobs/{job_id}/input/`。
-- `patch build` 负责调用 `wow-dbc-tool` / `wow-mpq-cli` 生成最终产物。
+- Agent/Web 系统**只创建补丁任务**（仅写 `workspace/patch-jobs/{job_id}/job.json`，资源以 `data/resources/` 真相源为准）。
+- `patch build` 负责按 `job.json` 现场读取资源，调用 `wow-dbc-tool` / `wow-mpq-cli` 生成最终产物。
 - 应用 DBC/SQL、同步部署需要人工确认或显式参数。
 
 ## 六、尚未实现：`dbc` 与 `deploy` 命令组（规划中）
@@ -180,13 +174,13 @@ workspace/patch-jobs/mount_0003/
 
 | 文件 | 用途 |
 |------|------|
-| `backend/app/services/patch_exporter.py` | 创建补丁任务目录、生成原料包、维护 manifest |
-| `backend/app/services/mount_patch_builder.py` | 调用 `wow-dbc-tool` / `wow-mpq-cli` 构建 DBC/SQL/MPQ |
+| `backend/app/services/patch_exporter.py` | 创建补丁任务目录、写 `job.json` |
+| `backend/app/services/mount_patch_builder.py` | 现场读取真相源构建 `JobContext`，调用 `wow-dbc-tool` / `wow-mpq-cli` 构建 DBC/SQL/MPQ |
 | `backend/app/services/patch_publisher.py` | 发布 MPQ 到 `workspace/dist/{timestamp}/` |
 | `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request`、`GET /api/patches` |
 | `backend/app/cli/patch.py` | `patch export/build/publish/list/get/update` CLI |
 | `backend/app/schemas/patch.py` | `PatchJob`、`PatchJobUpdateRequest` 等 Pydantic 模型 |
-| `.claude/skills/build-mount-patch/SKILL.md` | Claude Skill：读取原料包生成最终 DBC/SQL/MPQ |
+| `.claude/skills/build-mount-patch/SKILL.md` | Claude Skill：读取补丁任务（job.json + 真相源 YAML）生成最终 DBC/SQL/MPQ |
 | `docs/arch/07DBC维护与同步方案.md` | 本方案文档 |
 
 ## 八、acore-deploy 侧适配
@@ -201,7 +195,7 @@ workspace/patch-jobs/mount_0003/
 
 ## 九、安全约束
 
-- Agent **不直接修改** `data/wow-dbc/src/dbc/*.dbc`，只生成 `workspace/patch-jobs/{job_id}/input/` 原料包。
+- Agent **不直接修改** `data/wow-dbc/src/dbc/*.dbc`，只创建 `workspace/patch-jobs/{job_id}/job.json` 补丁任务。
 - DBC/SQL/MPQ 最终产物由 `patch build` 在 `output/` 中生成；子模块提交、部署同步均需人工确认。
 - 子模块更新提交使用 `chore(dbc): update data/wow-dbc submodule to <short-sha>`。
 - `data/sql/azerothcore-updates` 是软链接，**禁止** 强制覆盖或删除；破坏后会影响 AzerothCore 部署。
@@ -209,8 +203,8 @@ workspace/patch-jobs/mount_0003/
 ## 十、验证清单
 
 - [x] `data/wow-dbc/src/dbc/Spell.dbc` 存在。
-- [x] `patch export --type mount --id 3` 成功生成原料包。
-- [x] `patch build --jobs mount_0003` 成功生成 `output/dbc/`、`output/db_patch.sql`、`workspace/mpq/{batch}/patch-mount-0003.mpq`。
+- [x] `patch export --type mount --id 3` 成功创建补丁任务（job.json）。
+- [x] `patch build --jobs mount_0003` 成功编辑 `data/wow-dbc/src/dbc/`、生成 `data/sql/azerothcore-updates/mounts/0003_{slug}/` SQL、`workspace/mpq/{batch}/patch-mounts.mpq`。
 - [x] `patch publish --start-number N` 将 MPQ 复制到 `workspace/dist/{timestamp}/patch-zhCN-N.mpq`。
 - [x] 类型检查与测试通过（`uv run mypy app/`、`uv run ruff check app/`、`uv run pytest`）。
 - [ ] `dbc status/pull/diff` CLI 命令组（待实现，见第六节）。
@@ -222,7 +216,7 @@ workspace/patch-jobs/mount_0003/
 |-------|---------|---------------------|
 | `enrich-mount-data` / `enrich-pet-data` | 缺失 Wowhead 官方字段 | 完成后可接 `patch export` |
 | `configure-mount-spell` | 需要调整 Spell.dbc 字段 | 完成后可接 `patch export` |
-| `build-mount-patch` | 已有原料包，需要生成最终产物 | 等价于 `patch build --jobs {job_id}` |
+| `build-mount-patch` | 已有补丁任务，需要生成最终产物 | 等价于 `patch build --jobs {job_id}` |
 | `export-mount-jobs` | Web 端批量勾选坐骑导出 | 等价于多次 `patch export` |
 | `publish-patch` | 将 `workspace/mpq/` 发布到 `workspace/dist/` | 等价于 `patch publish` |
 
