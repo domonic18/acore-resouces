@@ -113,10 +113,15 @@ def test_build_dbc_plan_structure(sample_mount: Mount) -> None:
         "Spell.dbc",
         "Item.dbc",
     }
+    item_op = next(p for p in plan.plans if p.dbc_file == "Item.dbc").operations[0]
+    assert item_op.fields["Sound_override_subclassID"] == -1
+    cmd_op = next(p for p in plan.plans if p.dbc_file == "CreatureModelData.dbc").operations[0]
+    assert cmd_op.fields["BloodID"] == 3
+    assert cmd_op.fields["AttachedEffectScale"] == 1.0
 
 
 def test_build_dbc_plan_spell_fields(sample_mount: Mount) -> None:
-    """验证 Spell.dbc 字段。"""
+    """验证 Spell.dbc 字段按 MCC 实测模板生成（挂载生物走 EffectMiscValue_1）。"""
     plan = build_dbc_plan(sample_mount)
     spell_plan = next(p for p in plan.plans if p.dbc_file == "Spell.dbc")
     op = spell_plan.operations[0]
@@ -125,14 +130,62 @@ def test_build_dbc_plan_spell_fields(sample_mount: Mount) -> None:
     assert op.record_id == 80000
     assert op.fields["ID"] == 80000
     assert op.fields["Mechanic"] == 21
-    assert op.fields["Effect_1"] == 6
-    assert op.fields["EffectAura_1"] == 207
-    assert op.fields["EffectBasePoints_1"] == 140000
-    assert op.fields["Name_Lang_zhCN"] == "测试符文牡鹿"
+    assert op.fields["EffectAura_1"] == 78
+    assert op.fields["EffectMiscValue_1"] == 9140000
+    assert op.fields["EffectAura_2"] == 32
+    assert op.fields["EffectBasePoints_2"] == 99
+    assert op.fields["SpellVisualID_1"] == 5160
+    assert op.fields["Name_Lang_deDE"] == "测试符文牡鹿"
+    # 逐字段核对自 live 的模板补全字段（Q10）
+    assert op.fields["Attributes"] == 269844752
+    assert op.fields["AttributesExC"] == 536870912
+    assert op.fields["AttributesExF"] == 131072
+    assert op.fields["InterruptFlags"] == 31
+    assert op.fields["ProcChance"] == 101
+    assert op.fields["DurationIndex"] == 21
+    assert op.fields["RangeIndex"] == 1
+    assert op.fields["EquippedItemClass"] == -1
+    assert op.fields["EquippedItemSubclass"] == 1
+    assert op.fields["ImplicitTargetA_2"] == 1
+    assert op.fields["NameSubtext_Lang_Mask"] == 16712190
+    assert op.fields["Description_Lang_Mask"] == 16712190
+    assert op.fields["AuraDescription_Lang_deDE"] == "速度提高$s2%。"
+    assert op.fields["AuraDescription_Lang_Mask"] == 16712190
+    assert op.fields["EffectChainAmplitude_1"] == 1.0
+    assert op.fields["SchoolMask"] == 1
+    # 历史字段 visual_id 存的是生物 entry，绝不写入 SpellVisualID_1
+    assert "EffectBasePoints_1" not in op.fields
+    assert "EffectSpellClassMaskC_3" not in op.fields
 
 
-def test_build_dbc_plan_flying_mount() -> None:
-    """验证飞行坐骑的 AttributesEx4。"""
+def test_build_dbc_plan_spell_visual_id_override() -> None:
+    """YAML spell_visual_id 覆盖 SpellVisualID_1（visual_id 仍走 EffectMiscValue_1）。"""
+    mount = Mount(
+        id=6,
+        model_folder="visual_override_test",
+        official_db={"name": "视觉覆盖测试"},
+        dbc={
+            "creature_model_data": {"id": 4003, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140003, "model_id": 4003},
+            "spell": {
+                "id": 80003,
+                "name": "视觉覆盖测试",
+                "visual_id": 9140006,
+                "spell_visual_id": 12844,
+            },
+            "item": {"id": 91003, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140006}},
+        mount_type="飞行坐骑",
+    )
+    plan = build_dbc_plan(mount)
+    fields = next(p for p in plan.plans if p.dbc_file == "Spell.dbc").operations[0].fields
+    assert fields["SpellVisualID_1"] == 12844
+    assert fields["EffectMiscValue_1"] == 9140006
+
+
+def test_build_dbc_plan_flying_aura_description() -> None:
+    """飞行坐骑模板：飞行光环文本、语言掩码与额外效果字段。"""
     mount = Mount(
         id=4,
         model_folder="flying_test",
@@ -143,12 +196,113 @@ def test_build_dbc_plan_flying_mount() -> None:
             "spell": {"id": 80001, "name": "飞行测试"},
             "item": {"id": 91001, "class": 15, "subclass": 5},
         },
-        db={},
+        db={"creature_template": {"entry": 9140001}},
+        mount_type="飞行坐骑",
+    )
+    plan = build_dbc_plan(mount)
+    fields = next(p for p in plan.plans if p.dbc_file == "Spell.dbc").operations[0].fields
+    assert fields["AuraDescription_Lang_deDE"] == "飞行速度提高$s2%。"
+    assert fields["AuraDescription_Lang_Mask"] == 16712188
+    assert fields["NameSubtext_Lang_Mask"] == 16712188
+    assert fields["StartRecoveryCategory"] == 133
+    assert fields["ImplicitTargetA_3"] == 1
+    assert fields["EffectBonusCoefficient_2"] == 1.0
+    assert fields["EffectBonusCoefficient_3"] == 1.0
+    assert "EquippedItemSubclass" not in fields
+
+
+def test_build_dbc_plan_water_mount() -> None:
+    """水上坐骑模板：水上行走光环、ExcludeCasterAuraSpell，且不写 Effect_3。"""
+    mount = Mount(
+        id=7,
+        model_folder="water_test",
+        official_db={"name": "水上测试"},
+        dbc={
+            "creature_model_data": {"id": 4004, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140004, "model_id": 4004},
+            "spell": {"id": 80004, "name": "水上测试"},
+            "item": {"id": 91004, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140007}},
+        mount_type="水上坐骑",
+    )
+    plan = build_dbc_plan(mount)
+    fields = next(p for p in plan.plans if p.dbc_file == "Spell.dbc").operations[0].fields
+    assert fields["EffectBasePoints_1"] == -1
+    assert fields["EffectAura_2"] == 58
+    assert fields["EffectBasePoints_2"] == 59
+    assert fields["EffectBasePoints_3"] == -1
+    assert fields["ExcludeCasterAuraSpell"] == 44521
+    assert fields["AuraDescription_Lang_deDE"] == "游泳速度提高$s2%。"
+    assert fields["AuraDescription_Lang_Mask"] == 16712190
+    assert fields.get("Effect_3", 0) != 6
+
+
+def test_build_dbc_plan_description_autogenerated() -> None:
+    """描述为空时按 mount_type 自动生成。"""
+    mount = Mount(
+        id=8,
+        model_folder="no_desc_test",
+        official_db={"name": "无描述测试"},
+        dbc={
+            "creature_model_data": {"id": 4005, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140005, "model_id": 4005},
+            "spell": {"id": 80005, "name": "无描述测试"},
+            "item": {"id": 91005, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140008}},
+        mount_type="飞行坐骑",
+    )
+    plan = build_dbc_plan(mount)
+    fields = next(p for p in plan.plans if p.dbc_file == "Spell.dbc").operations[0].fields
+    assert fields["Description_Lang_deDE"] == (
+        "召唤或解散一只可供骑乘的无描述测试。只能在外域或诺森德召唤这种坐骑。"
+    )
+
+
+def test_build_dbc_plan_flying_mount() -> None:
+    """验证飞行坐骑模板：ExD 标志位、飞行光环与默认 280% 速度档。"""
+    mount = Mount(
+        id=4,
+        model_folder="flying_test",
+        official_db={"name": "飞行测试"},
+        dbc={
+            "creature_model_data": {"id": 4001, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140001, "model_id": 4001},
+            "spell": {"id": 80001, "name": "飞行测试"},
+            "item": {"id": 91001, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140001}},
         mount_type="飞行坐骑",
     )
     plan = build_dbc_plan(mount)
     spell_plan = next(p for p in plan.plans if p.dbc_file == "Spell.dbc")
-    assert spell_plan.operations[0].fields["AttributesExD"] == 67108864
+    fields = spell_plan.operations[0].fields
+    assert fields["AttributesExD"] == 67108864
+    assert fields["EffectAura_2"] == 207
+    assert fields["EffectBasePoints_2"] == 279
+    assert fields["EffectAura_3"] == 32
+    assert fields["EffectBasePoints_3"] == 99
+
+
+def test_build_dbc_plan_flying_speed_override() -> None:
+    """YAML flight_speed=310 时 EffectBasePoints_2 应为 309。"""
+    mount = Mount(
+        id=5,
+        model_folder="flying_310_test",
+        official_db={"name": "极速飞行测试"},
+        dbc={
+            "creature_model_data": {"id": 4002, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140002, "model_id": 4002},
+            "spell": {"id": 80002, "name": "极速飞行测试", "flight_speed": 310},
+            "item": {"id": 91002, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140002}},
+        mount_type="飞行坐骑",
+    )
+    plan = build_dbc_plan(mount)
+    spell_plan = next(p for p in plan.plans if p.dbc_file == "Spell.dbc")
+    assert spell_plan.operations[0].fields["EffectBasePoints_2"] == 309
 
 
 def test_build_sql_plan_structure(sample_mount: Mount) -> None:
@@ -388,9 +542,7 @@ def _make_job_context(
 ) -> mpb.JobContext:
     """构造测试用 patch job 目录并现场构建 JobContext。"""
     _write_job_json(job_dir, resource)
-    monkeypatch.setattr(
-        "app.services.resource_store.load_resource", lambda t, i: resource
-    )
+    monkeypatch.setattr("app.services.resource_store.load_resource", lambda t, i: resource)
     return mpb.build_job_context(job_dir)
 
 
@@ -541,9 +693,7 @@ def test_build_job_context_reads_latest_values(
     assert mpb._job_item_entry(ctx1) == 91000
 
     sample_mount.db.item_template.entry = 91999
-    monkeypatch.setattr(
-        "app.services.resource_store.load_resource", lambda t, i: sample_mount
-    )
+    monkeypatch.setattr("app.services.resource_store.load_resource", lambda t, i: sample_mount)
     ctx2 = mpb.build_job_context(job_dir)
     assert mpb._job_item_entry(ctx2) == 91999
 

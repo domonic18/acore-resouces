@@ -29,41 +29,90 @@ from app.schemas.patch import (
 from app.schemas.resource import Mount, Resource
 from app.services.resource_store import load_resource
 
-# 坐骑类型 -> Spell.dbc 属性映射
-# 字段名以 wow-dbc-tool 的 schema 为准。
-SPELL_PROFILES: dict[str, dict[str, Any]] = {
+# 坐骑召唤法术模板，逐字段核对自 live Spell.dbc 中 MCC 已部署的 127 条
+# 自定义法术（2026-09-02）。仅覆盖因坐骑类型而异的字段，
+# 全类型共同字段见 SPELL_COMMON_FIELDS。
+# 关键语义：
+# - 挂载的生物来自 Effect_1/Aura 78(MOUNTED) 的 EffectMiscValue_1（creature_template.entry），
+#   显示模型由该生物记录决定，法术本身不携带 display id；
+# - 速度百分比放在 EffectBasePoints_2（配合 EffectDieSides_2=1），不是 EffectMechanic；
+# - 名称/描述写 deDE 列（MCC 全部数据如此，zhCN 列恒为空），Name_Lang_Mask 固定 16712190。
+SPELL_COMMON_FIELDS: dict[str, Any] = {
+    "Mechanic": 21,
+    "Attributes": 269844752,
+    "AttributesExC": 536870912,
+    "AttributesExF": 131072,
+    "CastingTimeIndex": 16,
+    "DurationIndex": 21,
+    "RangeIndex": 1,
+    "InterruptFlags": 31,
+    "ProcChance": 101,
+    "SpellLevel": 1,
+    "EquippedItemClass": -1,
+    "ImplicitTargetA_1": 1,
+    "Effect_1": 6,
+    "EffectAura_1": 78,
+    "Effect_2": 6,
+    "ImplicitTargetA_2": 1,
+    "EffectDieSides_2": 1,
+    "EffectChainAmplitude_1": 1.0,
+    "EffectChainAmplitude_2": 1.0,
+    "EffectChainAmplitude_3": 1.0,
+    "SchoolMask": 1,
+    "Name_Lang_Mask": 16712190,
+    "Description_Lang_Mask": 16712190,
+}
+
+# 光环提示文本与语言位掩码（水上与飞行同为 16712188，陆地 16712190）
+SPELL_AURA_DESCRIPTIONS: dict[str, tuple[str, int]] = {
+    "陆地坐骑": ("速度提高$s2%。", 16712190),
+    "飞行坐骑": ("飞行速度提高$s2%。", 16712188),
+    "水上坐骑": ("游泳速度提高$s2%。", 16712190),
+}
+
+SPELL_TYPE_TEMPLATES: dict[str, dict[str, Any]] = {
     "陆地坐骑": {
-        "Attributes": 0,
-        "AttributesExD": 0,
-        "EffectAuraPeriod_1": 32,
-        "EffectMechanic_1": 99,
-        "EffectAuraPeriod_2": 0,
-        "EffectMechanic_2": 0,
-    },
-    "慢速陆地坐骑": {
-        "Attributes": 0,
-        "AttributesExD": 0,
-        "EffectAuraPeriod_1": 32,
-        "EffectMechanic_1": 59,
-        "EffectAuraPeriod_2": 0,
-        "EffectMechanic_2": 0,
+        "EquippedItemSubclass": 1,
+        "NameSubtext_Lang_Mask": 16712190,
+        "SpellVisualID_1": 5160,
+        "EffectAura_2": 32,
+        "EffectBasePoints_2": 99,
     },
     "飞行坐骑": {
-        "Attributes": 0,
+        "Attributes": 269844496,
         "AttributesExD": 67108864,
-        "EffectAuraPeriod_1": 207,
-        "EffectMechanic_1": 279,
-        "EffectAuraPeriod_2": 32,
-        "EffectMechanic_2": 99,
+        "AuraInterruptFlags": 128,
+        "StartRecoveryCategory": 133,
+        "NameSubtext_Lang_Mask": 16712188,
+        "SpellVisualID_1": 7644,
+        "EffectAura_2": 207,
+        "EffectBasePoints_2": 279,
+        "EffectBonusCoefficient_2": 1.0,
+        "Effect_3": 6,
+        "ImplicitTargetA_3": 1,
+        "EffectAura_3": 32,
+        "EffectBasePoints_3": 99,
+        "EffectDieSides_3": 1,
+        "EffectBonusCoefficient_3": 1.0,
     },
     "水上坐骑": {
-        "Attributes": 0,
-        "AttributesExD": 0,
-        "EffectAuraPeriod_1": 32,
-        "EffectMechanic_1": 99,
-        "EffectAuraPeriod_2": 0,
-        "EffectMechanic_2": 0,
+        "ExcludeCasterAuraSpell": 44521,
+        "NameSubtext_Lang_Mask": 16712188,
+        "SpellVisualID_1": 5160,
+        "EffectBasePoints_1": -1,
+        "EffectDieSides_1": 1,
+        "EffectAura_2": 58,
+        "EffectBasePoints_2": 59,
+        "EffectBasePoints_3": -1,
+        "EffectDieSides_3": 1,
     },
+}
+
+# 描述为空时的按类型自动生成文本（量词取最常见写法）
+SPELL_DESCRIPTION_FALLBACKS: dict[str, str] = {
+    "陆地坐骑": "这是一种速度非常快的坐骑。",
+    "飞行坐骑": "只能在外域或诺森德召唤这种坐骑。",
+    "水上坐骑": "这种坐骑在陆地上行动不是很快，但是在水里就大不一样了！",
 }
 
 
@@ -124,7 +173,8 @@ def build_assets_json(resource: Resource) -> dict[str, Any]:
 
 def build_dbc_plan(resource: Mount) -> DBCPlan:
     """根据坐骑资源生成 DBC 修改计划。"""
-    spell_profile = SPELL_PROFILES.get(resource.mount_type or "", SPELL_PROFILES["陆地坐骑"]).copy()
+    mount_type = resource.mount_type or "陆地坐骑"
+    spell_template = SPELL_TYPE_TEMPLATES.get(mount_type, SPELL_TYPE_TEMPLATES["陆地坐骑"]).copy()
 
     plans: list[DBCPlanFile] = []
 
@@ -144,9 +194,12 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                             "Flags": int(cmd.get("flags", 0)),
                             "ModelName": str(cmd.get("model_name", "")),
                             "ModelScale": float(cmd.get("model_scale", 1.0)),
-                            "CollisionWidth": float(cmd.get("collision_width", 1.0)),
-                            "CollisionHeight": float(cmd.get("collision_height", 1.0)),
-                            "MountHeight": float(cmd.get("mount_height", 1.0)),
+                            # MCC 自定义坐骑 126/126 实测常量（live 与基线一致）
+                            "BloodID": 3,
+                            "CollisionWidth": float(cmd.get("collision_width", 0.6111)),
+                            "CollisionHeight": float(cmd.get("collision_height", 2.031)),
+                            "MountHeight": float(cmd.get("mount_height", 0.0)),
+                            "AttachedEffectScale": 1.0,
                         },
                     )
                 ],
@@ -168,9 +221,9 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
             ("TextureVariation_2", "texture_variation_2", str, ""),
             ("TextureVariation_3", "texture_variation_3", str, ""),
             ("PortraitTextureName", "portrait_texture_name", str, ""),
-            ("SizeClass", "size_class", int, 0),
+            ("SizeClass", "size_class", int, 1),
             ("BloodID", "blood_id", int, 0),
-            ("NPCSoundID", "npc_sound_id", int, 0),
+            ("NPCSoundID", "npc_sound_id", int, 47),
             ("ParticleColorID", "particle_color_id", int, 0),
             ("CreatureGeosetData", "creature_geoset_data", int, 0),
             ("ObjectEffectPackageID", "object_effect_package_id", int, 0),
@@ -199,32 +252,43 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
             )
         )
 
-    # Spell.dbc
+    # Spell.dbc：召唤法术挂载的生物来自 creature_template.entry（EffectMiscValue_1），
+    # 因此缺少生物 entry 时不生成法术计划（校验层会另行提示不一致）。
     spell = resource.dbc.spell.model_dump(exclude_none=True)
-    if spell and spell.get("id") and cdi and cdi.get("id"):
-        display_id = int(cdi["id"])
+    ct_entry = resource.db.creature_template.entry
+    if spell and spell.get("id") and ct_entry:
+        aura_desc_text, aura_desc_mask = SPELL_AURA_DESCRIPTIONS.get(
+            mount_type, SPELL_AURA_DESCRIPTIONS["陆地坐骑"]
+        )
+        description = str(spell.get("description", "")).strip()
+        if not description:
+            # 描述为空时按类型自动生成，与 MCC 已部署法术的文案结构一致
+            fallback = SPELL_DESCRIPTION_FALLBACKS.get(
+                mount_type, SPELL_DESCRIPTION_FALLBACKS["陆地坐骑"]
+            )
+            spell_name = str(
+                spell.get("name") or resource.official_db.name or resource.model_folder
+            )
+            description = f"召唤或解散一只可供骑乘的{spell_name}。{fallback}"
         spell_fields: dict[str, Any] = {
             "ID": int(spell["id"]),
-            "Mechanic": 21,
-            "Attributes": spell_profile["Attributes"],
-            "AttributesExD": spell_profile["AttributesExD"],
-            "Effect_1": 6,
-            "EffectAura_1": 207,
-            "EffectBasePoints_1": display_id,
-            "EffectAuraPeriod_1": spell_profile["EffectAuraPeriod_1"],
-            "EffectMechanic_1": spell_profile["EffectMechanic_1"],
-            "Effect_2": 6,
-            "EffectAura_2": 207,
-            "EffectAuraPeriod_2": spell_profile["EffectAuraPeriod_2"],
-            "EffectMechanic_2": spell_profile["EffectMechanic_2"],
-            "EffectSpellClassMaskC_3": 7644,
-            "SpellVisualID_1": int(spell.get("visual_id", 0)),
+            **SPELL_COMMON_FIELDS,
+            **spell_template,
+            "EffectMiscValue_1": int(ct_entry),
             "SpellIconID": int(spell.get("icon_id", 0)),
-            "Name_Lang_zhCN": str(
+            "Name_Lang_deDE": str(
                 spell.get("name") or resource.official_db.name or resource.model_folder
             ),
-            "Description_Lang_zhCN": str(spell.get("description", "")),
+            "Description_Lang_deDE": description,
+            "AuraDescription_Lang_deDE": aura_desc_text,
+            "AuraDescription_Lang_Mask": aura_desc_mask,
         }
+        # 真正的 SpellVisualID_1 覆盖（visual_id 字段存的是挂载生物 entry，与此无关）
+        if spell.get("spell_visual_id"):
+            spell_fields["SpellVisualID_1"] = int(spell["spell_visual_id"])
+        # 飞行坐骑 310% 速度档：YAML flight_speed=310 → EffectBasePoints_2=309
+        if spell_template.get("EffectAura_2") == 207 and spell.get("flight_speed"):
+            spell_fields["EffectBasePoints_2"] = int(spell["flight_speed"]) - 1
         plans.append(
             DBCPlanFile(
                 dbc_file="Spell.dbc",
@@ -254,10 +318,11 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                             "ID": int(item["id"]),
                             "ClassID": int(item.get("class", 15)),
                             "SubclassID": int(item.get("subclass", 5)),
-                            "Material": int(item.get("material", -1)),
+                            "Material": int(item.get("material", 4)),
                             "DisplayInfoID": int(item.get("display_id", 0)),
                             "InventoryType": int(item.get("inventory_type", 0)),
                             "SheatheType": int(item.get("sheath", 0)),
+                            "Sound_override_subclassID": -1,
                         },
                     )
                 ],
@@ -268,8 +333,8 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         source_dbc_dir=str(settings.project_root / "data" / "wow-dbc" / "src" / "dbc"),
         output_dbc_dir="output/dbc",
         spell_profile={
-            "mount_type": resource.mount_type,
-            **spell_profile,
+            "mount_type": mount_type,
+            **spell_template,
         },
         plans=plans,
     )
