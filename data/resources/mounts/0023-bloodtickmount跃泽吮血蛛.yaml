@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 4020
     flags: 2
-    model_name: creature\bloodabomination\bloodabomination.m2
+    model_name: creature\bloodtickmount\bloodtickmount.m2
   creature_display_info:
     id: 140020
     model_id: 4020
