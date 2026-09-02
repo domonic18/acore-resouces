@@ -362,11 +362,11 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     # creature_loot_template（仅当 DropInfo 提供掉落来源 entry 时生成）
     # DropInfo.rate 为小数表示（0.01 = 1%），而 creature_loot_template.Chance
     # 字段是 0-100 的百分比（参考 LootMgr.cpp:318 _chance >= 100.0f 视为必掉），
-    # 因此生成 SQL 时需把 rate 乘以 100。
+    # 因此生成 SQL 时需把 rate 乘以 100；round 消除浮点噪声（如 0.035*100）。
     drop = resource.drop
     if drop and drop.entry and it_full and it_full.get("entry"):
         item_entry = int(it_full["entry"])
-        chance = drop.rate * 100.0 if drop.rate is not None else 100.0
+        chance = round(drop.rate * 100.0, 4) if drop.rate is not None else 100.0
         tables.append(
             SQLPlanTable(
                 name="creature_loot_template",

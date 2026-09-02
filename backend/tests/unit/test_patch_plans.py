@@ -350,12 +350,13 @@ def test_build_sql_plan_loot_default_chance_when_rate_missing(sample_mount: Moun
 
 
 def test_build_sql_plan_loot_chance_percent_conversion(sample_mount: Mount) -> None:
-    """DropInfo.rate=0.035 (3.5%) 转换为 SQL Chance 字段时为 3.5。"""
+    """DropInfo.rate=0.035 (3.5%) 转换为 SQL Chance 字段时为精确的 3.5（无浮点噪声）。"""
     sample_mount.drop = DropInfo(entry=1853, rate=0.035)
     plan = build_sql_plan(sample_mount)
 
     loot_table = next(t for t in plan.tables if t.name == "creature_loot_template")
-    assert loot_table.records[0]["Chance"] == pytest.approx(3.5)
+    assert loot_table.records[0]["Chance"] == 3.5
+    assert repr(loot_table.records[0]["Chance"]) == "3.5"
 
 
 # ---------------------------------------------------------------------------
