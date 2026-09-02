@@ -32,7 +32,6 @@ dbc:
     id: 91032
     class: 15
     subclass: 5
-    material: -1
     display_id: 40160
     inventory_type: 0
     sheath: 0
