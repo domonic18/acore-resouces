@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140168
     icon_id: 9936
     name: 奥利瑟拉佐尔的烈焰之爪
-    description: 召唤或解散一个可供骑乘的奥利瑟拉佐尔的烈焰之爪。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的奥利瑟拉佐尔的烈焰之爪。这是一种速度非常快的坐骑。
   item:
     id: 71665
     class: 15
     subclass: 5
-    material: -1
     display_id: 90936
     inventory_type: 0
     sheath: 0

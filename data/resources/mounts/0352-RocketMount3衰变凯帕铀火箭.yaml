@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140348
     icon_id: 10036
     name: 衰变凯帕铀火箭
-    description: 召唤或解散一个可供骑乘的衰变凯帕铀火箭。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的衰变凯帕铀火箭。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 87250
     class: 15
     subclass: 5
-    material: -1
     display_id: 91036
     inventory_type: 0
     sheath: 0
@@ -100,9 +99,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

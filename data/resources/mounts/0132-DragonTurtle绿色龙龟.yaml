@@ -21,7 +21,7 @@ dbc:
     model_id: 104127
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.5
+    scale: 1.0
     opacity: 255
     texture_variation_1: RidingDragonTurtleBlack
     texture_variation_2: RidingDragonTurtleBrown
@@ -31,12 +31,14 @@ dbc:
     visual_id: 9140127
     icon_id: 9989
     name: 巨型黑色龙龟
-    description: 召唤或解散一个可供骑乘的巨型黑色龙龟。这是一种速度非常快的坐骑。
+    description: '召唤或解散一头可供骑乘的巨型黑色龙龟。这种坐骑在陆地上行动不是很快，但是在水里就大不一样了！
+
+
+      基于她冷静稳重的天性，任何提高或降低坐骑速度的效果都对她的游泳速度无效。'
   item:
     id: 87802
     class: 15
     subclass: 5
-    material: -1
     display_id: 90989
     inventory_type: 0
     sheath: 0
@@ -74,7 +76,7 @@ db:
     display_id: 140127
   item_template:
     entry: 87802
-    name: 巨型黑色龙龟
+    name: 巨型黑色龙龟缰绳
     class: 15
     subclass: 5
     displayid: 90989

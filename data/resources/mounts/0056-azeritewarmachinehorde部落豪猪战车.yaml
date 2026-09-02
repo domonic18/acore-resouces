@@ -17,7 +17,7 @@ dbc:
     model_id: 4053
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 0.5
     opacity: 255
     texture_variation_1: armorreflect_hard
     texture_variation_2: armorreflect_hard
@@ -26,11 +26,11 @@ dbc:
     id: 80053
     visual_id: 9140053
     icon_id: 3766
+    description: 召唤或解散一个可供骑乘的部落豪猪战车。这是一种速度非常快的坐骑。
   item:
     id: 91053
     class: 15
     subclass: 5
-    material: -1
     display_id: 56884
     inventory_type: 0
     sheath: 0

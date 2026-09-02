@@ -2,11 +2,6 @@ id: 150
 model_folder: encrypted08希尔维安神游者
 debug_passed: true
 added: true
-drop:
-  entry: 24850
-  instance: 太阳之井高地
-  boss: 卡雷苟斯
-  rate: 0.02
 official_db:
   name: 希尔维安神游者
   spell_icon_name: inv_encrypted08
@@ -33,12 +28,12 @@ dbc:
     visual_id: 9140145
     icon_id: 19206
     name: 希尔维安神游者
-    description: 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    description: 召唤或解散一只可供骑乘的希尔维安神游者。只能在外域或诺森德召唤这种坐骑。
+    flight_speed: 310
   item:
     id: 166776
     class: 15
     subclass: 5
-    material: -1
     display_id: 100206
     inventory_type: 0
     sheath: 0
@@ -102,9 +97,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

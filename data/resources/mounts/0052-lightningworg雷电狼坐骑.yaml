@@ -23,7 +23,7 @@ dbc:
     model_id: 4049
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 1.25
     opacity: 255
     texture_variation_1: lightningworg_black
     texture_variation_2: lightningworg_black
@@ -33,12 +33,11 @@ dbc:
     visual_id: 9140049
     icon_id: 1178
     name: 雷电狼
-    description: 召唤或解散你的铁甲战狼。
+    description: 召唤或解散一只可供骑乘的雷电狼。这是一种速度非常快的坐骑。
   item:
     id: 91049
     class: 15
     subclass: 5
-    material: -1
     display_id: 16208
     inventory_type: 0
     sheath: 0

@@ -2,11 +2,6 @@ id: 145
 model_folder: elitehippogryph翡翠角鹰兽
 debug_passed: true
 added: true
-drop:
-  entry: 186667
-  instance: 祖阿曼
-  boss: 洛尔卡尼的背包
-  rate: 0.03
 official_db:
   name: 翡翠角鹰兽
   spell_icon_name: inv_misc_elitehippogryph
@@ -31,12 +26,11 @@ dbc:
     visual_id: 9140140
     icon_id: 25206
     name: 翡翠角鹰兽
-    description: 召唤或解散一个可供骑乘的翡翠角鹰兽。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的翡翠角鹰兽。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 106246
     class: 15
     subclass: 5
-    material: -1
     display_id: 106206
     inventory_type: 0
     sheath: 0
@@ -100,9 +94,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

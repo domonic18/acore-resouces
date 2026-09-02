@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140176
     icon_id: 19983
     name: 艾特洛之魂
-    description: 召唤或解散艾特洛之魂。
+    description: 召唤或解散一只可供骑乘的艾特洛之魂。这是一种速度非常快的坐骑。
   item:
     id: 131734
     class: 15
     subclass: 5
-    material: -1
     display_id: 100983
     inventory_type: 0
     sheath: 0

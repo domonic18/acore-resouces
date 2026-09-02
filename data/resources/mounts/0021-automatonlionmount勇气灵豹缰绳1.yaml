@@ -22,7 +22,7 @@ dbc:
     sound_id: 0
     extra_display_information_id: 0
     scale: 1.0
-    opacity: 255
+    opacity: 150
     texture_variation_1: automatonlionmount_bronze
     texture_variation_2: automatonlionmount_bronze
     texture_variation_3: automatonlionmount_bronze
@@ -36,7 +36,6 @@ dbc:
     id: 91018
     class: 15
     subclass: 5
-    material: -1
     display_id: 16208
     inventory_type: 0
     sheath: 0

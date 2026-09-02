@@ -21,7 +21,7 @@ dbc:
     model_id: 4003
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 1.25
     opacity: 255
     texture_variation_1: DemonHunterMountBody
     texture_variation_2: DemonHunterMountBody
@@ -36,7 +36,6 @@ dbc:
     id: 91003
     class: 15
     subclass: 5
-    material: -1
     display_id: 31511
     inventory_type: 0
     sheath: 0

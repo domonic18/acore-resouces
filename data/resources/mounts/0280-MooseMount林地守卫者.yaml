@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140276
     icon_id: 27385
     name: 林地守卫者
-    description: 召唤或解散一个可供骑乘的林地守卫者。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的林地守卫者。这是一种速度非常快的坐骑。
   item:
     id: 128422
     class: 15
     subclass: 5
-    material: -1
     display_id: 108385
     inventory_type: 0
     sheath: 0
@@ -74,7 +73,7 @@ db:
     display_id: 140276
   item_template:
     entry: 128422
-    name: 林地守卫者
+    name: 林地守卫者缰绳
     class: 15
     subclass: 5
     displayid: 108385

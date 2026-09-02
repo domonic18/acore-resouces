@@ -31,12 +31,12 @@ dbc:
     visual_id: 9140228
     icon_id: 21791
     name: 斯克维里加全地形载具
-    description: 召唤或解散一个可供骑乘的斯克维里加全地形载具。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的斯克维里加全地形载具。只能在外域或诺森德召唤这种坐骑。
+    flight_speed: 310
   item:
     id: 153594
     class: 15
     subclass: 5
-    material: -1
     display_id: 102791
     inventory_type: 0
     sheath: 0
@@ -117,6 +117,6 @@ db:
     arcane_res: 0
     VerifiedBuild: 12340
 resource_type: mount
-mount_type: 飞行坐骑
+mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械

@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140371
     icon_id: 24430
     name: 柔光法力鳐
-    description: 召唤或解散一个可供骑乘的柔光法力鳐。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的柔光法力鳐。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 152844
     class: 15
     subclass: 5
-    material: -1
     display_id: 105430
     inventory_type: 0
     sheath: 0
@@ -92,7 +91,7 @@ db:
     spellcooldown_2: -1
     spellcategory_2: 0
     spellcategorycooldown_2: -1
-    Quality: 3
+    Quality: 4
     AllowableClass: -1
     AllowableRace: 2047
     BuyCount: 1
@@ -100,9 +99,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140344
     icon_id: 27403
     name: 鬼灵战马
-    description: 召唤或解散一个可供骑乘的鬼灵战马。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的鬼灵战马。这是一种速度非常快的坐骑。
   item:
     id: 64998
     class: 15
     subclass: 5
-    material: -1
     display_id: 108403
     inventory_type: 0
     sheath: 0
@@ -74,7 +73,7 @@ db:
     display_id: 140344
   item_template:
     entry: 64998
-    name: 鬼灵战马
+    name: 鬼灵战马的缰绳
     class: 15
     subclass: 5
     displayid: 108403

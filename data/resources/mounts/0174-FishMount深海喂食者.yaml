@@ -33,12 +33,14 @@ dbc:
     visual_id: 9140169
     icon_id: 19616
     name: 深海喂食者
-    description: 召唤或解散一个深海喂食者。
+    description: '召唤或解散一头可供骑乘的深海喂食者。这种坐骑在陆地上行动不是很快，但是在水里就大不一样了！
+
+
+      基于她冷静稳重的天性，任何提高或降低坐骑速度的效果都对她的游泳速度无效。'
   item:
     id: 138811
     class: 15
     subclass: 5
-    material: -1
     display_id: 100616
     inventory_type: 0
     sheath: 0

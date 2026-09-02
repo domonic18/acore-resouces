@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140300
     icon_id: 10003
     name: 蓝紫熊猫人凤凰
-    description: 召唤或解散一个可供骑乘的蓝紫熊猫人凤凰。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的蓝紫熊猫人凤凰。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 90712
     class: 15
     subclass: 5
-    material: -1
     display_id: 91003
     inventory_type: 0
     sheath: 0
@@ -70,7 +69,7 @@ db:
     display_id: 140300
   item_template:
     entry: 90712
-    name: 蓝紫熊猫人凤凰
+    name: 蓝紫熊猫人凤凰缰绳
     class: 15
     subclass: 5
     displayid: 91003
@@ -96,9 +95,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

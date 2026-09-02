@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140017
     icon_id: 3443
     name: 茉莉
-    description: 召唤或解散这种坐骑。
+    description: 召唤或解散一只可供骑乘的茉莉。这是一种速度非常快的坐骑。
   item:
     id: 90659
     class: 15
     subclass: 5
-    material: -1
     display_id: 31511
     inventory_type: 0
     sheath: 0

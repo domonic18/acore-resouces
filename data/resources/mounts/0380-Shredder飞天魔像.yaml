@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140376
     icon_id: 10040
     name: 机械化木材采集器
-    description: 召唤或解散一个可供骑乘的机械化木材采集器。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的机械化木材采集器。这是一种速度非常快的坐骑。
   item:
     id: 140500
     class: 15
     subclass: 5
-    material: -1
     display_id: 91040
     inventory_type: 0
     sheath: 0
@@ -96,9 +95,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

@@ -26,11 +26,11 @@ dbc:
     id: 80019
     visual_id: 9140019
     icon_id: 1180
+    description: 召唤或解散一只可供骑乘的骨龙。这是一种速度非常快的坐骑。
   item:
     id: 91019
     class: 15
     subclass: 5
-    material: -1
     display_id: 17494
     inventory_type: 0
     sheath: 0

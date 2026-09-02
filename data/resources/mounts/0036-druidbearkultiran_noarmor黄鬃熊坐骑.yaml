@@ -30,11 +30,11 @@ dbc:
     id: 80033
     visual_id: 9140033
     icon_id: 957
+    description: 召唤或解散一只可供骑乘的黄鬃熊。这是一种速度非常快的坐骑。
   item:
     id: 91033
     class: 15
     subclass: 5
-    material: -1
     display_id: 40160
     inventory_type: 0
     sheath: 0

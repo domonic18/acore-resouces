@@ -31,21 +31,20 @@ dbc:
   spell:
     id: 80212
     visual_id: 9140212
-    icon_id: 957
+    icon_id: 26603
     name: 骑乘巨鼠
-    description: 召唤或解散一只可供骑乘的骑乘巨鼠。
+    description: 召唤或解散一只可供骑乘的骑乘巨鼠。这是一种速度非常快的坐骑。
   item:
     id: 153593
     class: 15
     subclass: 5
-    material: -1
     display_id: 102791
     inventory_type: 0
     sheath: 0
 db:
   creature_template:
     entry: 9140212
-    name: 骑乘巨鼠
+    name: 跳跳大王
     subname: ''
     IconName: ''
     AIName: ''
@@ -76,7 +75,7 @@ db:
     display_id: 140212
   item_template:
     entry: 153593
-    name: 骑乘巨鼠
+    name: 跳跳大王
     class: 15
     subclass: 5
     displayid: 102791

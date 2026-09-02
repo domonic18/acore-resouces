@@ -17,7 +17,7 @@ dbc:
     model_id: 4045
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 1.75
     opacity: 255
     texture_variation_1: IronJuggernautMountGrey1
     texture_variation_2: IronJuggernautMountGrey1
@@ -32,7 +32,6 @@ dbc:
     id: 91045
     class: 15
     subclass: 5
-    material: -1
     display_id: 56884
     inventory_type: 0
     sheath: 0

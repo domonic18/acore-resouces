@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140199
     icon_id: 26261
     name: 地精三轮摩托
-    description: 召唤或解散一个可供骑乘的地精三轮摩托。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的地精三轮摩托。这是一种速度非常快的坐骑。
   item:
     id: 62462
     class: 15
     subclass: 5
-    material: -1
     display_id: 107261
     inventory_type: 0
     sheath: 0

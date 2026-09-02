@@ -17,7 +17,7 @@ dbc:
     model_id: 4012
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 0.699999988079071
     opacity: 255
     texture_variation_1: devourermediummount_dark
     texture_variation_2: devourermediummount_dark
@@ -32,7 +32,6 @@ dbc:
     id: 91012
     class: 15
     subclass: 5
-    material: -1
     display_id: 59542
     inventory_type: 0
     sheath: 0

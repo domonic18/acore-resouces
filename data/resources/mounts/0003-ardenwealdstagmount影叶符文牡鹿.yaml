@@ -15,7 +15,7 @@ dbc:
   creature_model_data:
     id: 4000
     flags: 2
-    model_name: creature\ardenwealdstag\ardenwealdstagmount.m2
+    model_name: creature\ardenwealdstagmount\ardenwealdstagmount.m2
   creature_display_info:
     id: 140000
     model_id: 4000
@@ -36,7 +36,6 @@ dbc:
     id: 91000
     class: 15
     subclass: 5
-    material: -1
     display_id: 95357
     inventory_type: 0
     sheath: 0

@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140243
     icon_id: 11194
     name: 加氏灭世机甲
-    description: 召唤或解散你的加氏灭世机甲。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    description: 召唤或解散一只可供骑乘的加氏灭世机甲。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 166518
     class: 15
     subclass: 5
-    material: -1
     display_id: 92194
     inventory_type: 0
     sheath: 0
@@ -98,9 +97,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

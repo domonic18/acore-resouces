@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140320
     icon_id: 9960
     name: 迦拉卡斯的子嗣
-    description: 召唤或解散一个可供骑乘的迦拉卡斯的子嗣。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的迦拉卡斯的子嗣。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 104208
     class: 15
     subclass: 5
-    material: -1
     display_id: 95968
     inventory_type: 0
     sheath: 0
@@ -74,7 +73,7 @@ db:
     display_id: 140320
   item_template:
     entry: 104208
-    name: 迦拉卡斯的子嗣
+    name: 迦拉卡斯的缰绳
     class: 15
     subclass: 5
     displayid: 95968
@@ -100,9 +99,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

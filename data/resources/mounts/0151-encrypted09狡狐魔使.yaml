@@ -31,14 +31,14 @@ dbc:
   spell:
     id: 80146
     visual_id: 9140146
-    icon_id: 19207
+    icon_id: 9989
     name: 狡狐魔使
-    description: 召唤或解散这种坐骑。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    description: 召唤或解散一只可供骑乘的狡狐魔使。这是一种速度非常快的坐骑。
+    spell_visual_id: 5160
   item:
     id: 166775
     class: 15
     subclass: 5
-    material: -1
     display_id: 100207
     inventory_type: 0
     sheath: 0
@@ -102,9 +102,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 20
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 50
     bonding: 1
     Material: 4
     sheath: 0
@@ -119,6 +119,6 @@ db:
     arcane_res: 0
     VerifiedBuild: 12340
 resource_type: mount
-mount_type: 陆地坐骑
+mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 狐狸

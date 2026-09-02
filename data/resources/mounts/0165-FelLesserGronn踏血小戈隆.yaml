@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140160
     icon_id: 23837
     name: 踏血小戈隆
-    description: 召唤或解散一个可供骑乘的踏血小戈隆。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的踏血小戈隆。这是一种速度非常快的坐骑。
   item:
     id: 116383
     class: 15
     subclass: 5
-    material: -1
     display_id: 104837
     inventory_type: 0
     sheath: 0
@@ -92,7 +91,7 @@ db:
     spellcooldown_2: -1
     spellcategory_2: 0
     spellcategorycooldown_2: -1
-    Quality: 4
+    Quality: 3
     AllowableClass: -1
     AllowableRace: 2047
     BuyCount: 1

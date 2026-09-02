@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140115
     icon_id: 27083
     name: 火山石幼龙
-    description: 召唤或解散一个可供骑乘的火山石幼龙。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的火山石幼龙。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 62900
     class: 15
     subclass: 5
-    material: -1
     display_id: 108083
     inventory_type: 0
     sheath: 0
@@ -74,7 +73,7 @@ db:
     display_id: 140115
   item_template:
     entry: 62900
-    name: 火山石幼龙
+    name: 火山石幼龙缰绳
     class: 15
     subclass: 5
     displayid: 108083
@@ -100,9 +99,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140334
     icon_id: 10017
     name: 皇家魁麟
-    description: 召唤或解散一个可供骑乘的皇家魁麟。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的皇家魁麟。这是一种速度非常快的坐骑。
   item:
     id: 85870
     class: 15
     subclass: 5
-    material: -1
     display_id: 91017
     inventory_type: 0
     sheath: 0

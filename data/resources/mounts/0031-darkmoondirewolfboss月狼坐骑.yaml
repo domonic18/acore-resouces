@@ -26,11 +26,11 @@ dbc:
     id: 80028
     visual_id: 9140028
     icon_id: 1178
+    description: 召唤或解散一只可供骑乘的月狼。这是一种速度非常快的坐骑。
   item:
     id: 91028
     class: 15
     subclass: 5
-    material: -1
     display_id: 16207
     inventory_type: 0
     sheath: 0
