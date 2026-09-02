@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140050
     icon_id: 33064
     name: 角龙
-    description: 召唤或解散一个可供骑乘的角龙。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的角龙。这是一种速度非常快的坐骑。
   item:
     id: 91050
     class: 15
     subclass: 5
-    material: -1
     display_id: 17494
     inventory_type: 0
     sheath: 0

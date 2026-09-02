@@ -114,9 +114,7 @@ def _list_files_by_extensions(
 ) -> list[Path]:
     """大小写不敏感地收集指定扩展名的文件。"""
     ext_lower = {ext.lower() for ext in extensions}
-    return sorted(
-        p for p in directory.rglob("*") if p.is_file() and p.suffix.lower() in ext_lower
-    )
+    return sorted(p for p in directory.rglob("*") if p.is_file() and p.suffix.lower() in ext_lower)
 
 
 @router.get("/model/{model_folder:path}")

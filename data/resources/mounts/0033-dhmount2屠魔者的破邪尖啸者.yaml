@@ -27,12 +27,12 @@ dbc:
     visual_id: 9140030
     icon_id: 18891
     name: 屠魔者的破邪尖啸者
-    description: 召唤或解散一只可供骑乘的屠魔者的破邪尖啸者。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的屠魔者的破邪尖啸者。只能在外域或诺森德召唤这种坐骑。
+    spell_visual_id: 5160
   item:
     id: 91030
     class: 15
     subclass: 5
-    material: -1
     display_id: 99891
     inventory_type: 0
     sheath: 0

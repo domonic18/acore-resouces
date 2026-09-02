@@ -21,7 +21,7 @@ dbc:
     model_id: 104340
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 2.0
     opacity: 255
     texture_variation_1: RatMountBodyBrown
     texture_variation_2: RatMountBodyBrown
@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140340
     icon_id: 29608
     name: 骑乘巨鼠
-    description: 召唤或解散一个可供骑乘的骑乘巨鼠。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的骑乘巨鼠。这是一种速度非常快的坐骑。
   item:
     id: 138387
     class: 15
     subclass: 5
-    material: -1
     display_id: 110608
     inventory_type: 0
     sheath: 0
@@ -92,7 +91,7 @@ db:
     spellcooldown_2: -1
     spellcategory_2: 0
     spellcategorycooldown_2: -1
-    Quality: 3
+    Quality: 4
     AllowableClass: -1
     AllowableRace: 2047
     BuyCount: 1

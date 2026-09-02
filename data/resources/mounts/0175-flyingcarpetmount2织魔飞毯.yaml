@@ -31,12 +31,12 @@ dbc:
     visual_id: 9140170
     icon_id: 31627
     name: 织魔飞毯
-    description: 召唤或解散一个可供骑乘的织魔飞毯。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的织魔飞毯。这是一种速度非常快的坐骑。
+    spell_visual_id: 12844
   item:
     id: 143764
     class: 15
     subclass: 5
-    material: -1
     display_id: 112627
     inventory_type: 0
     sheath: 0
@@ -100,9 +100,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

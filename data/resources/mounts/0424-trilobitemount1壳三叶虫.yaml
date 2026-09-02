@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140420
     icon_id: 32406
     name: 赤壳三叶虫
-    description: 召唤或解散一个可供骑乘的赤壳三叶虫。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的赤壳三叶虫。这是一种速度非常快的坐骑。
   item:
     id: 166464
     class: 15
     subclass: 5
-    material: -1
     display_id: 113406
     inventory_type: 0
     sheath: 0

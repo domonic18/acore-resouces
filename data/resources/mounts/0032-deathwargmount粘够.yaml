@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140029
     icon_id: 957
     name: 勇猛的战狼
-    description: 召唤或解散一头勇猛的骑乘战狼。
+    description: 召唤或解散一只可供骑乘的勇猛的战狼。这是一种速度非常快的坐骑。
   item:
     id: 70910
     class: 15
     subclass: 5
-    material: -1
     display_id: 40160
     inventory_type: 0
     sheath: 0

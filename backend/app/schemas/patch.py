@@ -9,28 +9,20 @@ from pydantic import BaseModel, ConfigDict, Field
 PatchJobStatus = Literal["requested", "generated", "applied", "failed"]
 
 
-class PatchResourceRef(BaseModel):
-    """补丁任务关联的资源引用。"""
-
-    model_config = ConfigDict(extra="ignore")
-
-    type: Literal["mount", "pet", "npc"]
-    id: int
-    name: str
-    model_folder: str
-
-
 class PatchArtifacts(BaseModel):
     """补丁任务产物清单。"""
 
     model_config = ConfigDict(extra="allow")
 
-    input: dict[str, str] = Field(default_factory=dict)
     output: dict[str, str] = Field(default_factory=dict)
 
 
 class PatchJobManifest(BaseModel):
-    """单个补丁任务的 manifest。"""
+    """单个补丁任务的元数据。
+
+    资源定义的唯一真相源是 data/resources/ 下的 YAML 文件；
+    resource_name / resource_model_folder 仅为列表展示用的快照字段。
+    """
 
     model_config = ConfigDict(extra="allow")
 
@@ -42,8 +34,7 @@ class PatchJobManifest(BaseModel):
     resource_name: str
     resource_model_folder: str
     status: PatchJobStatus
-    input_dir: str
-    output_dir: str | None = None
+    updated_at: str | None = None
     artifacts: PatchArtifacts = Field(default_factory=PatchArtifacts)
     completed_at: str | None = None
     summary: str | None = None

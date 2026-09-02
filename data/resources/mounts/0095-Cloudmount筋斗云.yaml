@@ -21,7 +21,7 @@ dbc:
     model_id: 104090
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.5
+    scale: 2.0
     opacity: 255
     texture_variation_1: cloudMount
     texture_variation_2: CloudMountPurple
@@ -31,12 +31,12 @@ dbc:
     visual_id: 9140090
     icon_id: 9900
     name: 红色筋斗云
-    description: 召唤或解散一个可供骑乘的红色筋斗云。这是一种速度非常快的坐骑。
+    description: 召唤或解散一朵可供骑乘的红色筋斗云。只能在外域或诺森德召唤这种坐骑。
+    spell_visual_id: 12844
   item:
     id: 89363
     class: 15
     subclass: 5
-    material: -1
     display_id: 90900
     inventory_type: 0
     sheath: 0
@@ -100,9 +100,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

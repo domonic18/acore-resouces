@@ -30,7 +30,7 @@ const FIELDS: FieldDef[] = [
   {
     key: "id",
     label: "ID",
-    description: "显示信息 ID，与 creature_template.modelid1 关联，只读",
+    description: "显示信息 ID，与 creature_model_info.display_id 关联，只读",
     type: "readonly-int",
   },
   {

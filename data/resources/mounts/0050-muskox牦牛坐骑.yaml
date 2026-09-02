@@ -20,7 +20,7 @@ dbc:
     model_id: 4047
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 1.5
     opacity: 255
     texture_variation_1: muskox_white
     texture_variation_2: muskox_white
@@ -35,7 +35,6 @@ dbc:
     id: 91047
     class: 15
     subclass: 5
-    material: -1
     display_id: 44590
     inventory_type: 0
     sheath: 0

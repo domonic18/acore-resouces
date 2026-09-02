@@ -21,26 +21,25 @@ dbc:
     scale: 1.0
     opacity: 255
     texture_variation_1: warriormount_armor
-    texture_variation_2: warriormount_armor
-    texture_variation_3: warriormount_armor
+    texture_variation_2: warlockmount
+    texture_variation_3: warlockmount
   spell:
     id: 80449
     visual_id: 9140449
     icon_id: 32706
     name: 扭曲虚空之王的混沌愤怒战马
-    description: 召唤或解散你的扭曲虚空之王的混沌愤怒战马。这是一种飞行坐骑。
+    description: 召唤或解散一只可供骑乘的扭曲虚空之王的混沌愤怒战马。这是一种速度非常快的坐骑。
   item:
     id: 143638
     class: 15
     subclass: 5
-    material: -1
     display_id: 113706
     inventory_type: 0
     sheath: 0
 db:
   creature_template:
     entry: 9140449
-    name: 扭曲虚空之王的混沌愤怒战马
+    name: 虚空领主的诅咒愤怒战马
     subname: ''
     IconName: ''
     AIName: ''
@@ -71,7 +70,7 @@ db:
     display_id: 140449
   item_template:
     entry: 143638
-    name: 扭曲虚空之王的混沌愤怒战马
+    name: 虚空领主的诅咒愤怒战马
     class: 15
     subclass: 5
     displayid: 113706

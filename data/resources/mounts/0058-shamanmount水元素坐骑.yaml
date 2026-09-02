@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140055
     icon_id: 2579
     name: 水元素
-    description: 召唤或解散一个可供骑乘的水元素。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的水元素。这是一种速度非常快的坐骑。
   item:
     id: 91055
     class: 15
     subclass: 5
-    material: -1
     display_id: 8025
     inventory_type: 0
     sheath: 0

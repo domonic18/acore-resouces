@@ -28,12 +28,11 @@ dbc:
     visual_id: 9140051
     icon_id: 1176
     name: 勇猛的战驹
-    description: 召唤或解散一匹勇猛的骑乘战驹。
+    description: 召唤或解散一只可供骑乘的勇猛的战驹。这是一种速度非常快的坐骑。
   item:
     id: 91051
     class: 15
     subclass: 5
-    material: -1
     display_id: 13108
     inventory_type: 0
     sheath: 0

@@ -29,19 +29,18 @@ dbc:
     visual_id: 9140175
     icon_id: 19982
     name: 幽灵军马
-    description: 召唤或解散一匹可供骑乘的幽灵军马。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    description: 召唤或解散一只可供骑乘的幽灵军马。这是一种速度非常快的坐骑。
   item:
     id: 93671
     class: 15
     subclass: 5
-    material: -1
     display_id: 100982
     inventory_type: 0
     sheath: 0
 db:
   creature_template:
     entry: 9140175
-    name: 幽灵军马
+    name: 幽灵军马的颅骨
     subname: ''
     IconName: ''
     AIName: ''
@@ -72,7 +71,7 @@ db:
     display_id: 140175
   item_template:
     entry: 93671
-    name: 幽灵军马
+    name: 幽灵军马的颅骨
     class: 15
     subclass: 5
     displayid: 100982

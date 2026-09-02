@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140068
     icon_id: 33031
     name: 高风暗鬃狮
-    description: 召唤或解散一个可供骑乘的高风暗鬃狮。这是一种速度非常快的坐骑。
+    description: 召唤或解散一头可供骑乘的高风暗鬃狮。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 183618
     class: 15
     subclass: 5
-    material: -1
     display_id: 114031
     inventory_type: 0
     sheath: 0
@@ -100,9 +99,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

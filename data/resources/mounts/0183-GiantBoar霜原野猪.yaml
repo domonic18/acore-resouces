@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140178
     icon_id: 19993
     name: 钢鬃地狱野猪
-    description: 召唤或解散一个可供骑乘的钢鬃地狱野猪。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的钢鬃地狱野猪。这是一种速度非常快的坐骑。
   item:
     id: 128480
     class: 15
     subclass: 5
-    material: -1
     display_id: 100993
     inventory_type: 0
     sheath: 0
@@ -88,7 +87,7 @@ db:
     spellcooldown_2: -1
     spellcategory_2: 0
     spellcategorycooldown_2: -1
-    Quality: 3
+    Quality: 4
     AllowableClass: -1
     AllowableRace: 2047
     BuyCount: 1

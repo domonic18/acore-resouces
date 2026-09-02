@@ -29,14 +29,13 @@ dbc:
   spell:
     id: 80091
     visual_id: 9140091
-    icon_id: 9914
+    icon_id: 3170
     name: 帝王骑乘仙鹤
-    description: 召唤或解散一个可供骑乘的帝王骑乘仙鹤。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的帝王骑乘仙鹤。这是一种速度非常快的坐骑。
   item:
     id: 87783
     class: 15
     subclass: 5
-    material: -1
     display_id: 90914
     inventory_type: 0
     sheath: 0
@@ -74,10 +73,10 @@ db:
     display_id: 140091
   item_template:
     entry: 87783
-    name: 帝王骑乘仙鹤
+    name: 帝王骑乘仙鹤缰绳
     class: 15
     subclass: 5
-    displayid: 40117
+    displayid: 90914
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

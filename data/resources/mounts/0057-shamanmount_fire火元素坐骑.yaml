@@ -31,20 +31,19 @@ dbc:
     id: 80054
     visual_id: 9140054
     icon_id: 3170
-    name: 先知的狂怒风暴
-    description: 召唤或解散你的先知的狂怒风暴。这是一种飞行坐骑。
+    name: 火元素
+    description: 召唤或解散一只可供骑乘的火元素。这是一种速度非常快的坐骑。
   item:
     id: 91054
     class: 15
     subclass: 5
-    material: -1
     display_id: 21583
     inventory_type: 0
     sheath: 0
 db:
   creature_template:
     entry: 9140054
-    name: 先知的狂怒风暴
+    name: 火元素
     subname: ''
     IconName: ''
     AIName: ''
@@ -75,7 +74,7 @@ db:
     display_id: 140054
   item_template:
     entry: 91054
-    name: 先知的狂怒风暴
+    name: 火元素
     class: 15
     subclass: 5
     displayid: 21583
@@ -118,6 +117,6 @@ db:
     arcane_res: 0
     VerifiedBuild: 12340
 resource_type: mount
-mount_type: 飞行坐骑
+mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 风暴元素

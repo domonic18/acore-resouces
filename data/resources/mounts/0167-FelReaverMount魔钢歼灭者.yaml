@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140162
     icon_id: 9935
     name: 魔钢歼灭者
-    description: 召唤或解散一头可供骑乘的魔钢歼灭者。这是一种飞行坐骑。
+    description: 召唤或解散一只可供骑乘的魔钢歼灭者。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 123890
     class: 15
     subclass: 5
-    material: -1
     display_id: 90935
     inventory_type: 0
     sheath: 0
@@ -83,7 +82,7 @@ db:
     spellcooldown_1: -1
     spellcategory_1: 330
     spellcategorycooldown_1: 3000
-    spellid_2: 80162
+    spellid_2: 80160
     spelltrigger_2: 6
     spellcharges_2: 0
     spellppmRate_2: 0
@@ -98,9 +97,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

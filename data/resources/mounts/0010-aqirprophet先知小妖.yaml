@@ -2,11 +2,6 @@ id: 10
 model_folder: aqirprophet先知小妖
 debug_passed: true
 added: false
-drop:
-  entry: 179564
-  instance: 厄运之槌
-  boss: 戈多克贡品
-  rate: 0.01
 official_db:
   name: 先知小妖
   spell_icon_name: ability_hunter_pet_windserpent
@@ -30,11 +25,11 @@ dbc:
     id: 80007
     visual_id: 9140007
     icon_id: 1589
+    description: 召唤或解散一只可供骑乘的先知小妖。这是一种速度非常快的坐骑。
   item:
     id: 91007
     class: 15
     subclass: 5
-    material: -1
     display_id: 1007
     inventory_type: 0
     sheath: 0

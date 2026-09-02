@@ -21,7 +21,7 @@ dbc:
     model_id: 4016
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 0.5
     opacity: 255
     texture_variation_1: eyeballjellyfishmount_purple
     texture_variation_2: eyeballjellyfishmount_purple
@@ -32,11 +32,11 @@ dbc:
     icon_id: 19314
     name: 尼奥罗萨全视者
     description: 召唤或解散一个可供骑乘的尼奥罗萨全视者。这是一种速度非常快的坐骑。
+    spell_visual_id: 5160
   item:
     id: 91016
     class: 15
     subclass: 5
-    material: -1
     display_id: 33971
     inventory_type: 0
     sheath: 0

@@ -128,10 +128,8 @@ export interface PatchJob {
   resource_name: string;
   resource_model_folder: string;
   status: "requested" | "generated" | "applied" | "failed";
-  input_dir: string;
-  output_dir: string;
+  updated_at: string | null;
   artifacts: {
-    input: Record<string, string>;
     output: Record<string, string>;
   };
   completed_at: string | null;

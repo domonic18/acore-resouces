@@ -6,7 +6,7 @@
 2. **明确的 Schema 约束**：`backend/app/schemas/` 下每个子结构都是 Pydantic 模型，字段类型与归一化规则可直接复用。
 3. **可调用工具**：Agent 可调用项目内的 Typer CLI 完成 CRUD、校验、补丁任务。
 4. **变更可追溯**：所有资源定义文件纳入 Git，Agent 修改后通过 Git diff 可审查。
-5. **安全可控**：Agent 不直接覆盖 `*.dbc` / `acore-world` 数据库，只生成原料包与 SQL 补丁，由 `patch build` 与人工确认后落地。
+5. **安全可控**：Agent 不直接覆盖 `*.dbc` / `acore-world` 数据库，只创建补丁任务并生成 SQL 补丁，由 `patch build` 与人工确认后落地。
 6. **本地优先**：Agent 读取本地 YAML/JSON 文件，并通过本地 CLI / REST API 完成写入操作。
 
 ---
@@ -97,7 +97,7 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | `xlsx` | `import` | 从 `.xlsx` 一次性导入（支持 `--dry-run` / `--limit` / `--no-check-duplicates`） |
 | `wowhead` | `lookup-pet` / `lookup-mount` | Wowhead 官方数据查询，自动回退 WotLK/零售版与中英文 |
 | `wago` | `builds` / `latest` / `search` / `download` | wago.tools CASC 文件查询与下载 |
-| `patch` | `export` | 为单个资源生成补丁原料包（`--type`、`--id`） |
+| `patch` | `export` | 为单个资源创建补丁任务（`--type`、`--id`） |
 | | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`） |
 | | `publish` | 发布 MPQ 到 `workspace/dist/`（`--start-number`、`--dry-run`） |
 | | `list` / `get` / `update` | 补丁任务查询与状态更新 |
@@ -162,10 +162,11 @@ uv run --project backend python -m app.cli wago download \
 
 ### 3.6 补丁任务接口
 
-补丁工作流分为三段：**导出原料** → **构建产物** → **发布分发**。
+补丁工作流分为三段：**创建补丁任务** → **构建产物** → **发布分发**。
 
 ```bash
-# 1) 为单个资源生成补丁原料包到 workspace/patch-jobs/{job_id}/
+# 1) 为单个资源创建补丁任务（仅写 workspace/patch-jobs/{job_id}/job.json，
+#    资源以 data/resources/ 真相源为准，构建时现场读取）
 uv run --project backend python -m app.cli patch export --type mount --id 3
 
 # 2) 批量构建（处理所有 requested 状态的任务）
@@ -174,7 +175,7 @@ uv run --project backend python -m app.cli patch build --all-requested
 # 或指定任务 ID
 uv run --project backend python -m app.cli patch build --jobs mount_0003 --jobs mount_0004
 
-# 仅校验冲突，不修改文件
+# 仅校验冲突，现场生成的计划写入各任务 plans/ 子目录供审查
 uv run --project backend python -m app.cli patch build --all-requested --dry-run
 
 # 3) 发布 MPQ 到 workspace/dist/patch-zhCN-{N}.mpq
@@ -187,30 +188,26 @@ uv run --project backend python -m app.cli patch get mount_0003
 
 `patch build` 会：
 
-1. 读取 `workspace/patch-jobs/{job_id}/input/` 下的原料包。
-2. 调用 `wow-dbc-tool` 编辑 `data/wow-dbc/src/dbc/*.dbc`，输出到 `output/dbc/`。
-3. 生成 `output/db_patch.sql` 并追加到 `data/sql/azerothcore-updates/`（软链接到 `acore-deploy`）。
-4. 调用 `wow-mpq-cli` 打包到 `workspace/mpq/{batch}/patch-{id}.mpq`。
-5. 输出 `workspace/reports/{batch}.json` 校验报告，更新 `manifest.json` 状态为 `generated`。
+1. 按 `job.json` 中的 `resource_id` 现场读取 `data/resources/` 最新 YAML，在内存中生成 DBC/SQL 计划与资源清单（不落盘快照）。
+2. 调用 `wow-dbc-tool` 编辑 `data/wow-dbc/src/dbc/*.dbc`（仅新增缺失记录）。
+3. 按坐骑生成 SQL 到 `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`（软链接到 `acore-deploy`）。
+4. 调用 `wow-mpq-cli` 打包到 `workspace/mpq/{batch}/patch-mounts.mpq`。
+5. 输出 `workspace/reports/{batch}/validation-report.json` 校验报告，更新 `job.json` 状态为 `generated`。
 
-### 3.7 原料包结构
+### 3.7 补丁任务结构
 
 ```text
 workspace/patch-jobs/{job_id}/
-├── manifest.json              # 任务元数据、状态、产物路径
-├── input/                     # patch export 生成
-│   ├── resource.yaml          # 资源 YAML 快照
-│   ├── assets.json            # 模型/贴图/图标文件清单
-│   ├── dbc-plan.yaml          # 每个 DBC 文件的 add/edit 操作
-│   ├── sql-plan.yaml          # 目标表与记录
-│   └── README.md              # 给 Skill / 人工的说明
-└── output/                    # patch build 生成
-    ├── dbc/                   # 修改后的 *.dbc
-    ├── db_patch.sql           # AzerothCore SQL 补丁（已追加到 azerothcore-updates）
-    └── patch-mount-{id}.mpq   # 客户端 MPQ（位于 workspace/mpq/{batch}/）
+├── job.json                   # 任务元数据、状态、产物路径（patch export 仅写此文件）
+└── plans/                     # 仅 patch build --dry-run 生成，供审查；正式 build 会清理
+    ├── dbc-plan.yaml          # 现场生成的 DBC add/edit 计划
+    ├── sql-plan.yaml          # 现场生成的目标表与记录
+    └── assets.json            # 现场生成的模型/贴图/图标文件清单
 ```
 
-> `job_id` 当前实现为 `{resource_type}_{id:04d}`（如 `mount_0003`），不再带时间戳，便于幂等重跑。
+> - `job_id` 当前实现为 `{resource_type}_{id:04d}`（如 `mount_0003`），不再带时间戳，便于幂等重跑。
+> - 资源定义的唯一真相源是 `data/resources/mounts/*.yaml`：`patch export` 不再生成 `input/` 快照，`patch build` 按 `job.json` 中的 `resource_id` 现场读取最新 YAML。
+> - 构建产物不在任务目录内：DBC 直接编辑 `data/wow-dbc/src/dbc/`，SQL 写入 `data/sql/azerothcore-updates/mounts/`（每坐骑独立目录），MPQ 写入 `workspace/mpq/{batch}/`。
 
 ---
 
@@ -255,15 +252,16 @@ Agent 收到"把坐骑 X 加入游戏"指令
    ↓
 读取资源 YAML + resource validate
    ↓
-CLI patch export 生成原料包到 workspace/patch-jobs/{job_id}/input/
+CLI patch export 创建补丁任务（仅写 workspace/patch-jobs/{job_id}/job.json）
    ↓
-（或 Web 前端勾选资源点击"导出补丁原料"批量生成）
+（或 Web 前端勾选资源点击"导出补丁原料"批量创建）
    ↓
 CLI patch build --all-requested
-   ├─ 调用 wow-dbc-tool 编辑 DBC → output/dbc/
-   ├─ 生成 SQL 并追加到 data/sql/azerothcore-updates/
-   ├─ 调用 wow-mpq-cli 打包 → workspace/mpq/{batch}/patch-{id}.mpq
-   └─ 输出 workspace/reports/{batch}.json 校验报告
+   ├─ 按 job.json 中的资源 ID 现场读取 data/resources/ YAML 生成计划
+   ├─ 调用 wow-dbc-tool 编辑 DBC → data/wow-dbc/src/dbc/
+   ├─ 生成 SQL → data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/
+   ├─ 调用 wow-mpq-cli 打包 → workspace/mpq/{batch}/patch-mounts.mpq
+   └─ 输出 workspace/reports/{batch}/validation-report.json 校验报告
    ↓
 CLI patch publish --start-number 5
    └─ 复制到 workspace/dist/patch-zhCN-5.mpq, 6.mpq, ...
@@ -273,9 +271,9 @@ CLI patch publish --start-number 5
 
 最终产物分布：
 
-- `workspace/patch-jobs/{job_id}/output/dbc/`：修改后的 DBC 文件
-- `data/sql/azerothcore-updates/`：AzerothCore SQL 补丁（软链接到 `acore-deploy`）
-- `workspace/mpq/{batch}/patch-{id}.mpq`：原始 MPQ（按批次归档）
+- `data/wow-dbc/src/dbc/`：修改后的 DBC 文件（直接编辑，仅新增缺失记录）
+- `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`：AzerothCore SQL 补丁，每坐骑独立目录（软链接到 `acore-deploy`）
+- `workspace/mpq/{batch}/patch-mounts.mpq`：原始 MPQ（按批次归档）
 - `workspace/dist/patch-zhCN-{N}.mpq`：发布后的连续编号 MPQ
 
 ### 4.4 Agent 元数据驱动开发流程（典型场景）
@@ -306,7 +304,7 @@ CLI patch publish --start-number {next}
 |-------|---------|------------|
 | `enrich-mount-data` / `enrich-pet-data` | 缺失 Wowhead 官方字段 | YAML + 图像识别 → 补全 `official_db` / 图标 |
 | `configure-mount-spell` | 需要按坐骑类型调整 Spell.dbc 字段 | YAML → 指导 Attributes / Mechanic / Aura 配置 |
-| `build-mount-patch` | 已有原料包，需要生成最终 DBC/SQL/MPQ | `patch-jobs/{id}/input/` → `output/` |
+| `build-mount-patch` | 已有补丁任务（job.json），需要生成最终 DBC/SQL/MPQ | `patch-jobs/{id}/job.json` + `data/resources/` 真相源 → `data/wow-dbc/` / `data/sql/` / `workspace/mpq/` |
 | `export-mount-jobs` | Web 端批量勾选坐骑导出 | 资源 ID 列表 → 多个 `patch-jobs/{id}/` |
 | `publish-patch` | 将 `workspace/mpq/` 发布到 `workspace/dist/` | 批次目录 → `patch-zhCN-N.mpq` |
 
@@ -332,7 +330,7 @@ Agent **不得**直接执行以下操作：
 | 读取资源 | 直接读取 YAML 或调用 CLI `resource get` |
 | 修改资源 | CLI `resource update` 或直接写 YAML + `resource validate` |
 | xlsx 一次性导入 | CLI `xlsx import` |
-| 导出补丁原料包 | CLI `patch export` 或 Web 前端批量导出 |
+| 创建补丁任务 | CLI `patch export` 或 Web 前端批量导出 |
 | 构建 DBC/SQL/MPQ | CLI `patch build` |
 | 发布 MPQ | CLI `patch publish` |
 | 应用到 acore-deploy | 人工执行 `acore-update-dbc.sh` / `acore-update-db.sh` |
@@ -384,13 +382,13 @@ save_resource(resource)  # 同时写 YAML + SQLite + registry
 uv run --project backend python -m app.cli resource get mount 3
 ```
 
-### 6.4 通过 CLI 校验并导出补丁原料包
+### 6.4 通过 CLI 校验并创建补丁任务
 
 ```bash
 # 校验单个资源
 uv run --project backend python -m app.cli resource validate --type mount --id 3
 
-# 导出补丁原料包
+# 创建补丁任务（仅写 job.json）
 uv run --project backend python -m app.cli patch export --type mount --id 3
 ```
 
@@ -415,5 +413,5 @@ uv run --project backend python -m app.cli patch export --type mount --id 3
 | `GET /api/preview/m2/{model_folder}/file/{relative_path}` | 流式返回 M2/skin/anim 字节 |
 | `GET /api/files/tree?root=sources&depth=N` | 目录树（懒加载） |
 | `GET /api/files/tree/{root}?path=...` | 子目录树 |
-| `POST /api/patches/export-request` | 批量导出补丁原料包 |
+| `POST /api/patches/export-request` | 批量创建补丁任务 |
 | `GET /api/patches` | 分页列出补丁任务 |

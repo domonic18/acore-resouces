@@ -27,12 +27,12 @@ dbc:
     visual_id: 9140296
     icon_id: 9997
     name: 熊猫人风筝
-    description: 召唤或解散一个可供骑乘的熊猫人风筝。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的熊猫人风筝。只能在外域或诺森德召唤这种坐骑。
+    spell_visual_id: 12844
   item:
     id: 81559
     class: 15
     subclass: 5
-    material: -1
     display_id: 114185
     inventory_type: 0
     sheath: 0
@@ -70,7 +70,7 @@ db:
     display_id: 140296
   item_template:
     entry: 81559
-    name: 熊猫人风筝
+    name: 熊猫人风筝线
     class: 15
     subclass: 5
     displayid: 114185
@@ -96,9 +96,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

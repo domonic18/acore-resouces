@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140107
     icon_id: 18855
     name: 幽影镰角虫
-    description: 召唤或解散一个可供骑乘的幽影镰角虫。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的幽影镰角虫。这是一种速度非常快的坐骑。
   item:
     id: 183053
     class: 15
     subclass: 5
-    material: -1
     display_id: 99855
     inventory_type: 0
     sheath: 0

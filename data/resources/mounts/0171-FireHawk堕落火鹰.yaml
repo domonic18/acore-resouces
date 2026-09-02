@@ -21,18 +21,17 @@ dbc:
     opacity: 255
     texture_variation_1: firehawkred
     texture_variation_2: firehawkred
-    texture_variation_3: firehawkred
+    texture_variation_3: firehawk_bodyflamered
   spell:
     id: 80166
     visual_id: 9140166
     icon_id: 26604
     name: 纯血火鹰
-    description: 召唤或解散一个可供骑乘的纯血火鹰。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的纯血火鹰。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 69224
     class: 15
     subclass: 5
-    material: -1
     display_id: 107604
     inventory_type: 0
     sheath: 0
@@ -70,7 +69,7 @@ db:
     display_id: 140166
   item_template:
     entry: 69224
-    name: 纯血火鹰
+    name: 米拉盖佐尔的灼热之卵
     class: 15
     subclass: 5
     displayid: 107604
@@ -96,9 +95,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

@@ -17,7 +17,7 @@ dbc:
     model_id: 104272
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 1.8
     opacity: 255
     texture_variation_1: monkmount_jade
     texture_variation_2: monkmount_jade
@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140272
     icon_id: 27381
     name: 班禄，大宗师的伙伴
-    description: 召唤或解散一个可供骑乘的班禄，大宗师的伙伴。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的班禄，大宗师的伙伴。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 142225
     class: 15
     subclass: 5
-    material: -1
     display_id: 108381
     inventory_type: 0
     sheath: 0
@@ -88,7 +87,7 @@ db:
     spellcooldown_2: -1
     spellcategory_2: 0
     spellcategorycooldown_2: -1
-    Quality: 4
+    Quality: 7
     AllowableClass: -1
     AllowableRace: 2047
     BuyCount: 1
@@ -96,9 +95,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

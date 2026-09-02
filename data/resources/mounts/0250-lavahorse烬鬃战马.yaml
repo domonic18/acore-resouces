@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140246
     icon_id: 23335
     name: 烬鬃战马
-    description: 召唤或解散你的烬鬃战马。
+    description: 召唤或解散一只可供骑乘的烬鬃战马。这是一种速度非常快的坐骑。
   item:
     id: 118515
     class: 15
     subclass: 5
-    material: -1
     display_id: 104335
     inventory_type: 0
     sheath: 0

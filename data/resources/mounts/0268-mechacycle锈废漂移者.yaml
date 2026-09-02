@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140264
     icon_id: 24496
     name: 锈废漂移者
-    description: 召唤或解散一个可供骑乘的锈废漂移者。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的锈废漂移者。这是一种速度非常快的坐骑。
   item:
     id: 168370
     class: 15
     subclass: 5
-    material: -1
     display_id: 105496
     inventory_type: 0
     sheath: 0

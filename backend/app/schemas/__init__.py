@@ -13,7 +13,6 @@ from app.schemas.patch import (
     PatchJobManifest,
     PatchJobStatus,
     PatchJobUpdateRequest,
-    PatchResourceRef,
     SQLPlan,
     SQLPlanTable,
 )
@@ -49,7 +48,6 @@ __all__ = [
     "PatchJobManifest",
     "PatchJobStatus",
     "PatchJobUpdateRequest",
-    "PatchResourceRef",
     "SQLPlan",
     "SQLPlanTable",
     "DbInfo",

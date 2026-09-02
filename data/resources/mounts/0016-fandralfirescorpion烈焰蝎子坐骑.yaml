@@ -21,7 +21,7 @@ dbc:
     model_id: 4013
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 2.0
     opacity: 255
     texture_variation_1: fandralfirescorpion
     texture_variation_2: fandralfirescorpion
@@ -36,7 +36,6 @@ dbc:
     id: 91013
     class: 15
     subclass: 5
-    material: -1
     display_id: 55241
     inventory_type: 0
     sheath: 0

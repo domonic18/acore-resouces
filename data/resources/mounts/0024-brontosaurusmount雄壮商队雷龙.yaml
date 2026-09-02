@@ -28,12 +28,11 @@ dbc:
     id: 80021
     visual_id: 9140021
     icon_id: 3443
-    description: 召唤或解散你的雄壮商队雷龙。
+    description: 召唤或解散一只可供骑乘的雄壮商队雷龙。这是一种速度非常快的坐骑。
   item:
     id: 163042
     class: 15
     subclass: 5
-    material: -1
     display_id: 31511
     inventory_type: 0
     sheath: 0

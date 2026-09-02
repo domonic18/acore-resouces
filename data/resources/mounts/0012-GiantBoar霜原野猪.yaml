@@ -19,7 +19,7 @@ dbc:
     model_id: 4009
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 0.5
     opacity: 255
     texture_variation_1: GiantBoarMountPurple1
     texture_variation_2: GiantBoarMountPurple1
@@ -29,12 +29,11 @@ dbc:
     visual_id: 9140009
     icon_id: 1578
     name: 石牙斗猪
-    description: 召唤或解散你的石牙斗猪。
+    description: 召唤或解散一头可供骑乘的石牙斗猪。这是一种速度非常快的坐骑。
   item:
     id: 116667
     class: 15
     subclass: 5
-    material: -1
     display_id: 10377
     inventory_type: 0
     sheath: 0

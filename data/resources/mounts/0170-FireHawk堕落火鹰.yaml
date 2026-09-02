@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140165
     icon_id: 26603
     name: 堕落火鹰
-    description: 召唤或解散一个可供骑乘的堕落火鹰。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的堕落火鹰。只能在外域或诺森德召唤这种坐骑。
   item:
     id: 69230
     class: 15
     subclass: 5
-    material: -1
     display_id: 107603
     inventory_type: 0
     sheath: 0
@@ -70,7 +69,7 @@ db:
     display_id: 140165
   item_template:
     entry: 69230
-    name: 堕落火鹰
+    name: 米拉盖佐尔的堕落之卵
     class: 15
     subclass: 5
     displayid: 107603
@@ -96,9 +95,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
-    RequiredSkillRank: 150
+    RequiredSkillRank: 300
     bonding: 1
     Material: 4
     sheath: 0

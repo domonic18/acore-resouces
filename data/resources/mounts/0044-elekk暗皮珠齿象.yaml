@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140041
     icon_id: 9931
     name: 暗皮珠齿象
-    description: 召唤或解散一头可供骑乘的暗皮珠齿象。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的暗皮珠齿象。这是一种速度非常快的坐骑。
   item:
     id: 91041
     class: 15
     subclass: 5
-    material: -1
     display_id: 44590
     inventory_type: 0
     sheath: 0

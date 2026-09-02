@@ -5,11 +5,23 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
+from app.core.config import settings
 from app.main import app
 
 client = TestClient(app)
 
 SAMPLE_BLP = "sources/icons/interface/icons/inv_hippo_green.blp"
+SAMPLE_MODEL_FOLDER = "ardenwealdstagmount影叶符文牡鹿"
+
+# sources/ 原始资源不入库，缺失时（如 CI）跳过依赖真实资源的用例
+_requires_blp_source = pytest.mark.skipif(
+    not (settings.project_root / SAMPLE_BLP).exists(),
+    reason=f"本地样本贴图不存在：{SAMPLE_BLP}",
+)
+_requires_model_source = pytest.mark.skipif(
+    not (settings.sources_dir / "mounts" / SAMPLE_MODEL_FOLDER).exists(),
+    reason=f"本地模型目录不存在：{SAMPLE_MODEL_FOLDER}",
+)
 
 
 def test_health() -> None:
@@ -18,6 +30,7 @@ def test_health() -> None:
     assert response.json() == {"status": "ok"}
 
 
+@_requires_blp_source
 def test_preview_blp() -> None:
     response = client.get(f"/api/preview/blp/{SAMPLE_BLP}?size=64")
     assert response.status_code == 200
@@ -25,6 +38,7 @@ def test_preview_blp() -> None:
     assert len(response.content) > 0
 
 
+@_requires_blp_source
 def test_preview_icon() -> None:
     response = client.get("/api/preview/icon/inv_hippo_green?size=64")
     assert response.status_code == 200
@@ -45,8 +59,9 @@ def test_get_resource_assets() -> None:
     assert "texture_files" in data
 
 
+@_requires_model_source
 def test_preview_model() -> None:
-    response = client.get("/api/preview/model/ardenwealdstagmount影叶符文牡鹿?resource_type=mount")
+    response = client.get(f"/api/preview/model/{SAMPLE_MODEL_FOLDER}?resource_type=mount")
     assert response.status_code == 200
     data = response.json()
     assert data["model_folder"] == "ardenwealdstagmount影叶符文牡鹿"
@@ -60,8 +75,9 @@ def test_preview_model() -> None:
     assert "main_m2" in data
 
 
+@_requires_model_source
 def test_stream_m2_file() -> None:
-    response = client.get("/api/preview/model/ardenwealdstagmount影叶符文牡鹿?resource_type=mount")
+    response = client.get(f"/api/preview/model/{SAMPLE_MODEL_FOLDER}?resource_type=mount")
     assert response.status_code == 200
     data = response.json()
     assert data["main_m2"]

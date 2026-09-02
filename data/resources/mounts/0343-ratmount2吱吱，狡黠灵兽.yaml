@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140339
     icon_id: 29609
     name: 吱吱，狡黠灵兽
-    description: 召唤或解散一个可供骑乘的吱吱，狡黠灵兽。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的吱吱，狡黠灵兽。这是一种速度非常快的坐骑。
   item:
     id: 138386
     class: 15
     subclass: 5
-    material: -1
     display_id: 110609
     inventory_type: 0
     sheath: 0

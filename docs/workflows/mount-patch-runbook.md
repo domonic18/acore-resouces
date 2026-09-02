@@ -9,7 +9,7 @@
 ## 1. 流程总览
 
 ```text
-编辑资源 YAML ──▶ 补全官方数据 ──▶ 配置 Spell.dbc ──▶ 导出原料包 ──▶ 构建补丁 ──▶ 发布补丁 ──▶ 部署到服务端/客户端
+编辑资源 YAML ──▶ 补全官方数据 ──▶ 配置 Spell.dbc ──▶ 创建补丁任务 ──▶ 构建补丁 ──▶ 发布补丁 ──▶ 部署到服务端/客户端
      │                │                  │                │              │              │
      ▼                ▼                  ▼                ▼              ▼              ▼
  resource validate  /enrich-mount-data  /configure-  patch export   /build-mount-  /publish-   SQL + MPQ + DBC sync
@@ -74,7 +74,7 @@ requested ──▶ generated ──▶ applied
 
 ---
 
-## 5. Step 3：导出补丁原料包
+## 5. Step 3：创建补丁任务
 
 为单个坐骑创建补丁任务：
 
@@ -83,18 +83,11 @@ cd backend
 uv run python -m app.cli patch export --type mount --id 3
 ```
 
-系统会在 `workspace/patch-jobs/mount_0003/` 下生成原料包：
+系统会在 `workspace/patch-jobs/mount_0003/` 下仅写入任务元数据 `job.json`（job_id、资源 ID/名称/模型目录、状态、产物路径等）。资源定义以 `data/resources/mounts/*.yaml` 为唯一真相源，构建时按 `job.json` 中的 `resource_id` 现场读取，不再生成 `input/` 快照。
 
-- `input/resource.yaml`
-- `input/assets.json`
-- `input/dbc-plan.yaml`
-- `input/sql-plan.yaml`
-- `input/README.md`
-- `manifest.json`
+目录名固定为 `{type}_{id:04d}`，重复导出时会完全重置该目录，避免同一坐骑出现多个时间戳目录。任务目录不包含 `output/`，构建产物写入各自目录（DBC / SQL / MPQ）。
 
-目录名固定为 `{type}_{id:04d}`，重复导出时会完全重置该目录，避免同一坐骑出现多个时间戳目录。任务目录不再包含 `output/`。
-
-- 原料包结构：[`docs/plan/坐骑补丁自动化制作流程.md`](./plan/坐骑补丁自动化制作流程.md)
+- 补丁任务结构：[`docs/plan/坐骑补丁自动化制作流程.md`](./plan/坐骑补丁自动化制作流程.md)
 - Agent 交互与 CLI 设计：[`docs/arch/03Agent交互架构.md`](./arch/03Agent交互架构.md)
 
 ---
@@ -103,7 +96,7 @@ uv run python -m app.cli patch export --type mount --id 3
 
 ### 6.1 干跑校验
 
-先检查 DBC ID 冲突，不修改任何文件：
+先检查 DBC ID 冲突，不修改任何源文件；现场生成的计划会写入各任务 `plans/` 子目录供审查：
 
 ```bash
 cd backend
@@ -125,9 +118,9 @@ uv run python -m app.cli patch build --all-requested
 
 构建行为：
 
-- `workspace/patch-jobs/` 按固定目录读取任务，天然避免同一坐骑被处理多次。
+- `workspace/patch-jobs/` 按固定目录读取任务（`job.json`），并按其中的资源 ID 现场读取 `data/resources/` 最新 YAML 生成计划与资源清单，天然避免同一坐骑被处理多次。
 - 源 DBC（`data/wow-dbc/src/dbc/*.dbc`）中已存在的记录会被跳过，不会被覆盖；仅新增缺失记录。
-- 自动根据 `assets.json` 中的实际资源计算 `CreatureModelData.ModelName`（统一使用小写 `creature\...` 前缀），使其与 MPQ 内路径一致。
+- 自动根据现场生成的资源清单（assets）计算 `CreatureModelData.ModelName`（统一使用小写 `creature\...` 前缀），使其与 MPQ 内路径一致。
 - 生成 SQL 前会扫描 `data/sql/azerothcore-updates/` 中已有的 `item_template.entry`，已存在的坐骑不会重复生成 SQL；仅对新增坐骑写入 `DELETE` + `INSERT` 语句。
 - MPQ 打包时按资源 `source_dir` 完整复制游戏文件（`.m2`、`.blp`、`.anim`、`.skin`、`.phys`）到 `creature/`，保留原目录结构与文件名；坐骑图标复制到 `Interface\icons\`。
 - MPQ 打包完成后自动清理 `workspace/mpq/{timestamp}/staging/`，只保留 `patch-mounts.mpq` 与 `readme.txt`。
@@ -135,11 +128,11 @@ uv run python -m app.cli patch build --all-requested
 构建产物：
 
 - DBC 直接编辑：`data/wow-dbc/src/dbc/*.dbc`（仅新增缺失记录）
-- SQL：`data/sql/azerothcore-updates/YYYY_MM_DD_NN_mcc_custom_mounts.sql`
+- SQL：`data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/{id:04d}_mount_add.sql`（如需掉落另有 `{id:04d}_mount_loot.sql`，每坐骑独立目录）
 - MPQ：`workspace/mpq/{timestamp}/patch-mounts.mpq`
 - 校验报告：`workspace/reports/{timestamp}/validation-report.json`
 
-每个参与任务的 `manifest.json` 会更新为 `generated`。
+每个参与任务的 `job.json` 会更新为 `generated`。
 
 ### 6.3 产物审查
 
@@ -147,7 +140,7 @@ uv run python -m app.cli patch build --all-requested
 
 - Spell ID 与 `item_template.spellid_2` 一致
 - `CreatureModelData.ID` 与 `CreatureDisplayInfo.ModelID` 一致
-- `CreatureDisplayInfo.ID` 与 `creature_template.modelid1` 一致
+- `CreatureDisplayInfo.ID` 与 `creature_model_info.display_id` 一致，且 `creature_template_model`（CreatureID ↔ CreatureDisplayID）与 `creature_template.entry` 关联一致
 - 模型路径全英文、无空格、与 MPQ 内实际路径一致
 
 - DBC/SQL 实现参考：[`docs/references/06资源DBC与SQL实现参考.md`](./references/06资源DBC与SQL实现参考.md)
@@ -236,11 +229,11 @@ uv run python -m app.cli deploy sync-dbc --yes
 
 | 场景 | 处理方式 |
 |------|---------|
-| DBC ID 冲突 | `patch build --dry-run` 会列出冲突。决策：换 ID、改为 `edit` 操作、或跳过该任务。 |
-| `wow-dbc-tool` 报错 | 检查 dbc-plan.yaml 字段类型与 schema 是否匹配；确认源 DBC 未损坏。 |
+| DBC ID 冲突 | `patch build --dry-run` 会列出冲突（计划同时写入任务 `plans/` 供审查）。决策：换 ID、改为 `edit` 操作、或跳过该任务。 |
+| `wow-dbc-tool` 报错 | 检查现场生成的 DBC 计划字段类型与 schema 是否匹配（可用 `--dry-run` 落盘 `plans/` 审查）；确认源 DBC 未损坏。 |
 | `mpqcli` 打包失败 | 已生成的 DBC/SQL 保留；修复后重新运行 `patch build`。 |
-| 校验未通过 | 查看 `validation-report.json`，根据 `expected`/`actual` 修正 YAML 或 dbc-plan。 |
-| 需要重跑 | 将任务 `manifest.json` 的 `status` 改回 `requested`：
+| 校验未通过 | 查看 `validation-report.json`，根据 `expected`/`actual` 修正资源 YAML 后重跑（计划由构建现场生成）。 |
+| 需要重跑 | 将任务 `job.json` 的 `status` 改回 `requested`：
   `uv run python -m app.cli patch update {job_id} requested` |
 
 ---
@@ -259,7 +252,7 @@ uv run python -m app.cli deploy sync-dbc --yes
 
 ## 引用文档
 
-- 原料包与自动化流程：[`docs/plan/坐骑补丁自动化制作流程.md`](./plan/坐骑补丁自动化制作流程.md)
+- 补丁任务与自动化流程：[`docs/plan/坐骑补丁自动化制作流程.md`](./plan/坐骑补丁自动化制作流程.md)
 - 数据补全 Skill 方案：[`docs/plan/坐骑数据补全_Skill实现方案.md`](./plan/坐骑数据补全_Skill实现方案.md)
 - Agent 交互与 CLI 设计：[`docs/arch/03Agent交互架构.md`](./arch/03Agent交互架构.md)
 - DBC 维护与同步方案：[`docs/arch/07DBC维护与同步方案.md`](./arch/07DBC维护与同步方案.md)

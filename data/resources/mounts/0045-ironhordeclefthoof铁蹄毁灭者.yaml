@@ -6,7 +6,7 @@ drop:
   entry: 14020
   instance: 黑翼之巢
   boss: 克洛玛古斯
-  rate: 0.035
+  rate: 0.025
 official_db:
   name: 铁蹄毁灭者
   spell_icon_name: inv_ironhordeclefthoof
@@ -31,12 +31,11 @@ dbc:
     visual_id: 9140042
     icon_id: 22315
     name: 铁蹄毁灭者
-    description: 召唤或解散一头可供骑乘的铁蹄毁灭者。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的铁蹄毁灭者。这是一种速度非常快的坐骑。
   item:
     id: 91042
     class: 15
     subclass: 5
-    material: -1
     display_id: 44590
     inventory_type: 0
     sheath: 0

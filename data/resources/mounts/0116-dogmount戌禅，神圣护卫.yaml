@@ -27,12 +27,11 @@ dbc:
     visual_id: 9140111
     icon_id: 18895
     name: 戌禅，神圣护卫
-    description: 召唤或解散一个可供骑乘的戌禅，神圣护卫。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的戌禅，神圣护卫。这是一种速度非常快的坐骑。
   item:
     id: 156564
     class: 15
     subclass: 5
-    material: -1
     display_id: 99895
     inventory_type: 0
     sheath: 0

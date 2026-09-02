@@ -1,12 +1,9 @@
-"""补丁原料包导出服务。
+"""补丁任务元数据导出服务。
 
-负责为单个资源创建补丁任务目录，生成并写入：
-- resource.yaml
-- assets.json
-- dbc-plan.yaml
-- sql-plan.yaml
-- README.md
-- manifest.json
+补丁任务目录仅包含轻量的 job.json（任务元数据与状态），
+资源定义的唯一真相源始终是 data/resources/ 下的 YAML 文件；
+DBC/SQL 计划由补丁构建阶段（mount_patch_builder）现场从真相源生成，
+本模块只提供 build_dbc_plan / build_sql_plan / build_assets_json 三个纯函数。
 
 同时提供补丁任务的查询和状态更新能力。
 """
@@ -17,9 +14,7 @@ import json
 import shutil
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, cast
-
-import yaml
+from typing import Any
 
 from app.core.config import settings
 from app.preview.asset_resolver import resolve_resource_assets
@@ -27,7 +22,6 @@ from app.schemas.patch import (
     DBCPlan,
     DBCPlanFile,
     DBCPlanOperation,
-    PatchArtifacts,
     PatchJobManifest,
     SQLPlan,
     SQLPlanTable,
@@ -35,41 +29,90 @@ from app.schemas.patch import (
 from app.schemas.resource import Mount, Resource
 from app.services.resource_store import load_resource
 
-# 坐骑类型 -> Spell.dbc 属性映射
-# 字段名以 wow-dbc-tool 的 schema 为准。
-SPELL_PROFILES: dict[str, dict[str, Any]] = {
+# 坐骑召唤法术模板，逐字段核对自 live Spell.dbc 中 MCC 已部署的 127 条
+# 自定义法术（2026-09-02）。仅覆盖因坐骑类型而异的字段，
+# 全类型共同字段见 SPELL_COMMON_FIELDS。
+# 关键语义：
+# - 挂载的生物来自 Effect_1/Aura 78(MOUNTED) 的 EffectMiscValue_1（creature_template.entry），
+#   显示模型由该生物记录决定，法术本身不携带 display id；
+# - 速度百分比放在 EffectBasePoints_2（配合 EffectDieSides_2=1），不是 EffectMechanic；
+# - 名称/描述写 deDE 列（MCC 全部数据如此，zhCN 列恒为空），Name_Lang_Mask 固定 16712190。
+SPELL_COMMON_FIELDS: dict[str, Any] = {
+    "Mechanic": 21,
+    "Attributes": 269844752,
+    "AttributesExC": 536870912,
+    "AttributesExF": 131072,
+    "CastingTimeIndex": 16,
+    "DurationIndex": 21,
+    "RangeIndex": 1,
+    "InterruptFlags": 31,
+    "ProcChance": 101,
+    "SpellLevel": 1,
+    "EquippedItemClass": -1,
+    "ImplicitTargetA_1": 1,
+    "Effect_1": 6,
+    "EffectAura_1": 78,
+    "Effect_2": 6,
+    "ImplicitTargetA_2": 1,
+    "EffectDieSides_2": 1,
+    "EffectChainAmplitude_1": 1.0,
+    "EffectChainAmplitude_2": 1.0,
+    "EffectChainAmplitude_3": 1.0,
+    "SchoolMask": 1,
+    "Name_Lang_Mask": 16712190,
+    "Description_Lang_Mask": 16712190,
+}
+
+# 光环提示文本与语言位掩码（水上与飞行同为 16712188，陆地 16712190）
+SPELL_AURA_DESCRIPTIONS: dict[str, tuple[str, int]] = {
+    "陆地坐骑": ("速度提高$s2%。", 16712190),
+    "飞行坐骑": ("飞行速度提高$s2%。", 16712188),
+    "水上坐骑": ("游泳速度提高$s2%。", 16712190),
+}
+
+SPELL_TYPE_TEMPLATES: dict[str, dict[str, Any]] = {
     "陆地坐骑": {
-        "Attributes": 0,
-        "AttributesExD": 0,
-        "EffectAuraPeriod_1": 32,
-        "EffectMechanic_1": 99,
-        "EffectAuraPeriod_2": 0,
-        "EffectMechanic_2": 0,
-    },
-    "慢速陆地坐骑": {
-        "Attributes": 0,
-        "AttributesExD": 0,
-        "EffectAuraPeriod_1": 32,
-        "EffectMechanic_1": 59,
-        "EffectAuraPeriod_2": 0,
-        "EffectMechanic_2": 0,
+        "EquippedItemSubclass": 1,
+        "NameSubtext_Lang_Mask": 16712190,
+        "SpellVisualID_1": 5160,
+        "EffectAura_2": 32,
+        "EffectBasePoints_2": 99,
     },
     "飞行坐骑": {
-        "Attributes": 0,
+        "Attributes": 269844496,
         "AttributesExD": 67108864,
-        "EffectAuraPeriod_1": 207,
-        "EffectMechanic_1": 279,
-        "EffectAuraPeriod_2": 32,
-        "EffectMechanic_2": 99,
+        "AuraInterruptFlags": 128,
+        "StartRecoveryCategory": 133,
+        "NameSubtext_Lang_Mask": 16712188,
+        "SpellVisualID_1": 7644,
+        "EffectAura_2": 207,
+        "EffectBasePoints_2": 279,
+        "EffectBonusCoefficient_2": 1.0,
+        "Effect_3": 6,
+        "ImplicitTargetA_3": 1,
+        "EffectAura_3": 32,
+        "EffectBasePoints_3": 99,
+        "EffectDieSides_3": 1,
+        "EffectBonusCoefficient_3": 1.0,
     },
     "水上坐骑": {
-        "Attributes": 0,
-        "AttributesExD": 0,
-        "EffectAuraPeriod_1": 32,
-        "EffectMechanic_1": 99,
-        "EffectAuraPeriod_2": 0,
-        "EffectMechanic_2": 0,
+        "ExcludeCasterAuraSpell": 44521,
+        "NameSubtext_Lang_Mask": 16712188,
+        "SpellVisualID_1": 5160,
+        "EffectBasePoints_1": -1,
+        "EffectDieSides_1": 1,
+        "EffectAura_2": 58,
+        "EffectBasePoints_2": 59,
+        "EffectBasePoints_3": -1,
+        "EffectDieSides_3": 1,
     },
+}
+
+# 描述为空时的按类型自动生成文本（量词取最常见写法）
+SPELL_DESCRIPTION_FALLBACKS: dict[str, str] = {
+    "陆地坐骑": "这是一种速度非常快的坐骑。",
+    "飞行坐骑": "只能在外域或诺森德召唤这种坐骑。",
+    "水上坐骑": "这种坐骑在陆地上行动不是很快，但是在水里就大不一样了！",
 }
 
 
@@ -78,31 +121,11 @@ def _ensure_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def _write_yaml(path: Path, data: dict[str, Any]) -> None:
-    """写入 YAML 文件。"""
-    _ensure_dir(path.parent)
-    with path.open("w", encoding="utf-8") as f:
-        yaml.safe_dump(data, f, allow_unicode=True, sort_keys=False)
-
-
 def _write_json(path: Path, data: dict[str, Any]) -> None:
     """写入 JSON 文件。"""
     _ensure_dir(path.parent)
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-def _write_text(path: Path, content: str) -> None:
-    """写入文本文件。"""
-    _ensure_dir(path.parent)
-    with path.open("w", encoding="utf-8") as f:
-        f.write(content)
-
-
-def _load_yaml(path: Path) -> dict[str, Any]:
-    """读取 YAML 文件。"""
-    with path.open("r", encoding="utf-8") as f:
-        return cast(dict[str, Any], yaml.safe_load(f) or {})
 
 
 def _build_job_id(resource: Resource) -> str:
@@ -150,7 +173,8 @@ def build_assets_json(resource: Resource) -> dict[str, Any]:
 
 def build_dbc_plan(resource: Mount) -> DBCPlan:
     """根据坐骑资源生成 DBC 修改计划。"""
-    spell_profile = SPELL_PROFILES.get(resource.mount_type or "", SPELL_PROFILES["陆地坐骑"]).copy()
+    mount_type = resource.mount_type or "陆地坐骑"
+    spell_template = SPELL_TYPE_TEMPLATES.get(mount_type, SPELL_TYPE_TEMPLATES["陆地坐骑"]).copy()
 
     plans: list[DBCPlanFile] = []
 
@@ -170,9 +194,12 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                             "Flags": int(cmd.get("flags", 0)),
                             "ModelName": str(cmd.get("model_name", "")),
                             "ModelScale": float(cmd.get("model_scale", 1.0)),
-                            "CollisionWidth": float(cmd.get("collision_width", 1.0)),
-                            "CollisionHeight": float(cmd.get("collision_height", 1.0)),
-                            "MountHeight": float(cmd.get("mount_height", 1.0)),
+                            # MCC 自定义坐骑 126/126 实测常量（live 与基线一致）
+                            "BloodID": 3,
+                            "CollisionWidth": float(cmd.get("collision_width", 0.6111)),
+                            "CollisionHeight": float(cmd.get("collision_height", 2.031)),
+                            "MountHeight": float(cmd.get("mount_height", 0.0)),
+                            "AttachedEffectScale": 1.0,
                         },
                     )
                 ],
@@ -194,9 +221,9 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
             ("TextureVariation_2", "texture_variation_2", str, ""),
             ("TextureVariation_3", "texture_variation_3", str, ""),
             ("PortraitTextureName", "portrait_texture_name", str, ""),
-            ("SizeClass", "size_class", int, 0),
+            ("SizeClass", "size_class", int, 1),
             ("BloodID", "blood_id", int, 0),
-            ("NPCSoundID", "npc_sound_id", int, 0),
+            ("NPCSoundID", "npc_sound_id", int, 47),
             ("ParticleColorID", "particle_color_id", int, 0),
             ("CreatureGeosetData", "creature_geoset_data", int, 0),
             ("ObjectEffectPackageID", "object_effect_package_id", int, 0),
@@ -225,32 +252,43 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
             )
         )
 
-    # Spell.dbc
+    # Spell.dbc：召唤法术挂载的生物来自 creature_template.entry（EffectMiscValue_1），
+    # 因此缺少生物 entry 时不生成法术计划（校验层会另行提示不一致）。
     spell = resource.dbc.spell.model_dump(exclude_none=True)
-    if spell and spell.get("id") and cdi and cdi.get("id"):
-        display_id = int(cdi["id"])
+    ct_entry = resource.db.creature_template.entry
+    if spell and spell.get("id") and ct_entry:
+        aura_desc_text, aura_desc_mask = SPELL_AURA_DESCRIPTIONS.get(
+            mount_type, SPELL_AURA_DESCRIPTIONS["陆地坐骑"]
+        )
+        description = str(spell.get("description", "")).strip()
+        if not description:
+            # 描述为空时按类型自动生成，与 MCC 已部署法术的文案结构一致
+            fallback = SPELL_DESCRIPTION_FALLBACKS.get(
+                mount_type, SPELL_DESCRIPTION_FALLBACKS["陆地坐骑"]
+            )
+            spell_name = str(
+                spell.get("name") or resource.official_db.name or resource.model_folder
+            )
+            description = f"召唤或解散一只可供骑乘的{spell_name}。{fallback}"
         spell_fields: dict[str, Any] = {
             "ID": int(spell["id"]),
-            "Mechanic": 21,
-            "Attributes": spell_profile["Attributes"],
-            "AttributesExD": spell_profile["AttributesExD"],
-            "Effect_1": 6,
-            "EffectAura_1": 207,
-            "EffectBasePoints_1": display_id,
-            "EffectAuraPeriod_1": spell_profile["EffectAuraPeriod_1"],
-            "EffectMechanic_1": spell_profile["EffectMechanic_1"],
-            "Effect_2": 6,
-            "EffectAura_2": 207,
-            "EffectAuraPeriod_2": spell_profile["EffectAuraPeriod_2"],
-            "EffectMechanic_2": spell_profile["EffectMechanic_2"],
-            "EffectSpellClassMaskC_3": 7644,
-            "SpellVisualID_1": int(spell.get("visual_id", 0)),
+            **SPELL_COMMON_FIELDS,
+            **spell_template,
+            "EffectMiscValue_1": int(ct_entry),
             "SpellIconID": int(spell.get("icon_id", 0)),
-            "Name_Lang_zhCN": str(
+            "Name_Lang_deDE": str(
                 spell.get("name") or resource.official_db.name or resource.model_folder
             ),
-            "Description_Lang_zhCN": str(spell.get("description", "")),
+            "Description_Lang_deDE": description,
+            "AuraDescription_Lang_deDE": aura_desc_text,
+            "AuraDescription_Lang_Mask": aura_desc_mask,
         }
+        # 真正的 SpellVisualID_1 覆盖（visual_id 字段存的是挂载生物 entry，与此无关）
+        if spell.get("spell_visual_id"):
+            spell_fields["SpellVisualID_1"] = int(spell["spell_visual_id"])
+        # 飞行坐骑 310% 速度档：YAML flight_speed=310 → EffectBasePoints_2=309
+        if spell_template.get("EffectAura_2") == 207 and spell.get("flight_speed"):
+            spell_fields["EffectBasePoints_2"] = int(spell["flight_speed"]) - 1
         plans.append(
             DBCPlanFile(
                 dbc_file="Spell.dbc",
@@ -280,10 +318,11 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                             "ID": int(item["id"]),
                             "ClassID": int(item.get("class", 15)),
                             "SubclassID": int(item.get("subclass", 5)),
-                            "Material": int(item.get("material", -1)),
+                            "Material": int(item.get("material", 4)),
                             "DisplayInfoID": int(item.get("display_id", 0)),
                             "InventoryType": int(item.get("inventory_type", 0)),
                             "SheatheType": int(item.get("sheath", 0)),
+                            "Sound_override_subclassID": -1,
                         },
                     )
                 ],
@@ -294,8 +333,8 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         source_dbc_dir=str(settings.project_root / "data" / "wow-dbc" / "src" / "dbc"),
         output_dbc_dir="output/dbc",
         spell_profile={
-            "mount_type": resource.mount_type,
-            **spell_profile,
+            "mount_type": mount_type,
+            **spell_template,
         },
         plans=plans,
     )
@@ -388,11 +427,11 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     # creature_loot_template（仅当 DropInfo 提供掉落来源 entry 时生成）
     # DropInfo.rate 为小数表示（0.01 = 1%），而 creature_loot_template.Chance
     # 字段是 0-100 的百分比（参考 LootMgr.cpp:318 _chance >= 100.0f 视为必掉），
-    # 因此生成 SQL 时需把 rate 乘以 100。
+    # 因此生成 SQL 时需把 rate 乘以 100；round 消除浮点噪声（如 0.035*100）。
     drop = resource.drop
     if drop and drop.entry and it_full and it_full.get("entry"):
         item_entry = int(it_full["entry"])
-        chance = drop.rate * 100.0 if drop.rate is not None else 100.0
+        chance = round(drop.rate * 100.0, 4) if drop.rate is not None else 100.0
         tables.append(
             SQLPlanTable(
                 name="creature_loot_template",
@@ -420,37 +459,11 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     )
 
 
-def _build_readme(job_id: str, resource: Resource) -> str:
-    """生成 input/README.md。"""
-    return f"""# Patch Job: {job_id}
-
-本目录由 acore-resouces 系统导出，供 `/build-mount-patch` 等 Skill 使用。
-
-## 资源信息
-
-- 类型：{resource.resource_type}
-- ID：{resource.id}
-- 名称：{resource.official_db.name or resource.model_folder}
-- 模型文件夹：{resource.model_folder}
-
-## 文件说明
-
-- `resource.yaml`: 坐骑完整元数据
-- `assets.json`: 客户端资源（.m2/.blp）位置与打包建议
-- `dbc-plan.yaml`: 建议修改的 DBC 文件和字段
-- `sql-plan.yaml`: 建议生成的 SQL 表和字段
-
-## 工作流程
-
-1. 读取 `resource.yaml` 和 `assets.json`。
-2. 检查 `dbc-plan.yaml` 中的 ID 是否冲突。
-3. 根据 `mount_type` 调整 Spell.dbc 相关字段。
-4. 运行 `patch build` 生成批次 DBC/SQL/MPQ 与校验报告。
-"""
-
-
 def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     """为单个资源创建补丁任务。
+
+    任务目录仅写入 job.json 元数据；资源定义以 data/resources/ 下的
+    YAML 为唯一真相源，构建阶段现场读取。
 
     Args:
         resource_type: 资源类型，如 mount。
@@ -470,38 +483,14 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     if resource.resource_type != "mount":
         raise ValueError(f"第一阶段仅支持 mount，当前类型 {resource.resource_type}")
 
-    mount = cast(Mount, resource)
     job_id = _build_job_id(resource)
     job_dir = settings.patch_jobs_dir / job_id
-    input_dir = job_dir / "input"
 
     # 固定目录完全重置，避免历史产物与重复目录
     if job_dir.exists():
         shutil.rmtree(job_dir)
-    _ensure_dir(input_dir)
+    _ensure_dir(job_dir)
 
-    # 写入 resource.yaml
-    resource_data = resource.model_dump(exclude_none=False)
-    resource_data.pop("created_at", None)
-    resource_data.pop("updated_at", None)
-    _write_yaml(input_dir / "resource.yaml", resource_data)
-
-    # 写入 assets.json
-    assets_json = build_assets_json(resource)
-    _write_json(input_dir / "assets.json", assets_json)
-
-    # 写入 dbc-plan.yaml
-    dbc_plan = build_dbc_plan(mount)
-    _write_yaml(input_dir / "dbc-plan.yaml", dbc_plan.model_dump(exclude_none=False))
-
-    # 写入 sql-plan.yaml
-    sql_plan = build_sql_plan(mount)
-    _write_yaml(input_dir / "sql-plan.yaml", sql_plan.model_dump(exclude_none=False))
-
-    # 写入 README.md
-    _write_text(input_dir / "README.md", _build_readme(job_id, resource))
-
-    # 写入 manifest.json
     manifest = PatchJobManifest(
         job_id=job_id,
         created_at=datetime.now(UTC).isoformat(),
@@ -511,25 +500,15 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
         resource_name=resource.official_db.name or resource.model_folder,
         resource_model_folder=resource.model_folder,
         status="requested",
-        input_dir="input",
-        artifacts=PatchArtifacts(
-            input={
-                "resource_yaml": "input/resource.yaml",
-                "assets_json": "input/assets.json",
-                "dbc_plan": "input/dbc-plan.yaml",
-                "sql_plan": "input/sql-plan.yaml",
-                "readme": "input/README.md",
-            },
-        ),
     )
-    _write_json(job_dir / "manifest.json", manifest.model_dump(exclude_none=False))
+    _write_json(job_dir / "job.json", manifest.model_dump(exclude_none=False))
 
     return manifest
 
 
 def _load_manifest_file(job_dir: Path) -> PatchJobManifest | None:
-    """从目录读取 manifest。"""
-    manifest_path = job_dir / "manifest.json"
+    """从任务目录读取 job.json。"""
+    manifest_path = job_dir / "job.json"
     if not manifest_path.exists():
         return None
     try:
@@ -619,9 +598,10 @@ def update_patch_job_status(
         manifest.artifacts.output = output_artifacts
     if summary:
         manifest.summary = summary
+    manifest.updated_at = datetime.now(UTC).isoformat()
     if status in ("generated", "applied", "failed"):
         manifest.completed_at = datetime.now(UTC).isoformat()
 
     job_dir = settings.patch_jobs_dir / job_id
-    _write_json(job_dir / "manifest.json", manifest.model_dump(exclude_none=False))
+    _write_json(job_dir / "job.json", manifest.model_dump(exclude_none=False))
     return manifest

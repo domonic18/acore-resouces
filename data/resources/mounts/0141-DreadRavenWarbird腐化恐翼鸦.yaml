@@ -21,7 +21,7 @@ dbc:
     model_id: 104136
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 1.2
     opacity: 255
     texture_variation_1: DreadRavenWarbirdFelArmor
     texture_variation_2: DreadRavenWarbirdFelArmor
@@ -31,12 +31,12 @@ dbc:
     visual_id: 9140136
     icon_id: 19444
     name: 腐化恐翼鸦
-    description: 召唤或解散一个可供骑乘的腐化恐翼鸦。这是一种速度非常快的坐骑。
+    description: 召唤或解散一只可供骑乘的腐化恐翼鸦。只能在外域或诺森德召唤这种坐骑。
+    flight_speed: 310
   item:
     id: 123974
     class: 15
     subclass: 5
-    material: -1
     display_id: 100444
     inventory_type: 0
     sheath: 0
@@ -74,7 +74,7 @@ db:
     display_id: 140136
   item_template:
     entry: 123974
-    name: 腐化恐翼鸦
+    name: 腐化恐翼鸦缰绳
     class: 15
     subclass: 5
     displayid: 100444
