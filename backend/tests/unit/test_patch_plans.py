@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 import yaml
@@ -729,6 +730,62 @@ def test_dry_run_dumps_plans(
 
     mpb._clear_plans([ctx])
     assert not plans_dir.exists()
+
+
+def test_apply_dbc_operations_force_rewrites_existing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """force=True 时已存在记录按计划重写；默认跳过保护历史数据。"""
+    import shutil as sh
+
+    from wow_dbc_tool import DBCFile
+
+    dbc_dir = tmp_path / "dbc"
+    dbc_dir.mkdir()
+    sh.copy2(mpb.WOW_DBC_DIR / "CreatureModelData.dbc", dbc_dir / "CreatureModelData.dbc")
+    monkeypatch.setattr(mpb, "WOW_DBC_DIR", dbc_dir)
+
+    fields: dict[str, Any] = {
+        "ID": 499999,
+        "Flags": 2,
+        "ModelName": r"creature\test\force_check.m2",
+        "ModelScale": 1.0,
+        "BloodID": 1,
+        "CollisionWidth": 0.6111,
+        "CollisionHeight": 2.031,
+        "MountHeight": 0.0,
+        "AttachedEffectScale": 1.0,
+    }
+
+    def _ops(blood_id: int) -> dict[str, list[tuple[None, dict[str, Any]]]]:
+        return {
+            "CreatureModelData.dbc": [
+                (
+                    None,
+                    {
+                        "action": "add",
+                        "record_id": 499999,
+                        "fields": {**fields, "BloodID": blood_id},
+                    },
+                )
+            ]
+        }
+
+    def _blood_id() -> int | None:
+        dbc = DBCFile(dbc_dir / "CreatureModelData.dbc")
+        dbc.load()
+        rec = dbc.get(ID=499999)
+        return rec.to_dict()["BloodID"] if rec else None
+
+    mpb.apply_dbc_operations(_ops(1))
+    assert _blood_id() == 1
+    # 默认：已存在记录跳过，值不被覆盖
+    mpb.apply_dbc_operations(_ops(3))
+    assert _blood_id() == 1
+    # force：已存在记录按计划重写
+    mpb.apply_dbc_operations(_ops(3), force=True)
+    assert _blood_id() == 3
 
 
 def test_validate_job_checks_creature_template_model_link(

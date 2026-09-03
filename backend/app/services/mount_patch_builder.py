@@ -395,10 +395,12 @@ def check_conflicts(
 def apply_dbc_operations(
     grouped_ops: dict[str, list[tuple[JobContext, dict[str, Any]]]],
     dry_run: bool = False,
+    force: bool = False,
 ) -> None:
     """应用 DBC 操作。
 
-    源 DBC 中已存在的记录直接跳过，避免覆盖历史数据；仅新增缺失记录。
+    源 DBC 中已存在的记录默认跳过，避免覆盖历史数据；仅新增缺失记录。
+    force=True 时已存在记录按计划字段强制重写（edit），用于全量重建。
     """
     for dbc_file, operations in grouped_ops.items():
         dbc_path = WOW_DBC_DIR / dbc_file
@@ -412,9 +414,12 @@ def apply_dbc_operations(
 
             existing = dbc.get(ID=record_id)
             if action == "add":
-                if existing is None and not dry_run:
-                    dbc.add(**fields)
-                # 已存在则跳过，不执行 edit
+                if existing is None:
+                    if not dry_run:
+                        dbc.add(**fields)
+                elif force and not dry_run:
+                    dbc.edit(existing, **fields)
+                # 否则已存在则跳过，不执行 edit
             elif action == "edit":
                 if existing is not None and not dry_run:
                     dbc.edit(existing, **fields)
@@ -1015,6 +1020,7 @@ def build_mount_patches(
     all_requested: bool = False,
     job_ids: list[str] | None = None,
     dry_run: bool = False,
+    force: bool = False,
 ) -> dict[str, Any]:
     """批量构建坐骑补丁的入口函数。
 
@@ -1022,6 +1028,7 @@ def build_mount_patches(
         all_requested: 处理所有可处理状态的任务。
         job_ids: 指定任务 ID 列表。
         dry_run: 为 True 时只做校验并把计划写入任务目录 plans/，不修改任何源文件。
+        force: 为 True 时已存在的 DBC 记录按计划强制重写，SQL 跳过历史条目检查，用于全量重建。
 
     Returns:
         包含 jobs, sql_files, mpq_path, report_path 的字典。
@@ -1058,12 +1065,12 @@ def build_mount_patches(
         _clear_plans(contexts)
 
     print("应用 DBC 操作（直接编辑源 DBC）...")
-    apply_dbc_operations(grouped_ops, dry_run=dry_run)
+    apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
 
     print("生成坐骑 SQL（每只坐骑独立目录）...")
     sql_files: list[Path] = []
     for ctx in contexts:
-        written = generate_sql(ctx, dry_run=dry_run)
+        written = generate_sql(ctx, dry_run=dry_run, force=force)
         for f in written:
             print(f"  {f}")
             sql_files.append(f)
