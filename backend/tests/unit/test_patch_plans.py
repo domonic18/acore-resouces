@@ -121,6 +121,24 @@ def test_build_dbc_plan_structure(sample_mount: Mount) -> None:
     assert cmd_op.fields["AttachedEffectScale"] == 1.0
 
 
+def test_collect_dbc_operations_preserves_yaml_model_name(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """CMD ModelName 采用 YAML 显式值透传，不做代码推导覆盖。"""
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    grouped = mpb.collect_dbc_operations([ctx])
+    cmd_ops = grouped["CreatureModelData.dbc"]
+    assert len(cmd_ops) == 1
+    _, op = cmd_ops[0]
+    # model_folder=ardenwealdstagmount_test 与 model_name 的目录段 ardenwealdstag
+    # 刻意不同：若发生推导覆盖，此处会变成 creature\ardenwealdstagmount_test\...
+    assert op["fields"]["ModelName"] == r"creature\ardenwealdstag\ardenwealdstagmount.m2"
+
+
 def test_build_dbc_plan_spell_fields(sample_mount: Mount) -> None:
     """验证 Spell.dbc 字段按 MCC 实测模板生成（挂载生物走 EffectMiscValue_1）。"""
     plan = build_dbc_plan(sample_mount)
