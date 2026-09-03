@@ -82,7 +82,7 @@ db:
     spellcooldown_1: -1
     spellcategory_1: 330
     spellcategorycooldown_1: 3000
-    spellid_2: 80160
+    spellid_2: 80162
     spelltrigger_2: 6
     spellcharges_2: 0
     spellppmRate_2: 0
