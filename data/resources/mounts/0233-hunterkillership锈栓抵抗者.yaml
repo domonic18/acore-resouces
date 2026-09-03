@@ -7,6 +7,8 @@ official_db:
   name: 锈栓抵抗者
   spell_icon_name: inv_hunterkillershipred
   icon_name: inv_hunterkillershipred
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=299170
+  item_wowhead_url: https://www.wowhead.com/cn/item=168829
 dbc:
   creature_model_data:
     id: 104229
