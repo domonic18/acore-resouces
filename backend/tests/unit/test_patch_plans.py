@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 import yaml
@@ -11,6 +12,12 @@ import yaml
 from app.schemas.resource import DropInfo, Mount
 from app.services import mount_patch_builder as mpb
 from app.services.patch_exporter import build_assets_json, build_dbc_plan, build_sql_plan
+
+_real_cmd = mpb.WOW_DBC_DIR / "CreatureModelData.dbc"
+_requires_dbc_source = pytest.mark.skipif(
+    not _real_cmd.exists(),
+    reason="缺少本地 wow-dbc DBC 源文件",
+)
 
 
 @pytest.fixture
@@ -118,6 +125,24 @@ def test_build_dbc_plan_structure(sample_mount: Mount) -> None:
     cmd_op = next(p for p in plan.plans if p.dbc_file == "CreatureModelData.dbc").operations[0]
     assert cmd_op.fields["BloodID"] == 3
     assert cmd_op.fields["AttachedEffectScale"] == 1.0
+
+
+def test_collect_dbc_operations_preserves_yaml_model_name(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """CMD ModelName 采用 YAML 显式值透传，不做代码推导覆盖。"""
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    grouped = mpb.collect_dbc_operations([ctx])
+    cmd_ops = grouped["CreatureModelData.dbc"]
+    assert len(cmd_ops) == 1
+    _, op = cmd_ops[0]
+    # model_folder=ardenwealdstagmount_test 与 model_name 的目录段 ardenwealdstag
+    # 刻意不同：若发生推导覆盖，此处会变成 creature\ardenwealdstagmount_test\...
+    assert op["fields"]["ModelName"] == r"creature\ardenwealdstag\ardenwealdstagmount.m2"
 
 
 def test_build_dbc_plan_spell_fields(sample_mount: Mount) -> None:
@@ -729,6 +754,63 @@ def test_dry_run_dumps_plans(
 
     mpb._clear_plans([ctx])
     assert not plans_dir.exists()
+
+
+@_requires_dbc_source
+def test_apply_dbc_operations_force_rewrites_existing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """force=True 时已存在记录按计划重写；默认跳过保护历史数据。"""
+    import shutil as sh
+
+    from wow_dbc_tool import DBCFile
+
+    dbc_dir = tmp_path / "dbc"
+    dbc_dir.mkdir()
+    sh.copy2(mpb.WOW_DBC_DIR / "CreatureModelData.dbc", dbc_dir / "CreatureModelData.dbc")
+    monkeypatch.setattr(mpb, "WOW_DBC_DIR", dbc_dir)
+
+    fields: dict[str, Any] = {
+        "ID": 499999,
+        "Flags": 2,
+        "ModelName": r"creature\test\force_check.m2",
+        "ModelScale": 1.0,
+        "BloodID": 1,
+        "CollisionWidth": 0.6111,
+        "CollisionHeight": 2.031,
+        "MountHeight": 0.0,
+        "AttachedEffectScale": 1.0,
+    }
+
+    def _ops(blood_id: int) -> dict[str, list[tuple[None, dict[str, Any]]]]:
+        return {
+            "CreatureModelData.dbc": [
+                (
+                    None,
+                    {
+                        "action": "add",
+                        "record_id": 499999,
+                        "fields": {**fields, "BloodID": blood_id},
+                    },
+                )
+            ]
+        }
+
+    def _blood_id() -> int | None:
+        dbc = DBCFile(dbc_dir / "CreatureModelData.dbc")
+        dbc.load()
+        rec = dbc.get(ID=499999)
+        return rec.to_dict()["BloodID"] if rec else None
+
+    mpb.apply_dbc_operations(_ops(1))
+    assert _blood_id() == 1
+    # 默认：已存在记录跳过，值不被覆盖
+    mpb.apply_dbc_operations(_ops(3))
+    assert _blood_id() == 1
+    # force：已存在记录按计划重写
+    mpb.apply_dbc_operations(_ops(3), force=True)
+    assert _blood_id() == 3
 
 
 def test_validate_job_checks_creature_template_model_link(

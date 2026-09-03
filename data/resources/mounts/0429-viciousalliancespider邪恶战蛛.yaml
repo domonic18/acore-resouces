@@ -8,7 +8,7 @@ official_db:
   spell_icon_name: inv_viciousalliancespider
   icon_name: inv_viciousalliancespider
   spell_wowhead_url: https://www.wowhead.com/cn/spell=327407
-  item_wowhead_url: https://www.wowhead.com/cn/item=184013
+  item_wowhead_url: https://www.wowhead.com/cn/item=184014
 dbc:
   creature_model_data:
     id: 104425
@@ -26,7 +26,7 @@ dbc:
     name: 邪恶战蛛
     description: 召唤或解散这种坐骑。
   item:
-    id: 184013
+    id: 184014
     class: 15
     subclass: 5
     display_id: 0
@@ -65,7 +65,7 @@ db:
   creature_model_info:
     display_id: 140425
   item_template:
-    entry: 184013
+    entry: 184014
     name: 邪恶战蛛
     class: 15
     subclass: 5

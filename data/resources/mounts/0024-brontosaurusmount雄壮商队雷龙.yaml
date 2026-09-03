@@ -1,5 +1,5 @@
 id: 24
-model_folder: brontosaurusmount雄壮商队雷龙
+model_folder: brontosauruspack蛇颈龙坐骑
 debug_passed: false
 added: false
 drop: {}
@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 4021
     flags: 2
-    model_name: creature\brontosaurusmount\brontosaurusmount.m2
+    model_name: creature\brontosauruspack\brontosauruspack.m2
   creature_display_info:
     id: 140021
     model_id: 4021
@@ -21,9 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: babybrontosaurus_green
-    texture_variation_2: babybrontosaurus_green
-    texture_variation_3: babybrontosaurus_green
+    texture_variation_1: brontosauruspack_green
+    texture_variation_2: brontosauruspack_green
+    texture_variation_3: brontosauruspack_green
   spell:
     id: 80021
     visual_id: 9140021

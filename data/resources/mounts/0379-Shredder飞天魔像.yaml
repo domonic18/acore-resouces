@@ -107,6 +107,6 @@ db:
     arcane_res: 0
     VerifiedBuild: 12340
 resource_type: mount
-mount_type: 陆地坐骑
+mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 机械

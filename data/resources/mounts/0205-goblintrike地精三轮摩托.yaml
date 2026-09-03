@@ -26,7 +26,7 @@ dbc:
     name: 地精三轮摩托涡轮增压型
     description: 召唤或解散一辆地精三轮摩托涡轮增压型。
   item:
-    id: 62462
+    id: 91202
     class: 15
     subclass: 5
     display_id: 0
@@ -65,7 +65,7 @@ db:
   creature_model_info:
     display_id: 140200
   item_template:
-    entry: 62462
+    entry: 91202
     name: 地精三轮摩托涡轮增压型
     class: 15
     subclass: 5

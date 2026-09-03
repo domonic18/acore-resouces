@@ -5,10 +5,10 @@ added: false
 drop: {}
 official_db:
   name: 邪恶战熊
-  spell_icon_name: inv_mount_viciousalliancebearmount
-  icon_name: inv_mount_viciousalliancebearmount
-  spell_wowhead_url: https://www.wowhead.com/cn/spell=229487
-  item_wowhead_url: https://www.wowhead.com/cn/item=142234
+  spell_icon_name: inv_mount_vicioushordebearmount
+  icon_name: inv_mount_vicioushordebearmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=229486
+  item_wowhead_url: https://www.wowhead.com/cn/item=142235
 dbc:
   creature_model_data:
     id: 104430
@@ -26,7 +26,7 @@ dbc:
     name: 邪恶战熊
     description: 召唤或解散你的邪恶战熊。
   item:
-    id: 142234
+    id: 142235
     class: 15
     subclass: 5
     display_id: 0
@@ -65,7 +65,7 @@ db:
   creature_model_info:
     display_id: 140430
   item_template:
-    entry: 142234
+    entry: 142235
     name: 邪恶战熊
     class: 15
     subclass: 5

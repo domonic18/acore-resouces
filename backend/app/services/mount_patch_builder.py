@@ -44,8 +44,6 @@ REQUIRED_DBC_FILES = [
     "Item.dbc",
 ]
 
-_MODEL_LOD_SUFFIXES = ("_low.m2", "_high.m2", "_lod.m2")
-
 
 def _load_wow_dbc_schemas() -> None:
     """从项目本地 tools/wow-dbc-tool/schemas/ 加载 DBC 字段定义。
@@ -231,40 +229,6 @@ def _fields_match(existing: DBCRecord | dict[str, Any], planned: dict[str, Any])
     return True
 
 
-def is_lod_model(file_name: str) -> bool:
-    """判断文件名是否为 LOD 变体模型。"""
-    lower = file_name.lower()
-    return any(lower.endswith(suffix) for suffix in _MODEL_LOD_SUFFIXES)
-
-
-def resolve_main_model(m2_files: list[dict[str, Any]], folder_name: str = "") -> str | None:
-    """从 M2 文件列表中挑选主模型文件。
-
-    优先选择非 LOD 变体；若存在与模型目录同名的主文件则优先匹配。
-
-    Args:
-        m2_files: assets.json 中的 m2_files 列表。
-        folder_name: 清理后的模型目录名，用于优先匹配主模型。
-
-    Returns:
-        主模型文件名，若无可用的则返回 None。
-    """
-    names = [str(f["name"]) for f in m2_files if f.get("name")]
-    if not names:
-        return None
-
-    non_lod = [n for n in names if not is_lod_model(n)]
-    candidates = non_lod if non_lod else names
-
-    folder_stem = Path(folder_name).stem.lower()
-    for n in candidates:
-        if Path(n).stem.lower() == folder_stem:
-            return n
-
-    candidates.sort(key=lambda n: len(n), reverse=True)
-    return candidates[0]
-
-
 def find_jobs(
     patch_jobs_dir: Path,
     all_requested: bool,
@@ -314,34 +278,13 @@ def find_jobs(
     return contexts, rebuild
 
 
-def _model_name_field(
-    assets: dict[str, Any],
-    dbc_file: str,
-    op_fields: dict[str, Any],
-) -> dict[str, Any]:
-    """如果操作是 CreatureModelData，根据实际资源文件计算 ModelName。
-
-    以 assets 中的实际 m2 文件为准，保证 DBC 中的模型路径与 MPQ 内
-    文件路径一致。
-    """
-    if dbc_file != "CreatureModelData.dbc":
-        return op_fields
-
-    raw_folder = assets.get("model_folder") or ""
-    folder = sanitize_model_folder(raw_folder)
-    main_model = resolve_main_model(assets.get("m2_files", []), folder)
-    if not main_model:
-        return op_fields
-
-    fields = dict(op_fields)
-    fields["ModelName"] = f"creature\\{folder}\\{main_model}"
-    return fields
-
-
 def collect_dbc_operations(
     contexts: list[JobContext],
 ) -> dict[str, list[tuple[JobContext, dict[str, Any]]]]:
     """汇总所有任务按 DBC 文件分组的操作。
+
+    ModelName 等字段直接采用 YAML 真相源中的显式值——主模型的选择是
+    人工调试/前端预览后确定并固定在资源 YAML 中的，代码不做推导。
 
     Returns:
         {dbc_file: [(context, operation), ...]}
@@ -352,13 +295,7 @@ def collect_dbc_operations(
             dbc_file = plan_file.dbc_file
             grouped.setdefault(dbc_file, [])
             for op in plan_file.operations:
-                enriched_op = op.model_dump()
-                enriched_op["fields"] = _model_name_field(
-                    ctx.assets,
-                    dbc_file,
-                    op.fields,
-                )
-                grouped[dbc_file].append((ctx, enriched_op))
+                grouped[dbc_file].append((ctx, op.model_dump()))
     return grouped
 
 
@@ -395,10 +332,12 @@ def check_conflicts(
 def apply_dbc_operations(
     grouped_ops: dict[str, list[tuple[JobContext, dict[str, Any]]]],
     dry_run: bool = False,
+    force: bool = False,
 ) -> None:
     """应用 DBC 操作。
 
-    源 DBC 中已存在的记录直接跳过，避免覆盖历史数据；仅新增缺失记录。
+    源 DBC 中已存在的记录默认跳过，避免覆盖历史数据；仅新增缺失记录。
+    force=True 时已存在记录按计划字段强制重写（edit），用于全量重建。
     """
     for dbc_file, operations in grouped_ops.items():
         dbc_path = WOW_DBC_DIR / dbc_file
@@ -412,9 +351,12 @@ def apply_dbc_operations(
 
             existing = dbc.get(ID=record_id)
             if action == "add":
-                if existing is None and not dry_run:
-                    dbc.add(**fields)
-                # 已存在则跳过，不执行 edit
+                if existing is None:
+                    if not dry_run:
+                        dbc.add(**fields)
+                elif force and not dry_run:
+                    dbc.edit(existing, **fields)
+                # 否则已存在则跳过，不执行 edit
             elif action == "edit":
                 if existing is not None and not dry_run:
                     dbc.edit(existing, **fields)
@@ -1015,6 +957,7 @@ def build_mount_patches(
     all_requested: bool = False,
     job_ids: list[str] | None = None,
     dry_run: bool = False,
+    force: bool = False,
 ) -> dict[str, Any]:
     """批量构建坐骑补丁的入口函数。
 
@@ -1022,6 +965,7 @@ def build_mount_patches(
         all_requested: 处理所有可处理状态的任务。
         job_ids: 指定任务 ID 列表。
         dry_run: 为 True 时只做校验并把计划写入任务目录 plans/，不修改任何源文件。
+        force: 为 True 时已存在的 DBC 记录按计划强制重写，SQL 跳过历史条目检查，用于全量重建。
 
     Returns:
         包含 jobs, sql_files, mpq_path, report_path 的字典。
@@ -1058,12 +1002,12 @@ def build_mount_patches(
         _clear_plans(contexts)
 
     print("应用 DBC 操作（直接编辑源 DBC）...")
-    apply_dbc_operations(grouped_ops, dry_run=dry_run)
+    apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
 
     print("生成坐骑 SQL（每只坐骑独立目录）...")
     sql_files: list[Path] = []
     for ctx in contexts:
-        written = generate_sql(ctx, dry_run=dry_run)
+        written = generate_sql(ctx, dry_run=dry_run, force=force)
         for f in written:
             print(f"  {f}")
             sql_files.append(f)

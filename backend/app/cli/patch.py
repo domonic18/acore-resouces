@@ -50,6 +50,11 @@ def build_patch(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="仅校验冲突并落盘审查计划到任务目录 plans/，不修改源文件"
     ),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        help="已存在的 DBC 记录按计划强制重写、SQL 跳过历史条目检查（全量重建场景）",
+    ),
 ) -> None:
     """读取补丁任务并批量构建坐骑补丁。"""
     if not all_requested and not jobs:
@@ -61,6 +66,7 @@ def build_patch(
             all_requested=all_requested,
             job_ids=jobs,
             dry_run=dry_run,
+            force=force,
         )
     except DBCConflictError as e:
         console.print(f"[red]{e}[/red]")

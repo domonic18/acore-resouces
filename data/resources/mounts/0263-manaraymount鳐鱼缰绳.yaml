@@ -26,7 +26,7 @@ dbc:
     name: 荧光法力鳐
     description: 召唤或解散一头荧光法力鳐。这种坐骑的速度会根据你的骑术等级和所在区域改变。
   item:
-    id: 152840
+    id: 91260
     class: 15
     subclass: 5
     display_id: 0
@@ -65,7 +65,7 @@ db:
   creature_model_info:
     display_id: 140259
   item_template:
-    entry: 152840
+    entry: 91260
     name: 荧光法力鳐
     class: 15
     subclass: 5
