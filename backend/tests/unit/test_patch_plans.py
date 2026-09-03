@@ -13,6 +13,12 @@ from app.schemas.resource import DropInfo, Mount
 from app.services import mount_patch_builder as mpb
 from app.services.patch_exporter import build_assets_json, build_dbc_plan, build_sql_plan
 
+_real_cmd = mpb.WOW_DBC_DIR / "CreatureModelData.dbc"
+_requires_dbc_source = pytest.mark.skipif(
+    not _real_cmd.exists(),
+    reason="缺少本地 wow-dbc DBC 源文件",
+)
+
 
 @pytest.fixture
 def sample_mount() -> Mount:
@@ -750,6 +756,7 @@ def test_dry_run_dumps_plans(
     assert not plans_dir.exists()
 
 
+@_requires_dbc_source
 def test_apply_dbc_operations_force_rewrites_existing(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
