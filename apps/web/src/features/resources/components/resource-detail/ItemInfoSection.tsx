@@ -92,6 +92,8 @@ export function ItemInfoSection({
     displayIconName !== null &&
     itemIcon.trim() !== "" &&
     displayIconName.toLowerCase() !== itemIcon.trim().toLowerCase();
+  // 左侧唯一图标框：优先显示 display_id 解析出的图标（即游戏内实际图标），未收录时回退 Item 图标
+  const previewIcon = displayIconName ?? (itemIcon.trim() ? itemIcon.trim() : null);
 
   return (
     <SectionCard title="物品信息" compact={compact}>
@@ -146,12 +148,18 @@ export function ItemInfoSection({
         <div className="flex items-start gap-3">
           <div
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface"
-            title="物品图标预览（跟随上方 Item 图标）"
+            title={
+              displayIconName
+                ? `物品图标（来自显示 ID ${liveDisplayId}）：${displayIconName}`
+                : itemIcon.trim()
+                  ? `物品图标（Item 图标）：${itemIcon}（显示 ID 未设置或未收录）`
+                  : "物品图标预览"
+            }
           >
-            {itemIcon ? (
+            {previewIcon ? (
               <img
-                src={getIconPreviewUrl(itemIcon, 96)}
-                alt={itemIcon}
+                src={getIconPreviewUrl(previewIcon, 96)}
+                alt={previewIcon}
                 className="h-8 w-8 object-contain"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).style.display = "none";
@@ -167,34 +175,12 @@ export function ItemInfoSection({
               compact={compact}
               hint={
                 <FieldHint
-                  description="物品外观显示 ID，对应 ItemDisplayInfo.dbc 记录（决定游戏内图标）；点「选择」可按图标可视化挑选，清空为 0（未设置）"
+                  description="物品外观显示 ID，对应 ItemDisplayInfo.dbc 记录（决定游戏内图标，见左侧预览）；点「选择」可按图标可视化挑选，清空为 0（未设置）"
                   reference={getReference("dbc.item.display_id")}
                 />
               }
             >
               <div className="flex items-center gap-1.5">
-                <div
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface"
-                  title={
-                    displayIconName
-                      ? `该显示 ID 的图标：${displayIconName}`
-                      : "未设置或未收录（灰色为无图标）"
-                  }
-                >
-                  {displayIconName ? (
-                    <img
-                      src={getIconPreviewUrl(displayIconName, 64)}
-                      alt={displayIconName}
-                      className="h-6 w-6 object-contain"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display =
-                          "none";
-                      }}
-                    />
-                  ) : (
-                    <ImageIcon className="h-4 w-4 text-text-tertiary" />
-                  )}
-                </div>
                 {iconMismatch && (
                   <span
                     className="shrink-0"
