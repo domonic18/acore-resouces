@@ -9,10 +9,12 @@ import {
   matchesStatusFilter,
   matchesTagFilter,
   matchesUpdatedAtFilter,
+  matchesOriginFilter,
   parseSortKey,
   parseSortOrder,
   parseStatusTagList,
   parseResourceTagList,
+  parseDataOrigin,
 } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
 import type { SortKey, ResourceTagValue } from "../lib/resource-list";
@@ -75,6 +77,11 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     const tags = parseResourceTagList(searchParams.get("tags"));
     if (tags.length > 0) {
       items = items.filter((r) => matchesTagFilter(r, tags));
+    }
+
+    const origin = parseDataOrigin(searchParams.get("origin"));
+    if (origin) {
+      items = items.filter((r) => matchesOriginFilter(r, origin));
     }
 
     const updatedStart = searchParams.get("updated_start");
