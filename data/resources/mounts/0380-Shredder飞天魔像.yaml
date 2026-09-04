@@ -7,6 +7,7 @@ official_db:
   name: 机械化木材采集器
   spell_icon_name: ability_mount_shreddermount
   icon_name: ability_mount_shreddermount
+  item_wowhead_url: https://www.wowhead.com/cn/item=140500
 dbc:
   creature_model_data:
     id: 104376

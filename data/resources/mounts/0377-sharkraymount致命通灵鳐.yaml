@@ -11,6 +11,8 @@ official_db:
   name: 荧光法力鳐
   spell_icon_name: inv_manaraymount_orange
   icon_name: inv_manaraymount_orange
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253109
+  item_wowhead_url: https://www.wowhead.com/cn/item=152840
 dbc:
   creature_model_data:
     id: 104373

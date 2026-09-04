@@ -11,6 +11,8 @@ official_db:
   name: 重装双足飞龙
   spell_icon_name: inv_misc_elitewyvernarmored
   icon_name: inv_misc_elitewyvernarmored
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=135418
+  item_wowhead_url: https://www.wowhead.com/cn/item=93169
 dbc:
   creature_model_data:
     id: 104143

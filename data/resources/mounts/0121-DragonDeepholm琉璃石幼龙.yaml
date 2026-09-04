@@ -11,6 +11,8 @@ official_db:
   name: 磷光石幼龙
   spell_icon_name: inv_misc_stonedragonpurple
   icon_name: inv_misc_stonedragonpurple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88718
+  item_wowhead_url: https://www.wowhead.com/cn/item=63042
 dbc:
   creature_model_data:
     id: 104116

@@ -11,6 +11,8 @@ official_db:
   name: 艾萨莉膨水鳐
   spell_icon_name: inv_sharkraymount_4
   icon_name: inv_sharkraymount_4
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=292419
+  item_wowhead_url: https://www.wowhead.com/cn/item=167171
 dbc:
   creature_model_data:
     id: 104364

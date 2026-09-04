@@ -11,6 +11,8 @@ official_db:
   name: 锈废漂移者
   spell_icon_name: inv_mechacyclejunk
   icon_name: inv_mechacyclejunk
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=297157
+  item_wowhead_url: https://www.wowhead.com/cn/item=168370
 dbc:
   creature_model_data:
     id: 104264

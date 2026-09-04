@@ -11,6 +11,8 @@ official_db:
   name: 腐化恐翼鸦
   spell_icon_name: inv_feldreadravenmount
   icon_name: inv_feldreadravenmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=183117
+  item_wowhead_url: https://www.wowhead.com/cn/item=123974
 dbc:
   creature_model_data:
     id: 104136

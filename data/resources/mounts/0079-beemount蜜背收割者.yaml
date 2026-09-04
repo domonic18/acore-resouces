@@ -11,6 +11,8 @@ official_db:
   name: 蜜背收割者
   spell_icon_name: inv_bee_default
   icon_name: inv_bee_default
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=259741
+  item_wowhead_url: https://www.wowhead.com/cn/item=170069
 dbc:
   creature_model_data:
     id: 104074

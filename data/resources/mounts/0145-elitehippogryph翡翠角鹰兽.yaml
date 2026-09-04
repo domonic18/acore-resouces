@@ -6,6 +6,8 @@ official_db:
   name: 翡翠角鹰兽
   spell_icon_name: inv_misc_elitehippogryph
   icon_name: inv_misc_elitehippogryph
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=149801
+  item_wowhead_url: https://www.wowhead.com/cn/item=106246
 dbc:
   creature_model_data:
     id: 104140

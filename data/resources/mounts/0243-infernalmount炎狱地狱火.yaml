@@ -8,6 +8,7 @@ official_db:
   spell_icon_name: inv_infernalmounice
   icon_name: inv_infernalmounice
   spell_wowhead_url: https://www.wowhead.com/cn/spell=213350
+  item_wowhead_url: https://www.wowhead.com/cn/item=137614
 dbc:
   creature_model_data:
     id: 104239

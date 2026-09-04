@@ -11,6 +11,7 @@ official_db:
   name: 阿坎迪安战龟
   spell_icon_name: inv_turtlemount
   icon_name: inv_turtlemount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=227956
 dbc:
   creature_model_data:
     id: 104421

@@ -7,6 +7,8 @@ official_db:
   name: 星光云端翔龙
   spell_icon_name: inv_celestialserpentmount
   icon_name: inv_celestialserpentmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127170
+  item_wowhead_url: https://www.wowhead.com/cn/item=87777
 dbc:
   creature_model_data:
     id: 104084

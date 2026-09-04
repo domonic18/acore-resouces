@@ -11,6 +11,8 @@ official_db:
   name: 安托兰灼焦恶犬
   spell_icon_name: inv_felhound3_shadow_fire
   icon_name: inv_felhound3_shadow_fire
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253088
+  item_wowhead_url: https://www.wowhead.com/cn/item=152816
 dbc:
   creature_model_data:
     id: 104158

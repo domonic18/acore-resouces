@@ -11,6 +11,8 @@ official_db:
   name: 女祭司的月刃豹
   spell_icon_name: inv_nightsaber2mountwhite
   icon_name: inv_nightsaber2mountwhite
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=288740
+  item_wowhead_url: https://www.wowhead.com/cn/item=166463
 dbc:
   creature_model_data:
     id: 104358

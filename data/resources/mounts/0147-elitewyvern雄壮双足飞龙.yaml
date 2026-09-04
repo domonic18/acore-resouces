@@ -11,6 +11,8 @@ official_db:
   name: 雄壮双足飞龙
   spell_icon_name: inv_misc_elitewyvern
   icon_name: inv_misc_elitewyvern
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=136164
+  item_wowhead_url: https://www.wowhead.com/cn/item=93386
 dbc:
   creature_model_data:
     id: 104142

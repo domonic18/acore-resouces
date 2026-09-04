@@ -11,6 +11,8 @@ official_db:
   name: 暗色凤凰
   spell_icon_name: inv_mount_darkphoenixa
   icon_name: inv_mount_darkphoenixa
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88990
+  item_wowhead_url: https://www.wowhead.com/cn/item=63125
 dbc:
   creature_model_data:
     id: 104095

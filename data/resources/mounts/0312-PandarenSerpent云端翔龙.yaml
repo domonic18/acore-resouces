@@ -8,6 +8,7 @@ official_db:
   spell_icon_name: inv_pandarenserpentmount_blue
   icon_name: inv_pandarenserpentmount_blue
   spell_wowhead_url: https://www.wowhead.com/cn/spell=123992
+  item_wowhead_url: https://www.wowhead.com/cn/item=85430
 dbc:
   creature_model_data:
     id: 104308

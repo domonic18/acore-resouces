@@ -11,6 +11,8 @@ official_db:
   name: 织魔飞毯
   spell_icon_name: inv_suramarflyingcarpet
   icon_name: inv_suramarflyingcarpet
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=233364
+  item_wowhead_url: https://www.wowhead.com/cn/item=143764
 dbc:
   creature_model_data:
     id: 104170

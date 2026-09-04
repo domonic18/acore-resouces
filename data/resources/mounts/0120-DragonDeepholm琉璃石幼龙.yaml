@@ -11,6 +11,8 @@ official_db:
   name: 火山石幼龙
   spell_icon_name: inv_misc_stonedragonred
   icon_name: inv_misc_stonedragonred
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88331
+  item_wowhead_url: https://www.wowhead.com/cn/item=62900
 dbc:
   creature_model_data:
     id: 104115

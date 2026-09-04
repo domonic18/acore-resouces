@@ -7,6 +7,8 @@ official_db:
   name: 班禄，大宗师的伙伴
   spell_icon_name: inv_monkmount
   icon_name: inv_monkmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=229385
+  item_wowhead_url: https://www.wowhead.com/cn/item=142225
 dbc:
   creature_model_data:
     id: 104272

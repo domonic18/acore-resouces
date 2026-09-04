@@ -6,6 +6,7 @@ official_db:
   name: 虚空领主的硫磺愤怒战马
   spell_icon_name: inv_warlockmountfire
   icon_name: inv_warlockmountfire
+  item_wowhead_url: https://www.wowhead.com/cn/item=143637
 dbc:
   creature_model_data:
     id: 104446

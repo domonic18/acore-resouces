@@ -8,6 +8,7 @@ official_db:
   spell_icon_name: inv_roguemount_purple
   icon_name: inv_roguemount_purple
   spell_wowhead_url: https://www.wowhead.com/cn/spell=231523
+  item_wowhead_url: https://www.wowhead.com/cn/item=143492
 dbc:
   creature_model_data:
     id: 104356

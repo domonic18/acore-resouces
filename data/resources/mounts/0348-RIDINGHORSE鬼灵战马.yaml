@@ -11,6 +11,8 @@ official_db:
   name: 鬼灵战马
   spell_icon_name: inv_mount_spectralhorse
   icon_name: inv_mount_spectralhorse
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=92231
+  item_wowhead_url: https://www.wowhead.com/cn/item=64998
 dbc:
   creature_model_data:
     id: 104344

@@ -8,6 +8,7 @@ official_db:
   spell_icon_name: inv_pandarenserpentmount_green
   icon_name: inv_pandarenserpentmount_green
   spell_wowhead_url: https://www.wowhead.com/cn/spell=113199
+  item_wowhead_url: https://www.wowhead.com/cn/item=79802
 dbc:
   creature_model_data:
     id: 104309
