@@ -30,7 +30,7 @@ const FIELDS: FieldDef[] = [
     key: "id",
     label: "ID",
     description:
-      "模型数据记录 ID（自定义段 104000+N），与 CreatureDisplayInfo.ModelID 关联，导入后只读",
+      "模型数据记录 ID（自定义段 104000+N），下方显示信息的 ModelID 默认自动跟随此值，导入后只读",
     type: "readonly-int",
   },
   {

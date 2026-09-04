@@ -19,6 +19,7 @@ interface SpellInfoSectionProps {
   spellDb: Record<string, unknown>;
   setSpellDb: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
   resourceType: Resource["resource_type"];
+  mountType: string;
   compact?: boolean;
 }
 
@@ -34,6 +35,7 @@ export function SpellInfoSection({
   spellDb,
   setSpellDb,
   resourceType,
+  mountType,
   compact,
 }: SpellInfoSectionProps) {
   const getReference = useFieldReference(resourceType);
@@ -43,6 +45,13 @@ export function SpellInfoSection({
     getReference("db.creature_template.minlevel")?.value ?? null;
   const maxLevelRefValue =
     getReference("db.creature_template.maxlevel")?.value ?? null;
+  const speedRefValue = getReference("dbc.spell.speed")?.value ?? null;
+  const flightSpeedRefValue =
+    getReference("dbc.spell.flight_speed")?.value ?? null;
+  const swimSpeedRefValue = getReference("dbc.spell.swim_speed")?.value ?? null;
+
+  const isFlying = mountType === "飞行坐骑";
+  const isWater = mountType === "水上坐骑";
 
   return (
     <SectionCard title="技能信息" compact={compact}>
@@ -181,6 +190,94 @@ export function SpellInfoSection({
                   compact={compact}
                 />
               </FormGroup>
+
+              {!isWater && (
+                <FormGroup
+                  label="移动速度 (%)"
+                  compact={compact}
+                  hint={
+                    <FieldHint
+                      description="骑乘移动速度百分比（100 为默认跑速）；陆地坐骑为骑乘速度，飞行坐骑为地面速度。留空使用模板默认 100"
+                      reference={getReference("dbc.spell.speed")}
+                      onApply={
+                        speedRefValue !== null
+                          ? () =>
+                              setSpellDbc((prev) => ({
+                                ...prev,
+                                speed: Number(speedRefValue),
+                              }))
+                          : undefined
+                      }
+                    />
+                  }
+                >
+                  <NumberInput
+                    value={spellDbc.speed}
+                    onChange={(v) => setSpellDbc((prev) => ({ ...prev, speed: v }))}
+                    compact={compact}
+                  />
+                </FormGroup>
+              )}
+
+              {isFlying && (
+                <FormGroup
+                  label="飞行速度 (%)"
+                  compact={compact}
+                  hint={
+                    <FieldHint
+                      description="飞行速度百分比，官方档位 280/310。留空默认 280"
+                      reference={getReference("dbc.spell.flight_speed")}
+                      onApply={
+                        flightSpeedRefValue !== null
+                          ? () =>
+                              setSpellDbc((prev) => ({
+                                ...prev,
+                                flight_speed: Number(flightSpeedRefValue),
+                              }))
+                          : undefined
+                      }
+                    />
+                  }
+                >
+                  <NumberInput
+                    value={spellDbc.flight_speed}
+                    onChange={(v) =>
+                      setSpellDbc((prev) => ({ ...prev, flight_speed: v }))
+                    }
+                    compact={compact}
+                  />
+                </FormGroup>
+              )}
+
+              {isWater && (
+                <FormGroup
+                  label="游泳速度 (%)"
+                  compact={compact}
+                  hint={
+                    <FieldHint
+                      description="游泳速度百分比（模板默认 60），仅在水中生效"
+                      reference={getReference("dbc.spell.swim_speed")}
+                      onApply={
+                        swimSpeedRefValue !== null
+                          ? () =>
+                              setSpellDbc((prev) => ({
+                                ...prev,
+                                swim_speed: Number(swimSpeedRefValue),
+                              }))
+                          : undefined
+                      }
+                    />
+                  }
+                >
+                  <NumberInput
+                    value={spellDbc.swim_speed}
+                    onChange={(v) =>
+                      setSpellDbc((prev) => ({ ...prev, swim_speed: v }))
+                    }
+                    compact={compact}
+                  />
+                </FormGroup>
+              )}
             </div>
           </div>
 
