@@ -89,7 +89,12 @@ export function SpellInfoSection({
             <FormGroup
               label={
                 <>
-                  DBC ID <IdOriginBadge value={spellDbc.id} segment="spell" />
+                  DBC ID{" "}
+                  <IdOriginBadge
+                    value={spellDbc.id}
+                    type="spell"
+                    wowheadUrl={spellWowheadUrl}
+                  />
                 </>
               }
               compact={compact}
@@ -106,7 +111,7 @@ export function SpellInfoSection({
             <FormGroup
               label={
                 <>
-                  DB entry <IdOriginBadge value={spellDb.entry} segment="creature" />
+                  DB entry
                 </>
               }
               compact={compact}
@@ -192,15 +197,7 @@ export function SpellInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label={
-                  <>
-                    Visual ID{" "}
-                    <IdOriginBadge
-                      value={visualIdLocked ? liveCreatureEntry : spellDbc.visual_id}
-                      segment="creature"
-                    />
-                  </>
-                }
+                label="Visual ID"
                 compact={compact}
                 hint={
                   <FieldHint description="挂骑生物的 creature entry（自定义段 9140000+资源ID），默认自动跟随下方生物 entry（creature_template.entry），解锁后可手动覆盖" />
@@ -354,12 +351,7 @@ export function SpellInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label={
-                  <>
-                    modelid1{" "}
-                    <IdOriginBadge value={spellDb.modelid1} segment="cdi" />
-                  </>
-                }
+                label="modelid1"
                 compact={compact}
                 hint={
                   <FieldHint description="生物主显示信息 ID，引用 CreatureDisplayInfo 记录（140000+资源ID 段）" />
@@ -374,12 +366,7 @@ export function SpellInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label={
-                  <>
-                    modelid2{" "}
-                    <IdOriginBadge value={spellDb.modelid2} segment="cdi" />
-                  </>
-                }
+                label="modelid2"
                 compact={compact}
                 hint={
                   <FieldHint description="生物备用显示信息 ID，无备选模型时留 0" />

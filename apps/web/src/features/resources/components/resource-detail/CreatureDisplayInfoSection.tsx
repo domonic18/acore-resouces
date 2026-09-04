@@ -8,7 +8,6 @@ import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { cn, uniqueFiles } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
 import { LinkedIdField } from "./LinkedIdField";
-import { IdOriginBadge } from "./IdOriginBadge";
 import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
 
 interface CreatureDisplayInfoSectionProps {
@@ -349,28 +348,10 @@ export function CreatureDisplayInfoSection({
           );
           const refValue = reference?.value ?? null;
           const canApply = field.type === "int" || field.type === "float";
-          const badgeValue =
-            field.key === "model_id"
-              ? modelIdLocked
-                ? linkedModelDataId
-                : getValue("model_id")
-              : field.key === "id"
-                ? getValue("id")
-                : null;
           return (
             <FormGroup
               key={field.key}
-              label={
-                <>
-                  {field.label}{" "}
-                  {field.key === "id" && (
-                    <IdOriginBadge value={badgeValue} segment="cdi" />
-                  )}
-                  {field.key === "model_id" && (
-                    <IdOriginBadge value={badgeValue} segment="cmd" />
-                  )}
-                </>
-              }
+              label={field.label}
               compact={compact}
               className="group"
               hint={

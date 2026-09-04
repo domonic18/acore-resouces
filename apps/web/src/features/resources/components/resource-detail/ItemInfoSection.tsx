@@ -31,6 +31,8 @@ interface ItemInfoSectionProps {
   setItemIcon: (value: string) => void;
   itemWowheadUrl: string;
   setItemWowheadUrl: (value: string) => void;
+  /** 官方法术页链接，spellid_2 官方判定依据 */
+  spellWowheadUrl: string;
   setPickerTarget: (target: "item" | "spell") => void;
   iconNames: string[];
   itemDbc: Record<string, unknown>;
@@ -50,6 +52,7 @@ export function ItemInfoSection({
   setItemIcon,
   itemWowheadUrl,
   setItemWowheadUrl,
+  spellWowheadUrl,
   setPickerTarget,
   iconNames,
   itemDbc,
@@ -111,7 +114,12 @@ export function ItemInfoSection({
             <FormGroup
               label={
                 <>
-                  DBC ID <IdOriginBadge value={itemDbc.id} segment="item" />
+                  DBC ID{" "}
+                  <IdOriginBadge
+                    value={itemDbc.id}
+                    type="item"
+                    wowheadUrl={itemWowheadUrl}
+                  />
                 </>
               }
               compact={compact}
@@ -128,7 +136,12 @@ export function ItemInfoSection({
             <FormGroup
               label={
                 <>
-                  DB entry <IdOriginBadge value={itemDb.entry} segment="item" />
+                  DB entry{" "}
+                  <IdOriginBadge
+                    value={itemDb.entry}
+                    type="item"
+                    wowheadUrl={itemWowheadUrl}
+                  />
                 </>
               }
               compact={compact}
@@ -393,7 +406,11 @@ export function ItemInfoSection({
                 label={
                   <>
                     spellid_2{" "}
-                    <IdOriginBadge value={linkedSpellId} segment="spell" />
+                    <IdOriginBadge
+                      value={linkedSpellId}
+                      type="spell"
+                      wowheadUrl={spellWowheadUrl}
+                    />
                   </>
                 }
                 compact={compact}

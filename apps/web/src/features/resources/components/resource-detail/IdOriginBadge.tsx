@@ -1,36 +1,40 @@
+import { BadgeCheck } from "lucide-react";
 import { cn } from "@/shared/utils";
-
-export type IdSegment = "spell" | "item" | "cmd" | "cdi" | "creature";
-
-/** 自定义 ID 区间（docs/references/06 资源 DBC 与 SQL 实现参考 §五） */
-const SEGMENT_RANGES: Record<IdSegment, [number, number | null]> = {
-  spell: [80000, 90000],
-  item: [91000, 100000],
-  cmd: [104000, 140000],
-  cdi: [140000, null],
-  creature: [9140000, null],
-};
+import type { WowheadIdType } from "../../lib/id-origin";
+import { extractWowheadId } from "../../lib/id-origin";
 
 interface IdOriginBadgeProps {
   value: unknown;
-  segment: IdSegment;
+  /** 当前 ID 对应的 wowhead 记录类型 */
+  type: WowheadIdType;
+  /** 官方 wowhead 页面链接（official_db.*_wowhead_url），官方判定依据 */
+  wowheadUrl?: string | null;
 }
 
-/** 标识 ID 来自官方数据库还是项目自定义段位；0/未设置时不显示 */
-export function IdOriginBadge({ value, segment }: IdOriginBadgeProps) {
+/**
+ * ID 来源徽章：wowhead 链接存在、类型一致且链接中的 ID 与当前 ID
+ * 相同 → 官方（绿色实底）；否则 → 项目自定义（黄色描边）。0/未设置不显示。
+ */
+export function IdOriginBadge({ value, type, wowheadUrl }: IdOriginBadgeProps) {
   const v = Number(value);
   if (!value || Number.isNaN(v) || v === 0) return null;
-  const [min, max] = SEGMENT_RANGES[segment];
-  const custom = v >= min && (max === null || v < max);
+  const official = extractWowheadId(wowheadUrl, type) === v;
   return (
     <span
-      title={custom ? "项目自定义 ID 段位" : "官方数据库 ID"}
+      title={
+        official
+          ? `官方数据：与 wowhead 链接中的 ${type}=${v} 一致`
+          : "项目自定义 ID（与官方 wowhead 链接不一致，或未提供官方链接）"
+      }
       className={cn(
-        "inline-flex shrink-0 items-center rounded px-1 py-px text-[10px] font-medium leading-3",
-        custom ? "bg-warning/15 text-warning" : "bg-primary/10 text-primary",
+        "inline-flex shrink-0 items-center gap-0.5 rounded px-1.5 py-px text-[10px] font-semibold leading-3",
+        official
+          ? "bg-success text-white"
+          : "border border-warning/40 bg-warning/10 text-warning",
       )}
     >
-      {custom ? "自定义" : "官方"}
+      {official && <BadgeCheck className="h-3 w-3" />}
+      {official ? "官方" : "自定义"}
     </span>
   );
 }

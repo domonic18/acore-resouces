@@ -302,6 +302,7 @@ export function ResourceDetailPage() {
               setItemIcon={formState.setItemIcon}
               itemWowheadUrl={formState.itemWowheadUrl}
               setItemWowheadUrl={formState.setItemWowheadUrl}
+              spellWowheadUrl={formState.spellWowheadUrl}
               setPickerTarget={setPickerTarget}
               iconNames={iconNames}
               itemDbc={formState.itemDbc}
