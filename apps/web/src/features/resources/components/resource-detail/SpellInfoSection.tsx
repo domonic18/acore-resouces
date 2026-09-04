@@ -9,6 +9,7 @@ import { cn } from "@/shared/utils";
 import type { Resource } from "@/shared/types";
 import { IconEditor } from "./IconEditor";
 import { LinkedIdField } from "./LinkedIdField";
+import { IdOriginBadge } from "./IdOriginBadge";
 
 interface SpellInfoSectionProps {
   spellIcon: string;
@@ -86,7 +87,11 @@ export function SpellInfoSection({
           />
           <div className="grid flex-1 gap-3 sm:grid-cols-2">
             <FormGroup
-              label="DBC ID"
+              label={
+                <>
+                  DBC ID <IdOriginBadge value={spellDbc.id} segment="spell" />
+                </>
+              }
               compact={compact}
               hint={
                 <FieldHint description="自定义坐骑法术 ID，按 80000+资源ID 生成，注意避开官方法术段位" />
@@ -99,10 +104,14 @@ export function SpellInfoSection({
               />
             </FormGroup>
             <FormGroup
-              label="DB entry"
+              label={
+                <>
+                  DB entry <IdOriginBadge value={spellDb.entry} segment="creature" />
+                </>
+              }
               compact={compact}
               hint={
-                <FieldHint description="数据库侧引用的法术 entry，一般与 DBC ID 保持一致" />
+                <FieldHint description="数据库侧挂骑生物 entry（creature_template.entry），自定义段 9140000+资源ID，法术 Visual ID 默认跟随此值" />
               }
             >
               <NumberInput
@@ -183,7 +192,15 @@ export function SpellInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label="Visual ID"
+                label={
+                  <>
+                    Visual ID{" "}
+                    <IdOriginBadge
+                      value={visualIdLocked ? liveCreatureEntry : spellDbc.visual_id}
+                      segment="creature"
+                    />
+                  </>
+                }
                 compact={compact}
                 hint={
                   <FieldHint description="挂骑生物的 creature entry（自定义段 9140000+资源ID），默认自动跟随下方生物 entry（creature_template.entry），解锁后可手动覆盖" />
@@ -337,7 +354,12 @@ export function SpellInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label="modelid1"
+                label={
+                  <>
+                    modelid1{" "}
+                    <IdOriginBadge value={spellDb.modelid1} segment="cdi" />
+                  </>
+                }
                 compact={compact}
                 hint={
                   <FieldHint description="生物主显示信息 ID，引用 CreatureDisplayInfo 记录（140000+资源ID 段）" />
@@ -352,7 +374,12 @@ export function SpellInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label="modelid2"
+                label={
+                  <>
+                    modelid2{" "}
+                    <IdOriginBadge value={spellDb.modelid2} segment="cdi" />
+                  </>
+                }
                 compact={compact}
                 hint={
                   <FieldHint description="生物备用显示信息 ID，无备选模型时留 0" />

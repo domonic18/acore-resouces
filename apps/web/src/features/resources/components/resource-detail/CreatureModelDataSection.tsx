@@ -6,6 +6,7 @@ import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { cn } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
+import { IdOriginBadge } from "./IdOriginBadge";
 
 interface CreatureModelDataSectionProps {
   resource: Resource;
@@ -240,7 +241,14 @@ export function CreatureModelDataSection({
           return (
             <FormGroup
               key={field.key}
-              label={`${field.label}`}
+              label={
+                <>
+                  {field.label}{" "}
+                  {field.key === "id" && (
+                    <IdOriginBadge value={getValue("id")} segment="cmd" />
+                  )}
+                </>
+              }
               compact={compact}
               className="group"
               hint={

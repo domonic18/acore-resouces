@@ -1,7 +1,7 @@
 import { cn } from "@/shared/utils";
 
 interface FormGroupProps {
-  label: string;
+  label: React.ReactNode;
   hint?: React.ReactNode;
   children: React.ReactNode;
   className?: string;

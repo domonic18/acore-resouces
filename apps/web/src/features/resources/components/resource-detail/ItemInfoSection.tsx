@@ -12,6 +12,7 @@ import { BitmaskDropdown } from "@/components/form/BitmaskDropdown";
 import { OptionSelect } from "@/components/form/OptionSelect";
 import { IconEditor } from "./IconEditor";
 import { LinkedIdField } from "./LinkedIdField";
+import { IdOriginBadge } from "./IdOriginBadge";
 import type { Resource } from "@/shared/types";
 import {
   ITEM_CLASS_OPTIONS,
@@ -78,7 +79,11 @@ export function ItemInfoSection({
           />
           <div className="grid flex-1 gap-3 sm:grid-cols-2">
             <FormGroup
-              label="DBC ID"
+              label={
+                <>
+                  DBC ID <IdOriginBadge value={itemDbc.id} segment="item" />
+                </>
+              }
               compact={compact}
               hint={
                 <FieldHint description="物品 entry（item_template.entry）。官方坐骑用官方物品 ID，自定义坐骑走自定义段位" />
@@ -91,7 +96,11 @@ export function ItemInfoSection({
               />
             </FormGroup>
             <FormGroup
-              label="DB entry"
+              label={
+                <>
+                  DB entry <IdOriginBadge value={itemDb.entry} segment="item" />
+                </>
+              }
               compact={compact}
               hint={
                 <FieldHint description="数据库侧引用的物品 entry，一般与 DBC ID 保持一致" />
@@ -313,7 +322,12 @@ export function ItemInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label="spellid_2"
+                label={
+                  <>
+                    spellid_2{" "}
+                    <IdOriginBadge value={linkedSpellId} segment="spell" />
+                  </>
+                }
                 compact={compact}
                 hint={
                   <FieldHint description="右键使用物品时触发的法术 ID，默认自动跟随技能信息中的法术 ID（DBC ID），解锁后可手动覆盖" />
