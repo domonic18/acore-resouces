@@ -104,3 +104,21 @@ class Item(DBCRecord):
     display_id: int | None = Field(default=None)
     inventory_type: int | None = Field(default=None)
     sheath: int | None = Field(default=None)
+
+
+class ItemDisplayInfoEntry(BaseModel):
+    """ItemDisplayInfo.dbc 源文件单条记录（仅读取选择器所需字段）。
+
+    与上方资源 YAML 模型不同：该模型描述项目 DBC 源文件中的记录，
+    icon_name 即 InventoryIcon（第 5 列），决定物品的游戏内图标。
+    """
+
+    id: int
+    icon_name: str | None
+
+
+class ItemDisplayInfoPage(BaseModel):
+    """ItemDisplayInfo.dbc 分页搜索结果。"""
+
+    items: list[ItemDisplayInfoEntry]
+    total: int
