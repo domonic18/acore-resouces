@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
+import { FieldHint } from "@/components/form/FieldHint";
+import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { cn } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
 
@@ -27,46 +29,48 @@ const FIELDS: FieldDef[] = [
   {
     key: "id",
     label: "ID",
-    description: "模型数据 ID，与 CreatureDisplayInfo.ModelID 关联，只读",
+    description:
+      "模型数据记录 ID（自定义段 104000+N），与 CreatureDisplayInfo.ModelID 关联，导入后只读",
     type: "readonly-int",
   },
   {
     key: "flags",
     label: "Flags",
-    description: "模型标志位",
+    description: "模型标志位。坐骑模板通用值 2，一般无需修改",
     type: "int",
   },
   {
     key: "model_name",
     label: "ModelName",
-    description: "M2 模型文件路径，用于客户端加载模型",
+    description:
+      "M2 模型文件路径，格式 creature\\模型文件夹\\文件名.m2，客户端按此路径加载模型",
     type: "model",
   },
   {
     key: "model_scale",
     label: "ModelScale",
-    description: "模型基础缩放",
+    description: "模型整体缩放系数，官方坐骑多为 1.0，大型/幼年模型会用到 0.5 等",
     type: "float",
     step: 0.01,
   },
   {
     key: "collision_width",
     label: "CollisionWidth",
-    description: "碰撞盒宽度",
+    description: "碰撞盒宽度，决定模型在场景中的占位宽度；官方坐骑常见值 0.6111",
     type: "float",
     step: 0.01,
   },
   {
     key: "collision_height",
     label: "CollisionHeight",
-    description: "碰撞盒高度",
+    description: "碰撞盒高度，决定模型占位高度；官方坐骑常见值 2.031",
     type: "float",
     step: 0.01,
   },
   {
     key: "mount_height",
     label: "MountHeight",
-    description: "骑乘高度",
+    description: "骑乘时角色脚底相对模型原点的高度偏移，坐骑一般保持 0",
     type: "float",
     step: 0.01,
   },
@@ -155,6 +159,7 @@ export function CreatureModelDataSection({
   compact,
 }: CreatureModelDataSectionProps) {
   const m2Candidates = useM2Candidates(assets, resource.model_folder);
+  const getReference = useFieldReference(resource.resource_type);
 
   function getValue(key: string): unknown {
     if (key in creatureModelDataDbc) {
@@ -225,19 +230,45 @@ export function CreatureModelDataSection({
   return (
     <SectionCard title="模型数据（CreatureModelData）" compact={compact}>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {FIELDS.map((field) => (
-          <FormGroup
-            key={field.key}
-            label={`${field.label}`}
-            compact={compact}
-            className="group"
-          >
-            {renderField(field)}
-            <p className="mt-1 text-[11px] text-text-tertiary">
-              {field.description}
-            </p>
-          </FormGroup>
-        ))}
+        {FIELDS.map((field) => {
+          const reference = getReference(`dbc.creature_model_data.${field.key}`);
+          const refValue = reference?.value ?? null;
+          const canApply =
+            field.type === "int" ||
+            field.type === "float" ||
+            field.type === "model";
+          return (
+            <FormGroup
+              key={field.key}
+              label={`${field.label}`}
+              compact={compact}
+              className="group"
+              hint={
+                <FieldHint
+                  description={field.description}
+                  reference={reference}
+                  onApply={
+                    canApply && refValue !== null
+                      ? () => {
+                          if (field.type === "model") {
+                            setValue(field.key, refValue);
+                            return;
+                          }
+                          const numeric = Number(refValue);
+                          setValue(
+                            field.key,
+                            Number.isNaN(numeric) ? refValue : numeric,
+                          );
+                        }
+                      : undefined
+                  }
+                />
+              }
+            >
+              {renderField(field)}
+            </FormGroup>
+          );
+        })}
       </div>
     </SectionCard>
   );

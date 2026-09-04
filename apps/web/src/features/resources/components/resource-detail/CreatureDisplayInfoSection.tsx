@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
+import { FieldHint } from "@/components/form/FieldHint";
+import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { cn, uniqueFiles } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
@@ -224,6 +226,7 @@ export function CreatureDisplayInfoSection({
   compact,
 }: CreatureDisplayInfoSectionProps) {
   const textureCandidates = useTextureCandidates(assets);
+  const getReference = useFieldReference(resource.resource_type);
 
   function getValue(key: string): unknown {
     if (key in creatureDisplayInfoDbc) {
@@ -308,19 +311,40 @@ export function CreatureDisplayInfoSection({
   return (
     <SectionCard title="显示信息（CreatureDisplayInfo）" compact={compact}>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {FIELDS.map((field) => (
-          <FormGroup
-            key={field.key}
-            label={`${field.label}`}
-            compact={compact}
-            className="group"
-          >
-            {renderField(field)}
-            <p className="mt-1 text-[11px] text-text-tertiary">
-              {field.description}
-            </p>
-          </FormGroup>
-        ))}
+        {FIELDS.map((field) => {
+          const reference = getReference(
+            `dbc.creature_display_info.${field.key}`,
+          );
+          const refValue = reference?.value ?? null;
+          const canApply = field.type === "int" || field.type === "float";
+          return (
+            <FormGroup
+              key={field.key}
+              label={`${field.label}`}
+              compact={compact}
+              className="group"
+              hint={
+                <FieldHint
+                  description={field.description}
+                  reference={reference}
+                  onApply={
+                    canApply && refValue !== null
+                      ? () => {
+                          const numeric = Number(refValue);
+                          setValue(
+                            field.key,
+                            Number.isNaN(numeric) ? refValue : numeric,
+                          );
+                        }
+                      : undefined
+                  }
+                />
+              }
+            >
+              {renderField(field)}
+            </FormGroup>
+          );
+        })}
       </div>
     </SectionCard>
   );

@@ -2,6 +2,7 @@ import { cn } from "@/shared/utils";
 
 interface FormGroupProps {
   label: string;
+  hint?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   compact?: boolean;
@@ -9,6 +10,7 @@ interface FormGroupProps {
 
 export function FormGroup({
   label,
+  hint,
   children,
   className,
   compact,
@@ -16,7 +18,10 @@ export function FormGroup({
   return (
     <div className={cn("form-group", compact && "space-y-0", className)}>
       <label className={cn("form-label", compact && "form-label-compact")}>
-        {label}
+        <span className="flex items-center gap-1">
+          {label}
+          {hint}
+        </span>
       </label>
       {children}
     </div>

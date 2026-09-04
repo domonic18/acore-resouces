@@ -109,6 +109,7 @@ export function getResourceCount(resourceType: string): Promise<number> {
 
 export async function fetchAllResources(
   resourceType: "all" | "mount" | "pet" | "npc",
+  opts?: { added?: boolean },
 ): Promise<Resource[]> {
   const types =
     resourceType === "all" ? ["mount", "pet", "npc"] : [resourceType];
@@ -119,7 +120,11 @@ export async function fetchAllResources(
       let page = 1;
       let hasMore = true;
       while (hasMore) {
-        const res = await listResources(type, { page, page_size: 100 });
+        const res = await listResources(type, {
+          page,
+          page_size: 100,
+          added: opts?.added,
+        });
         items.push(...res.items);
         if (res.items.length < res.page_size || page >= 100) {
           hasMore = false;
