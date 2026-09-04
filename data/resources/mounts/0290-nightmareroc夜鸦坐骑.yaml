@@ -20,6 +20,7 @@ dbc:
   spell:
     id: 80286
     visual_id: 9140286
+    speed: 100
   item:
     id: 0
     class: 15

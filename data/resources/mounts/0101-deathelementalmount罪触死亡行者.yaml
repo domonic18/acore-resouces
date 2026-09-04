@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140096
     name: 罪触死亡行者
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 182717
     class: 15

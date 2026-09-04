@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140072
     name: 暗月跳舞熊
     description: 召唤或解散一只可供骑乘的暗月跳舞熊。
+    speed: 100
   item:
     id: 73766
     class: 15

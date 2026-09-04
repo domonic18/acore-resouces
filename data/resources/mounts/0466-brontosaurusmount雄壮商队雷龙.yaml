@@ -27,6 +27,7 @@ dbc:
     visual_id: 9140463
     name: 幼年商队雷龙
     description: 召唤或解散一只可供骑乘的幼年商队雷龙。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91463
     class: 15

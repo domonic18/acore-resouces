@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140277
     name: 丝柔烁光蛾
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 180748
     class: 15

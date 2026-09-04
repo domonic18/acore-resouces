@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140209
     name: 泥背淡水兽
     description: 召唤或解散你的泥背淡水兽。
+    speed: 100
   item:
     id: 116769
     class: 15

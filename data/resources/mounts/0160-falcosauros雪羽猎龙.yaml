@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140155
     name: 火羽恐嘴龙
     description: 召唤或解散你的火羽恐嘴龙。
+    speed: 100
   item:
     id: 137579
     class: 15

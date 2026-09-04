@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140387
     name: 带镣铐的乌祖尔
     description: 召唤或解散你的带镣铐的乌祖尔。
+    speed: 100
   item:
     id: 152789
     class: 15

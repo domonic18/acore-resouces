@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140270
     name: 奇迹之翼2.0版
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 169162
     class: 15

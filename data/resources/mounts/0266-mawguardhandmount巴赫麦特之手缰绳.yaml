@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140262
     name: 芭美兹拉之手
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 185973
     class: 15

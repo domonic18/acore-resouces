@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140278
     name: 活力炽蓝蛾
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 183801
     class: 15

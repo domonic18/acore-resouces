@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140238
     name: 炎狱地狱火
     description: 召唤或解散你的炎狱地狱火。
+    speed: 100
   item:
     id: 137575
     class: 15

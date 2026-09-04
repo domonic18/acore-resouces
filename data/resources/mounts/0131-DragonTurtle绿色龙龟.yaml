@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140126
     name: 绿色龙龟
     description: 召唤或解散一只可供骑乘的绿色龙龟。
+    swim_speed: 60
   item:
     id: 82765
     class: 15

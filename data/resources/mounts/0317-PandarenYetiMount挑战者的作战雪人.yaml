@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140313
     name: 挑战者的作战雪人
     description: 召唤或解散你的挑战者的作战雪人。
+    speed: 100
   item:
     id: 116791
     class: 15

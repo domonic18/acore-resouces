@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140368
     name: 剑鱼人海波鳐
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 167167
     class: 15

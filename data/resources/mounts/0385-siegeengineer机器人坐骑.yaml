@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140381
     name: 火箭伐木机9001型
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 204091
     class: 15

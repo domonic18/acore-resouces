@@ -32,6 +32,7 @@ dbc:
     description: 召唤或解散一只可供骑乘的火焰卡利鸟。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
     icon_id: 27397
+    speed: 100
   item:
     id: 156563
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140293
     name: 日长石猎豹
     description: 召唤或解散一只可供骑乘的黎明石猎豹。
+    speed: 100
   item:
     id: 83089
     class: 15

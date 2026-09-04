@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140092
     name: 金黄骑乘仙鹤
     description: 召唤或解散一只可供骑乘的金黄骑乘仙鹤。
+    speed: 100
   item:
     id: 87782
     class: 15

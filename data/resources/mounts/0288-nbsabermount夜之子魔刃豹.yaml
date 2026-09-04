@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140284
     name: 夜之子魔刃豹
     description: 召唤或解散你的夜之子魔刃豹。
+    speed: 100
   item:
     id: 156487
     class: 15

@@ -30,6 +30,8 @@ dbc:
     icon_id: 10003
     name: 蓝紫熊猫人凤凰
     description: 召唤或解散一只可供骑乘的蓝紫熊猫人凤凰。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 90712
     class: 15

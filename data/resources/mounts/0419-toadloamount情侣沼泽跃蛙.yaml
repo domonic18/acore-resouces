@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140415
     name: 青绿沼泽跃蛙
     description: 召唤或解散一只青绿沼泽跃蛙。
+    speed: 100
   item:
     id: 163183
     class: 15

@@ -24,6 +24,7 @@ dbc:
     visual_id: 9140462
     name: 咒缚恒龙
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 0
     class: 15

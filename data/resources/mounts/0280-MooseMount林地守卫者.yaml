@@ -34,6 +34,7 @@ dbc:
     icon_id: 27385
     name: 林地守卫者
     description: 召唤或解散一只可供骑乘的林地守卫者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 128422
     class: 15

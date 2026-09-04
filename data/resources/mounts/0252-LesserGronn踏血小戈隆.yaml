@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140248
     name: 煤拳小戈隆
     description: 召唤或解散你的煤拳小戈隆。
+    speed: 100
   item:
     id: 128311
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140070
     name: 拳手的健壮蜥蜴
     description: 召唤或解散一头可供骑乘的拳手的健壮蜥蜴。
+    speed: 100
   item:
     id: 142403
     class: 15

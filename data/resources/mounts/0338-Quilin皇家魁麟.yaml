@@ -34,6 +34,7 @@ dbc:
     icon_id: 10017
     name: 皇家魁麟
     description: 召唤或解散一只可供骑乘的皇家魁麟。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 85870
     class: 15

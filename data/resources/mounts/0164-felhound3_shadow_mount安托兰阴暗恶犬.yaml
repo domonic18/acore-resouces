@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140159
     name: 安托兰阴暗恶犬
     description: 召唤或解散你的安托兰阴暗恶犬。
+    speed: 100
+    flight_speed: 280
   item:
     id: 152815
     class: 15

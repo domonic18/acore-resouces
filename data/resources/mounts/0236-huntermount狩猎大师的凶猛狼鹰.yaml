@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140232
     name: 狩猎大师的凶猛狼鹰
     description: 召唤或解散你的狩猎大师的凶猛狼鹰。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 142226
     class: 15

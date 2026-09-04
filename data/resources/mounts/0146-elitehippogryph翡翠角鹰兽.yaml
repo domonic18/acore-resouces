@@ -30,6 +30,8 @@ dbc:
     icon_id: 21658
     name: 云翼角鹰兽
     description: 召唤或解散一只可供骑乘的云翼角鹰兽。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 147806
     class: 15

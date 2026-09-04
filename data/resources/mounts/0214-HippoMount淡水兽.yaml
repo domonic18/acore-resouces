@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140210
     name: 苔皮淡水兽
     description: 召唤或解散你的苔皮淡水兽。
+    speed: 100
   item:
     id: 116768
     class: 15

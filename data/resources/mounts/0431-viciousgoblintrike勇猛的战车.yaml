@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140427
     name: 勇猛的战车
     description: 召唤或解散你的勇猛的战车。
+    speed: 100
   item:
     id: 140354
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140403
     name: 奥术师的魔刃豹
     description: 召唤或解散你的奥术师的魔刃豹。
+    speed: 100
   item:
     id: 142436
     class: 15

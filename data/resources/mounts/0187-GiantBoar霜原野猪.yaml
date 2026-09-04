@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140182
     name: 死牙魔能野猪
     description: 召唤或解散你的死牙魔能野猪。
+    speed: 100
   item:
     id: 128526
     class: 15

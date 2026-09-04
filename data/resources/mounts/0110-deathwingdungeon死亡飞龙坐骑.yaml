@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140105
     name: 燃烬巨龙
     description: 召唤或解散一只可骑乘的燃烬巨龙。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 142552
     class: 15

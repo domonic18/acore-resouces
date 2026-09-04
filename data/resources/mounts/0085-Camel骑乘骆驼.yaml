@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140080
     name: 白色骑乘骆驼
     description: 召唤或解散一只可供骑乘的白色骑乘骆驼。
+    speed: 100
   item:
     id: 72575
     class: 15

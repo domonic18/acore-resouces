@@ -32,6 +32,7 @@ dbc:
     icon_id: 14357
     name: 梦光符文牡鹿
     description: 召唤或解散一头可供骑乘的梦光符文牡鹿。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91000
     class: 15

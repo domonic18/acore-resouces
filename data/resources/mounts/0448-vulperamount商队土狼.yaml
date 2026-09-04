@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140444
     name: 商队土狼
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 174066
     class: 15

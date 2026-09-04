@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140057
     name: 勇士的践踏之刃
     description: 召唤或解散你的勇士的践踏之刃。
+    speed: 100
   item:
     id: 116789
     class: 15

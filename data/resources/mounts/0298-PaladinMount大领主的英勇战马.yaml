@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140294
     name: 大领主的英勇战马
     description: 召唤或解散你的大领主的英勇战马。这是一种飞行坐骑。
+    speed: 100
   item:
     id: 143505
     class: 15

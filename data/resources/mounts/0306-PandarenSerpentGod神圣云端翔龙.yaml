@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140302
     name: 玉蕾，青龙之女
     description: 召唤或解散玉蕾，青龙之女。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 87775
     class: 15

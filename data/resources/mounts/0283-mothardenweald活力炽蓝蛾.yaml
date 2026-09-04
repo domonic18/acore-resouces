@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140279
     name: 琥珀炽蓝蛾
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 183800
     class: 15

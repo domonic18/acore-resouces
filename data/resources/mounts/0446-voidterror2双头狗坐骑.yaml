@@ -28,6 +28,7 @@ dbc:
     icon_id: 4062
     name: 虚空恐魔
     description: 召唤或解散一只可供骑乘的虚空恐魔。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91058
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140425
     name: 邪恶战蛛
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 184014
     class: 15

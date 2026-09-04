@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140330
     name: 捕获的沼泽追猎者
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 161666
     class: 15

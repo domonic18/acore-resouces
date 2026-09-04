@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140429
     name: 勇猛作战陆行鸟
     description: 召唤或解散你的勇猛作战陆行鸟。
+    speed: 100
   item:
     id: 140348
     class: 15

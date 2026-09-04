@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140133
     name: 翡翠幼龙
     description: 召唤或解散一头可供骑乘的翡翠幼龙。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 118676
     class: 15

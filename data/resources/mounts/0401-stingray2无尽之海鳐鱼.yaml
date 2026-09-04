@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140397
     name: 暗水鳐鱼
     description: 召唤或解散一条可供骑乘的暗水鳐鱼。
+    speed: 100
+    flight_speed: 280
   item:
     id: 142398
     class: 15

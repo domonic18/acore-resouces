@@ -34,6 +34,8 @@ dbc:
     icon_id: 30020
     name: 艾萨莉膨水鳐
     description: 召唤或解散一只可供骑乘的艾萨莉膨水鳐。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 167171
     class: 15

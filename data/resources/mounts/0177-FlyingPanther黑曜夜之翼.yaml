@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140172
     name: 黑曜夜之翼
     description: 召唤或解散你的黑曜夜之翼，让自己或盟友骑乘。
+    speed: 100
+    flight_speed: 280
   item:
     id: 83086
     class: 15

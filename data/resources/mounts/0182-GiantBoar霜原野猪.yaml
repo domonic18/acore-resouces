@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140177
     name: 霜原斗猪
     description: 召唤或解散你的霜原斗猪。
+    speed: 100
   item:
     id: 116670
     class: 15

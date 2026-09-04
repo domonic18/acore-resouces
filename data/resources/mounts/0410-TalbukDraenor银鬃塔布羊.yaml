@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140406
     name: 暗鬃冲锋者
     description: 召唤或解散你的暗鬃冲锋者。
+    speed: 100
   item:
     id: 116772
     class: 15

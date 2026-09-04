@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140352
     name: 掠食的凋零大鹏
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 182080
     class: 15

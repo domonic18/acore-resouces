@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140180
     name: 巨型灰牙野猪
     description: 召唤或解散你的巨型灰牙野猪。
+    speed: 100
   item:
     id: 116674
     class: 15

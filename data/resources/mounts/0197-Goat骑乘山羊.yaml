@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140192
     name: 白色骑乘山羊
     description: 召唤或解散一只可供骑乘的白色骑乘山羊。
+    speed: 100
   item:
     id: 89390
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140066
     name: 酸液喷射者
     description: 召唤或解散你的酸液喷射者。
+    speed: 100
   item:
     id: 152904
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140219
     name: 迅捷厄蹄马
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180728
     class: 15

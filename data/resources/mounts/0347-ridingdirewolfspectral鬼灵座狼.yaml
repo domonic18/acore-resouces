@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140343
     name: 鬼灵座狼
     description: 召唤或解散一头可供骑乘的鬼灵座狼。
+    speed: 100
   item:
     id: 64999
     class: 15

@@ -30,6 +30,8 @@ dbc:
     icon_id: 27106
     name: 魔能火鹰
     description: 召唤或解散一只可供骑乘的魔能火鹰。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 69226
     class: 15

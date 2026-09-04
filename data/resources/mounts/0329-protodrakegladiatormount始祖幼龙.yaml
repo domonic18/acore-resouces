@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140325
     name: 铁箍始祖幼龙
     description: 召唤或解散一条可供骑乘的铁箍始祖幼龙。这是一种速度极快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 45801
     class: 15

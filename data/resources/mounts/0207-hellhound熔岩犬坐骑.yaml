@@ -22,6 +22,7 @@ dbc:
     id: 80202
     visual_id: 9140202
     name: 熔岩犬的缰绳
+    speed: 100
   item:
     id: 0
     class: 15

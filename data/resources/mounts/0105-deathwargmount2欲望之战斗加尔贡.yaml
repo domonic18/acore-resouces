@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140100
     name: 战斗加尔贡西勒莎
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 183798
     class: 15

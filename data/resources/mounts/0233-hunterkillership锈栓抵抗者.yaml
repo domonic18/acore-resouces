@@ -30,6 +30,8 @@ dbc:
     icon_id: 21798
     name: 锈栓抵抗者
     description: 召唤或解散一只可供骑乘的锈栓抵抗者。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 168829
     class: 15

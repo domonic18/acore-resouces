@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140131
     name: 巨型紫色龙龟
     description: 召唤或解散一只可供骑乘的巨型紫色龙龟。
+    swim_speed: 60
   item:
     id: 87805
     class: 15

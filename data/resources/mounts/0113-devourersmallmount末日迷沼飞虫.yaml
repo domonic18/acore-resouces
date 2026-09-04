@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140108
     name: 末日迷沼飞虫
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180582
     class: 15

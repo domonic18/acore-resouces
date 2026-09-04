@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140104
     name: 碎愿者加尔贡
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180581
     class: 15

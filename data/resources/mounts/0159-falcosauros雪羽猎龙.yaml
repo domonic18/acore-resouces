@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140154
     name: 翠绿利爪龙
     description: 召唤或解散你的翠绿利爪龙。
+    speed: 100
   item:
     id: 137580
     class: 15

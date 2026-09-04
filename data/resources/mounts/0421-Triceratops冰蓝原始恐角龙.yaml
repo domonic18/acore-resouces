@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140417
     name: 冰蓝原始恐角龙
     description: 召唤或解散一头可供骑乘的冰蓝原始恐角龙。
+    speed: 100
   item:
     id: 94228
     class: 15

@@ -30,6 +30,8 @@ dbc:
     icon_id: 11194
     name: 加氏灭世机甲
     description: 召唤或解散一只可供骑乘的加氏灭世机甲。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 166518
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140185
     name: 野生血牙野猪
     description: 召唤或解散你的野生血牙野猪。
+    speed: 100
   item:
     id: 116671
     class: 15

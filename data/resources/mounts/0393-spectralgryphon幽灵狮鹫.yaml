@@ -23,6 +23,8 @@ dbc:
     id: 80389
     visual_id: 9140389
     name: 迅捷幽灵狮鹫
+    speed: 100
+    flight_speed: 280
   item:
     id: 0
     class: 15

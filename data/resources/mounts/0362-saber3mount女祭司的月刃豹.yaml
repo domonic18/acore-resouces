@@ -34,6 +34,7 @@ dbc:
     icon_id: 27493
     name: 女祭司的月刃豹
     description: 召唤或解散一只可供骑乘的女祭司的月刃豹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 166463
     class: 15

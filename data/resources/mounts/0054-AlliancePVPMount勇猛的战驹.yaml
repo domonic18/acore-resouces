@@ -29,6 +29,7 @@ dbc:
     icon_id: 1176
     name: 勇猛的战驹
     description: 召唤或解散一只可供骑乘的勇猛的战驹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91051
     class: 15

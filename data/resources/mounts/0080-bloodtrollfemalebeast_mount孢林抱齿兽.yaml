@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140075
     name: 孢林抱齿兽
     description: 召唤或解散你的孢林抱齿兽坐骑。
+    speed: 100
   item:
     id: 160829
     class: 15

@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140353
     name: 暗影之刃的谋杀预兆
     description: 召唤或解散你的暗影之刃的谋杀预兆。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 143493
     class: 15

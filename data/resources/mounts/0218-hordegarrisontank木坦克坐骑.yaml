@@ -22,6 +22,7 @@ dbc:
     id: 80214
     visual_id: 9140214
     name: 木坦克
+    speed: 100
   item:
     id: 0
     class: 15

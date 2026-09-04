@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140071
     name: 装甲血翼蝠
     description: 召唤或解散一只装甲血翼蝠。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 95341
     class: 15

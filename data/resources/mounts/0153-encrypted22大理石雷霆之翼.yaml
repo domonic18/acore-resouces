@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140148
     name: 大理石雷霆之翼
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 207963
     class: 15

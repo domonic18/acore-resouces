@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140362
     name: 微光逐星者
     description: 召唤或解散你的微光逐星者。
+    speed: 100
   item:
     id: 147901
     class: 15

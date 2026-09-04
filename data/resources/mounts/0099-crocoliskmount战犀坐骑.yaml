@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140094
     name: 布鲁斯
     description: 召唤或解散布鲁斯。
+    speed: 100
   item:
     id: 166724
     class: 15

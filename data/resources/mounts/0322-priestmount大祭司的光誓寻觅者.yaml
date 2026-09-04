@@ -24,6 +24,8 @@ dbc:
     visual_id: 9140318
     name: 大祭司的光誓寻觅者
     description: 召唤或解散你的大祭司的光誓寻觅者。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 0
     class: 15

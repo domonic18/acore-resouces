@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140274
     name: 巨型北地大角鹿
     description: 召唤或解散你的巨型北地大角鹿。
+    speed: 100
   item:
     id: 129962
     class: 15

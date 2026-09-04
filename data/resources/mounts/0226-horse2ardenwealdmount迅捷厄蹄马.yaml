@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140222
     name: 无畏的暮行者
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 181317
     class: 15

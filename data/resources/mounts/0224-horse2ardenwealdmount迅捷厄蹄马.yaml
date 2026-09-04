@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140220
     name: 日舞者
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180773
     class: 15

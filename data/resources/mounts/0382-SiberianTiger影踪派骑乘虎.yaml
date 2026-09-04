@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140378
     name: 红色影踪派骑乘虎
     description: 召唤或解散一只可供骑乘的红色影踪派骑乘虎。
+    speed: 100
   item:
     id: 89306
     class: 15

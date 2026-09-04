@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140408
     name: 风蹄公羊
     description: 召唤或解散你的风蹄公羊。
+    speed: 100
   item:
     id: 116775
     class: 15

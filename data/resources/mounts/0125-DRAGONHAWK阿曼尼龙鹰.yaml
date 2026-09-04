@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140120
     name: 红色装甲龙鹰
     description: 召唤或解散一只可供骑乘的红色装甲龙鹰。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 98104
     class: 15

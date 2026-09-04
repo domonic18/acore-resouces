@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140439
     name: 勇猛的战斗机械陆行鸟
     description: 召唤或解散一部可供骑乘的勇猛的战斗机械陆行鸟。
+    speed: 100
   item:
     id: 124089
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140255
     name: 艳丽血牙猪
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 182082
     class: 15

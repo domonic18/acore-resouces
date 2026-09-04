@@ -33,6 +33,8 @@ dbc:
     icon_id: 11277
     name: 机甲大亨MK2型
     description: 召唤或解散一只可供骑乘的机甲大亨MK2型。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 161134
     class: 15

@@ -32,6 +32,7 @@ dbc:
     icon_id: 14380
     name: 墓穴猎手
     description: 召唤或解散一只可供骑乘的墓穴猎手。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91006
     class: 15

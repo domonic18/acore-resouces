@@ -34,6 +34,7 @@ dbc:
     icon_id: 10051
     name: 铁箍鬼灵战马
     description: 召唤或解散一只可供骑乘的铁箍鬼灵战马。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 129922
     class: 15

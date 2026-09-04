@@ -30,6 +30,7 @@ dbc:
     icon_id: 23335
     name: 烬鬃战马
     description: 召唤或解散一只可供骑乘的烬鬃战马。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 118515
     class: 15

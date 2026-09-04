@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140149
     name: 拍浪水母
     description: 召唤或解散一只可供骑乘的拍浪水母。
+    swim_speed: 60
   item:
     id: 163585
     class: 15

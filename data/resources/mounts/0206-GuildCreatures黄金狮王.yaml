@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140201
     name: 黄金狮王
     description: 召唤或解散一个可供骑乘的黄金狮王。
+    speed: 100
   item:
     id: 62298
     class: 15

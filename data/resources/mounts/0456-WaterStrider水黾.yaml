@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140452
     name: 天蓝水黾
     description: 召唤或解散一只可供骑乘的天蓝水黾。这种坐骑可以在除战场之外的水面上行走，直到受到伤害为止。
+    speed: 100
   item:
     id: 81354
     class: 15

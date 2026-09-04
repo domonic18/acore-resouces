@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140157
     name: 堕落角鹰兽
     description: 召唤或解散一只可供骑乘的堕落角鹰兽。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 72582
     class: 15

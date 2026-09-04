@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140263
     name: 灵魂羁绊阴郁军马
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 186657
     class: 15

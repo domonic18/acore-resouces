@@ -29,6 +29,8 @@ dbc:
     icon_id: 25206
     name: 翡翠角鹰兽
     description: 召唤或解散一只可供骑乘的翡翠角鹰兽。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 106246
     class: 15

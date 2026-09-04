@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140099
     name: 战斗加尔贡弗雷德尼克
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180948
     class: 15

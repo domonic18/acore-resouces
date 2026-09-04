@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140137
     name: 海鬃骏马
     description: 召唤或解散你的海鬃骏马。
+    speed: 100
   item:
     id: 153539
     class: 15

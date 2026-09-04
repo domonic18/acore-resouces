@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140448
     name: 勇猛卡多雷作战刃豹
     description: 召唤或解散一头可供骑乘的勇猛卡多雷作战刃豹。
+    speed: 100
   item:
     id: 102514
     class: 15

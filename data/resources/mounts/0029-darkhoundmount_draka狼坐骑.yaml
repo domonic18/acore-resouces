@@ -32,6 +32,7 @@ dbc:
     icon_id: 18820
     name: 战缝黑暗犬
     description: 召唤或解散一只可供骑乘的战缝黑暗犬。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91026
     class: 15

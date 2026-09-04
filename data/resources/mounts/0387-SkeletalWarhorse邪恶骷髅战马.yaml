@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140383
     name: 邪恶骷髅战马
     description: 召唤或解散一匹可供骑乘的邪恶骷髅战马。
+    speed: 100
   item:
     id: 102533
     class: 15

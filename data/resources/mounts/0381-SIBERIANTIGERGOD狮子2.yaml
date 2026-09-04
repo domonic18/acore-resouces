@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140377
     name: 幽灵虎
     description: 召唤或解散一头可供骑乘的幽灵虎。
+    speed: 100
   item:
     id: 33224
     class: 15

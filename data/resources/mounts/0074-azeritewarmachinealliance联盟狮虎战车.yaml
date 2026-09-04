@@ -22,6 +22,7 @@ dbc:
     id: 80069
     visual_id: 9140069
     name: 联盟狮虎战车
+    speed: 100
   item:
     id: 0
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140359
     name: 瓦丝琪尔海马
     description: 召唤或解散你的瓦丝琪尔海马。只能在瓦丝琪尔使用。
+    swim_speed: 60
   item:
     id: 54465
     class: 15

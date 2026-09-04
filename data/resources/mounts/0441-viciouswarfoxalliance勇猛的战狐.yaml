@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140437
     name: 勇猛的战狐
     description: 召唤或解散你的勇猛的战狐
+    speed: 100
   item:
     id: 152869
     class: 15

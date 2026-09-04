@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140281
     name: 拳手的健壮穆山兽
     description: 召唤或解散一只可供骑乘的拳手的健壮穆山兽。
+    speed: 100
   item:
     id: 98405
     class: 15

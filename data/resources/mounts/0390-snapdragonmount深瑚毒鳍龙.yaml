@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140386
     name: 皇家毒鳍龙
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 169198
     class: 15

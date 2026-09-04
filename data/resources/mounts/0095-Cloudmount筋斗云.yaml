@@ -35,6 +35,8 @@ dbc:
     name: 红色筋斗云
     description: 召唤或解散一朵可供骑乘的红色筋斗云。只能在外域或诺森德召唤这种坐骑。
     spell_visual_id: 12844
+    speed: 100
+    flight_speed: 280
   item:
     id: 89363
     class: 15

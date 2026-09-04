@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140216
     name: 琥珀巨蝎
     description: 召唤或解散一只可供骑乘的琥珀巨蝎。
+    speed: 100
   item:
     id: 85262
     class: 15

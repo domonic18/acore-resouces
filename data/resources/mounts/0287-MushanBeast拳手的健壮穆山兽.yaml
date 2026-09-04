@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140283
     name: 炮舰之子
     description: 召唤或解散一只可供骑乘的炮舰之子。
+    speed: 100
   item:
     id: 89783
     class: 15

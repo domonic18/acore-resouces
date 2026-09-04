@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140414
     name: 靛蓝沼泽跃蛙
     description: 召唤或解散一只靛蓝沼泽跃蛙。
+    speed: 100
   item:
     id: 166442
     class: 15

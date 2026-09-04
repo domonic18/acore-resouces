@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140204
     name: 赤红浪骁
     description: 召唤或解散这种坐骑。只能在水下使用。
+    swim_speed: 60
   item:
     id: 169202
     class: 15

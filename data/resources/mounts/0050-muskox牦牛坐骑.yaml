@@ -31,6 +31,7 @@ dbc:
     icon_id: 2166
     name: 高地符角牛
     description: 召唤或解散一头可供骑乘的高地符角牛。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91047
     class: 15

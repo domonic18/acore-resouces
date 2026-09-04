@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140385
     name: 毒鳍龙猎藻者
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 169199
     class: 15

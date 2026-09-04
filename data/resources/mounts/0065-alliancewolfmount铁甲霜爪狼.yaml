@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140060
     name: 铁甲霜爪狼
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 168056
     class: 15

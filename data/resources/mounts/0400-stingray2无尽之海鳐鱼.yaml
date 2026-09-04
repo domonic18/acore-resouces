@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140396
     name: 无尽之海鳐鱼
     description: 召唤或解散一条可供骑乘的无尽之海鳐鱼。
+    speed: 100
+    flight_speed: 280
   item:
     id: 163131
     class: 15

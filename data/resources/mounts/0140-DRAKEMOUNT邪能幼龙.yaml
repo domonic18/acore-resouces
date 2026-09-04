@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140135
     name: 实验体12-B
     description: 召唤或解散一条可供骑乘的实验体12-B。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 78919
     class: 15

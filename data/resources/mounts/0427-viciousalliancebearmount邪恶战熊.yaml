@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140423
     name: 邪恶战熊
     description: 召唤或解散你的邪恶战熊。
+    speed: 100
   item:
     id: 142234
     class: 15

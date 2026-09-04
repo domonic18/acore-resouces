@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140249
     name: 阳炎之肤小戈隆
     description: 召唤或解散你的阳炎之肤小戈隆。
+    speed: 100
   item:
     id: 116792
     class: 15

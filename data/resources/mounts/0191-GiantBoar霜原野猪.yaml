@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140186
     name: 装甲刀脊野猪
     description: 召唤或解散你的装甲刀脊野猪。
+    speed: 100
   item:
     id: 116669
     class: 15

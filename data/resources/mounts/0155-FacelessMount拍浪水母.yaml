@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140150
     name: 池塘水母
     description: 召唤或解散一只可供骑乘的池塘水母。
+    swim_speed: 60
   item:
     id: 152912
     class: 15

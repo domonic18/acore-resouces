@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140156
     name: 掠食血眼龙
     description: 召唤或解散你的掠食血眼龙。
+    speed: 100
   item:
     id: 137577
     class: 15

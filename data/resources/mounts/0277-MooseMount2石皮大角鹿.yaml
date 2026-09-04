@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140273
     name: 石皮大角鹿
     description: 召唤或解散你的石皮大角鹿。
+    speed: 100
   item:
     id: 166470
     class: 15

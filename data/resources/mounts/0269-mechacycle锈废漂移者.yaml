@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140265
     name: 机轮车W型
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 168329
     class: 15

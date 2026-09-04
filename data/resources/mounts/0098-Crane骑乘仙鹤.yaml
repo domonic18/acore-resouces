@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140093
     name: 天蓝骑乘仙鹤
     description: 召唤或解散一只可供骑乘的天蓝骑乘仙鹤。
+    speed: 100
   item:
     id: 87781
     class: 15

@@ -30,6 +30,7 @@ dbc:
     icon_id: 19993
     name: 钢鬃地狱野猪
     description: 召唤或解散一只可供骑乘的钢鬃地狱野猪。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 128480
     class: 15

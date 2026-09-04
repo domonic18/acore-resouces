@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140400
     name: 瓦拉加尔风暴之翼幼龙
     description: 召唤或解散你的瓦拉加尔风暴之翼幼龙。
+    speed: 100
+    flight_speed: 280
   item:
     id: 147805
     class: 15

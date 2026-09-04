@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140205
     name: 墨鳞觅暗者
     description: 召唤或解散这种坐骑。只能在水下使用。
+    swim_speed: 60
   item:
     id: 169203
     class: 15

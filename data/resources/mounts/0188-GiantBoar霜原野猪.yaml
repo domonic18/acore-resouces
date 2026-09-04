@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140183
     name: 驯养的刀脊野猪
     description: 召唤或解散你的驯养的刀脊野猪。
+    speed: 100
   item:
     id: 116672
     class: 15

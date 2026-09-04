@@ -24,6 +24,7 @@ dbc:
     visual_id: 9140454
     name: 柳魔幼兽
     description: 召唤或解散柳魔幼兽。
+    speed: 100
   item:
     id: 143189
     class: 15

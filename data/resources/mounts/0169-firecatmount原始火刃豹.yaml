@@ -34,6 +34,7 @@ dbc:
     icon_id: 19517
     name: 原始火刃豹
     description: 召唤或解散一只可供骑乘的原始火刃豹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 143631
     class: 15

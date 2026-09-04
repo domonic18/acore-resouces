@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140239
     name: 霜裂地狱火
     description: 召唤或解散你的霜裂地狱火。
+    speed: 100
   item:
     id: 137614
     class: 15

@@ -30,6 +30,7 @@ dbc:
     icon_id: 10041
     name: 绿色影踪派骑乘虎
     description: 召唤或解散一只可供骑乘的绿色影踪派骑乘虎。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 89305
     class: 15

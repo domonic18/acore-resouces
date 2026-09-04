@@ -31,6 +31,7 @@ dbc:
     name: 星光云端翔龙
     description: 召唤或解散一只可供骑乘的星光云端翔龙。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 87777
     class: 15

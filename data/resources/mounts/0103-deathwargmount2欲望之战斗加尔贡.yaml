@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140098
     name: 欲望之战斗加尔贡
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 182209
     class: 15

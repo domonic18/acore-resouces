@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140311
     name: 金色云端翔龙
     description: 召唤或解散一条可供骑乘的金色云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
+    speed: 100
+    flight_speed: 280
   item:
     id: 85429
     class: 15

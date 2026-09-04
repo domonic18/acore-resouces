@@ -29,6 +29,7 @@ dbc:
     icon_id: 10040
     name: 机械化木材采集器
     description: 召唤或解散一只可供骑乘的机械化木材采集器。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 140500
     class: 15

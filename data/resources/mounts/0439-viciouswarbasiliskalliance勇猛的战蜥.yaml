@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140435
     name: 勇猛的战蜥
     description: 召唤或解散你的勇猛的战蜥。
+    speed: 100
   item:
     id: 163121
     class: 15

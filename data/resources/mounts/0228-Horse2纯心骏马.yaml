@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140224
     name: 晋升天鬃马
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 183741
     class: 15

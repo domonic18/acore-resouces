@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140335
     name: 秦薛的永恒魁麟
     description: 召唤或解散秦薛的永恒魁麟。
+    speed: 100
   item:
     id: 163582
     class: 15

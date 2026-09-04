@@ -24,6 +24,8 @@ dbc:
     id: 80375
     visual_id: 9140375
     name: 飞天魔像
+    speed: 100
+    flight_speed: 280
   item:
     id: 95416
     class: 15

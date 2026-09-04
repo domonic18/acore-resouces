@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140399
     name: 日光峰林飞鹰
     description: 召唤或解散你的日光峰林飞鹰。
+    speed: 100
+    flight_speed: 280
   item:
     id: 116771
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140236
     name: 沙丘食腐狼
     description: 召唤或解散你的沙丘食腐狼。
+    speed: 100
   item:
     id: 163576
     class: 15

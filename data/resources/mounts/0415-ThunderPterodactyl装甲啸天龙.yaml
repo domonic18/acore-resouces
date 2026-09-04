@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140411
     name: 装甲啸天龙
     description: 召唤或解散一条可供骑乘的装甲啸天龙。这种坐骑的性能会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 93662
     class: 15

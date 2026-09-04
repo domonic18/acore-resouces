@@ -34,6 +34,8 @@ dbc:
     icon_id: 25208
     name: 重装双足飞龙
     description: 召唤或解散一只可供骑乘的重装双足飞龙。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 93169
     class: 15

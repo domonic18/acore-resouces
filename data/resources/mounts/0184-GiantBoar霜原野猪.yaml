@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140179
     name: 巨型冻吻野猪
     description: 召唤或解散你的巨型冻吻野猪。
+    speed: 100
   item:
     id: 116673
     class: 15

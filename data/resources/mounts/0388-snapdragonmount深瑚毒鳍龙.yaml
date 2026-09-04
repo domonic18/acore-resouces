@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140384
     name: 深瑚毒鳍龙
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 169200
     class: 15

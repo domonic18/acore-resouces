@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140299
     name: 翠绿熊猫人凤凰
     description: 召唤或解散一头可供骑乘的翠绿熊猫人凤凰。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 90711
     class: 15

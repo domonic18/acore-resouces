@@ -24,6 +24,7 @@ dbc:
     id: 80441
     visual_id: 9140441
     name: 星怨虚空陆行鸟
+    speed: 100
   item:
     id: 156486
     class: 15

@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140207
     name: 魔羽角鹰兽
     description: 召唤或解散一只可骑乘的魔羽角鹰兽。
+    speed: 100
+    flight_speed: 280
   item:
     id: 141217
     class: 15

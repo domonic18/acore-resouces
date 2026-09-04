@@ -34,6 +34,7 @@ dbc:
     icon_id: 27403
     name: 鬼灵战马
     description: 召唤或解散一只可供骑乘的鬼灵战马。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 64998
     class: 15

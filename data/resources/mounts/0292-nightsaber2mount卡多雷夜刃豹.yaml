@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140288
     name: 卡多雷夜刃豹
     description: 召唤或解散一头可供骑乘的卡多雷夜刃豹。
+    speed: 100
   item:
     id: 166435
     class: 15

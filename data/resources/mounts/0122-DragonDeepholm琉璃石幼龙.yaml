@@ -34,6 +34,8 @@ dbc:
     icon_id: 27080
     name: 琉璃石幼龙
     description: 召唤或解散一只可供骑乘的琉璃石幼龙。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 63043
     class: 15

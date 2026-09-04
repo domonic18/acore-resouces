@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140064
     name: 恶毒工蜂
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 174769
     class: 15

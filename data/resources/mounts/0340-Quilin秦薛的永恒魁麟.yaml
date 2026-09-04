@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140336
     name: 任衙的忠犬
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 174841
     class: 15

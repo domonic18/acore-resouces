@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140225
     name: 野生梦境角马
     description: 召唤或解散你的野生梦境角马。
+    speed: 100
   item:
     id: 147804
     class: 15

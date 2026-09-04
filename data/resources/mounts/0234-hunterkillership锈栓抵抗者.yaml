@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140230
     name: R-21/X型空中单位
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 168830
     class: 15

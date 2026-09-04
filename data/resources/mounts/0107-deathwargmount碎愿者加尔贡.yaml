@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140102
     name: 地穴加尔贡
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180945
     class: 15

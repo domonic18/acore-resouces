@@ -34,6 +34,8 @@ dbc:
     icon_id: 9960
     name: 迦拉卡斯的子嗣
     description: 召唤或解散一只可供骑乘的迦拉卡斯的子嗣。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 104208
     class: 15

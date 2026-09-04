@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140254
     name: 灼背血牙猪
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 182085
     class: 15

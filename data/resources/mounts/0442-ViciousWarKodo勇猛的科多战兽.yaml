@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140438
     name: 勇猛的科多战兽
     description: 召唤或解散你的勇猛的科多战兽。
+    speed: 100
   item:
     id: 124540
     class: 15

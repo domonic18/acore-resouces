@@ -24,6 +24,8 @@ dbc:
     id: 80349
     visual_id: 9140349
     name: 对地同步世界旋转器
+    speed: 100
+    flight_speed: 280
   item:
     id: 87251
     class: 15

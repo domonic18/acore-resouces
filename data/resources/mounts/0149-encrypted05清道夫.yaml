@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140144
     name: 清道夫
     description: 召唤或解散一架可以骑乘的清道夫。
+    speed: 100
   item:
     id: 164571
     class: 15

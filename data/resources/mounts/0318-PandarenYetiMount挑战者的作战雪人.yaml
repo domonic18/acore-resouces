@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140314
     name: 格噜普斯的爪牙
     description: 召唤或解散你的格噜普斯的爪牙。
+    speed: 100
   item:
     id: 128671
     class: 15

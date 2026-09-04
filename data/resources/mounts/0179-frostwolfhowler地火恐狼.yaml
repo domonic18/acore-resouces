@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140174
     name: 地火恐狼
     description: 召唤或解散你的地火恐狼。
+    speed: 100
   item:
     id: 127140
     class: 15

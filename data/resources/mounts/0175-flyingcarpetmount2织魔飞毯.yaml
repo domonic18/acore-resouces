@@ -35,6 +35,8 @@ dbc:
     name: 织魔飞毯
     description: 召唤或解散一只可供骑乘的织魔飞毯。这是一种速度非常快的坐骑。
     spell_visual_id: 12844
+    speed: 100
+    flight_speed: 280
   item:
     id: 143764
     class: 15

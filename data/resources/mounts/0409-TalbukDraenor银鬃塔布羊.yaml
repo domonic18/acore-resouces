@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140405
     name: 驯养的银鬃塔布羊
     description: 召唤或解散你的驯养的银鬃塔布羊。
+    speed: 100
   item:
     id: 116774
     class: 15

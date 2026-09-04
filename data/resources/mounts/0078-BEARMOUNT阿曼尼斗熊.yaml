@@ -26,6 +26,7 @@ dbc:
     icon_id: 957
     name: 阿曼尼斗熊
     description: 召唤或解散一个可供骑乘的阿曼尼斗熊。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 69747
     class: 15

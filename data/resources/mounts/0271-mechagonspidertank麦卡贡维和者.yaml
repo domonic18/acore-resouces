@@ -30,6 +30,7 @@ dbc:
     icon_id: 24508
     name: 麦卡贡维和者
     description: 召唤或解散一个可供骑乘的麦卡贡维和者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 168826
     class: 15

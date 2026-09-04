@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140187
     name: 装甲霜鬃野猪
     description: 召唤或解散你的装甲霜鬃野猪。
+    speed: 100
   item:
     id: 116668
     class: 15

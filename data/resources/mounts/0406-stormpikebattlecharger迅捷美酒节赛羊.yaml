@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140402
     name: 迅捷美酒节赛羊
     description: 召唤或解散一头可以骑乘的迅捷美酒节赛羊。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 33977
     class: 15

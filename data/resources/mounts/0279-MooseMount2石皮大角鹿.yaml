@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140275
     name: 至高岭大角鹿
     description: 召唤或解散你的至高岭大角鹿。
+    speed: 100
   item:
     id: 147807
     class: 15

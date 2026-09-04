@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140434
     name: 邪恶战蝎
     description: 召唤或解散你的邪恶战蝎。
+    speed: 100
   item:
     id: 142437
     class: 15

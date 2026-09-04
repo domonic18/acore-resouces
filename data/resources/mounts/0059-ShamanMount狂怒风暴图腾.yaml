@@ -30,6 +30,7 @@ dbc:
     icon_id: 3170
     name: 先知的狂怒风暴
     description: 召唤或解散你的先知的狂怒风暴。这是一种飞行坐骑。
+    speed: 100
   item:
     id: 143489
     class: 15

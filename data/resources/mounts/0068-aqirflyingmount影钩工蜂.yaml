@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140063
     name: 影钩工蜂
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 174771
     class: 15

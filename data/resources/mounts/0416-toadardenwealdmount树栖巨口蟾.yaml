@@ -34,6 +34,7 @@ dbc:
     icon_id: 32332
     name: 树栖巨口蟾
     description: 召唤或解散一只可供骑乘的树栖巨口蟾。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 182650
     class: 15

@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140134
     name: 蓝色幼龙
     description: 召唤或解散一条可供骑乘的蓝色幼龙。这是一种速度非常快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 43953
     class: 15

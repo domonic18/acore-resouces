@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140443
     name: 灰白土狼
     description: 召唤或解散你的灰白土狼。
+    speed: 100
   item:
     id: 161773
     class: 15

@@ -34,6 +34,8 @@ dbc:
     icon_id: 14895
     name: 蜜背收割者
     description: 召唤或解散一只可供骑乘的蜜背收割者。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 170069
     class: 15

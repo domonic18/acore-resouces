@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140461
     name: 暗月飞船
     description: 召唤或解散你的暗月飞船。这种坐骑会依据你的骑乘技能和地区而改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 153485
     class: 15

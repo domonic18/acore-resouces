@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140109
     name: 暴怒的重殴者
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 187183
     class: 15

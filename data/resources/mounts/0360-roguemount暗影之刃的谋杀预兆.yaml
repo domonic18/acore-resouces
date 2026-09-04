@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140356
     name: 暗影之刃的致命预兆
     description: 召唤或解散你的暗影之刃的致命预兆。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 143492
     class: 15

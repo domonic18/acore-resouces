@@ -34,6 +34,8 @@ dbc:
     icon_id: 24430
     name: 柔光法力鳐
     description: 召唤或解散一只可供骑乘的柔光法力鳐。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 152844
     class: 15

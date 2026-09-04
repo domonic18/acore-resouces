@@ -35,6 +35,7 @@ dbc:
     name: 斯克维里加全地形载具
     description: 召唤或解散一只可供骑乘的斯克维里加全地形载具。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 153594
     class: 15

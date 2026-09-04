@@ -22,6 +22,7 @@ dbc:
     id: 80191
     visual_id: 9140191
     name: 地精挖掘机
+    speed: 100
   item:
     id: 0
     class: 15

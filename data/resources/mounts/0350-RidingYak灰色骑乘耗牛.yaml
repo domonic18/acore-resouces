@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140346
     name: 灰色骑乘牦牛
     description: 召唤或解散一只可供骑乘的灰色骑乘牦牛。
+    speed: 100
   item:
     id: 87788
     class: 15

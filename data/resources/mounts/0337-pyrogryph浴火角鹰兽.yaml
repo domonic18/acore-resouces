@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140333
     name: 浴火角鹰兽
     description: 召唤或解散一头可供骑乘的浴火角鹰兽。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 69213
     class: 15

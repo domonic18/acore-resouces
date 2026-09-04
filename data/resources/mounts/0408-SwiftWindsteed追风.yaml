@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140404
     name: 追风
     description: 召唤或解散追风。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
   item:
     id: 213597
     class: 15

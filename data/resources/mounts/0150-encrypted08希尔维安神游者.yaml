@@ -30,6 +30,7 @@ dbc:
     name: 希尔维安神游者
     description: 召唤或解散一只可供骑乘的希尔维安神游者。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 166776
     class: 15

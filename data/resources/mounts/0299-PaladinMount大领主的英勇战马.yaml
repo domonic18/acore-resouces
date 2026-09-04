@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140295
     name: 大领主的复仇战马
     description: 召唤或解散你的大领主的复仇战马。这是一种飞行坐骑。
+    speed: 100
   item:
     id: 143503
     class: 15

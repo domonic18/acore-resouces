@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140087
     name: 阴森绽翼兽
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 181300
     class: 15

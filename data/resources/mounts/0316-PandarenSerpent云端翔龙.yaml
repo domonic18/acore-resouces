@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140312
     name: 莱加尼战争翔龙
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 174649
     class: 15

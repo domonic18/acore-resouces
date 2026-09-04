@@ -24,6 +24,7 @@ dbc:
     visual_id: 9140097
     name: 墓碑战斗加尔贡
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 182332
     class: 15

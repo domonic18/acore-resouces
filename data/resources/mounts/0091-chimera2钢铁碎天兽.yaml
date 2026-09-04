@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140086
     name: 死亡使者的绽翼兽
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 181817
     class: 15

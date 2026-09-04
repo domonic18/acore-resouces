@@ -32,6 +32,7 @@ dbc:
     icon_id: 14877
     name: 拳手的健壮蜥蜴
     description: 召唤或解散一只可供骑乘的拳手的健壮蜥蜴。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91011
     class: 15

@@ -32,6 +32,7 @@ dbc:
     icon_id: 22315
     name: 铁蹄毁灭者
     description: 召唤或解散一只可供骑乘的铁蹄毁灭者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91042
     class: 15

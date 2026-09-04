@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140208
     name: 天蓝淡水兽
     description: 召唤或解散你的天蓝淡水兽。
+    speed: 100
   item:
     id: 116767
     class: 15

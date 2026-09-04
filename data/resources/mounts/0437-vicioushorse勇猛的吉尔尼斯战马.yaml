@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140433
     name: 勇猛的吉尔尼斯战马
     description: 召唤或解散一只可供骑乘的勇猛的吉尔尼斯战马
+    speed: 100
   item:
     id: 140353
     class: 15

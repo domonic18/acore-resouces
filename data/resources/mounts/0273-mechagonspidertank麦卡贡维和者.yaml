@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140269
     name: 生锈的机械爬蛛
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 168823
     class: 15

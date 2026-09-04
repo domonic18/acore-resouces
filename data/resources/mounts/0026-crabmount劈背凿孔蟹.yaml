@@ -28,6 +28,7 @@ dbc:
     icon_id: 18783
     name: 劈背凿孔蟹
     description: 召唤或解散一只可供骑乘的劈背凿孔蟹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91023
     class: 15

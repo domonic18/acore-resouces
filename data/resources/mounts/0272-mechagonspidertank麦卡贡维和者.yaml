@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140268
     name: 废铁机甲蛛
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 168827
     class: 15

@@ -28,6 +28,7 @@ dbc:
     icon_id: 32705
     name: 虚空领主的硫磺愤怒战马
     description: 召唤或解散一只可供骑乘的虚空领主的硫磺愤怒战马。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 143637
     class: 15

@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140456
     name: 装甲霜狼
     description: 召唤或解散你的装甲霜狼。
+    speed: 100
   item:
     id: 116781
     class: 15

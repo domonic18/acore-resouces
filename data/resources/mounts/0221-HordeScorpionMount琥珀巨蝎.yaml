@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140217
     name: 库卡隆横扫者
     description: 召唤或解散库卡隆横扫者。
+    speed: 100
   item:
     id: 67107
     class: 15

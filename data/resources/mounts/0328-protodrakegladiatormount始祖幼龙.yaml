@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140324
     name: 迷时始祖幼龙
     description: 召唤或解散一条可供骑乘的迷时始祖幼龙。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 44168
     class: 15

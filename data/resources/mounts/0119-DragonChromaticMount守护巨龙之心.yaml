@@ -26,6 +26,8 @@ dbc:
     icon_id: 18916
     name: 守护巨龙之心
     description: 召唤或解散一个守护巨龙之心。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 78924
     class: 15

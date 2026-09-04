@@ -34,6 +34,7 @@ dbc:
     icon_id: 9894
     name: 棕色骑乘骆驼
     description: 召唤或解散一只可供骑乘的棕色骑乘骆驼。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 63044
     class: 15

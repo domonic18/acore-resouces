@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140436
     name: 勇猛的作战雷象
     description: 召唤或解散一只可供骑乘的勇猛的作战雷象。
+    speed: 100
   item:
     id: 140350
     class: 15

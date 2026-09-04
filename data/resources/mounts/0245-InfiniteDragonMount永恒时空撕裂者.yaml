@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140241
     name: 永恒时空撕裂者
     description: 召唤或解散一头可供骑乘的永恒时空撕裂者。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 133543
     class: 15

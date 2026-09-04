@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140337
     name: 馨劳
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 174840
     class: 15

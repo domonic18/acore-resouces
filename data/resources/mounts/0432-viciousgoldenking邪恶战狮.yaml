@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140428
     name: 邪恶战狮
     description: 召唤或解散你的邪恶战狮。
+    speed: 100
   item:
     id: 142237
     class: 15

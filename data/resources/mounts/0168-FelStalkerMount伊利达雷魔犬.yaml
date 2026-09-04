@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140163
     name: 伊利达雷魔犬
     description: 召唤或解散你的伊利达雷魔犬。
+    speed: 100
   item:
     id: 128425
     class: 15

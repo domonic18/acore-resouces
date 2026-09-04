@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140128
     name: 巨型红色龙龟
     description: 召唤或解散一只可供骑乘的巨型红色龙龟。
+    swim_speed: 60
   item:
     id: 82811
     class: 15

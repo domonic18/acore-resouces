@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140260
     name: 黯光刀翼兽
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 186651
     class: 15

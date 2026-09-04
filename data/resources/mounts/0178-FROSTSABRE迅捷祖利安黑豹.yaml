@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140173
     name: 迅捷祖利安黑豹
     description: 召唤或解散一头迅捷祖利安黑豹。
+    speed: 100
   item:
     id: 68824
     class: 15

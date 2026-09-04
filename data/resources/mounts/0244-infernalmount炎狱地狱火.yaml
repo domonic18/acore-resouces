@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140240
     name: 邪焰地狱火
     description: 召唤或解散你的邪焰地狱火。
+    speed: 100
   item:
     id: 152413
     class: 15

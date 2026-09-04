@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140327
     name: 紫色始祖幼龙
     description: 召唤或解散一条可供骑乘的紫色始祖幼龙。这是一种速度非常快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 44177
     class: 15

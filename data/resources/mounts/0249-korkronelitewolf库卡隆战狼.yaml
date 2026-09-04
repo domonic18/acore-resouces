@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140245
     name: 库卡隆战狼
     description: 召唤或解散一头可供骑乘的库卡隆战狼。
+    speed: 100
   item:
     id: 104246
     class: 15

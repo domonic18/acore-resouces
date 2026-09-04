@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140237
     name: 战缝黑暗犬
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 183615
     class: 15

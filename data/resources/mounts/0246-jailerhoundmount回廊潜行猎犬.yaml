@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140242
     name: 回廊潜行猎犬
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 184166
     class: 15

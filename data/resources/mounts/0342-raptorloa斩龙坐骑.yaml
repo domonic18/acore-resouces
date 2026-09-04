@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140338
     name: 奢华暴掠龙
     description: 召唤或解散你的奢华暴掠龙。
+    speed: 100
   item:
     id: 153540
     class: 15

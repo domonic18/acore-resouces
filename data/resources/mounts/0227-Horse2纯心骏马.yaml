@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140223
     name: 纯心骏马
     description: 召唤或解散你的纯心骏马。
+    speed: 100
   item:
     id: 163982
     class: 15

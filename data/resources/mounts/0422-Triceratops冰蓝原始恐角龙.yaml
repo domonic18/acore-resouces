@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140418
     name: 翡翠原始恐角龙
     description: 召唤或解散一头可供骑乘的翡翠原始恐角龙。
+    speed: 100
   item:
     id: 94231
     class: 15

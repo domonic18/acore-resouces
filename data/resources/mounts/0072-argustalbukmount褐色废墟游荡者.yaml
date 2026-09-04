@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140067
     name: 棕色废墟游荡者
     description: 召唤或解散你的棕色废墟游荡者。
+    speed: 100
   item:
     id: 152796
     class: 15

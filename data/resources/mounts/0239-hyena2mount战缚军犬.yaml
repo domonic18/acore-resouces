@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140235
     name: 战缚军犬
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 184062
     class: 15

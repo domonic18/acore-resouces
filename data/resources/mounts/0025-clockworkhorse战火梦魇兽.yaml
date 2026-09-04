@@ -32,6 +32,7 @@ dbc:
     icon_id: 9899
     name: 战火梦魇兽
     description: 召唤或解散一只可供骑乘的战火梦魇兽。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91022
     class: 15

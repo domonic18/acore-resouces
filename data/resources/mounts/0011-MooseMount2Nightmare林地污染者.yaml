@@ -32,6 +32,7 @@ dbc:
     icon_id: 27389
     name: 林地污染者
     description: 召唤或解散一只可供骑乘的林地污染者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91008
     class: 15

@@ -30,6 +30,8 @@ dbc:
     icon_id: 26603
     name: 堕落火鹰
     description: 召唤或解散一只可供骑乘的堕落火鹰。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 69230
     class: 15

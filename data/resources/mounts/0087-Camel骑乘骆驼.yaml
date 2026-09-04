@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140082
     name: 灰色骑乘骆驼
     description: 召唤或解散一个可供骑乘的灰色骑乘骆驼。
+    speed: 100
   item:
     id: 63046
     class: 15

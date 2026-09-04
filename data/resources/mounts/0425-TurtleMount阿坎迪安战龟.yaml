@@ -33,6 +33,7 @@ dbc:
     icon_id: 32544
     name: 阿坎迪安战龟
     description: 召唤或解散一只可供骑乘的阿坎迪安战龟。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 166465
     class: 15

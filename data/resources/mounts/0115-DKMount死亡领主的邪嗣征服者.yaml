@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140110
     name: 死亡领主的邪嗣征服者
     description: 召唤或解散你的死亡领主的邪嗣征服者。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 142231
     class: 15

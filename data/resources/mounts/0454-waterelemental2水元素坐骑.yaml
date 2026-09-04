@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140450
     name: 冰川狂潮
     description: 召唤或解散你的冰川狂潮。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
   item:
     id: 166705
     class: 15

@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140303
     name: 神圣碧蓝云端翔龙
     description: 召唤或解散一条可供骑乘的神圣碧蓝云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
+    speed: 100
+    flight_speed: 280
   item:
     id: 87776
     class: 15

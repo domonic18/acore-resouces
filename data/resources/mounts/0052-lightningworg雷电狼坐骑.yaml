@@ -34,6 +34,7 @@ dbc:
     icon_id: 1178
     name: 雷电狼
     description: 召唤或解散一只可供骑乘的雷电狼。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91049
     class: 15

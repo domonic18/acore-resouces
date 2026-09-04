@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140369
     name: 破镣者海波鳐
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 167170
     class: 15

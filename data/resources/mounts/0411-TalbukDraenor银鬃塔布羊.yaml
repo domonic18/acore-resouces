@@ -25,6 +25,7 @@ dbc:
     visual_id: 9140407
     name: 苍白食棘者
     description: 召唤或解散你的苍白食棘者。
+    speed: 100
   item:
     id: 116776
     class: 15

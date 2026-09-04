@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140123
     name: 南风幼龙
     description: 召唤或解散一条可供骑乘的南风幼龙。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 63041
     class: 15
