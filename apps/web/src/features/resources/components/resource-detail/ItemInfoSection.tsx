@@ -130,7 +130,7 @@ export function ItemInfoSection({
               compact={compact}
               hint={
                 <FieldHint
-                  description="物品外观显示 ID（ItemDisplayInfo），坐骑物品一般为 0"
+                  description="物品外观显示 ID，引用 ItemDisplayInfo.dbc 记录；官方坐骑为官方显示 ID，自定义坐骑物品为 0"
                   reference={getReference("dbc.item.display_id")}
                 />
               }
@@ -147,7 +147,7 @@ export function ItemInfoSection({
               label="DB displayid"
               compact={compact}
               hint={
-                <FieldHint description="数据库侧物品外观显示 ID，与 DBC Display ID 对应；坐骑物品多为 0" />
+                <FieldHint description="数据库侧物品外观显示 ID（item_template.displayid），应与 DBC Display ID 保持一致；自定义坐骑物品留空" />
               }
             >
               <NumberInput
