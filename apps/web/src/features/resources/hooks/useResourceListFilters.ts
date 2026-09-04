@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   DEFAULT_ORDER,
   sortResources,
   pageButtons,
   computeResourceTags,
+  matchesResourceSearch,
   matchesStatusFilter,
   matchesTagFilter,
   matchesUpdatedAtFilter,
@@ -15,6 +16,7 @@ import {
 } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
 import type { SortKey, ResourceTagValue } from "../lib/resource-list";
+import { useDebouncedValue } from "./useItemDisplayInfo";
 
 function parseParamList(value: string | null): string[] {
   if (!value) return [];
@@ -47,12 +49,7 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
 
     const search = (searchParams.get("search") || "").trim().toLowerCase();
     if (search) {
-      items = items.filter(
-        (r) =>
-          r.model_folder.toLowerCase().includes(search) ||
-          (r.official_db.name?.toLowerCase().includes(search) ?? false) ||
-          String(r.id).includes(search),
-      );
+      items = items.filter((r) => matchesResourceSearch(r, search));
     }
 
     const category = searchParams.get("category") || "";
@@ -122,6 +119,23 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
 
   const applySearch = () => updateParam("search", searchInput);
 
+  // 输入停顿 400ms 后自动应用搜索（无需回车），清空后自动恢复列表
+  const debouncedSearch = useDebouncedValue(searchInput, 400);
+  useEffect(() => {
+    const current = (searchParams.get("search") || "").trim();
+    const next = debouncedSearch.trim();
+    if (next !== current) {
+      updateParam("search", next);
+    }
+    // 仅响应防抖后的输入变化；searchParams 变化时值相等会直接跳过
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch]);
+
+  const clearSearch = () => {
+    setSearchInput("");
+    updateParam("search", "");
+  };
+
   const setSort = (key: SortKey) => {
     const next = new URLSearchParams(searchParams);
     if (key === sortKey) {
@@ -167,6 +181,7 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     searchInput,
     setSearchInput,
     applySearch,
+    clearSearch,
     sortKey,
     sortOrder,
     setSort,

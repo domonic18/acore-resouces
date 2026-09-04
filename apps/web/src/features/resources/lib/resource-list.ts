@@ -354,3 +354,36 @@ export function matchesTagFilter(
   const tags = computeResourceTags(resource);
   return selectedTags.some((t) => tags.includes(t));
 }
+
+/** 可搜索的 DBC / DB 各类 ID（资源 ID 之外的补充检索字段） */
+function collectSearchableIds(resource: Resource): string[] {
+  const values: unknown[] = [
+    resource.dbc.creature_model_data?.id,
+    resource.dbc.creature_display_info?.id,
+    resource.dbc.spell?.id,
+    resource.dbc.spell?.visual_id,
+    resource.dbc.item?.id,
+    resource.dbc.item?.display_id,
+    resource.db.creature_template?.entry,
+    resource.db.item_template?.entry,
+  ];
+  return values
+    .filter((v) => v !== null && v !== undefined && v !== "")
+    .map((v) => String(v));
+}
+
+/** 搜索匹配：名称、模型文件夹、资源 ID、各类 DBC/DB ID、M2 模型文件路径 */
+export function matchesResourceSearch(
+  resource: Resource,
+  search: string,
+): boolean {
+  if (resource.model_folder.toLowerCase().includes(search)) return true;
+  if ((resource.name ?? "").toLowerCase().includes(search)) return true;
+  if ((resource.official_db.name ?? "").toLowerCase().includes(search))
+    return true;
+  if (String(resource.id).includes(search)) return true;
+  const modelName = resource.dbc.creature_model_data?.model_name;
+  if (typeof modelName === "string" && modelName.toLowerCase().includes(search))
+    return true;
+  return collectSearchableIds(resource).some((v) => v.includes(search));
+}
