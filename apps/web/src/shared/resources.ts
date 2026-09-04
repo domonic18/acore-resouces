@@ -1,5 +1,7 @@
 import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
+  ItemDisplayInfoEntry,
+  ItemDisplayInfoPage,
   PaginatedResources,
   Resource,
   ResourceAssets,
@@ -140,6 +142,24 @@ export async function fetchAllResources(
 
 export async function getAllIcons(): Promise<string[]> {
   return apiGetJson("/api/preview/icons");
+}
+
+export async function searchItemDisplayInfo(params: {
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<ItemDisplayInfoPage> {
+  const query = new URLSearchParams();
+  if (params.search) query.set("search", params.search);
+  if (params.limit) query.set("limit", String(params.limit));
+  if (params.offset) query.set("offset", String(params.offset));
+  return apiGetJson(`/api/dbc/item-display-info?${query.toString()}`);
+}
+
+export async function getItemDisplayInfo(
+  id: number,
+): Promise<ItemDisplayInfoEntry> {
+  return apiGetJson(`/api/dbc/item-display-info/${id}`);
 }
 
 export async function updateResourceIcon(

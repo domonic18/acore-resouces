@@ -147,3 +147,13 @@ export interface Paginated<T> {
   page_size: number;
   items: T[];
 }
+
+export interface ItemDisplayInfoEntry {
+  id: number;
+  icon_name: string | null;
+}
+
+export interface ItemDisplayInfoPage {
+  items: ItemDisplayInfoEntry[];
+  total: number;
+}

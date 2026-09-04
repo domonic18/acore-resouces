@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Image as ImageIcon } from "lucide-react";
+import { useMemo, useState } from "react";
+import { AlertTriangle, Image as ImageIcon, Search } from "lucide-react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
 import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
+import { useItemDisplayInfo } from "../../hooks/useItemDisplayInfo";
 import { getIconPreviewUrl } from "@/shared/resources";
 import { cn } from "@/shared/utils";
 import { BitmaskDropdown } from "@/components/form/BitmaskDropdown";
@@ -40,6 +41,7 @@ interface ItemInfoSectionProps {
   /** 实时法术 ID（跟随编辑中的 dbc.spell.id），用于 spellid_2 自动跟随 */
   linkedSpellId: number | null;
   onNavigateToLinkedSection?: () => void;
+  onOpenDisplayPicker: () => void;
   compact?: boolean;
 }
 
@@ -57,13 +59,39 @@ export function ItemInfoSection({
   resourceType,
   linkedSpellId,
   onNavigateToLinkedSection,
+  onOpenDisplayPicker,
   compact,
 }: ItemInfoSectionProps) {
   const getReference = useFieldReference(resourceType);
 
   const [spellIdLocked, setSpellIdLocked] = useState(true);
+  const [displayIdLocked, setDisplayIdLocked] = useState(true);
 
   useLinkedFieldValue(spellIdLocked, linkedSpellId, "spellid_2", setItemDb);
+
+  const liveDisplayId = useMemo(() => {
+    const n = Number(itemDbc.display_id);
+    return itemDbc.display_id !== null &&
+      itemDbc.display_id !== undefined &&
+      itemDbc.display_id !== "" &&
+      !Number.isNaN(n)
+      ? n
+      : null;
+  }, [itemDbc.display_id]);
+
+  useLinkedFieldValue(
+    displayIdLocked,
+    liveDisplayId !== null && liveDisplayId > 0 ? liveDisplayId : null,
+    "displayid",
+    setItemDb,
+  );
+
+  const { data: displayInfo } = useItemDisplayInfo(liveDisplayId);
+  const displayIconName = displayInfo?.icon_name ?? null;
+  const iconMismatch =
+    displayIconName !== null &&
+    itemIcon.trim() !== "" &&
+    displayIconName.toLowerCase() !== itemIcon.trim().toLowerCase();
 
   return (
     <SectionCard title="物品信息" compact={compact}>
@@ -139,29 +167,83 @@ export function ItemInfoSection({
               compact={compact}
               hint={
                 <FieldHint
-                  description="物品外观显示 ID，引用 ItemDisplayInfo.dbc 记录；官方坐骑为官方显示 ID，自定义坐骑物品为 0"
+                  description="物品外观显示 ID，对应 ItemDisplayInfo.dbc 记录（决定游戏内图标）；点「选择」可按图标可视化挑选，清空为 0（未设置）"
                   reference={getReference("dbc.item.display_id")}
                 />
               }
             >
-              <NumberInput
-                value={itemDbc.display_id}
-                onChange={(v) =>
-                  setItemDbc((prev) => ({ ...prev, display_id: v }))
-                }
-                compact={compact}
-              />
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface"
+                  title={
+                    displayIconName
+                      ? `该显示 ID 的图标：${displayIconName}`
+                      : "未设置或未收录（灰色为无图标）"
+                  }
+                >
+                  {displayIconName ? (
+                    <img
+                      src={getIconPreviewUrl(displayIconName, 64)}
+                      alt={displayIconName}
+                      className="h-6 w-6 object-contain"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display =
+                          "none";
+                      }}
+                    />
+                  ) : (
+                    <ImageIcon className="h-4 w-4 text-text-tertiary" />
+                  )}
+                </div>
+                {iconMismatch && (
+                  <span
+                    className="shrink-0"
+                    title={`显示 ID 的图标（${displayIconName}）与 Item 图标（${itemIcon}）不一致，请核对`}
+                  >
+                    <AlertTriangle className="h-4 w-4 text-warning" />
+                  </span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <NumberInput
+                    value={itemDbc.display_id}
+                    onChange={(v) =>
+                      setItemDbc((prev) => ({ ...prev, display_id: v }))
+                    }
+                    compact={compact}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm shrink-0 px-2 text-xs"
+                  onClick={onOpenDisplayPicker}
+                  title="从 ItemDisplayInfo.dbc 按图标选择显示 ID"
+                >
+                  <Search className="h-3.5 w-3.5" />
+                  选择
+                </button>
+              </div>
             </FormGroup>
             <FormGroup
               label="DB displayid"
               compact={compact}
               hint={
-                <FieldHint description="数据库侧物品外观显示 ID（item_template.displayid），应与 DBC Display ID 保持一致；自定义坐骑物品留空" />
+                <FieldHint description="数据库侧物品外观显示 ID（item_template.displayid），默认锁定跟随 DBC Display ID，解锁后可手动覆盖" />
               }
             >
-              <NumberInput
-                value={itemDb.displayid}
-                onChange={(v) => setItemDb((prev) => ({ ...prev, displayid: v }))}
+              <LinkedIdField
+                value={
+                  displayIdLocked
+                    ? liveDisplayId
+                    : itemDb.displayid
+                }
+                linkedLabel="显示 ID → dbc.item.display_id"
+                locked={displayIdLocked}
+                onToggleLock={() =>
+                  setDisplayIdLocked((prev) => !prev)
+                }
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, displayid: v }))
+                }
                 compact={compact}
               />
             </FormGroup>
