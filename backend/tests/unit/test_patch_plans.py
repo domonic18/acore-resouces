@@ -330,6 +330,74 @@ def test_build_dbc_plan_flying_speed_override() -> None:
     assert spell_plan.operations[0].fields["EffectBasePoints_2"] == 309
 
 
+def test_build_dbc_plan_ground_speed_override() -> None:
+    """陆地坐骑 speed=150 时 32 光环槽位应为 149；飞行坐骑则写入地面速度槽位。"""
+    ground = Mount(
+        id=6,
+        model_folder="ground_speed_test",
+        official_db={"name": "疾行测试"},
+        dbc={
+            "creature_model_data": {"id": 4003, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140003, "model_id": 4003},
+            "spell": {"id": 80003, "name": "疾行测试", "speed": 150},
+            "item": {"id": 91003, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140003}},
+        mount_type="陆地坐骑",
+    )
+    plan = build_dbc_plan(ground)
+    spell_plan = next(p for p in plan.plans if p.dbc_file == "Spell.dbc")
+    fields = spell_plan.operations[0].fields
+    assert fields["EffectAura_2"] == 32
+    assert fields["EffectBasePoints_2"] == 149
+
+    flying = Mount(
+        id=7,
+        model_folder="flying_speed_test",
+        official_db={"name": "疾行测试飞行版"},
+        dbc={
+            "creature_model_data": {"id": 4003, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140003, "model_id": 4003},
+            "spell": {
+                "id": 80003,
+                "name": "疾行测试飞行版",
+                "speed": 100,
+                "flight_speed": 310,
+            },
+            "item": {"id": 91003, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140003}},
+        mount_type="飞行坐骑",
+    )
+    plan = build_dbc_plan(flying)
+    spell_plan = next(p for p in plan.plans if p.dbc_file == "Spell.dbc")
+    fields = spell_plan.operations[0].fields
+    assert fields["EffectBasePoints_2"] == 309
+    assert fields["EffectBasePoints_3"] == 99
+
+
+def test_build_dbc_plan_swim_speed_override() -> None:
+    """水上坐骑 swim_speed=120 时 58 光环槽位应为 119。"""
+    mount = Mount(
+        id=8,
+        model_folder="swim_speed_test",
+        official_db={"name": "迅游测试"},
+        dbc={
+            "creature_model_data": {"id": 4004, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140004, "model_id": 4004},
+            "spell": {"id": 80004, "name": "迅游测试", "swim_speed": 120},
+            "item": {"id": 91004, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140004}},
+        mount_type="水上坐骑",
+    )
+    plan = build_dbc_plan(mount)
+    spell_plan = next(p for p in plan.plans if p.dbc_file == "Spell.dbc")
+    fields = spell_plan.operations[0].fields
+    assert fields["EffectAura_2"] == 58
+    assert fields["EffectBasePoints_2"] == 119
+
+
 def test_build_sql_plan_structure(sample_mount: Mount) -> None:
     """验证 sql-plan 结构。"""
     plan = build_sql_plan(sample_mount)

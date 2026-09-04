@@ -115,6 +115,13 @@ SPELL_DESCRIPTION_FALLBACKS: dict[str, str] = {
     "水上坐骑": "这种坐骑在陆地上行动不是很快，但是在水里就大不一样了！",
 }
 
+# 速度百分比覆盖：YAML 字段 → 光环类型，写入对应效果槽位的 EffectBasePoints（值 - 1）
+SPELL_SPEED_AURA_FIELDS: dict[str, int] = {
+    "speed": 32,  # SPELL_AURA_MOD_INCREASE_SPEED 移动速度
+    "flight_speed": 207,  # SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED 飞行速度
+    "swim_speed": 58,  # SPELL_AURA_MOD_INCREASE_SWIM_SPEED 游泳速度
+}
+
 
 def _ensure_dir(path: Path) -> None:
     """确保目录存在。"""
@@ -286,9 +293,16 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         # 真正的 SpellVisualID_1 覆盖（visual_id 字段存的是挂载生物 entry，与此无关）
         if spell.get("spell_visual_id"):
             spell_fields["SpellVisualID_1"] = int(spell["spell_visual_id"])
-        # 飞行坐骑 310% 速度档：YAML flight_speed=310 → EffectBasePoints_2=309
-        if spell_template.get("EffectAura_2") == 207 and spell.get("flight_speed"):
-            spell_fields["EffectBasePoints_2"] = int(spell["flight_speed"]) - 1
+        # 速度百分比覆盖：按光环类型定位效果槽位（如飞行坐骑 310% → 207 光环槽位 309）
+        for speed_field, aura_id in SPELL_SPEED_AURA_FIELDS.items():
+            speed_value = spell.get(speed_field)
+            if not speed_value:
+                continue
+            for slot in (1, 2, 3):
+                if spell_template.get(f"EffectAura_{slot}") == aura_id:
+                    spell_fields[f"EffectBasePoints_{slot}"] = (
+                        int(speed_value) - 1
+                    )
         plans.append(
             DBCPlanFile(
                 dbc_file="Spell.dbc",
