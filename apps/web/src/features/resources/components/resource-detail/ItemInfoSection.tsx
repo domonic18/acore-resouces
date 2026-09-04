@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Image as ImageIcon } from "lucide-react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
 import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
+import { getIconPreviewUrl } from "@/shared/resources";
 import { cn } from "@/shared/utils";
 import { BitmaskDropdown } from "@/components/form/BitmaskDropdown";
 import { OptionSelect } from "@/components/form/OptionSelect";
@@ -104,6 +106,59 @@ export function ItemInfoSection({
           </div>
         </div>
 
+        <div className="flex items-start gap-3">
+          <div
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-border bg-bg-surface"
+            title="物品图标预览（跟随上方 Item 图标）"
+          >
+            {itemIcon ? (
+              <img
+                src={getIconPreviewUrl(itemIcon, 96)}
+                alt={itemIcon}
+                className="h-8 w-8 object-contain"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+            ) : (
+              <ImageIcon className="h-6 w-6 text-text-tertiary" />
+            )}
+          </div>
+          <div className="grid flex-1 gap-3 sm:grid-cols-2">
+            <FormGroup
+              label="DBC Display ID"
+              compact={compact}
+              hint={
+                <FieldHint
+                  description="物品外观显示 ID（ItemDisplayInfo），坐骑物品一般为 0"
+                  reference={getReference("dbc.item.display_id")}
+                />
+              }
+            >
+              <NumberInput
+                value={itemDbc.display_id}
+                onChange={(v) =>
+                  setItemDbc((prev) => ({ ...prev, display_id: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="DB displayid"
+              compact={compact}
+              hint={
+                <FieldHint description="数据库侧物品外观显示 ID，与 DBC Display ID 对应；坐骑物品多为 0" />
+              }
+            >
+              <NumberInput
+                value={itemDb.displayid}
+                onChange={(v) => setItemDb((prev) => ({ ...prev, displayid: v }))}
+                compact={compact}
+              />
+            </FormGroup>
+          </div>
+        </div>
+
         <FormGroup
           label="Wowhead 物品页 URL"
           compact={compact}
@@ -196,24 +251,6 @@ export function ItemInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label="Display ID"
-                compact={compact}
-                hint={
-                  <FieldHint
-                    description="物品外观显示 ID（ItemDisplayInfo），坐骑物品一般为 0"
-                    reference={getReference("dbc.item.display_id")}
-                  />
-                }
-              >
-                <NumberInput
-                  value={itemDbc.display_id}
-                  onChange={(v) =>
-                    setItemDbc((prev) => ({ ...prev, display_id: v }))
-                  }
-                  compact={compact}
-                />
-              </FormGroup>
-              <FormGroup
                 label="Inventory Type"
                 compact={compact}
                 hint={
@@ -257,21 +294,6 @@ export function ItemInfoSection({
                   onChange={(e) =>
                     setItemDb((prev) => ({ ...prev, name: e.target.value }))
                   }
-                />
-              </FormGroup>
-              <FormGroup
-                label="displayid（物品图标ID）"
-                compact={compact}
-                hint={
-                  <FieldHint description="数据库侧物品外观显示 ID，与 DBC display_id 对应；坐骑物品多为 0" />
-                }
-              >
-                <NumberInput
-                  value={itemDb.displayid}
-                  onChange={(v) =>
-                    setItemDb((prev) => ({ ...prev, displayid: v }))
-                  }
-                  compact={compact}
                 />
               </FormGroup>
               <FormGroup
