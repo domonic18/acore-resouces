@@ -203,11 +203,11 @@ export function SpellInfoSection({
 
               {!isWater && (
                 <FormGroup
-                  label="移动速度 (%)"
+                  label="陆地移动速度 (%)"
                   compact={compact}
                   hint={
                     <FieldHint
-                      description="骑乘移动速度百分比（100 为默认跑速）；陆地坐骑为骑乘速度，飞行坐骑为地面速度。留空使用模板默认 100"
+                      description="地面移动速度百分比（100 为默认跑速），对应移动速度光环 EffectBasePoints；飞行坐骑陆上行走也用此值。留空使用模板默认 100"
                       reference={getReference("dbc.spell.speed")}
                       onApply={
                         speedRefValue !== null
@@ -231,11 +231,11 @@ export function SpellInfoSection({
 
               {isFlying && (
                 <FormGroup
-                  label="飞行速度 (%)"
+                  label="飞行移动速度 (%)"
                   compact={compact}
                   hint={
                     <FieldHint
-                      description="飞行速度百分比，官方档位 280/310。留空默认 280"
+                      description="飞行状态移动速度百分比，官方档位 280/310。留空默认 280"
                       reference={getReference("dbc.spell.flight_speed")}
                       onApply={
                         flightSpeedRefValue !== null
@@ -261,7 +261,7 @@ export function SpellInfoSection({
 
               {isWater && (
                 <FormGroup
-                  label="游泳速度 (%)"
+                  label="游泳移动速度 (%)"
                   compact={compact}
                   hint={
                     <FieldHint
@@ -288,6 +288,27 @@ export function SpellInfoSection({
                   />
                 </FormGroup>
               )}
+
+              <FormGroup
+                label="法术描述"
+                compact={compact}
+                className="sm:col-span-2"
+                hint={
+                  <FieldHint description="游戏内法术悬停提示文本，导出写入 Description_Lang；留空时按坐骑类型自动生成（如「召唤或解散一只可供骑乘的XX。只能在外域或诺森德召唤这种坐骑。」）" />
+                }
+              >
+                <textarea
+                  rows={2}
+                  className="form-textarea"
+                  value={String(spellDbc.description ?? "")}
+                  onChange={(e) =>
+                    setSpellDbc((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                />
+              </FormGroup>
             </div>
           </div>
 
