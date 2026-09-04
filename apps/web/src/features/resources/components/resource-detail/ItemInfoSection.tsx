@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
 import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
+import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
 import { cn } from "@/shared/utils";
 import { BitmaskDropdown } from "@/components/form/BitmaskDropdown";
 import { OptionSelect } from "@/components/form/OptionSelect";
 import { IconEditor } from "./IconEditor";
+import { LinkedIdField } from "./LinkedIdField";
 import type { Resource } from "@/shared/types";
 import {
   ITEM_CLASS_OPTIONS,
@@ -31,6 +34,9 @@ interface ItemInfoSectionProps {
   itemDb: Record<string, unknown>;
   setItemDb: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
   resourceType: Resource["resource_type"];
+  /** 实时法术 ID（跟随编辑中的 dbc.spell.id），用于 spellid_2 自动跟随 */
+  linkedSpellId: number | null;
+  onNavigateToLinkedSection?: () => void;
   compact?: boolean;
 }
 
@@ -46,9 +52,15 @@ export function ItemInfoSection({
   itemDb,
   setItemDb,
   resourceType,
+  linkedSpellId,
+  onNavigateToLinkedSection,
   compact,
 }: ItemInfoSectionProps) {
   const getReference = useFieldReference(resourceType);
+
+  const [spellIdLocked, setSpellIdLocked] = useState(true);
+
+  useLinkedFieldValue(spellIdLocked, linkedSpellId, "spellid_2", setItemDb);
 
   return (
     <SectionCard title="物品信息" compact={compact}>
@@ -282,11 +294,15 @@ export function ItemInfoSection({
                 label="spellid_2"
                 compact={compact}
                 hint={
-                  <FieldHint description="右键使用物品时触发的法术 ID，指向坐骑学习法术（80000+资源ID 段）" />
+                  <FieldHint description="右键使用物品时触发的法术 ID，默认自动跟随技能信息中的法术 ID（DBC ID），解锁后可手动覆盖" />
                 }
               >
-                <NumberInput
-                  value={itemDb.spellid_2}
+                <LinkedIdField
+                  value={spellIdLocked ? linkedSpellId : itemDb.spellid_2}
+                  linkedLabel="技能 ID → dbc.spell.id"
+                  locked={spellIdLocked}
+                  onToggleLock={() => setSpellIdLocked((prev) => !prev)}
+                  onNavigate={onNavigateToLinkedSection}
                   onChange={(v) =>
                     setItemDb((prev) => ({ ...prev, spellid_2: v }))
                   }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
@@ -7,7 +7,8 @@ import { useFieldReference } from "@/features/resources/hooks/useFieldReference"
 import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { cn, uniqueFiles } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
-import { LinkedModelIdField } from "./LinkedModelIdField";
+import { LinkedIdField } from "./LinkedIdField";
+import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
 
 interface CreatureDisplayInfoSectionProps {
   resource: Resource;
@@ -237,14 +238,12 @@ export function CreatureDisplayInfoSection({
 
   const [modelIdLocked, setModelIdLocked] = useState(true);
 
-  useEffect(() => {
-    if (!modelIdLocked || linkedModelDataId === null) return;
-    setCreatureDisplayInfoDbc((prev) =>
-      prev["model_id"] === linkedModelDataId
-        ? prev
-        : { ...prev, model_id: linkedModelDataId },
-    );
-  }, [modelIdLocked, linkedModelDataId, setCreatureDisplayInfoDbc]);
+  useLinkedFieldValue(
+    modelIdLocked,
+    linkedModelDataId,
+    "model_id",
+    setCreatureDisplayInfoDbc,
+  );
 
   function getValue(key: string): unknown {
     if (key in creatureDisplayInfoDbc) {
@@ -262,7 +261,7 @@ export function CreatureDisplayInfoSection({
 
     if (field.key === "model_id") {
       return (
-        <LinkedModelIdField
+        <LinkedIdField
           value={modelIdLocked ? linkedModelDataId : value}
           linkedLabel="模型数据 → CreatureModelData.id"
           locked={modelIdLocked}

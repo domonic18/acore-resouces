@@ -1,11 +1,14 @@
+import { useMemo, useState } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
 import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
+import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
 import { cn } from "@/shared/utils";
 import type { Resource } from "@/shared/types";
 import { IconEditor } from "./IconEditor";
+import { LinkedIdField } from "./LinkedIdField";
 
 interface SpellInfoSectionProps {
   spellIcon: string;
@@ -40,7 +43,6 @@ export function SpellInfoSection({
 }: SpellInfoSectionProps) {
   const getReference = useFieldReference(resourceType);
   const iconRefValue = getReference("dbc.spell.icon_id")?.value ?? null;
-  const visualRefValue = getReference("dbc.spell.visual_id")?.value ?? null;
   const minLevelRefValue =
     getReference("db.creature_template.minlevel")?.value ?? null;
   const maxLevelRefValue =
@@ -52,6 +54,23 @@ export function SpellInfoSection({
 
   const isFlying = mountType === "飞行坐骑";
   const isWater = mountType === "水上坐骑";
+
+  const [visualIdLocked, setVisualIdLocked] = useState(true);
+
+  const liveCreatureEntry = useMemo(() => {
+    const raw = spellDb.entry;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [spellDb]);
+
+  useLinkedFieldValue(
+    visualIdLocked,
+    liveCreatureEntry,
+    "visual_id",
+    setSpellDbc,
+  );
 
   return (
     <SectionCard title="技能信息" compact={compact}>
@@ -167,23 +186,14 @@ export function SpellInfoSection({
                 label="Visual ID"
                 compact={compact}
                 hint={
-                  <FieldHint
-                    description="挂骑生物的 creature entry（自定义段 9140000+资源ID），施法时由该生物承载骑乘"
-                    reference={getReference("dbc.spell.visual_id")}
-                    onApply={
-                      visualRefValue !== null
-                        ? () =>
-                            setSpellDbc((prev) => ({
-                              ...prev,
-                              visual_id: Number(visualRefValue),
-                            }))
-                        : undefined
-                    }
-                  />
+                  <FieldHint description="挂骑生物的 creature entry（自定义段 9140000+资源ID），默认自动跟随下方生物 entry（creature_template.entry），解锁后可手动覆盖" />
                 }
               >
-                <NumberInput
-                  value={spellDbc.visual_id}
+                <LinkedIdField
+                  value={visualIdLocked ? liveCreatureEntry : spellDbc.visual_id}
+                  linkedLabel="生物 entry → creature_template.entry"
+                  locked={visualIdLocked}
+                  onToggleLock={() => setVisualIdLocked((prev) => !prev)}
                   onChange={(v) =>
                     setSpellDbc((prev) => ({ ...prev, visual_id: v }))
                   }

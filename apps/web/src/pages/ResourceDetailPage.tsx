@@ -140,6 +140,16 @@ export function ResourceDetailPage() {
       : null;
   }, [formState.creatureModelDataDbc, resource]);
 
+  const liveSpellId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "id" in formState.spellDbc ? formState.spellDbc.id : resource.dbc.spell.id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.spellDbc, resource]);
+
   if (isLoading) {
     return (
       <div className="content">
@@ -286,6 +296,8 @@ export function ResourceDetailPage() {
               itemDb={formState.itemDb}
               setItemDb={formState.setItemDb}
               resourceType={resource.resource_type}
+              linkedSpellId={liveSpellId}
+              onNavigateToLinkedSection={() => scrollToSection("section-spell")}
               compact
             />
           </div>

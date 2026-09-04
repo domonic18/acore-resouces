@@ -30,8 +30,8 @@ const FIELDS: FieldDef[] = [
     key: "id",
     label: "ID",
     description:
-      "模型数据记录 ID（自定义段 104000+N），下方显示信息的 ModelID 默认自动跟随此值，导入后只读",
-    type: "readonly-int",
+      "模型数据记录 ID（自定义段 104000+N），显示信息的 ModelID 默认自动跟随此值",
+    type: "int",
   },
   {
     key: "flags",
