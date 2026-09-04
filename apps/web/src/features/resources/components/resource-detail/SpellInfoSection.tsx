@@ -1,7 +1,10 @@
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
+import { FieldHint } from "@/components/form/FieldHint";
+import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { cn } from "@/shared/utils";
+import type { Resource } from "@/shared/types";
 import { IconEditor } from "./IconEditor";
 
 interface SpellInfoSectionProps {
@@ -15,6 +18,7 @@ interface SpellInfoSectionProps {
   setSpellDbc: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
   spellDb: Record<string, unknown>;
   setSpellDb: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
+  resourceType: Resource["resource_type"];
   compact?: boolean;
 }
 
@@ -29,8 +33,17 @@ export function SpellInfoSection({
   setSpellDbc,
   spellDb,
   setSpellDb,
+  resourceType,
   compact,
 }: SpellInfoSectionProps) {
+  const getReference = useFieldReference(resourceType);
+  const iconRefValue = getReference("dbc.spell.icon_id")?.value ?? null;
+  const visualRefValue = getReference("dbc.spell.visual_id")?.value ?? null;
+  const minLevelRefValue =
+    getReference("db.creature_template.minlevel")?.value ?? null;
+  const maxLevelRefValue =
+    getReference("db.creature_template.maxlevel")?.value ?? null;
+
   return (
     <SectionCard title="技能信息" compact={compact}>
       <div className="space-y-3">
@@ -44,14 +57,26 @@ export function SpellInfoSection({
             compact
           />
           <div className="grid flex-1 gap-3 sm:grid-cols-2">
-            <FormGroup label="DBC ID" compact={compact}>
+            <FormGroup
+              label="DBC ID"
+              compact={compact}
+              hint={
+                <FieldHint description="自定义坐骑法术 ID，按 80000+资源ID 生成，注意避开官方法术段位" />
+              }
+            >
               <NumberInput
                 value={spellDbc.id}
                 onChange={(v) => setSpellDbc((prev) => ({ ...prev, id: v }))}
                 compact={compact}
               />
             </FormGroup>
-            <FormGroup label="DB entry" compact={compact}>
+            <FormGroup
+              label="DB entry"
+              compact={compact}
+              hint={
+                <FieldHint description="数据库侧引用的法术 entry，一般与 DBC ID 保持一致" />
+              }
+            >
               <NumberInput
                 value={spellDb.entry}
                 onChange={(v) => setSpellDb((prev) => ({ ...prev, entry: v }))}
@@ -61,7 +86,13 @@ export function SpellInfoSection({
           </div>
         </div>
 
-        <FormGroup label="Wowhead 法术页 URL" compact={compact}>
+        <FormGroup
+          label="Wowhead 法术页 URL"
+          compact={compact}
+          hint={
+            <FieldHint description="官方法术页链接（wowhead.com/spell=ID），用于数据核对与官方信息补全" />
+          }
+        >
           <input
             type="text"
             className={cn(compact ? "form-input-compact" : "form-input")}
@@ -77,7 +108,13 @@ export function SpellInfoSection({
               Spell DBC
             </h4>
             <div className="grid gap-2 sm:grid-cols-2">
-              <FormGroup label="Name" compact={compact}>
+              <FormGroup
+                label="Name"
+                compact={compact}
+                hint={
+                  <FieldHint description="法术名称，客户端中显示；建议与基础信息中的官方译名一致" />
+                }
+              >
                 <input
                   type="text"
                   className={cn(compact ? "form-input-compact" : "form-input")}
@@ -90,7 +127,25 @@ export function SpellInfoSection({
                   }
                 />
               </FormGroup>
-              <FormGroup label="Icon ID" compact={compact}>
+              <FormGroup
+                label="Icon ID"
+                compact={compact}
+                hint={
+                  <FieldHint
+                    description="法术图标在 SpellIcon.dbc 中的记录 ID，需要 icon_name → icon_id 映射；暂无可靠自动映射，可参考已添加坐骑的常见值"
+                    reference={getReference("dbc.spell.icon_id")}
+                    onApply={
+                      iconRefValue !== null
+                        ? () =>
+                            setSpellDbc((prev) => ({
+                              ...prev,
+                              icon_id: Number(iconRefValue),
+                            }))
+                        : undefined
+                    }
+                  />
+                }
+              >
                 <NumberInput
                   value={spellDbc.icon_id}
                   onChange={(v) =>
@@ -99,7 +154,25 @@ export function SpellInfoSection({
                   compact={compact}
                 />
               </FormGroup>
-              <FormGroup label="Visual ID" compact={compact}>
+              <FormGroup
+                label="Visual ID"
+                compact={compact}
+                hint={
+                  <FieldHint
+                    description="挂骑生物的 creature entry（自定义段 9140000+资源ID），施法时由该生物承载骑乘"
+                    reference={getReference("dbc.spell.visual_id")}
+                    onApply={
+                      visualRefValue !== null
+                        ? () =>
+                            setSpellDbc((prev) => ({
+                              ...prev,
+                              visual_id: Number(visualRefValue),
+                            }))
+                        : undefined
+                    }
+                  />
+                }
+              >
                 <NumberInput
                   value={spellDbc.visual_id}
                   onChange={(v) =>
@@ -116,7 +189,13 @@ export function SpellInfoSection({
               Spell 数据库（creature_template）
             </h4>
             <div className="grid gap-2 sm:grid-cols-2">
-              <FormGroup label="name" compact={compact}>
+              <FormGroup
+                label="name"
+                compact={compact}
+                hint={
+                  <FieldHint description="坐骑生物在游戏中的名称，建议与官方译名一致" />
+                }
+              >
                 <input
                   type="text"
                   className={cn(compact ? "form-input-compact" : "form-input")}
@@ -129,7 +208,13 @@ export function SpellInfoSection({
                   }
                 />
               </FormGroup>
-              <FormGroup label="modelid1" compact={compact}>
+              <FormGroup
+                label="modelid1"
+                compact={compact}
+                hint={
+                  <FieldHint description="生物主显示信息 ID，引用 CreatureDisplayInfo 记录（140000+资源ID 段）" />
+                }
+              >
                 <NumberInput
                   value={spellDb.modelid1}
                   onChange={(v) =>
@@ -138,7 +223,13 @@ export function SpellInfoSection({
                   compact={compact}
                 />
               </FormGroup>
-              <FormGroup label="modelid2" compact={compact}>
+              <FormGroup
+                label="modelid2"
+                compact={compact}
+                hint={
+                  <FieldHint description="生物备用显示信息 ID，无备选模型时留 0" />
+                }
+              >
                 <NumberInput
                   value={spellDb.modelid2}
                   onChange={(v) =>
@@ -147,7 +238,25 @@ export function SpellInfoSection({
                   compact={compact}
                 />
               </FormGroup>
-              <FormGroup label="minlevel" compact={compact}>
+              <FormGroup
+                label="minlevel"
+                compact={compact}
+                hint={
+                  <FieldHint
+                    description="生物最低等级，坐骑模板常见值 1"
+                    reference={getReference("db.creature_template.minlevel")}
+                    onApply={
+                      minLevelRefValue !== null
+                        ? () =>
+                            setSpellDb((prev) => ({
+                              ...prev,
+                              minlevel: Number(minLevelRefValue),
+                            }))
+                        : undefined
+                    }
+                  />
+                }
+              >
                 <NumberInput
                   value={spellDb.minlevel}
                   onChange={(v) =>
@@ -156,7 +265,25 @@ export function SpellInfoSection({
                   compact={compact}
                 />
               </FormGroup>
-              <FormGroup label="maxlevel" compact={compact}>
+              <FormGroup
+                label="maxlevel"
+                compact={compact}
+                hint={
+                  <FieldHint
+                    description="生物最高等级，坐骑模板常见值 2"
+                    reference={getReference("db.creature_template.maxlevel")}
+                    onApply={
+                      maxLevelRefValue !== null
+                        ? () =>
+                            setSpellDb((prev) => ({
+                              ...prev,
+                              maxlevel: Number(maxLevelRefValue),
+                            }))
+                        : undefined
+                    }
+                  />
+                }
+              >
                 <NumberInput
                   value={spellDb.maxlevel}
                   onChange={(v) =>

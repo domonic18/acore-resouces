@@ -271,6 +271,7 @@ export function ResourceDetailPage() {
               setItemDbc={formState.setItemDbc}
               itemDb={formState.itemDb}
               setItemDb={formState.setItemDb}
+              resourceType={resource.resource_type}
               compact
             />
           </div>
@@ -287,6 +288,7 @@ export function ResourceDetailPage() {
               setSpellDbc={formState.setSpellDbc}
               spellDb={formState.spellDb}
               setSpellDb={formState.setSpellDb}
+              resourceType={resource.resource_type}
               compact
             />
           </div>
