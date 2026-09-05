@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104375
     flags: 2
+    model_name: creature\Shredder\shreddermount.m2
   creature_display_info:
     id: 140375
     model_id: 104375
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: shreddermountblue1
+    texture_variation_2: shreddermountblue1
+    texture_variation_3: shreddermountblue1
   spell:
     id: 80375
     visual_id: 9140375

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104381
     flags: 2
+    model_name: creature\siegeengineer\siegeengineer.m2
   creature_display_info:
     id: 140381
     model_id: 104381

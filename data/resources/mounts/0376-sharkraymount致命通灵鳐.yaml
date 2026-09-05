@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104372
     flags: 2
+    model_name: creature\manaraymount\manaraymount.m2
   creature_display_info:
     id: 140372
     model_id: 104372
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: manaray_redfel
+    texture_variation_2: manaraysaddle_white
+    texture_variation_3: manarayemissive_redfel
   spell:
     id: 80372
     visual_id: 9140372

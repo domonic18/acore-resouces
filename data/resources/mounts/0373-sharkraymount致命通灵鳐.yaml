@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104369
     flags: 2
+    model_name: creature\sharkray\sharkray.m2
   creature_display_info:
     id: 140369
     model_id: 104369
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: sharkray_lightblue
+    texture_variation_2: sharkray_lightblue
+    texture_variation_3: sharkray_lightblue
   spell:
     id: 80369
     visual_id: 9140369

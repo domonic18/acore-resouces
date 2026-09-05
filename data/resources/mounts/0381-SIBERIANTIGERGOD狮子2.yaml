@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104377
     flags: 2
+    model_name: creature\SIBERIANTIGERGOD\siberiantigergod.m2
   creature_display_info:
     id: 140377
     model_id: 104377
