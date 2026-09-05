@@ -11,6 +11,7 @@ dbc:
   creature_model_data:
     id: 104214
     flags: 2
+    model_name: creature\hordegarrisontank\hordegarrisontank.m2
   creature_display_info:
     id: 140214
     model_id: 104214
@@ -18,6 +19,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hordegarrisontank_neutral
+    texture_variation_2: demolishervehicle01_neutral
   spell:
     id: 80214
     visual_id: 9140214
