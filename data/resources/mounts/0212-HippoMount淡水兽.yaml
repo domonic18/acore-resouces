@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104208
     flags: 2
+    model_name: creature\HippoMount\hippomount.m2
   creature_display_info:
     id: 140208
     model_id: 104208
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hippomountblue
   spell:
     id: 80208
     visual_id: 9140208

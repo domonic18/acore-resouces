@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104201
     flags: 2
+    model_name: creature\GuildCreatures\AllianceLionMount\AllianceLionMount.M2
   creature_display_info:
     id: 140201
     model_id: 104201
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: ALLIANCELION
+    texture_variation_2: ALLIANCELIONARMOR
   spell:
     id: 80201
     visual_id: 9140201
