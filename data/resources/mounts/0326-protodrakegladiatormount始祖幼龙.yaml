@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104322
     flags: 2
+    model_name: creature\protodrakegladiatormount\protodrakegladiatormount.m2
   creature_display_info:
     id: 140322
     model_id: 104322
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: protodrakegladiatormount_blue1
+    texture_variation_2: protodrakegladiatormount_blue2
+    texture_variation_3: protodrakegladiatormount_blue3
   spell:
     id: 80322
     visual_id: 9140322

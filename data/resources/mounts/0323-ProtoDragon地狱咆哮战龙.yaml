@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104319
     flags: 2
+    model_name: creature\ProtoDragon\KorKronProtodrakeMount.m2
   creature_display_info:
     id: 140319
     model_id: 104319
