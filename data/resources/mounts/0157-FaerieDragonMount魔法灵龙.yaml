@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104152
     flags: 2
-    model_name: creature\FaerieDragonMount\FaerieDragonMount.M2
+    model_name: creature\FaerieDragonMount\FaerieDragonMount.m2
   creature_display_info:
     id: 140152
     model_id: 104152

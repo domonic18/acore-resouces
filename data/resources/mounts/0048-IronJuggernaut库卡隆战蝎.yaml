@@ -11,7 +11,7 @@ dbc:
   creature_model_data:
     id: 4045
     flags: 2
-    model_name: creature\IronJuggernaut\IronJuggernautMount.M2
+    model_name: creature\IronJuggernaut\IronJuggernautMount.m2
   creature_display_info:
     id: 140045
     model_id: 4045

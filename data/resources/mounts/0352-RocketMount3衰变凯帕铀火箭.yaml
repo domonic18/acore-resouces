@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104348
     flags: 2
-    model_name: creature\RocketMount3\RocketMount3.M2
+    model_name: creature\RocketMount3\RocketMount3.m2
   creature_display_info:
     id: 140348
     model_id: 104348

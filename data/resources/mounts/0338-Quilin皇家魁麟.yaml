@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104334
     flags: 2
-    model_name: creature\Quilin\QuilinFlyingMount.M2
+    model_name: creature\Quilin\QuilinFlyingMount.m2
   creature_display_info:
     id: 140334
     model_id: 104334

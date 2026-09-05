@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104201
     flags: 2
-    model_name: creature\GuildCreatures\AllianceLionMount\AllianceLionMount.M2
+    model_name: creature\GuildCreatures\AllianceLionMount\AllianceLionMount.m2
   creature_display_info:
     id: 140201
     model_id: 104201

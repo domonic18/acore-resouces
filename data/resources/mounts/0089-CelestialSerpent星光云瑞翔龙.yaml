@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104084
     flags: 2
-    model_name: creature\CelestialSerpent\CelestialSerpentMount.M2
+    model_name: creature\CelestialSerpent\CelestialSerpentMount.m2
   creature_display_info:
     id: 140084
     model_id: 104084

@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104168
     flags: 2
-    model_name: creature\FireRavenGodMount\FireRavenGodMount.M2
+    model_name: creature\FireRavenGodMount\FireRavenGodMount.m2
   creature_display_info:
     id: 140168
     model_id: 104168

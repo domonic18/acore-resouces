@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104081
     flags: 2
-    model_name: creature\Camel\CamelMount.M2
+    model_name: creature\Camel\CamelMount.m2
   creature_display_info:
     id: 140081
     model_id: 104081

@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104320
     flags: 2
-    model_name: creature\PROTODRAGON\KorKronProtodrake.M2
+    model_name: creature\PROTODRAGON\KorKronProtodrake.m2
   creature_display_info:
     id: 140320
     model_id: 104320

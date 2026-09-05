@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104093
     flags: 2
-    model_name: creature\Crane\CraneMount.M2
+    model_name: creature\Crane\CraneMount.m2
   creature_display_info:
     id: 140093
     model_id: 104093

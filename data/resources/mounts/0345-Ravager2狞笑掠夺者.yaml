@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104341
     flags: 2
-    model_name: creature\Ravager2\Ravager2Mount.M2
+    model_name: creature\Ravager2\Ravager2Mount.m2
   creature_display_info:
     id: 140341
     model_id: 104341

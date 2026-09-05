@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104130
     flags: 2
-    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.M2
+    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.m2
   creature_display_info:
     id: 140130
     model_id: 104130

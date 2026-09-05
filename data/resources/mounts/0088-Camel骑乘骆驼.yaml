@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104083
     flags: 2
-    model_name: creature\Camel\CamelMount.M2
+    model_name: creature\Camel\CamelMount.m2
   creature_display_info:
     id: 140083
     model_id: 104083

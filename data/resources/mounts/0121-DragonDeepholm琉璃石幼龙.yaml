@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104116
     flags: 2
-    model_name: creature\DragonDeepholm\DragonDeepholmMount.M2
+    model_name: creature\DragonDeepholm\DragonDeepholmMount.m2
   creature_display_info:
     id: 140116
     model_id: 104116

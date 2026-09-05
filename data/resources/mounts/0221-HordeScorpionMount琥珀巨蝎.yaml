@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104217
     flags: 2
-    model_name: creature\HordeScorpionMount\HordeScorpion.M2
+    model_name: creature\HordeScorpionMount\HordeScorpion.m2
   creature_display_info:
     id: 140217
     model_id: 104217

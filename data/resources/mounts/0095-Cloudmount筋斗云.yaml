@@ -17,7 +17,7 @@ dbc:
   creature_model_data:
     id: 104090
     flags: 2
-    model_name: creature\Cloudmount\cloudMount.M2
+    model_name: creature\Cloudmount\cloudMount.m2
   creature_display_info:
     id: 140090
     model_id: 104090

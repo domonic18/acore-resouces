@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104114
     flags: 2
-    model_name: creature\DragonChromaticMount\DragonChromaticMount.M2
+    model_name: creature\DragonChromaticMount\DragonChromaticMount.m2
   creature_display_info:
     id: 140114
     model_id: 104114
