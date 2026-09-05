@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104240
     flags: 2
+    model_name: creature\infernalmount\infernalmount.m2
   creature_display_info:
     id: 140240
     model_id: 104240
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: infernalmount_rock_green
+    texture_variation_2: infernalmount_metal_green
+    texture_variation_3: infernalmount_fx_green
   spell:
     id: 80240
     visual_id: 9140240

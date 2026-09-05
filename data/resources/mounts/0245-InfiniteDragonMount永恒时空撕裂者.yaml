@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104241
     flags: 2
+    model_name: creature\InfiniteDragonMount\infinitedragonmount.m2
   creature_display_info:
     id: 140241
     model_id: 104241
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: infinitedragonmount2
   spell:
     id: 80241
     visual_id: 9140241

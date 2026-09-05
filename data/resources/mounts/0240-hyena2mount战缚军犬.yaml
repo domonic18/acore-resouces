@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104236
     flags: 2
+    model_name: creature\hyena2mount\hyena2mount.m2
   creature_display_info:
     id: 140236
     model_id: 104236
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hyena2mount_tan
+    texture_variation_2: hyena2mount_saddle_tan
   spell:
     id: 80236
     visual_id: 9140236
