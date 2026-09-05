@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104306
     flags: 2
+    model_name: creature\pandarenserpentgod\pandarenserpentgodmount.m2
   creature_display_info:
     id: 140306
     model_id: 104306
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenserpentgod_red
+    texture_variation_2: pandarenserpentgod_red
+    texture_variation_3: pandarenserpentgod_red
   spell:
     id: 80306
     visual_id: 9140306

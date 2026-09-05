@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104301
     flags: 2
+    model_name: creature\pandarenphoenixmount\pandarenphoenixmount.m2
   creature_display_info:
     id: 140301
     model_id: 104301
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: PandarenPhoenixMountBody
+    texture_variation_2: PandarenPhoenixMountWing
+    texture_variation_3: PandarenPhoenixMountSaddle
   spell:
     id: 80301
     visual_id: 9140301
