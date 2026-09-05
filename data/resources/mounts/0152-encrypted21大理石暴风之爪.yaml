@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104147
     flags: 2
+    model_name: creature\encrypted21\encrypted21.m2
   creature_display_info:
     id: 140147
     model_id: 104147
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: encrypted21
+    texture_variation_2: encrypted21_3026395
   spell:
     id: 80147
     visual_id: 9140147
