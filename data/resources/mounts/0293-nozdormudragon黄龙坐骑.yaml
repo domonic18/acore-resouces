@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104289
     flags: 2
+    model_name: creature\nozdormudragon\nozdormudragon.m2
   creature_display_info:
     id: 140289
     model_id: 104289
