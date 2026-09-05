@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104071
     flags: 2
+    model_name: creature\Bat\epicbatmount.m2
   creature_display_info:
     id: 140071
     model_id: 104071
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: epicbatmountblack1
+    texture_variation_2: epicbatmountblack2
+    texture_variation_3: epicbatmountblack3
   spell:
     id: 80071
     visual_id: 9140071

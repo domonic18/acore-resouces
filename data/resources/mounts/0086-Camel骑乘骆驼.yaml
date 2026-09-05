@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104081
     flags: 2
+    model_name: creature\Camel\CamelMount.M2
   creature_display_info:
     id: 140081
     model_id: 104081
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: CAMELMOUNT_TAN
   spell:
     id: 80081
     visual_id: 9140081

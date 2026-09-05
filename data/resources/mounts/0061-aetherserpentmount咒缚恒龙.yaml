@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104056
     flags: 2
+    model_name: creature\aetherserpentmount\aetherserpentmount.m2
   creature_display_info:
     id: 140450
     model_id: 104056
@@ -19,6 +20,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: aetherserpentmount
   spell:
     id: 80056
     visual_id: 9140462

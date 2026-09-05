@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104070
     flags: 2
+    model_name: creature\basiliskmount\basiliskmount.m2
   creature_display_info:
     id: 140070
     model_id: 104070
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: basilisk2_green
   spell:
     id: 80070
     visual_id: 9140070
