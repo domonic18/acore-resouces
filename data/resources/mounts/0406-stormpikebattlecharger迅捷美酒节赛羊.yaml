@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104402
     flags: 2
+    model_name: creature\stormpikebattlecharger\stormpikebattlecharger.m2
   creature_display_info:
     id: 140402
     model_id: 104402

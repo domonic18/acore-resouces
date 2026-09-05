@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104400
     flags: 2
+    model_name: creature\StormDragonMount2\stormdragonmount2.m2
   creature_display_info:
     id: 140400
     model_id: 104400
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: stormdragon2mount
+    texture_variation_2: stormdragon2mount_armor
+    texture_variation_3: stormdragon2mount_wings
   spell:
     id: 80400
     visual_id: 9140400

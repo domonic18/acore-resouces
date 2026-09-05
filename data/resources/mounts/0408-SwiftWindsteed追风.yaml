@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104404
     flags: 2
+    model_name: creature\SwiftWindsteed\swiftwindsteed.m2
   creature_display_info:
     id: 140404
     model_id: 104404
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: swiftwindsteed01
+    texture_variation_2: swiftwindsteed01armor
   spell:
     id: 80404
     visual_id: 9140404

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104398
     flags: 2
+    model_name: creature\stormcrowmountbase\stormcrowmountbase.m2
   creature_display_info:
     id: 140398
     model_id: 104398

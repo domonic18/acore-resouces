@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104403
     flags: 2
+    model_name: creature\suramarmount\suramarmount.m2
   creature_display_info:
     id: 140403
     model_id: 104403

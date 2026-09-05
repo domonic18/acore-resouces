@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104397
     flags: 2
+    model_name: creature\stingray2\stingray2mount.m2
   creature_display_info:
     id: 140397
     model_id: 104397
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: stingray2mount_blue
+    texture_variation_2: stingray2mountarmor_blue
   spell:
     id: 80397
     visual_id: 9140397
