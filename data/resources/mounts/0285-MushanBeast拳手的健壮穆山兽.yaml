@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104281
     flags: 2
+    model_name: creature\MushanBeast\mushanbeastmount.m2
   creature_display_info:
     id: 140281
     model_id: 104281
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mushanbeastmount1brown
   spell:
     id: 80281
     visual_id: 9140281
