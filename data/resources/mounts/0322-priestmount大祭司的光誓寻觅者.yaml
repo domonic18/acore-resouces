@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104318
     flags: 2
+    model_name: creature\priestmount\priestmount.m2
   creature_display_info:
     id: 140318
     model_id: 104318
@@ -19,6 +20,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: priestmount_a_holy
+    texture_variation_2: priestmount_b_holy
   spell:
     id: 80318
     visual_id: 9140318

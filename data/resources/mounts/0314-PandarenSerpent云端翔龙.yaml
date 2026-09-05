@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104310
     flags: 2
+    model_name: creature\PandarenSerpent\PandarenSerpentMount.m2
   creature_display_info:
     id: 140310
     model_id: 104310
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenserpent_white
   spell:
     id: 80310
     visual_id: 9140310

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104315
     flags: 2
+    model_name: creature\parrotmount\parrotmount.m2
   creature_display_info:
     id: 140315
     model_id: 104315
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: parrot_green
+    texture_variation_2: saddle_green
   spell:
     id: 80315
     visual_id: 9140315

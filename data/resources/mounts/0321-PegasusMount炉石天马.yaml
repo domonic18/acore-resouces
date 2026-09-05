@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104317
     flags: 2
+    model_name: creature\PegasusMount\PegasusMount.m2
   creature_display_info:
     id: 140317
     model_id: 104317
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: PegasusMount01
+    texture_variation_2: PegasusMount01_Wings
+    texture_variation_3: PegasusMount01_glow
   spell:
     id: 80317
     visual_id: 9140317

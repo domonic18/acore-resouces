@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104309
     flags: 2
+    model_name: creature\PandarenSerpent\PandarenSerpentMount.m2
   creature_display_info:
     id: 140309
     model_id: 104309
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenserpent_green
+    texture_variation_2: PandarenSerpentMountSaddle_Green
   spell:
     id: 80309
     visual_id: 9140309
