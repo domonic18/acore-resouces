@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104441
     flags: 2
+    model_name: creature\voidelfhawkstridermount\voidelfhawkstridermount.m2
   creature_display_info:
     id: 140441
     model_id: 104441

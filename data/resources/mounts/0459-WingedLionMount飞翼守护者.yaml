@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104455
     flags: 2
+    model_name: creature\WingedLionMount\wingedlionmount.m2
   creature_display_info:
     id: 140455
     model_id: 104455

@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104454
     flags: 2
+    model_name: creature\wickerbeastpet\wickerbeastpet.m2
   creature_display_info:
     id: 140454
     model_id: 104454

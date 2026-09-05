@@ -11,6 +11,7 @@ dbc:
   creature_model_data:
     id: 104458
     flags: 2
+    model_name: creature\yakgod\yakgod.m2
   creature_display_info:
     id: 140458
     model_id: 104458

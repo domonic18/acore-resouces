@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104453
     flags: 2
+    model_name: creature\whaleshark\whaleshark.m2
   creature_display_info:
     id: 140453
     model_id: 104453
@@ -17,6 +18,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: whaleshark_green
+    texture_variation_2: whaleshark_green
+    texture_variation_3: whaleshark_green
   spell:
     id: 80453
     visual_id: 9140453

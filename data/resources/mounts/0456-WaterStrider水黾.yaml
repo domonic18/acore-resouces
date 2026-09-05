@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104452
     flags: 2
+    model_name: creature\WaterStrider\WaterStriderMount.m2
   creature_display_info:
     id: 140452
     model_id: 104452
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: WaterStriderMount_Blue1
+    texture_variation_2: WaterStriderMount_Blue2
+    texture_variation_3: WaterStriderMount_Blue_Pulse
   spell:
     id: 80452
     visual_id: 9140452

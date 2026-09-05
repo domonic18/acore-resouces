@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104448
     flags: 2
+    model_name: creature\WarNightSaberMount\warnightsabermount.m2
   creature_display_info:
     id: 140448
     model_id: 104448
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: WarNightSaberMount_Creature
+    texture_variation_2: WarNightSaberMount_Armor
+    texture_variation_3: warnightsabermount_purple
   spell:
     id: 80448
     visual_id: 9140448
