@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104357
     flags: 2
+    model_name: creature\Saber2\Saber2Mount.m2
   creature_display_info:
     id: 140357
     model_id: 104357

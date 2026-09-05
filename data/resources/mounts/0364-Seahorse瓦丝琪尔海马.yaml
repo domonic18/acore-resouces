@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104360
     flags: 2
+    model_name: creature\seahorse\seahorse_baby.m2
   creature_display_info:
     id: 140360
     model_id: 104360

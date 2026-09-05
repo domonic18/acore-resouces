@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104361
     flags: 2
+    model_name: creature\serpentmount\serpentmount.m2
   creature_display_info:
     id: 140361
     model_id: 104361
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: serpentmount_green
+    texture_variation_2: serpentmountsaddle_2green
   spell:
     id: 80361
     visual_id: 9140361

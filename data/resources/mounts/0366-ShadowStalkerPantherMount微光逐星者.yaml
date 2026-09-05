@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104362
     flags: 2
+    model_name: creature\shadowstalkerpanthermount\shadowstalkerpanthermount.m2
   creature_display_info:
     id: 140362
     model_id: 104362

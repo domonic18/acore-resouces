@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104359
     flags: 2
+    model_name: creature\seahorse\seahorse.m2
   creature_display_info:
     id: 140359
     model_id: 104359
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: seahorse_blue
+    texture_variation_2: seahorse_saddle_silver
   spell:
     id: 80359
     visual_id: 9140359

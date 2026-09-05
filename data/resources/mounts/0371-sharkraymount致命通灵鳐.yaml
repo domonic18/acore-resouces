@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104367
     flags: 2
+    model_name: creature\manaraymount\manaraymount.m2
   creature_display_info:
     id: 140367
     model_id: 104367
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: manaray_purple
+    texture_variation_2: manaraysaddle_purple
+    texture_variation_3: manarayemissive_purple
   spell:
     id: 80367
     visual_id: 9140367
