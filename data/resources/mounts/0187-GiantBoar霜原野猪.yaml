@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104182
     flags: 2
+    model_name: creature\GiantBoar\giantboarmount.m2
   creature_display_info:
     id: 140182
     model_id: 104182
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: GiantBoarMountFel1
+    texture_variation_2: GiantBoarMountFel3
   spell:
     id: 80182
     visual_id: 9140182
