@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104163
     flags: 2
+    model_name: creature\FelStalkerMount\FelStalkerMount.m2
   creature_display_info:
     id: 140163
     model_id: 104163
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: Felstalker
+    texture_variation_2: FelStalkerMount
   spell:
     id: 80163
     visual_id: 9140163

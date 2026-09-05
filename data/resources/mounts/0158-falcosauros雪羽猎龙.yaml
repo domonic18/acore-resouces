@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104153
     flags: 2
+    model_name: creature\falcosauros\falcosaurosmount.m2
   creature_display_info:
     id: 140153
     model_id: 104153
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: falcosaurosmount_white
+    texture_variation_2: falcosaurosmountsaddle_white
   spell:
     id: 80153
     visual_id: 9140153
