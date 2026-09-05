@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104108
     flags: 2
+    model_name: creature\devourersmallmount\devourersmallmount.m2
   creature_display_info:
     id: 140108
     model_id: 104108
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: devourersmallmountdark
+    texture_variation_2: devourersmallmountsaddledark
   spell:
     id: 80108
     visual_id: 9140108

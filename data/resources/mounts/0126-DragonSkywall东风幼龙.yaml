@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104121
     flags: 2
+    model_name: creature\DragonSkywall\dragonskywallmount.m2
   creature_display_info:
     id: 140121
     model_id: 104121
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: dragonskywallmountpale1
+    texture_variation_2: dragonskywallmountpale2
+    texture_variation_3: dragonskywallmountsaddlepale
   spell:
     id: 80121
     visual_id: 9140121

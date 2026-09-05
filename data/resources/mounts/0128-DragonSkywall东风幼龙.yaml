@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104123
     flags: 2
+    model_name: creature\DragonSkywall\dragonskywallmount.m2
   creature_display_info:
     id: 140123
     model_id: 104123
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: dragonskywallmountpurple1
+    texture_variation_2: dragonskywallmountpurple2
+    texture_variation_3: dragonskywallmountsaddlepurple
   spell:
     id: 80123
     visual_id: 9140123
