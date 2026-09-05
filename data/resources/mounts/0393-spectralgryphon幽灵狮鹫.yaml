@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104389
     flags: 2
+    model_name: creature\spectralgryphon\spectralgryphon.m2
   creature_display_info:
     id: 140389
     model_id: 104389
