@@ -116,6 +116,19 @@ export function ResourceFilters({
           onChange={handleDateChange}
         />
 
+        {typeParam !== "pet" && typeParam !== "npc" && (
+          <FilterTag
+            label="必填缺失"
+            active={searchParams.get("required") === "missing"}
+            onClick={() =>
+              updateParam(
+                "required",
+                searchParams.get("required") === "missing" ? "" : "missing",
+              )
+            }
+          />
+        )}
+
         <div className="flex flex-wrap items-center gap-1.5">
           {STATUS_TAG_OPTIONS.map((opt) => (
             <FilterTag

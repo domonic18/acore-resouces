@@ -10,6 +10,7 @@ import {
   matchesTagFilter,
   matchesUpdatedAtFilter,
   matchesOriginFilter,
+  hasMissingRequired,
   parseSortKey,
   parseSortOrder,
   parseStatusTagList,
@@ -82,6 +83,10 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     const origin = parseDataOrigin(searchParams.get("origin"));
     if (origin) {
       items = items.filter((r) => matchesOriginFilter(r, origin));
+    }
+
+    if (searchParams.get("required") === "missing") {
+      items = items.filter((r) => hasMissingRequired(r));
     }
 
     const updatedStart = searchParams.get("updated_start");

@@ -1,6 +1,7 @@
 import type { Resource } from "@/shared/types";
 import { z } from "zod";
 import { extractWowheadId } from "./id-origin";
+import { getMissingRequiredFields } from "../requiredFields";
 
 export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
   [
@@ -385,6 +386,11 @@ export function matchesOriginFilter(
   return origin === "official"
     ? hasOfficialItemData(resource)
     : !hasOfficialItemData(resource);
+}
+
+/** 必填字段（导出无默认值，空值会导致 SQL 记录跳过或列丢弃）是否存在空缺 */
+export function hasMissingRequired(resource: Resource): boolean {
+  return getMissingRequiredFields(resource).length > 0;
 }
 
 /** 可搜索的 DBC / DB 各类 ID（资源 ID 之外的补充检索字段） */
