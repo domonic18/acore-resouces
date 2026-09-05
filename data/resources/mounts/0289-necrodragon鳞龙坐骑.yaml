@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 腐骨死灵龙
   spell_icon_name: inv_frostbroodprotowyrm
   icon_name: inv_frostbroodprotowyrm
 dbc:
@@ -21,10 +22,12 @@ dbc:
   spell:
     id: 80285
     visual_id: 9140285
+    name: 腐骨死灵龙
+    description: 召唤或解散这种坐骑。
     speed: 100
     flight_speed: 280
   item:
-    id: 0
+    id: 91285
     class: 15
     subclass: 5
     display_id: 0
@@ -33,6 +36,7 @@ dbc:
 db:
   creature_template:
     entry: 9140285
+    name: 腐骨死灵龙
     subname: ''
     IconName: ''
     AIName: ''
@@ -62,6 +66,8 @@ db:
   creature_model_info:
     display_id: 140285
   item_template:
+    entry: 91285
+    name: 腐骨死灵龙
     class: 15
     subclass: 5
     spellid_1: 55884

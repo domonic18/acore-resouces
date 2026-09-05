@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 恩佐斯魔蛇
   spell_icon_name: inv_aetherserpentmount
   icon_name: inv_aetherserpentmount
 dbc:
@@ -22,9 +23,11 @@ dbc:
   spell:
     id: 80292
     visual_id: 9140292
+    name: 恩佐斯魔蛇
+    description: 召唤或解散这种坐骑。
     speed: 100
   item:
-    id: 0
+    id: 91292
     class: 15
     subclass: 5
     display_id: 0
@@ -33,6 +36,7 @@ dbc:
 db:
   creature_template:
     entry: 9140292
+    name: 恩佐斯魔蛇
     subname: ''
     IconName: ''
     AIName: ''
@@ -62,6 +66,8 @@ db:
   creature_model_info:
     display_id: 140292
   item_template:
+    entry: 91292
+    name: 恩佐斯魔蛇
     class: 15
     subclass: 5
     spellid_1: 55884

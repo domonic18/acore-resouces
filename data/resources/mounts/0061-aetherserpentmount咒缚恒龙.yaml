@@ -28,7 +28,7 @@ dbc:
     description: 召唤或解散这种坐骑。
     speed: 100
   item:
-    id: 0
+    id: 91056
     class: 15
     subclass: 5
     display_id: 0
@@ -67,6 +67,7 @@ db:
   creature_model_info:
     display_id: 140450
   item_template:
+    entry: 91056
     name: 咒缚恒龙
     class: 15
     subclass: 5

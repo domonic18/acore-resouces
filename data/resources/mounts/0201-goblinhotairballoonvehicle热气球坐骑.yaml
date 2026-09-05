@@ -27,7 +27,7 @@ dbc:
     speed: 100
     flight_speed: 280
   item:
-    id: 0
+    id: 91196
     class: 15
     subclass: 5
     display_id: 0
@@ -66,6 +66,7 @@ db:
   creature_model_info:
     display_id: 140196
   item_template:
+    entry: 91196
     name: 地精热气球
     class: 15
     subclass: 5

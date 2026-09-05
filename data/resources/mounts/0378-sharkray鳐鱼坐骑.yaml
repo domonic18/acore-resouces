@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 幽紫深渊鳐
   spell_icon_name: inv_sharkraymount_3
   icon_name: inv_sharkraymount_3
 dbc:
@@ -24,9 +25,11 @@ dbc:
   spell:
     id: 80374
     visual_id: 9140374
+    name: 幽紫深渊鳐
+    description: 召唤或解散这种坐骑。
     swim_speed: 60
   item:
-    id: 0
+    id: 91374
     class: 15
     subclass: 5
     display_id: 0
@@ -35,6 +38,7 @@ dbc:
 db:
   creature_template:
     entry: 9140374
+    name: 幽紫深渊鳐
     subname: ''
     IconName: ''
     AIName: ''
@@ -64,6 +68,8 @@ db:
   creature_model_info:
     display_id: 140374
   item_template:
+    entry: 91374
+    name: 幽紫深渊鳐
     class: 15
     subclass: 5
     spellid_1: 55884

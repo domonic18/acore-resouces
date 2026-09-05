@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 苍白缚魂猎犬
   spell_icon_name: inv_soulhoundmount_blue
   icon_name: inv_soulhoundmount_blue
 dbc:
@@ -24,9 +25,11 @@ dbc:
   spell:
     id: 80388
     visual_id: 9140388
+    name: 苍白缚魂猎犬
+    description: 召唤或解散这种坐骑。
     speed: 100
   item:
-    id: 0
+    id: 91388
     class: 15
     subclass: 5
     display_id: 0
@@ -35,6 +38,7 @@ dbc:
 db:
   creature_template:
     entry: 9140388
+    name: 苍白缚魂猎犬
     subname: ''
     IconName: ''
     AIName: ''
@@ -64,6 +68,8 @@ db:
   creature_model_info:
     display_id: 140388
   item_template:
+    entry: 91388
+    name: 苍白缚魂猎犬
     class: 15
     subclass: 5
     spellid_1: 55884

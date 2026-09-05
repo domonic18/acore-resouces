@@ -25,7 +25,7 @@ dbc:
     name: 火焰耗牛
     speed: 100
   item:
-    id: 0
+    id: 91458
     class: 15
     subclass: 5
     display_id: 0
@@ -64,6 +64,7 @@ db:
   creature_model_info:
     display_id: 140458
   item_template:
+    entry: 91458
     name: 火焰耗牛
     class: 15
     subclass: 5
