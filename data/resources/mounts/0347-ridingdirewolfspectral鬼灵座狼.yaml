@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104343
     flags: 2
+    model_name: creature\ridingdirewolfspectral\ridingdirewolfspectral.m2
   creature_display_info:
     id: 140343
     model_id: 104343

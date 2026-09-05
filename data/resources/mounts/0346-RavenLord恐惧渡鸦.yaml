@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104342
     flags: 2
+    model_name: creature\RavenLord\ravenlordmount.m2
   creature_display_info:
     id: 140342
     model_id: 104342

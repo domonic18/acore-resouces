@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104336
     flags: 2
+    model_name: creature\Quilin\quilinflyingmount.m2
   creature_display_info:
     id: 140336
     model_id: 104336
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: quilenmountflying_blue_01
+    texture_variation_2: quilenmountflying_blue_02
+    texture_variation_3: quilenmountflying_blue_03
   spell:
     id: 80336
     visual_id: 9140336
