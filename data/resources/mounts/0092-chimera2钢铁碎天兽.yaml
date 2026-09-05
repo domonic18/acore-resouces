@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104087
     flags: 2
+    model_name: creature\chimera2\chimera2.m2
   creature_display_info:
     id: 140087
     model_id: 104087
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: chimera2white
   spell:
     id: 80087
     visual_id: 9140087

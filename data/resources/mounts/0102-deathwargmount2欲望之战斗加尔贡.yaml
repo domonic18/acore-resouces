@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104097
     flags: 2
+    model_name: creature\deathwargmount2\deathwargmount2.m2
   creature_display_info:
     id: 140097
     model_id: 104097
@@ -19,6 +20,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: deathwargmount2white
   spell:
     id: 80097
     visual_id: 9140097
