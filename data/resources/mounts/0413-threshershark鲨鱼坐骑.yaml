@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104409
     flags: 2
+    model_name: creature\threshershark\threshershark.m2
   creature_display_info:
     id: 140409
     model_id: 104409
@@ -17,6 +18,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: threshershark_green
+    texture_variation_2: threshershark_green
+    texture_variation_3: threshershark_green
   spell:
     id: 80409
     visual_id: 9140409

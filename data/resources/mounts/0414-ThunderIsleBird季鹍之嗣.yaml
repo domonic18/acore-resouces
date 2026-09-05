@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104410
     flags: 2
+    model_name: creature\ThunderIsleBird\thunderislebirdbossmount.m2
   creature_display_info:
     id: 140410
     model_id: 104410
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: thunderislebirdbossmount_crimson_2
+    texture_variation_2: thunderislebirdbossmount_crimson_2
+    texture_variation_3: thunderislebirdbossmount_crimson_2
   spell:
     id: 80410
     visual_id: 9140410

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104415
     flags: 2
+    model_name: creature\toadloamount\toadloamount.m2
   creature_display_info:
     id: 140415
     model_id: 104415
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: toadloamount_green
+    texture_variation_2: toadloamountsaddle
   spell:
     id: 80415
     visual_id: 9140415

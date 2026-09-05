@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104411
     flags: 2
+    model_name: creature\ThunderPterodactyl\thunderpterodactylmount.m2
   creature_display_info:
     id: 140411
     model_id: 104411
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: thunderpterodactyl_blue
+    texture_variation_2: thunderpterodactyl_saddle_gold
   spell:
     id: 80411
     visual_id: 9140411
