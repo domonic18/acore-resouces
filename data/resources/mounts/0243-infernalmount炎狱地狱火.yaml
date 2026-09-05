@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_infernalmounice
   icon_name: inv_infernalmounice
   spell_wowhead_url: https://www.wowhead.com/cn/spell=213350
+  item_wowhead_url: https://www.wowhead.com/cn/item=137614
 dbc:
   creature_model_data:
     id: 104239
     flags: 2
+    model_name: creature\infernalmount\infernalmount.m2
   creature_display_info:
     id: 140239
     model_id: 104239
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: infernalmount_rock_ice
+    texture_variation_2: infernalmount_metal_ice
+    texture_variation_3: infernalmount_fx_ice
   spell:
     id: 80239
     visual_id: 9140239
     name: 霜裂地狱火
     description: 召唤或解散你的霜裂地狱火。
+    speed: 100
   item:
     id: 137614
     class: 15

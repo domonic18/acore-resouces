@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104338
     flags: 2
+    model_name: creature\raptorloa\raptorloa.m2
   creature_display_info:
     id: 140338
     model_id: 104338
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140338
     name: 奢华暴掠龙
     description: 召唤或解散你的奢华暴掠龙。
+    speed: 100
   item:
     id: 153540
     class: 15

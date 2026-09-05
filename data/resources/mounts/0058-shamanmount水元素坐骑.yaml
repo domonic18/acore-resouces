@@ -28,6 +28,7 @@ dbc:
     icon_id: 2579
     name: 水元素
     description: 召唤或解散一只可供骑乘的水元素。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91055
     class: 15

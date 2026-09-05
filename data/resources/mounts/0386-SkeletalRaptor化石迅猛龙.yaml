@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104382
     flags: 2
+    model_name: creature\SkeletalRaptor\skeletalraptormount.m2
   creature_display_info:
     id: 140382
     model_id: 104382
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: skeletalraptormount
+    texture_variation_2: skeletalraptorsaddle
   spell:
     id: 80382
     visual_id: 9140382
     name: 化石迅猛龙
     description: 召唤或解散一头化石迅猛龙。
+    speed: 100
   item:
     id: 60954
     class: 15

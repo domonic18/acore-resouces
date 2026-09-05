@@ -11,6 +11,7 @@ dbc:
   creature_model_data:
     id: 104069
     flags: 2
+    model_name: creature\azeritewarmachinealliance\azeritewarmachinealliance.m2
   creature_display_info:
     id: 140069
     model_id: 104069
@@ -18,10 +19,12 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: azeritewarmachinealliance
   spell:
     id: 80069
     visual_id: 9140069
     name: 联盟狮虎战车
+    speed: 100
   item:
     id: 0
     class: 15

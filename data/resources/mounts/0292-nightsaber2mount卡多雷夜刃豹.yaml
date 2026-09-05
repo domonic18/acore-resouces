@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104288
     flags: 2
+    model_name: creature\nightsaber2mount\nightsaber2mount.m2
   creature_display_info:
     id: 140288
     model_id: 104288
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: nightsaber2purplemount
   spell:
     id: 80288
     visual_id: 9140288
     name: 卡多雷夜刃豹
     description: 召唤或解散一头可供骑乘的卡多雷夜刃豹。
+    speed: 100
   item:
     id: 166435
     class: 15

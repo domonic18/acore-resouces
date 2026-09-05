@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104250
     flags: 2
+    model_name: creature\lightforgedelekk\lightforgedelekk.m2
   creature_display_info:
     id: 140250
     model_id: 104250
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: lightforgedelekk_holy
   spell:
     id: 80250
     visual_id: 9140250
     name: 荣耀邪能碾压者
     description: 召唤或解散你的荣耀邪能碾压者。
+    speed: 100
   item:
     id: 153042
     class: 15

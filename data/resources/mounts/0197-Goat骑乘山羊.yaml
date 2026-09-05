@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104192
     flags: 2
+    model_name: creature\Goat\goatmount.m2
   creature_display_info:
     id: 140192
     model_id: 104192
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: goatwhite
+    texture_variation_2: goatmount_saddlebrown
   spell:
     id: 80192
     visual_id: 9140192
     name: 白色骑乘山羊
     description: 召唤或解散一只可供骑乘的白色骑乘山羊。
+    speed: 100
   item:
     id: 89390
     class: 15

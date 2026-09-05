@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: ability_mount_dkmount
   icon_name: ability_mount_dkmount
   spell_wowhead_url: https://www.wowhead.com/cn/spell=229387
+  item_wowhead_url: https://www.wowhead.com/cn/item=142231
 dbc:
   creature_model_data:
     id: 104110
     flags: 2
+    model_name: creature\dkmount\dkmount.m2
   creature_display_info:
     id: 140110
     model_id: 104110
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: dkmountfrost1
+    texture_variation_2: dkmountfrost2
   spell:
     id: 80110
     visual_id: 9140110
     name: 死亡领主的邪嗣征服者
     description: 召唤或解散你的死亡领主的邪嗣征服者。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 142231
     class: 15

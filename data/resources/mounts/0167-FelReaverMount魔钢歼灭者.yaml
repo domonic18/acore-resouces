@@ -30,6 +30,8 @@ dbc:
     icon_id: 9935
     name: 魔钢歼灭者
     description: 召唤或解散一只可供骑乘的魔钢歼灭者。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 123890
     class: 15

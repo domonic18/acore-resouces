@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104401
     flags: 2
+    model_name: creature\StormDragon\stormdragon.m2
   creature_display_info:
     id: 140401
     model_id: 104401
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: stormdragon_purple
+    texture_variation_2: stormdragon_tatspurple
+    texture_variation_3: stormdragon_wing_purple
   spell:
     id: 80401
     visual_id: 9140401
     name: 海岛雷鳞龙
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 166467
     class: 15

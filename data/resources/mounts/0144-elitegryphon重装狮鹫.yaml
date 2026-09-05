@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104139
     flags: 2
+    model_name: creature\elitegryphon\elitegryphonarmored.m2
   creature_display_info:
     id: 140139
     model_id: 104139
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: elitegryphon
+    texture_variation_2: elitegryphonarmor
   spell:
     id: 80139
     visual_id: 9140139
     name: 重装狮鹫
     description: 召唤或解散一头可供骑乘的重装狮鹫坐骑。这种坐骑的性能会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 93168
     class: 15

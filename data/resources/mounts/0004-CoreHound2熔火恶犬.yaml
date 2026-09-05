@@ -32,6 +32,7 @@ dbc:
     icon_id: 4062
     name: 熔火恶犬
     description: 召唤或解散一头可供骑乘的熔火恶犬。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91001
     class: 15

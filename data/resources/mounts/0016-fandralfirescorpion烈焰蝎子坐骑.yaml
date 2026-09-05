@@ -32,6 +32,7 @@ dbc:
     icon_id: 2433
     name: 烈焰蝎子
     description: 召唤或解散一只可供骑乘的烈焰蝎子。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91013
     class: 15

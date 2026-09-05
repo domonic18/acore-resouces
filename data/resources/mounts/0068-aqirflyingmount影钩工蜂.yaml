@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104063
     flags: 2
+    model_name: creature\aqirflyingmount\aqirflyingmount.m2
   creature_display_info:
     id: 140063
     model_id: 104063
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: aqirflyingmount_purple
   spell:
     id: 80063
     visual_id: 9140063
     name: 影钩工蜂
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 174771
     class: 15

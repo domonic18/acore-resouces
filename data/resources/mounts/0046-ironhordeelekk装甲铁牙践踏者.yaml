@@ -34,6 +34,7 @@ dbc:
     icon_id: 2166
     name: 装甲铁牙践踏者
     description: 召唤或解散一只可供骑乘的装甲铁牙践踏者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91043
     class: 15

@@ -11,11 +11,13 @@ official_db:
   name: 火山石幼龙
   spell_icon_name: inv_misc_stonedragonred
   icon_name: inv_misc_stonedragonred
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88331
+  item_wowhead_url: https://www.wowhead.com/cn/item=62900
 dbc:
   creature_model_data:
     id: 104115
     flags: 2
-    model_name: creature\DragonDeepholm\DragonDeepholmMount.M2
+    model_name: creature\DragonDeepholm\DragonDeepholmMount.m2
   creature_display_info:
     id: 140115
     model_id: 104115
@@ -32,6 +34,8 @@ dbc:
     icon_id: 27083
     name: 火山石幼龙
     description: 召唤或解散一只可供骑乘的火山石幼龙。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 62900
     class: 15

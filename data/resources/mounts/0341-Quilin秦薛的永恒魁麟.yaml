@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104337
     flags: 2
+    model_name: creature\Quilin\quilinflyingmount.m2
   creature_display_info:
     id: 140337
     model_id: 104337
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: quilenmountflying_red_01
+    texture_variation_2: quilenmountflying_red_02
+    texture_variation_3: quilenmountflying_red_03
   spell:
     id: 80337
     visual_id: 9140337
     name: 馨劳
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 174840
     class: 15

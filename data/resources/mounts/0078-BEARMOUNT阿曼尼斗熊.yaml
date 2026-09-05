@@ -7,6 +7,8 @@ official_db:
   name: 阿曼尼斗熊
   spell_icon_name: ability_druid_challangingroar
   icon_name: ability_druid_challangingroar
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=98204
+  item_wowhead_url: https://www.wowhead.com/cn/item=69747
 dbc:
   creature_model_data:
     id: 104073
@@ -24,6 +26,7 @@ dbc:
     icon_id: 957
     name: 阿曼尼斗熊
     description: 召唤或解散一个可供骑乘的阿曼尼斗熊。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 69747
     class: 15

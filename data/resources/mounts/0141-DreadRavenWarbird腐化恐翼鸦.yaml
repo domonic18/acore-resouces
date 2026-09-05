@@ -11,6 +11,8 @@ official_db:
   name: 腐化恐翼鸦
   spell_icon_name: inv_feldreadravenmount
   icon_name: inv_feldreadravenmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=183117
+  item_wowhead_url: https://www.wowhead.com/cn/item=123974
 dbc:
   creature_model_data:
     id: 104136
@@ -33,6 +35,7 @@ dbc:
     name: 腐化恐翼鸦
     description: 召唤或解散一只可供骑乘的腐化恐翼鸦。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 123974
     class: 15

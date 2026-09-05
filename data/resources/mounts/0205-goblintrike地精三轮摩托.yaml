@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104200
     flags: 2
+    model_name: creature\goblintrike\goblintrike01.m2
   creature_display_info:
     id: 140200
     model_id: 104200
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: goblintrike01
+    texture_variation_2: goblintrike01
+    texture_variation_3: goblintrike01
   spell:
     id: 80200
     visual_id: 9140200
     name: 地精三轮摩托涡轮增压型
     description: 召唤或解散一辆地精三轮摩托涡轮增压型。
+    speed: 100
   item:
     id: 91202
     class: 15

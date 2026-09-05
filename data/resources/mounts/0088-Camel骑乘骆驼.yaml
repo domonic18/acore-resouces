@@ -11,11 +11,13 @@ official_db:
   name: 棕色骑乘骆驼
   spell_icon_name: ability_mount_camel_brown
   icon_name: ability_mount_camel_brown
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88748
+  item_wowhead_url: https://www.wowhead.com/cn/item=63044
 dbc:
   creature_model_data:
     id: 104083
     flags: 2
-    model_name: creature\Camel\CamelMount.M2
+    model_name: creature\Camel\CamelMount.m2
   creature_display_info:
     id: 140083
     model_id: 104083
@@ -32,6 +34,7 @@ dbc:
     icon_id: 9894
     name: 棕色骑乘骆驼
     description: 召唤或解散一只可供骑乘的棕色骑乘骆驼。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 63044
     class: 15

@@ -1,5 +1,5 @@
 import { useSearchParams, Link, useLocation } from "react-router-dom";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, X } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { useEffect, useState } from "react";
 import {
@@ -37,6 +37,7 @@ export function ResourceListPage() {
     searchInput,
     setSearchInput,
     applySearch,
+    clearSearch,
     sortKey,
     sortOrder,
     setSort,
@@ -74,15 +75,25 @@ export function ResourceListPage() {
       <header className="topbar">
         <h1 className="page-title">资源表格</h1>
         <div className="topbar-actions">
-          <div className="search-box">
+          <div className={cn("search-box", searchInput && "has-clear")}>
             <input
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && applySearch()}
-              placeholder="搜索资源名称、ID、模型文件夹..."
+              placeholder="搜索名称、ID、模型/M2 文件..."
             />
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+            {searchInput && (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={clearSearch}
+                title="清空搜索"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
           <Link to="/import" className="btn btn-primary">
             <Plus className="h-4 w-4" /> 新增资源

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104301
     flags: 2
+    model_name: creature\pandarenphoenixmount\pandarenphoenixmount.m2
   creature_display_info:
     id: 140301
     model_id: 104301
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: PandarenPhoenixMountBody
+    texture_variation_2: PandarenPhoenixMountWing
+    texture_variation_3: PandarenPhoenixMountSaddle
   spell:
     id: 80301
     visual_id: 9140301
     name: 燃灰熊猫人凤凰
     description: 召唤或解散一头可供骑乘的燃灰熊猫人凤凰。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 90710
     class: 15

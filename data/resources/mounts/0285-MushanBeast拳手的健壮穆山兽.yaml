@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104281
     flags: 2
+    model_name: creature\MushanBeast\mushanbeastmount.m2
   creature_display_info:
     id: 140281
     model_id: 104281
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mushanbeastmount1brown
   spell:
     id: 80281
     visual_id: 9140281
     name: 拳手的健壮穆山兽
     description: 召唤或解散一只可供骑乘的拳手的健壮穆山兽。
+    speed: 100
   item:
     id: 98405
     class: 15

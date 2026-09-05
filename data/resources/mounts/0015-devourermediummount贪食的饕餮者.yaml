@@ -28,6 +28,7 @@ dbc:
     icon_id: 18875
     name: 贪食的饕餮者
     description: 召唤或解散一只可供骑乘的贪食的饕餮者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91012
     class: 15

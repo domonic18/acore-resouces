@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104254
     flags: 2
+    model_name: creature\maldraxxusboarmount\maldraxxusboarmount.m2
   creature_display_info:
     id: 140254
     model_id: 104254
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: maldraxxusboarmount_black
   spell:
     id: 80254
     visual_id: 9140254
     name: 灼背血牙猪
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 182085
     class: 15

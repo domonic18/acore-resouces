@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104360
     flags: 2
+    model_name: creature\seahorse\seahorse_baby.m2
   creature_display_info:
     id: 140360
     model_id: 104360
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140360
     name: 法比乌斯
     description: 召唤或解散这种坐骑。只能在水下使用。
+    swim_speed: 60
   item:
     id: 169201
     class: 15

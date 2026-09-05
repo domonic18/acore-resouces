@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104059
     flags: 2
+    model_name: creature\allianceshipmount\allianceshipmount.m2
   creature_display_info:
     id: 140059
     model_id: 104059
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: allianceshipmount
   spell:
     id: 80059
     visual_id: 9140059
     name: 暴风城逐天战机
     description: 召唤或解散你的暴风城逐天战机。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 151618
     class: 15

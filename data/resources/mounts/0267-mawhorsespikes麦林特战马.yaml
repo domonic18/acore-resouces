@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104263
     flags: 2
+    model_name: creature\mawhorsespikes\mawhorsespikes.m2
   creature_display_info:
     id: 140263
     model_id: 104263
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mawhorsespikes_teal
+    texture_variation_2: mawhorsespikes_fx_teal
   spell:
     id: 80263
     visual_id: 9140263
     name: 灵魂羁绊阴郁军马
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 186657
     class: 15

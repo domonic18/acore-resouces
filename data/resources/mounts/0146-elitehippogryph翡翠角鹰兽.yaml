@@ -7,11 +7,13 @@ official_db:
   name: 云翼角鹰兽
   spell_icon_name: inv_hippogryph2azsuna
   icon_name: inv_hippogryph2azsuna
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=242881
+  item_wowhead_url: https://www.wowhead.com/cn/item=147806
 dbc:
   creature_model_data:
     id: 104141
     flags: 2
-    model_name: creature\elitehippogryph\elitehippogryph.m2
+    model_name: creature\Hippogryph2\hippogryph2mount.m2
   creature_display_info:
     id: 140141
     model_id: 104141
@@ -19,15 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: elitehippogryph
-    texture_variation_2: elitehippogryph
-    texture_variation_3: elitehippogryph
+    texture_variation_1: hippogryph2azsuna
+    texture_variation_2: hippogryph2azsunasaddle
   spell:
     id: 80141
     visual_id: 9140141
     icon_id: 21658
     name: 云翼角鹰兽
     description: 召唤或解散一只可供骑乘的云翼角鹰兽。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 147806
     class: 15

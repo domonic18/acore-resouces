@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104323
     flags: 2
+    model_name: creature\protodrakegladiatormount\protodrakegladiatormount.m2
   creature_display_info:
     id: 140323
     model_id: 104323
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: protodrakegladiatormount_green1
+    texture_variation_2: protodrakegladiatormount_green2
+    texture_variation_3: protodrakegladiatormount_green3
   spell:
     id: 80323
     visual_id: 9140323
     name: 绿色始祖幼龙
     description: 召唤或解散一头可供骑乘的绿色始祖幼龙。这是一种速度非常快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 44707
     class: 15

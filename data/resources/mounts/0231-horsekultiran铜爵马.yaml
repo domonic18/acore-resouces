@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104227
     flags: 2
+    model_name: creature\horsekultiran\horsekultiran.m2
   creature_display_info:
     id: 140227
     model_id: 104227
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: horsekultiran
   spell:
     id: 80227
     visual_id: 9140227
     name: 库尔提拉斯军马
     description: 召唤或解散你的库尔提拉斯军马。
+    speed: 100
   item:
     id: 164762
     class: 15

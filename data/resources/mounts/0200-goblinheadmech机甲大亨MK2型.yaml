@@ -11,6 +11,7 @@ official_db:
   name: 机甲大亨MK2型
   spell_icon_name: achievement_dungeon_mogulrazdunk
   icon_name: achievement_dungeon_mogulrazdunk
+  item_wowhead_url: https://www.wowhead.com/cn/item=161134
 dbc:
   creature_model_data:
     id: 104195
@@ -32,6 +33,8 @@ dbc:
     icon_id: 11277
     name: 机甲大亨MK2型
     description: 召唤或解散一只可供骑乘的机甲大亨MK2型。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 161134
     class: 15

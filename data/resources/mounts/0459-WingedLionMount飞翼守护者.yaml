@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104455
     flags: 2
+    model_name: creature\WingedLionMount\wingedlionmount.m2
   creature_display_info:
     id: 140455
     model_id: 104455
@@ -25,6 +26,8 @@ dbc:
     visual_id: 9140455
     name: 飞翼守护者
     description: 召唤或解散一个飞翼守护者。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 69846
     class: 15

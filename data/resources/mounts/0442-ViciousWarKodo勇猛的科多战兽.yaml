@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104438
     flags: 2
+    model_name: creature\viciouswarkodo\viciouswarkodo.m2
   creature_display_info:
     id: 140438
     model_id: 104438
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140438
     name: 勇猛的科多战兽
     description: 召唤或解散你的勇猛的科多战兽。
+    speed: 100
   item:
     id: 124540
     class: 15

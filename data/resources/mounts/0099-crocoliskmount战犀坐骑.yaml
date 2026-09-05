@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104094
     flags: 2
+    model_name: creature\crocoliskmount\crocoliskmount.m2
   creature_display_info:
     id: 140094
     model_id: 104094
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: crocoliskmount_body_1
   spell:
     id: 80094
     visual_id: 9140094
     name: 布鲁斯
     description: 召唤或解散布鲁斯。
+    speed: 100
   item:
     id: 166724
     class: 15

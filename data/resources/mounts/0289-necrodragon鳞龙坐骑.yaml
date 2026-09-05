@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104285
     flags: 2
+    model_name: creature\necrodragon\necrodragon.m2
   creature_display_info:
     id: 140285
     model_id: 104285
@@ -20,6 +21,8 @@ dbc:
   spell:
     id: 80285
     visual_id: 9140285
+    speed: 100
+    flight_speed: 280
   item:
     id: 0
     class: 15

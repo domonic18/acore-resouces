@@ -11,6 +11,8 @@ official_db:
   name: 林地守卫者
   spell_icon_name: inv_moosemount
   icon_name: inv_moosemount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=189999
+  item_wowhead_url: https://www.wowhead.com/cn/item=128422
 dbc:
   creature_model_data:
     id: 104276
@@ -32,6 +34,7 @@ dbc:
     icon_id: 27385
     name: 林地守卫者
     description: 召唤或解散一只可供骑乘的林地守卫者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 128422
     class: 15

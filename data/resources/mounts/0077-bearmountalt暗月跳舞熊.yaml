@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104072
     flags: 2
+    model_name: creature\BEARMOUNTALT\bearmountalt_darkmoonfaire.m2
   creature_display_info:
     id: 140072
     model_id: 104072
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: bearmountdarkmoonfaireskinfur
+    texture_variation_2: bearmountdarkmoonfairearmor
   spell:
     id: 80072
     visual_id: 9140072
     name: 暗月跳舞熊
     description: 召唤或解散一只可供骑乘的暗月跳舞熊。
+    speed: 100
   item:
     id: 73766
     class: 15

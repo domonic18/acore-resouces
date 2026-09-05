@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104377
     flags: 2
+    model_name: creature\SIBERIANTIGERGOD\siberiantigergod.m2
   creature_display_info:
     id: 140377
     model_id: 104377
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140377
     name: 幽灵虎
     description: 召唤或解散一头可供骑乘的幽灵虎。
+    speed: 100
   item:
     id: 33224
     class: 15

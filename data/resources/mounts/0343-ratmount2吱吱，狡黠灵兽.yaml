@@ -7,6 +7,7 @@ official_db:
   name: 吱吱，狡黠灵兽
   spell_icon_name: inv_ratmount2
   icon_name: inv_ratmount2
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=308078
 dbc:
   creature_model_data:
     id: 104339
@@ -28,6 +29,7 @@ dbc:
     icon_id: 29609
     name: 吱吱，狡黠灵兽
     description: 召唤或解散一只可供骑乘的吱吱，狡黠灵兽。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 138386
     class: 15

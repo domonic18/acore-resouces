@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104315
     flags: 2
+    model_name: creature\parrotmount\parrotmount.m2
   creature_display_info:
     id: 140315
     model_id: 104315
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: parrot_green
+    texture_variation_2: saddle_green
   spell:
     id: 80315
     visual_id: 9140315
     name: 呱呱鹦鹉
     description: 召唤或解散你的呱呱鹦鹉。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 163586
     class: 15

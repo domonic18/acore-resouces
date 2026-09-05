@@ -11,11 +11,13 @@ official_db:
   name: 皇家魁麟
   spell_icon_name: ability_mount_quilenflyingmount
   icon_name: ability_mount_quilenflyingmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=124659
+  item_wowhead_url: https://www.wowhead.com/cn/item=85870
 dbc:
   creature_model_data:
     id: 104334
     flags: 2
-    model_name: creature\Quilin\QuilinFlyingMount.M2
+    model_name: creature\Quilin\QuilinFlyingMount.m2
   creature_display_info:
     id: 140334
     model_id: 104334
@@ -32,6 +34,7 @@ dbc:
     icon_id: 10017
     name: 皇家魁麟
     description: 召唤或解散一只可供骑乘的皇家魁麟。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 85870
     class: 15

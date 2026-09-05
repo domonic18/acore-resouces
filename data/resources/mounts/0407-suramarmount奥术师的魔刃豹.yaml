@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104403
     flags: 2
+    model_name: creature\suramarmount\suramarmount.m2
   creature_display_info:
     id: 140403
     model_id: 104403
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140403
     name: 奥术师的魔刃豹
     description: 召唤或解散你的奥术师的魔刃豹。
+    speed: 100
   item:
     id: 142436
     class: 15

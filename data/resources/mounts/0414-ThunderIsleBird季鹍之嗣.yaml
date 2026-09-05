@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104410
     flags: 2
+    model_name: creature\ThunderIsleBird\thunderislebirdbossmount.m2
   creature_display_info:
     id: 140410
     model_id: 104410
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: thunderislebirdbossmount_crimson_2
+    texture_variation_2: thunderislebirdbossmount_crimson_2
+    texture_variation_3: thunderislebirdbossmount_crimson_2
   spell:
     id: 80410
     visual_id: 9140410
     name: 季鹍之嗣
     description: 召唤或解散一只可供骑乘的季鹍之嗣。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 95059
     class: 15

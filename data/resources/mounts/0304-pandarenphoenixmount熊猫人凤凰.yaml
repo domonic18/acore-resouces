@@ -7,6 +7,8 @@ official_db:
   name: 蓝紫熊猫人凤凰
   spell_icon_name: ability_mount_pandarenphoenix_purple
   icon_name: ability_mount_pandarenphoenix_purple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=132119
+  item_wowhead_url: https://www.wowhead.com/cn/item=90712
 dbc:
   creature_model_data:
     id: 104300
@@ -19,15 +21,17 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: pandarenphoenixmountbodygreen
-    texture_variation_2: pandarenphoenixmountbodygreen
-    texture_variation_3: pandarenphoenixmountbodygreen
+    texture_variation_1: pandarenphoenixmountbodypurple
+    texture_variation_2: pandarenphoenixmountwingpurple
+    texture_variation_3: pandarenphoenixmountsaddlepurple
   spell:
     id: 80300
     visual_id: 9140300
     icon_id: 10003
     name: 蓝紫熊猫人凤凰
     description: 召唤或解散一只可供骑乘的蓝紫熊猫人凤凰。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 90712
     class: 15

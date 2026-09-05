@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104135
     flags: 2
+    model_name: creature\DRAKEMOUNT\feldrakemount.m2
   creature_display_info:
     id: 140135
     model_id: 104135
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: feldrake01
+    texture_variation_2: feldrakeskin02
+    texture_variation_3: feldrakeskin03
   spell:
     id: 80135
     visual_id: 9140135
     name: 实验体12-B
     description: 召唤或解散一条可供骑乘的实验体12-B。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 78919
     class: 15

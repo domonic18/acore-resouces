@@ -11,11 +11,13 @@ official_db:
   name: 迦拉卡斯的子嗣
   spell_icon_name: ability_mount_korkronprotodrake
   icon_name: inv_belt_44a
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=148392
+  item_wowhead_url: https://www.wowhead.com/cn/item=104208
 dbc:
   creature_model_data:
     id: 104320
     flags: 2
-    model_name: creature\PROTODRAGON\KorKronProtodrake.M2
+    model_name: creature\PROTODRAGON\KorKronProtodrake.m2
   creature_display_info:
     id: 140320
     model_id: 104320
@@ -32,6 +34,8 @@ dbc:
     icon_id: 9960
     name: 迦拉卡斯的子嗣
     description: 召唤或解散一只可供骑乘的迦拉卡斯的子嗣。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 104208
     class: 15

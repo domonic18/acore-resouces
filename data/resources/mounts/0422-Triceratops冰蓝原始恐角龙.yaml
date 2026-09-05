@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104418
     flags: 2
+    model_name: creature\Triceratops\triceratopsmount.m2
   creature_display_info:
     id: 140418
     model_id: 104418
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: triceratopsmountgreen2
+    texture_variation_2: triceratopsmountgreen2
+    texture_variation_3: triceratopsmountgreen2
   spell:
     id: 80418
     visual_id: 9140418
     name: 翡翠原始恐角龙
     description: 召唤或解散一头可供骑乘的翡翠原始恐角龙。
+    speed: 100
   item:
     id: 94231
     class: 15

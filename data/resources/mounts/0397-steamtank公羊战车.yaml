@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104393
     flags: 2
+    model_name: creature\steamtank\creature_6dw_darkiron_steamtankcustom.m2
   creature_display_info:
     id: 140393
     model_id: 104393
@@ -20,6 +21,7 @@ dbc:
   spell:
     id: 80393
     visual_id: 9140393
+    speed: 100
   item:
     id: 0
     class: 15

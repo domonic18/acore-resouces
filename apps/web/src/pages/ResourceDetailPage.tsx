@@ -17,6 +17,7 @@ import { CreatureDisplayInfoSection } from "@/features/resources/components/reso
 import { CreatureModelDataSection } from "@/features/resources/components/resource-detail/CreatureModelDataSection";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
+import { DisplayInfoPickerDialog } from "@/features/resources/components/resource-detail/DisplayInfoPickerDialog";
 import { PatchExportButton } from "@/features/resources/components/PatchExportButton";
 import { uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
@@ -55,9 +56,9 @@ export function ResourceDetailPage() {
 
   const [activeTab, setActiveTab] = useState("creature_display_info");
   const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
-  const [pickerTarget, setPickerTarget] = useState<"item" | "spell" | null>(
-    null,
-  );
+  const [pickerTarget, setPickerTarget] = useState<
+    "item" | "spell" | "displayId" | null
+  >(null);
   const [pickerSearch, setPickerSearch] = useState("");
 
   const {
@@ -127,6 +128,40 @@ export function ResourceDetailPage() {
         : resource.dbc.creature_model_data.model_name;
     return value ? String(value) : null;
   }, [formState.creatureModelDataDbc, resource]);
+
+  const liveModelDataId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "id" in formState.creatureModelDataDbc
+        ? formState.creatureModelDataDbc.id
+        : resource.dbc.creature_model_data.id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.creatureModelDataDbc, resource]);
+
+  const liveSpellId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "id" in formState.spellDbc ? formState.spellDbc.id : resource.dbc.spell.id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.spellDbc, resource]);
+
+  const liveItemDisplayId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "display_id" in formState.itemDbc
+        ? formState.itemDbc.display_id
+        : resource.dbc.item.display_id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.itemDbc, resource]);
 
   if (isLoading) {
     return (
@@ -254,6 +289,8 @@ export function ResourceDetailPage() {
                 creatureDisplayInfoDbc={formState.creatureDisplayInfoDbc}
                 setCreatureDisplayInfoDbc={formState.setCreatureDisplayInfoDbc}
                 assets={assets}
+                linkedModelDataId={liveModelDataId}
+                onNavigateToLinkedSection={() => scrollToSection("section-model")}
                 compact
               />
             </div>
@@ -265,12 +302,17 @@ export function ResourceDetailPage() {
               setItemIcon={formState.setItemIcon}
               itemWowheadUrl={formState.itemWowheadUrl}
               setItemWowheadUrl={formState.setItemWowheadUrl}
+              spellWowheadUrl={formState.spellWowheadUrl}
               setPickerTarget={setPickerTarget}
               iconNames={iconNames}
               itemDbc={formState.itemDbc}
               setItemDbc={formState.setItemDbc}
               itemDb={formState.itemDb}
               setItemDb={formState.setItemDb}
+              resourceType={resource.resource_type}
+              linkedSpellId={liveSpellId}
+              onNavigateToLinkedSection={() => scrollToSection("section-spell")}
+              onOpenDisplayPicker={() => setPickerTarget("displayId")}
               compact
             />
           </div>
@@ -287,6 +329,8 @@ export function ResourceDetailPage() {
               setSpellDbc={formState.setSpellDbc}
               spellDb={formState.spellDb}
               setSpellDb={formState.setSpellDb}
+              resourceType={resource.resource_type}
+              mountType={formState.form.mount_type}
               compact
             />
           </div>
@@ -332,7 +376,18 @@ export function ResourceDetailPage() {
         />
       </div>
 
-      {pickerTarget && (
+      {pickerTarget === "displayId" && (
+        <DisplayInfoPickerDialog
+          selectedId={liveItemDisplayId}
+          onSelect={(id) => {
+            formState.setItemDbc((prev) => ({ ...prev, display_id: id ?? 0 }));
+            setPickerTarget(null);
+          }}
+          onClose={() => setPickerTarget(null)}
+        />
+      )}
+
+      {(pickerTarget === "item" || pickerTarget === "spell") && (
         <IconPickerDialog
           title={pickerTarget === "item" ? "选择 Item 图标" : "选择 Spell 图标"}
           selectedValue={

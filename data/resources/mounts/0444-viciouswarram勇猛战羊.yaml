@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104440
     flags: 2
+    model_name: creature\viciouswarram\viciouswarram.m2
   creature_display_info:
     id: 140440
     model_id: 104440
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140440
     name: 勇猛战羊
     description: 召唤或解散你的勇猛战羊。
+    speed: 100
   item:
     id: 116777
     class: 15

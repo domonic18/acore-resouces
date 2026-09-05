@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104217
     flags: 2
+    model_name: creature\HordeScorpionMount\HordeScorpion.m2
   creature_display_info:
     id: 140217
     model_id: 104217
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: HordeScorpionBlack
   spell:
     id: 80217
     visual_id: 9140217
     name: 库卡隆横扫者
     description: 召唤或解散库卡隆横扫者。
+    speed: 100
   item:
     id: 67107
     class: 15

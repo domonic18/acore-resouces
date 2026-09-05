@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104327
     flags: 2
+    model_name: creature\protodrakegladiatormount\protodrakegladiatormount.m2
   creature_display_info:
     id: 140327
     model_id: 104327
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: protodrakegladiatormount_purple1
+    texture_variation_2: protodrakegladiatormount_purple2
+    texture_variation_3: protodrakegladiatormount_purple3
   spell:
     id: 80327
     visual_id: 9140327
     name: 紫色始祖幼龙
     description: 召唤或解散一条可供骑乘的紫色始祖幼龙。这是一种速度非常快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 44177
     class: 15

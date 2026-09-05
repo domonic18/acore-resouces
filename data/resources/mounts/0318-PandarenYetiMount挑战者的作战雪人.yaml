@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104314
     flags: 2
+    model_name: creature\PandarenYetiMount\pandarenyetimount.m2
   creature_display_info:
     id: 140314
     model_id: 104314
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenyetigrey1
+    texture_variation_2: pandarenyetihornsgrey2
+    texture_variation_3: pandarenyetimount_red
   spell:
     id: 80314
     visual_id: 9140314
     name: 格噜普斯的爪牙
     description: 召唤或解散你的格噜普斯的爪牙。
+    speed: 100
   item:
     id: 128671
     class: 15

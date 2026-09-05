@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104224
     flags: 2
+    model_name: creature\Horse2\Horse2.m2
   creature_display_info:
     id: 140224
     model_id: 104224
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: horse2mountbaselight
   spell:
     id: 80224
     visual_id: 9140224
     name: 晋升天鬃马
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 183741
     class: 15

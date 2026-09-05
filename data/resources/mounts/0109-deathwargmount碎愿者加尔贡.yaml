@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104104
     flags: 2
+    model_name: creature\deathwargmount\deathwargmount.m2
   creature_display_info:
     id: 140104
     model_id: 104104
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: deathwargmountblack
   spell:
     id: 80104
     visual_id: 9140104
     name: 碎愿者加尔贡
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180581
     class: 15

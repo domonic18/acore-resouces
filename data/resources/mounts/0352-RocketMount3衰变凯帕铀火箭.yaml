@@ -11,11 +11,13 @@ official_db:
   name: 衰变凯帕铀火箭
   spell_icon_name: ability_mount_rocketmount3
   icon_name: ability_mount_rocketmount3
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127138
+  item_wowhead_url: https://www.wowhead.com/cn/item=87250
 dbc:
   creature_model_data:
     id: 104348
     flags: 2
-    model_name: creature\RocketMount3\RocketMount3.M2
+    model_name: creature\RocketMount3\RocketMount3.m2
   creature_display_info:
     id: 140348
     model_id: 104348
@@ -32,6 +34,8 @@ dbc:
     icon_id: 10036
     name: 衰变凯帕铀火箭
     description: 召唤或解散一只可供骑乘的衰变凯帕铀火箭。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 87250
     class: 15

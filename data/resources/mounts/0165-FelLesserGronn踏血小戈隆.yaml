@@ -11,6 +11,8 @@ official_db:
   name: 踏血小戈隆
   spell_icon_name: inv_lessergronnmount_red
   icon_name: inv_lessergronnmount_red
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=171436
+  item_wowhead_url: https://www.wowhead.com/cn/item=116383
 dbc:
   creature_model_data:
     id: 104160
@@ -32,6 +34,7 @@ dbc:
     icon_id: 23837
     name: 踏血小戈隆
     description: 召唤或解散一只可供骑乘的踏血小戈隆。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 116383
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104123
     flags: 2
+    model_name: creature\DragonSkywall\dragonskywallmount.m2
   creature_display_info:
     id: 140123
     model_id: 104123
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: dragonskywallmountpurple1
+    texture_variation_2: dragonskywallmountpurple2
+    texture_variation_3: dragonskywallmountsaddlepurple
   spell:
     id: 80123
     visual_id: 9140123
     name: 南风幼龙
     description: 召唤或解散一条可供骑乘的南风幼龙。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 63041
     class: 15

@@ -11,6 +11,7 @@ dbc:
   creature_model_data:
     id: 104197
     flags: 2
+    model_name: creature\goblinhotrod\goblinhotrod.m2
   creature_display_info:
     id: 140197
     model_id: 104197
@@ -18,10 +19,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: goblinhotrod_01
+    texture_variation_2: goblinhotrod_02
   spell:
     id: 80197
     visual_id: 9140197
     name: 地精改装车
+    speed: 100
   item:
     id: 0
     class: 15

@@ -11,11 +11,13 @@ official_db:
   name: 巨型黑色龙龟
   spell_icon_name: ability_mount_pandaranmountepicblack
   icon_name: ability_mount_pandaranmountepicblack
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127295
+  item_wowhead_url: https://www.wowhead.com/cn/item=87802
 dbc:
   creature_model_data:
     id: 104127
     flags: 2
-    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.M2
+    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.m2
   creature_display_info:
     id: 140127
     model_id: 104127
@@ -35,6 +37,7 @@ dbc:
 
 
       基于她冷静稳重的天性，任何提高或降低坐骑速度的效果都对她的游泳速度无效。'
+    swim_speed: 60
   item:
     id: 87802
     class: 15

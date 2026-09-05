@@ -11,11 +11,13 @@ official_db:
   name: 红色筋斗云
   spell_icon_name: ability_mount_cloudmount
   icon_name: ability_mount_cloudmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=130092
+  item_wowhead_url: https://www.wowhead.com/cn/item=89363
 dbc:
   creature_model_data:
     id: 104090
     flags: 2
-    model_name: creature\Cloudmount\cloudMount.M2
+    model_name: creature\Cloudmount\cloudMount.m2
   creature_display_info:
     id: 140090
     model_id: 104090
@@ -33,6 +35,8 @@ dbc:
     name: 红色筋斗云
     description: 召唤或解散一朵可供骑乘的红色筋斗云。只能在外域或诺森德召唤这种坐骑。
     spell_visual_id: 12844
+    speed: 100
+    flight_speed: 280
   item:
     id: 89363
     class: 15

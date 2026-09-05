@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104290
     flags: 2
+    model_name: creature\nzothserpentmount\nzothserpentmount.m2
   creature_display_info:
     id: 140290
     model_id: 104290
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: nzothserpentmount_black
   spell:
     id: 80290
     visual_id: 9140290
     name: 恩佐斯的黑蟒
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 174654
     class: 15

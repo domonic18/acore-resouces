@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104289
     flags: 2
+    model_name: creature\nozdormudragon\nozdormudragon.m2
   creature_display_info:
     id: 140289
     model_id: 104289
@@ -25,6 +26,8 @@ dbc:
     visual_id: 9140289
     name: 青铜幼龙
     description: 召唤或解散一条可供骑乘的青铜幼龙。这是一种速度非常快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 43951
     class: 15

@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104454
     flags: 2
+    model_name: creature\wickerbeastpet\wickerbeastpet.m2
   creature_display_info:
     id: 140454
     model_id: 104454
@@ -24,6 +25,7 @@ dbc:
     visual_id: 9140454
     name: 柳魔幼兽
     description: 召唤或解散柳魔幼兽。
+    speed: 100
   item:
     id: 143189
     class: 15

@@ -12,6 +12,7 @@ dbc:
   creature_model_data:
     id: 104318
     flags: 2
+    model_name: creature\priestmount\priestmount.m2
   creature_display_info:
     id: 140318
     model_id: 104318
@@ -19,11 +20,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: priestmount_a_holy
+    texture_variation_2: priestmount_b_holy
   spell:
     id: 80318
     visual_id: 9140318
     name: 大祭司的光誓寻觅者
     description: 召唤或解散你的大祭司的光誓寻觅者。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 0
     class: 15

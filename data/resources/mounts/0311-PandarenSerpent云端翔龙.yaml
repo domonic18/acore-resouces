@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104307
     flags: 2
+    model_name: creature\PandarenSerpent\PandarenSerpentMount.m2
   creature_display_info:
     id: 140307
     model_id: 104307
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenserpent_black
+    texture_variation_2: PandarenSerpentMountSaddle_black
   spell:
     id: 80307
     visual_id: 9140307
     name: 玛瑙云端翔龙
     description: 召唤或解散一条可供骑乘的玛瑙云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
+    speed: 100
+    flight_speed: 280
   item:
     id: 87768
     class: 15

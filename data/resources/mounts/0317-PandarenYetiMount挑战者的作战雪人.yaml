@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104313
     flags: 2
+    model_name: creature\PandarenYetiMount\pandarenyetimount.m2
   creature_display_info:
     id: 140313
     model_id: 104313
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenyetiwhite1
+    texture_variation_2: pandarenyetihornswhite2
+    texture_variation_3: pandarenyetimount_orange
   spell:
     id: 80313
     visual_id: 9140313
     name: 挑战者的作战雪人
     description: 召唤或解散你的挑战者的作战雪人。
+    speed: 100
   item:
     id: 116791
     class: 15

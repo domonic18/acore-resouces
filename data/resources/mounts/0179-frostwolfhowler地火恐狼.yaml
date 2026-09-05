@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104174
     flags: 2
+    model_name: creature\frostwolfhowler\frostwolfhowler.m2
   creature_display_info:
     id: 140174
     model_id: 104174
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: frostwolfhowler_body
+    texture_variation_2: frostwolfhowler_saddle
   spell:
     id: 80174
     visual_id: 9140174
     name: 地火恐狼
     description: 召唤或解散你的地火恐狼。
+    speed: 100
   item:
     id: 127140
     class: 15

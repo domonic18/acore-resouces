@@ -7,6 +7,8 @@ official_db:
   name: 纯血火鹰
   spell_icon_name: inv_misc_orb_05
   icon_name: inv_misc_orb_05
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=97493
+  item_wowhead_url: https://www.wowhead.com/cn/item=69224
 dbc:
   creature_model_data:
     id: 104166
@@ -28,6 +30,8 @@ dbc:
     icon_id: 26604
     name: 纯血火鹰
     description: 召唤或解散一只可供骑乘的纯血火鹰。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 69224
     class: 15

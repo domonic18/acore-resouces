@@ -11,6 +11,8 @@ official_db:
   name: 安托兰灼焦恶犬
   spell_icon_name: inv_felhound3_shadow_fire
   icon_name: inv_felhound3_shadow_fire
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253088
+  item_wowhead_url: https://www.wowhead.com/cn/item=152816
 dbc:
   creature_model_data:
     id: 104158
@@ -32,6 +34,8 @@ dbc:
     icon_id: 19445
     name: 安托兰灼焦恶犬
     description: 召唤或解散一只可供骑乘的安托兰灼焦恶犬。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 152816
     class: 15

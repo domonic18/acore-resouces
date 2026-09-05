@@ -11,6 +11,8 @@ official_db:
   name: 帝王骑乘仙鹤
   spell_icon_name: ability_mount_cranemountpurple
   icon_name: ability_mount_cranemountpurple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127177
+  item_wowhead_url: https://www.wowhead.com/cn/item=87783
 dbc:
   creature_model_data:
     id: 104091
@@ -32,6 +34,7 @@ dbc:
     icon_id: 3170
     name: 帝王骑乘仙鹤
     description: 召唤或解散一只可供骑乘的帝王骑乘仙鹤。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 87783
     class: 15

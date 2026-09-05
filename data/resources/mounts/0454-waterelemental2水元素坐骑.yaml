@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104450
     flags: 2
+    model_name: creature\waterelemental2\waterelemental2.m2
   creature_display_info:
     id: 140462
     model_id: 104450
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: waterelemental2_mercury
+    texture_variation_2: waterelemental2_mercury
+    texture_variation_3: waterelemental2_mercury
   spell:
     id: 80450
     visual_id: 9140450
     name: 冰川狂潮
     description: 召唤或解散你的冰川狂潮。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
   item:
     id: 166705
     class: 15

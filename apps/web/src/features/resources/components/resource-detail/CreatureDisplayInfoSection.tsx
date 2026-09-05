@@ -1,10 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
+import { FieldHint } from "@/components/form/FieldHint";
+import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { TextureViewer } from "@/components/viewer/TextureViewer";
 import { cn, uniqueFiles } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
+import { LinkedIdField } from "./LinkedIdField";
+import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
 
 interface CreatureDisplayInfoSectionProps {
   resource: Resource;
@@ -13,6 +17,9 @@ interface CreatureDisplayInfoSectionProps {
     React.SetStateAction<Record<string, unknown>>
   >;
   assets: ResourceAssets | undefined;
+  /** 实时模型数据 ID（跟随编辑中的 CreatureModelData.id），用于 ModelID 自动跟随 */
+  linkedModelDataId: number | null;
+  onNavigateToLinkedSection?: () => void;
   compact?: boolean;
 }
 
@@ -36,7 +43,8 @@ const FIELDS: FieldDef[] = [
   {
     key: "model_id",
     label: "ModelID",
-    description: "模型数据 ID，与 creature_model_data.id 关联，只读",
+    description:
+      "模型数据 ID，默认自动跟随上方模型数据（CreatureModelData）的 ID；点击锁图标解锁后可手动覆盖",
     type: "readonly-int",
   },
   {
@@ -221,9 +229,21 @@ export function CreatureDisplayInfoSection({
   creatureDisplayInfoDbc,
   setCreatureDisplayInfoDbc,
   assets,
+  linkedModelDataId,
+  onNavigateToLinkedSection,
   compact,
 }: CreatureDisplayInfoSectionProps) {
   const textureCandidates = useTextureCandidates(assets);
+  const getReference = useFieldReference(resource.resource_type);
+
+  const [modelIdLocked, setModelIdLocked] = useState(true);
+
+  useLinkedFieldValue(
+    modelIdLocked,
+    linkedModelDataId,
+    "model_id",
+    setCreatureDisplayInfoDbc,
+  );
 
   function getValue(key: string): unknown {
     if (key in creatureDisplayInfoDbc) {
@@ -239,6 +259,20 @@ export function CreatureDisplayInfoSection({
   function renderField(field: FieldDef) {
     const value = getValue(field.key);
 
+    if (field.key === "model_id") {
+      return (
+        <LinkedIdField
+          value={modelIdLocked ? linkedModelDataId : value}
+          linkedLabel="模型数据 → CreatureModelData.id"
+          locked={modelIdLocked}
+          onToggleLock={() => setModelIdLocked((prev) => !prev)}
+          onNavigate={onNavigateToLinkedSection}
+          onChange={(v) => setValue("model_id", v)}
+          compact={compact}
+        />
+      );
+    }
+
     if (field.type === "readonly-int") {
       return (
         <input
@@ -250,35 +284,12 @@ export function CreatureDisplayInfoSection({
       );
     }
 
-    if (field.type === "int") {
+    if (field.type === "int" || field.type === "float") {
       return (
         <NumberInput
           value={value}
           onChange={(v) => setValue(field.key, v)}
           compact={compact}
-        />
-      );
-    }
-
-    if (field.type === "float") {
-      return (
-        <input
-          type="number"
-          step={field.step ?? 0.01}
-          min={field.min}
-          max={field.max}
-          className={cn(compact ? "form-input-compact" : "form-input")}
-          value={value === null || value === undefined ? "" : String(value)}
-          onChange={(e) => {
-            const raw = e.target.value;
-            if (raw === "") {
-              setValue(field.key, null);
-            } else {
-              const n = Number(raw);
-              setValue(field.key, Number.isNaN(n) ? null : n);
-            }
-          }}
-          onWheel={(e) => e.currentTarget.blur()}
         />
       );
     }
@@ -308,19 +319,40 @@ export function CreatureDisplayInfoSection({
   return (
     <SectionCard title="显示信息（CreatureDisplayInfo）" compact={compact}>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {FIELDS.map((field) => (
-          <FormGroup
-            key={field.key}
-            label={`${field.label}`}
-            compact={compact}
-            className="group"
-          >
-            {renderField(field)}
-            <p className="mt-1 text-[11px] text-text-tertiary">
-              {field.description}
-            </p>
-          </FormGroup>
-        ))}
+        {FIELDS.map((field) => {
+          const reference = getReference(
+            `dbc.creature_display_info.${field.key}`,
+          );
+          const refValue = reference?.value ?? null;
+          const canApply = field.type === "int" || field.type === "float";
+          return (
+            <FormGroup
+              key={field.key}
+              label={field.label}
+              compact={compact}
+              className="group"
+              hint={
+                <FieldHint
+                  description={field.description}
+                  reference={reference}
+                  onApply={
+                    canApply && refValue !== null
+                      ? () => {
+                          const numeric = Number(refValue);
+                          setValue(
+                            field.key,
+                            Number.isNaN(numeric) ? refValue : numeric,
+                          );
+                        }
+                      : undefined
+                  }
+                />
+              }
+            >
+              {renderField(field)}
+            </FormGroup>
+          );
+        })}
       </div>
     </SectionCard>
   );

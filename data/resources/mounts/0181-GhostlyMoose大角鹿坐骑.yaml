@@ -30,6 +30,7 @@ dbc:
     icon_id: 19983
     name: 艾特洛之魂
     description: 召唤或解散一只可供骑乘的艾特洛之魂。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 131734
     class: 15

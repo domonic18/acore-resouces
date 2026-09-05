@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104395
     flags: 2
+    model_name: creature\steward\steward.m2
   creature_display_info:
     id: 140395
     model_id: 104395
@@ -17,9 +18,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: steward_
+    texture_variation_2: steward_
+    texture_variation_3: steward_
   spell:
     id: 80395
     visual_id: 9140395
+    speed: 100
   item:
     id: 0
     class: 15

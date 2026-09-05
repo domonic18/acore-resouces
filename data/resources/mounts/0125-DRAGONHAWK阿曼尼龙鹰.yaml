@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104120
     flags: 2
+    model_name: creature\DRAGONHAWK\dragonhawkarmormounthorde.m2
   creature_display_info:
     id: 140120
     model_id: 104120
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: dragonhawkarmoredmounthorde1
+    texture_variation_2: dragonhawkarmoredmounthorde2
   spell:
     id: 80120
     visual_id: 9140120
     name: 红色装甲龙鹰
     description: 召唤或解散一只可供骑乘的红色装甲龙鹰。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 98104
     class: 15

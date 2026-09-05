@@ -11,6 +11,8 @@ official_db:
   name: 原始火刃豹
   spell_icon_name: inv_firecatmount
   icon_name: inv_firecatmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=232405
+  item_wowhead_url: https://www.wowhead.com/cn/item=143631
 dbc:
   creature_model_data:
     id: 104164
@@ -32,6 +34,7 @@ dbc:
     icon_id: 19517
     name: 原始火刃豹
     description: 召唤或解散一只可供骑乘的原始火刃豹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 143631
     class: 15

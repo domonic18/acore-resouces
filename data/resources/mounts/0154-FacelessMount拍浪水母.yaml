@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104149
     flags: 2
+    model_name: creature\FacelessMount\FacelessMount.m2
   creature_display_info:
     id: 140149
     model_id: 104149
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: FacelessCastermountRed
   spell:
     id: 80149
     visual_id: 9140149
     name: 拍浪水母
     description: 召唤或解散一只可供骑乘的拍浪水母。
+    swim_speed: 60
   item:
     id: 163585
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104297
     flags: 2
+    model_name: creature\PandarenKiteMount\PandarenKiteMount.m2
   creature_display_info:
     id: 140297
     model_id: 104297
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: PandarenKiteMountGreen
   spell:
     id: 80297
     visual_id: 9140297
     name: 翠绿熊猫人风筝
     description: 召唤或解散一只可供骑乘的熊猫人风筝。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 91802
     class: 15

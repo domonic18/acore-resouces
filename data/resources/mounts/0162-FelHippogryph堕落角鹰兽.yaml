@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104157
     flags: 2
+    model_name: creature\FelHippogryph\felhippogryphmount.m2
   creature_display_info:
     id: 140157
     model_id: 104157
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hippogryphfelskin01
+    texture_variation_2: hippogryphfelskin02
   spell:
     id: 80157
     visual_id: 9140157
     name: 堕落角鹰兽
     description: 召唤或解散一只可供骑乘的堕落角鹰兽。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 72582
     class: 15

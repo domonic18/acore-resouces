@@ -31,6 +31,7 @@ dbc:
     icon_id: 1715
     name: 驯养的冰蹄牛
     description: 召唤或解散一只可供骑乘的驯养的冰蹄牛。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91002
     class: 15

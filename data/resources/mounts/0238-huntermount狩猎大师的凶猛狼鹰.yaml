@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_huntermount
   icon_name: inv_huntermount
   spell_wowhead_url: https://www.wowhead.com/cn/spell=229386
+  item_wowhead_url: https://www.wowhead.com/cn/item=142227
 dbc:
   creature_model_data:
     id: 104234
     flags: 2
+    model_name: creature\huntermount\huntermount.m2
   creature_display_info:
     id: 140234
     model_id: 104234
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: huntermount_body_orange
+    texture_variation_2: huntermount_armor_orange
   spell:
     id: 80234
     visual_id: 9140234
     name: 狩猎大师的忠诚狼鹰
     description: 召唤或解散你的狩猎大师的忠诚狼鹰
+    speed: 100
+    flight_speed: 280
   item:
     id: 142227
     class: 15

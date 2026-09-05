@@ -11,6 +11,8 @@ official_db:
   name: 柔光法力鳐
   spell_icon_name: inv_manaraymount_blue
   icon_name: inv_manaraymount_blue
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253107
+  item_wowhead_url: https://www.wowhead.com/cn/item=152844
 dbc:
   creature_model_data:
     id: 104371
@@ -32,6 +34,8 @@ dbc:
     icon_id: 24430
     name: 柔光法力鳐
     description: 召唤或解散一只可供骑乘的柔光法力鳐。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 152844
     class: 15

@@ -11,6 +11,8 @@ official_db:
   name: 高风暗鬃狮
   spell_icon_name: inv_wingedlion2mount_dark
   icon_name: inv_wingedlion2mount_dark
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=341776
+  item_wowhead_url: https://www.wowhead.com/cn/item=183618
 dbc:
   creature_model_data:
     id: 104068
@@ -32,6 +34,8 @@ dbc:
     icon_id: 33031
     name: 高风暗鬃狮
     description: 召唤或解散一头可供骑乘的高风暗鬃狮。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 183618
     class: 15

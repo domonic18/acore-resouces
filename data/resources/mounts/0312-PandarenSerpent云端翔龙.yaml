@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_pandarenserpentmount_blue
   icon_name: inv_pandarenserpentmount_blue
   spell_wowhead_url: https://www.wowhead.com/cn/spell=123992
+  item_wowhead_url: https://www.wowhead.com/cn/item=85430
 dbc:
   creature_model_data:
     id: 104308
     flags: 2
+    model_name: creature\PandarenSerpent\PandarenSerpentMount.m2
   creature_display_info:
     id: 140308
     model_id: 104308
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenserpent_blue
+    texture_variation_2: PandarenSerpentMountSaddle_Blue
   spell:
     id: 80308
     visual_id: 9140308
     name: 碧蓝云端翔龙
     description: 召唤或解散一条可供骑乘的碧蓝云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
+    speed: 100
+    flight_speed: 280
   item:
     id: 85430
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104244
     flags: 2
+    model_name: creature\kodobeast2mount\kodobeast2mount.m2
   creature_display_info:
     id: 140244
     model_id: 104244
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: kodobeast2mountyellow1
+    texture_variation_2: kodobeast2mountyellow2
   spell:
     id: 80244
     visual_id: 9140244
     name: 惊恐的科多兽
     description: 召唤或解散一头可供骑乘的惊恐的科多兽。
+    speed: 100
   item:
     id: 166433
     class: 15

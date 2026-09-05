@@ -11,6 +11,7 @@ dbc:
   creature_model_data:
     id: 104062
     flags: 2
+    model_name: creature\anduinhorse\anduinhorse.m2
   creature_display_info:
     id: 140062
     model_id: 104062
@@ -18,10 +19,12 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: anduinhorse
   spell:
     id: 80062
     visual_id: 9140062
     name: 安度因的战马
+    speed: 100
   item:
     id: 134817
     class: 15

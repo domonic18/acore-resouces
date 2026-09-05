@@ -11,6 +11,7 @@ dbc:
   creature_model_data:
     id: 104458
     flags: 2
+    model_name: creature\yakgod\yakgod.m2
   creature_display_info:
     id: 140458
     model_id: 104458
@@ -22,6 +23,7 @@ dbc:
     id: 80458
     visual_id: 9140458
     name: 火焰耗牛
+    speed: 100
   item:
     id: 0
     class: 15

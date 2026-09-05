@@ -7,6 +7,8 @@ official_db:
   name: 戌禅，神圣护卫
   spell_icon_name: inv_dogmount
   icon_name: inv_dogmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=259395
+  item_wowhead_url: https://www.wowhead.com/cn/item=156564
 dbc:
   creature_model_data:
     id: 104111
@@ -28,6 +30,7 @@ dbc:
     icon_id: 18895
     name: 戌禅，神圣护卫
     description: 召唤或解散一只可供骑乘的戌禅，神圣护卫。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 156564
     class: 15

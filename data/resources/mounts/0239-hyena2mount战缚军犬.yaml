@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104235
     flags: 2
+    model_name: creature\darkhoundmount_draka\darkhoundmount_draka.m2
   creature_display_info:
     id: 140235
     model_id: 104235
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: darkhoundmount_draka_green
+    texture_variation_2: darkhoundmount_draka_green
+    texture_variation_3: darkhoundmount_draka_green
   spell:
     id: 80235
     visual_id: 9140235
     name: 战缚军犬
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 184062
     class: 15

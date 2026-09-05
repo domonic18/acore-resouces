@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104273
     flags: 2
+    model_name: creature\MooseMount2\moosemount2.m2
   creature_display_info:
     id: 140273
     model_id: 104273
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: moosemount2black
+    texture_variation_2: moosemount2_saddle
   spell:
     id: 80273
     visual_id: 9140273
     name: 石皮大角鹿
     description: 召唤或解散你的石皮大角鹿。
+    speed: 100
   item:
     id: 166470
     class: 15

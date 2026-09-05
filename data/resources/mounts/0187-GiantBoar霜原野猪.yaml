@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104182
     flags: 2
+    model_name: creature\GiantBoar\giantboarmount.m2
   creature_display_info:
     id: 140182
     model_id: 104182
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: GiantBoarMountRed1
+    texture_variation_2: GiantBoarMountFel2
+    texture_variation_3: GiantBoarMountFel3
   spell:
     id: 80182
     visual_id: 9140182
     name: 死牙魔能野猪
     description: 召唤或解散你的死牙魔能野猪。
+    speed: 100
   item:
     id: 128526
     class: 15

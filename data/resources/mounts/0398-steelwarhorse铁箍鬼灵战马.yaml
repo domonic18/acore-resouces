@@ -11,6 +11,8 @@ official_db:
   name: 铁箍鬼灵战马
   spell_icon_name: ability_mount_steelwarhorse
   icon_name: ability_mount_steelwarhorse
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=142910
+  item_wowhead_url: https://www.wowhead.com/cn/item=129922
 dbc:
   creature_model_data:
     id: 104394
@@ -32,6 +34,7 @@ dbc:
     icon_id: 10051
     name: 铁箍鬼灵战马
     description: 召唤或解散一只可供骑乘的铁箍鬼灵战马。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 129922
     class: 15

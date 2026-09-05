@@ -11,6 +11,7 @@ official_db:
   name: 雄壮远足牦牛
   spell_icon_name: ability_mount_travellersyakmount
   icon_name: ability_mount_travellersyakmount
+  item_wowhead_url: https://www.wowhead.com/cn/item=84101
 dbc:
   creature_model_data:
     id: 104416
@@ -32,6 +33,7 @@ dbc:
     icon_id: 10060
     name: 雄壮远足牦牛
     description: 召唤或解散一只可供骑乘的雄壮远足牦牛。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 84101
     class: 15

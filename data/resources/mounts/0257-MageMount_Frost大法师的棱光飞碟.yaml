@@ -35,6 +35,7 @@ dbc:
     description: 召唤或解散一只可供骑乘的大法师的棱光飞碟。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
     spell_visual_id: 12844
+    speed: 100
   item:
     id: 91057
     class: 15

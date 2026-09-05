@@ -99,6 +99,17 @@ export function ResourceFilters({
           ))}
         </select>
 
+        <select
+          className="filter-select"
+          value={searchParams.get("origin") || ""}
+          onChange={(e) => updateParam("origin", e.target.value)}
+          title="按物品 ID 是否与 wowhead 官方链接一致判定（与编辑页徽章口径一致）"
+        >
+          <option value="">所有数据来源</option>
+          <option value="official">官方数据</option>
+          <option value="custom">自定义数据</option>
+        </select>
+
         <DateRangeFilter
           start={searchParams.get("updated_start") || ""}
           end={searchParams.get("updated_end") || ""}

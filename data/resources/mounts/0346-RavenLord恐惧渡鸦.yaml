@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104342
     flags: 2
+    model_name: creature\RavenLord\ravenlordmount.m2
   creature_display_info:
     id: 140342
     model_id: 104342
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140342
     name: 恐惧渡鸦
     description: 召唤或解散一头恐惧渡鸦。这种坐骑会根据你的骑术等级和所在区域改变。
+    speed: 100
   item:
     id: 109013
     class: 15

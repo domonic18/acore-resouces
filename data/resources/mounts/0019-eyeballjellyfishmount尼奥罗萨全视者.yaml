@@ -33,6 +33,8 @@ dbc:
     name: 尼奥罗萨全视者
     description: 召唤或解散一个可供骑乘的尼奥罗萨全视者。这是一种速度非常快的坐骑。
     spell_visual_id: 5160
+    speed: 100
+    flight_speed: 280
   item:
     id: 91016
     class: 15

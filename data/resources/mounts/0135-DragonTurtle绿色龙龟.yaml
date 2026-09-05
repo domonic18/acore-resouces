@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104130
     flags: 2
+    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.m2
   creature_display_info:
     id: 140130
     model_id: 104130
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: RidingDragonTurtleGreen
+    texture_variation_2: RidingDragonTurtleSaddleEpicGreen
   spell:
     id: 80130
     visual_id: 9140130
     name: 巨型绿色龙龟
     description: 召唤或解散一只可供骑乘的巨型绿色龙龟。
+    swim_speed: 60
   item:
     id: 87801
     class: 15

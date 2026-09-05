@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104277
     flags: 2
+    model_name: creature\mothardenwealdmount\mothardenwealdmount.m2
   creature_display_info:
     id: 140277
     model_id: 104277
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mothardenwealdmount_blue
+    texture_variation_2: mothardenwealdmount_saddle_blue
   spell:
     id: 80277
     visual_id: 9140277
     name: 丝柔烁光蛾
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 180748
     class: 15

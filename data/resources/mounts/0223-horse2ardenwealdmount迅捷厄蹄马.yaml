@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104219
     flags: 2
+    model_name: creature\horse2ardenwealdmount\horse2ardenwealdmount.m2
   creature_display_info:
     id: 140219
     model_id: 104219
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: horse2ardenwealdmount_dark
   spell:
     id: 80219
     visual_id: 9140219
     name: 迅捷厄蹄马
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180728
     class: 15

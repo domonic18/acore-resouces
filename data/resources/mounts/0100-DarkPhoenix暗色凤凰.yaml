@@ -11,6 +11,8 @@ official_db:
   name: 暗色凤凰
   spell_icon_name: inv_mount_darkphoenixa
   icon_name: inv_mount_darkphoenixa
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88990
+  item_wowhead_url: https://www.wowhead.com/cn/item=63125
 dbc:
   creature_model_data:
     id: 104095
@@ -33,6 +35,7 @@ dbc:
     name: 暗色凤凰
     description: 召唤或解散一只可供骑乘的暗色凤凰。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 63125
     class: 15

@@ -7,11 +7,13 @@ official_db:
   name: 星光云端翔龙
   spell_icon_name: inv_celestialserpentmount
   icon_name: inv_celestialserpentmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=127170
+  item_wowhead_url: https://www.wowhead.com/cn/item=87777
 dbc:
   creature_model_data:
     id: 104084
     flags: 2
-    model_name: creature\CelestialSerpent\CelestialSerpentMount.M2
+    model_name: creature\CelestialSerpent\CelestialSerpentMount.m2
   creature_display_info:
     id: 140084
     model_id: 104084
@@ -29,6 +31,7 @@ dbc:
     name: 星光云端翔龙
     description: 召唤或解散一只可供骑乘的星光云端翔龙。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 87777
     class: 15

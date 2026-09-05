@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104205
     flags: 2
+    model_name: creature\hippocampusmount\hippocampusmount.m2
   creature_display_info:
     id: 140205
     model_id: 104205
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hippocampusmount_body_black
+    texture_variation_2: hippocampusmount_armor_white
   spell:
     id: 80205
     visual_id: 9140205
     name: 墨鳞觅暗者
     description: 召唤或解散这种坐骑。只能在水下使用。
+    swim_speed: 60
   item:
     id: 169203
     class: 15

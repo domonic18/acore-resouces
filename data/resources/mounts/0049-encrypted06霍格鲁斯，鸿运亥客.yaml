@@ -28,6 +28,7 @@ dbc:
     icon_id: 19205
     name: 霍格鲁斯，鸿运亥客
     description: 召唤或解散一只可供骑乘的霍格鲁斯，鸿运亥客。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91046
     class: 15

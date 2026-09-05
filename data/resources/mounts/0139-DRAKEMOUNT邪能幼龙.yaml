@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104134
     flags: 2
+    model_name: creature\DRAKEMOUNT\armoredtwilightdrake.m2
   creature_display_info:
     id: 140134
     model_id: 104134
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: drakeskinscaled_01
+    texture_variation_2: drakeskinscaled_02
+    texture_variation_3: drakeskinscaled_03
   spell:
     id: 80134
     visual_id: 9140134
     name: 蓝色幼龙
     description: 召唤或解散一条可供骑乘的蓝色幼龙。这是一种速度非常快的坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 43953
     class: 15

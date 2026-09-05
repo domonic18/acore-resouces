@@ -30,6 +30,7 @@ dbc:
     icon_id: 26261
     name: 地精三轮摩托
     description: 召唤或解散一只可供骑乘的地精三轮摩托。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 62462
     class: 15

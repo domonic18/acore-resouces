@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104398
     flags: 2
+    model_name: creature\stormcrowmountbase\stormcrowmountbase.m2
   creature_display_info:
     id: 140398
     model_id: 104398
@@ -25,6 +26,8 @@ dbc:
     visual_id: 9140398
     name: 萨伊尔，海妖之目
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 232639
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104085
     flags: 2
+    model_name: creature\chimera2\ironchimera.m2
   creature_display_info:
     id: 140085
     model_id: 104085
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: ironchimerabody
   spell:
     id: 80085
     visual_id: 9140085
     name: 钢铁碎天兽
     description: 召唤或解散一头钢铁碎天兽。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 107951
     class: 15

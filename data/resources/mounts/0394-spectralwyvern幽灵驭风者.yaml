@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104390
     flags: 2
+    model_name: creature\spectralwyvern\spectralwyvern.m2
   creature_display_info:
     id: 140390
     model_id: 104390
@@ -25,6 +26,8 @@ dbc:
     visual_id: 9140390
     name: 幽灵驭风者
     description: 召唤或解散一头可供骑乘的幽灵驭风者坐骑。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 76902
     class: 15

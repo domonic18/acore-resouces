@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104335
     flags: 2
+    model_name: creature\Quilin\quilinflyingmount.m2
   creature_display_info:
     id: 140335
     model_id: 104335
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: quilenmountflying_white_01
+    texture_variation_2: quilenmountflying_white_02
+    texture_variation_3: quilenmountflying_white_03
   spell:
     id: 80335
     visual_id: 9140335
     name: 秦薛的永恒魁麟
     description: 召唤或解散秦薛的永恒魁麟。
+    speed: 100
   item:
     id: 163582
     class: 15

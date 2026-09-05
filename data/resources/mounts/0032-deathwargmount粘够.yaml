@@ -30,6 +30,7 @@ dbc:
     icon_id: 957
     name: 勇猛的战狼
     description: 召唤或解散一只可供骑乘的勇猛的战狼。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 70910
     class: 15

@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104391
     flags: 2
+    model_name: creature\spidercrab\spidercrab.m2
   creature_display_info:
     id: 140391
     model_id: 104391
@@ -17,9 +18,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: spidercrab_blackred
+    texture_variation_2: spidercrab_blackred
+    texture_variation_3: spidercrab_blackred
   spell:
     id: 80391
     visual_id: 9140391
+    speed: 100
   item:
     id: 0
     class: 15

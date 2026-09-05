@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_mechanicaltiger_grey
   icon_name: inv_mechanicaltiger_grey
   spell_wowhead_url: https://www.wowhead.com/cn/spell=294143
+  item_wowhead_url: https://www.wowhead.com/cn/item=167751
 dbc:
   creature_model_data:
     id: 104271
     flags: 2
+    model_name: creature\mechanicaltiger\mechanicaltiger.m2
   creature_display_info:
     id: 140271
     model_id: 104271
@@ -19,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mechanicaltiger_silver
   spell:
     id: 80271
     visual_id: 9140271
     name: X-995型机械猫
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 167751
     class: 15

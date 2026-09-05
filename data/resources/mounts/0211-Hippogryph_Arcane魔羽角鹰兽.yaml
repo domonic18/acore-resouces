@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104207
     flags: 2
+    model_name: creature\Hippogryph_Arcane\hippogryph_arcanemount.m2
   creature_display_info:
     id: 140207
     model_id: 104207
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hippogryph_arcane
+    texture_variation_2: hippogrypharcanesaddle
   spell:
     id: 80207
     visual_id: 9140207
     name: 魔羽角鹰兽
     description: 召唤或解散一只可骑乘的魔羽角鹰兽。
+    speed: 100
+    flight_speed: 280
   item:
     id: 141217
     class: 15

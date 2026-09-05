@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104357
     flags: 2
+    model_name: creature\Saber2\Saber2Mount.m2
   creature_display_info:
     id: 140357
     model_id: 104357
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140357
     name: 秘魔刃豹
     description: 召唤或解散你的秘魔刃豹。
+    speed: 100
   item:
     id: 122469
     class: 15

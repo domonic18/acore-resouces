@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104402
     flags: 2
+    model_name: creature\stormpikebattlecharger\stormpikebattlecharger.m2
   creature_display_info:
     id: 140402
     model_id: 104402
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140402
     name: 迅捷美酒节赛羊
     description: 召唤或解散一头可以骑乘的迅捷美酒节赛羊。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 33977
     class: 15

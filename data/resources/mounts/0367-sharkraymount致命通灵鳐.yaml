@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104363
     flags: 2
+    model_name: creature\manaraymount\manaraymount.m2
   creature_display_info:
     id: 140363
     model_id: 104363
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: manaray_blackfel
+    texture_variation_2: manaraysaddle_white
+    texture_variation_3: manarayemissive_blackfel
   spell:
     id: 80363
     visual_id: 9140363
     name: 致命通灵鳐
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 184162
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104436
     flags: 2
+    model_name: creature\viciouswarelekk\viciouswarelekk.m2
   creature_display_info:
     id: 140436
     model_id: 104436
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140436
     name: 勇猛的作战雷象
     description: 召唤或解散一只可供骑乘的勇猛的作战雷象。
+    speed: 100
   item:
     id: 140350
     class: 15

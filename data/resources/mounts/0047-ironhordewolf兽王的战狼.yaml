@@ -28,6 +28,7 @@ dbc:
     icon_id: 33037
     name: 兽王的战狼
     description: 召唤或解散一只可供骑乘的兽王的战狼。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91044
     class: 15

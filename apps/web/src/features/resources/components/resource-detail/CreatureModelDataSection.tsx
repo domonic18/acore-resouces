@@ -2,6 +2,9 @@ import { useMemo } from "react";
 import { SectionCard } from "@/components/form/SectionCard";
 import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
+import { FieldHint } from "@/components/form/FieldHint";
+import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
+import { isRequiredEmpty, REQUIRED_FIELD_HINT } from "../../requiredFields";
 import { cn } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
 
@@ -27,46 +30,48 @@ const FIELDS: FieldDef[] = [
   {
     key: "id",
     label: "ID",
-    description: "模型数据 ID，与 CreatureDisplayInfo.ModelID 关联，只读",
-    type: "readonly-int",
+    description:
+      "模型数据记录 ID（自定义段 104000+N），显示信息的 ModelID 默认自动跟随此值",
+    type: "int",
   },
   {
     key: "flags",
     label: "Flags",
-    description: "模型标志位",
+    description: "模型标志位。坐骑模板通用值 2，一般无需修改",
     type: "int",
   },
   {
     key: "model_name",
     label: "ModelName",
-    description: "M2 模型文件路径，用于客户端加载模型",
+    description:
+      "M2 模型文件路径，格式 creature\\模型文件夹\\文件名.m2，客户端按此路径加载模型",
     type: "model",
   },
   {
     key: "model_scale",
     label: "ModelScale",
-    description: "模型基础缩放",
+    description: "模型整体缩放系数，官方坐骑多为 1.0，大型/幼年模型会用到 0.5 等",
     type: "float",
     step: 0.01,
   },
   {
     key: "collision_width",
     label: "CollisionWidth",
-    description: "碰撞盒宽度",
+    description: "碰撞盒宽度，决定模型在场景中的占位宽度；官方坐骑常见值 0.6111",
     type: "float",
     step: 0.01,
   },
   {
     key: "collision_height",
     label: "CollisionHeight",
-    description: "碰撞盒高度",
+    description: "碰撞盒高度，决定模型占位高度；官方坐骑常见值 2.031",
     type: "float",
     step: 0.01,
   },
   {
     key: "mount_height",
     label: "MountHeight",
-    description: "骑乘高度",
+    description: "骑乘时角色脚底相对模型原点的高度偏移，坐骑一般保持 0",
     type: "float",
     step: 0.01,
   },
@@ -103,11 +108,13 @@ function ModelNameInput({
   candidates,
   onChange,
   compact,
+  invalid,
 }: {
   value: unknown;
   candidates: (AssetFile & { modelName: string })[];
   onChange: (value: string) => void;
   compact?: boolean;
+  invalid?: boolean;
 }) {
   const current = value === null || value === undefined ? "" : String(value);
 
@@ -121,7 +128,11 @@ function ModelNameInput({
   return (
     <div className="space-y-2">
       <select
-        className={cn(compact ? "form-select-compact" : "form-select")}
+        className={cn(
+          compact ? "form-select-compact" : "form-select",
+          invalid && "form-input-invalid",
+        )}
+        aria-invalid={invalid || undefined}
         value={currentCandidate?.relative_path || current}
         onChange={(e) => {
           const selected = candidates.find(
@@ -155,6 +166,7 @@ export function CreatureModelDataSection({
   compact,
 }: CreatureModelDataSectionProps) {
   const m2Candidates = useM2Candidates(assets, resource.model_folder);
+  const getReference = useFieldReference(resource.resource_type);
 
   function getValue(key: string): unknown {
     if (key in creatureModelDataDbc) {
@@ -167,7 +179,7 @@ export function CreatureModelDataSection({
     setCreatureModelDataDbc((prev) => ({ ...prev, [key]: value }));
   }
 
-  function renderField(field: FieldDef) {
+  function renderField(field: FieldDef, invalid: boolean) {
     const value = getValue(field.key);
 
     if (field.type === "readonly-int") {
@@ -181,33 +193,13 @@ export function CreatureModelDataSection({
       );
     }
 
-    if (field.type === "int") {
+    if (field.type === "int" || field.type === "float") {
       return (
         <NumberInput
           value={value}
           onChange={(v) => setValue(field.key, v)}
           compact={compact}
-        />
-      );
-    }
-
-    if (field.type === "float") {
-      return (
-        <input
-          type="number"
-          step={field.step ?? 0.01}
-          className={cn(compact ? "form-input-compact" : "form-input")}
-          value={value === null || value === undefined ? "" : String(value)}
-          onChange={(e) => {
-            const raw = e.target.value;
-            if (raw === "") {
-              setValue(field.key, null);
-            } else {
-              const n = Number(raw);
-              setValue(field.key, Number.isNaN(n) ? null : n);
-            }
-          }}
-          onWheel={(e) => e.currentTarget.blur()}
+          invalid={invalid}
         />
       );
     }
@@ -218,6 +210,7 @@ export function CreatureModelDataSection({
         candidates={m2Candidates}
         onChange={(v) => setValue(field.key, v || null)}
         compact={compact}
+        invalid={invalid}
       />
     );
   }
@@ -225,19 +218,49 @@ export function CreatureModelDataSection({
   return (
     <SectionCard title="模型数据（CreatureModelData）" compact={compact}>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {FIELDS.map((field) => (
-          <FormGroup
-            key={field.key}
-            label={`${field.label}`}
-            compact={compact}
-            className="group"
-          >
-            {renderField(field)}
-            <p className="mt-1 text-[11px] text-text-tertiary">
-              {field.description}
-            </p>
-          </FormGroup>
-        ))}
+        {FIELDS.map((field) => {
+          const reference = getReference(`dbc.creature_model_data.${field.key}`);
+          const refValue = reference?.value ?? null;
+          const canApply =
+            field.type === "int" ||
+            field.type === "float" ||
+            field.type === "model";
+          const invalid =
+            (field.key === "id" || field.key === "model_name") &&
+            isRequiredEmpty(getValue(field.key));
+          return (
+            <FormGroup
+              key={field.key}
+              label={field.label}
+              compact={compact}
+              className="group"
+              error={invalid ? REQUIRED_FIELD_HINT : undefined}
+              hint={
+                <FieldHint
+                  description={field.description}
+                  reference={reference}
+                  onApply={
+                    canApply && refValue !== null
+                      ? () => {
+                          if (field.type === "model") {
+                            setValue(field.key, refValue);
+                            return;
+                          }
+                          const numeric = Number(refValue);
+                          setValue(
+                            field.key,
+                            Number.isNaN(numeric) ? refValue : numeric,
+                          );
+                        }
+                      : undefined
+                  }
+                />
+              }
+            >
+              {renderField(field, invalid)}
+            </FormGroup>
+          );
+        })}
       </div>
     </SectionCard>
   );

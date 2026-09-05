@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104429
     flags: 2
+    model_name: creature\vicioushawkstrider\vicioushawkstrider.m2
   creature_display_info:
     id: 140429
     model_id: 104429
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140429
     name: 勇猛作战陆行鸟
     description: 召唤或解散你的勇猛作战陆行鸟。
+    speed: 100
   item:
     id: 140348
     class: 15

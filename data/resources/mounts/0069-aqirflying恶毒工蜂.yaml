@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104064
     flags: 2
+    model_name: creature\aqirflying\aqirflying.m2
   creature_display_info:
     id: 140064
     model_id: 104064
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: aqirflying_black
   spell:
     id: 80064
     visual_id: 9140064
     name: 恶毒工蜂
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 174769
     class: 15

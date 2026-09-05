@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104172
     flags: 2
+    model_name: creature\FlyingPanther\flyingpanther.m2
   creature_display_info:
     id: 140172
     model_id: 104172
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: flyingpanther
+    texture_variation_2: flyingpantherarmor
   spell:
     id: 80172
     visual_id: 9140172
     name: 黑曜夜之翼
     description: 召唤或解散你的黑曜夜之翼，让自己或盟友骑乘。
+    speed: 100
+    flight_speed: 280
   item:
     id: 83086
     class: 15

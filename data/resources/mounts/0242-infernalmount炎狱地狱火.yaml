@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_infernalmountred
   icon_name: inv_infernalmountred
   spell_wowhead_url: https://www.wowhead.com/cn/spell=171827
+  item_wowhead_url: https://www.wowhead.com/cn/item=137575
 dbc:
   creature_model_data:
     id: 104238
     flags: 2
+    model_name: creature\infernalmount\infernalmount.m2
   creature_display_info:
     id: 140238
     model_id: 104238
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: infernalmount_rock_red
+    texture_variation_2: infernalmount_metal_red
+    texture_variation_3: infernalmount_fx_lava
   spell:
     id: 80238
     visual_id: 9140238
     name: 炎狱地狱火
     description: 召唤或解散你的炎狱地狱火。
+    speed: 100
   item:
     id: 137575
     class: 15

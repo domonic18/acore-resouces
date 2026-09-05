@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_roguemount_red
   icon_name: inv_roguemount_red
   spell_wowhead_url: https://www.wowhead.com/cn/spell=231525
+  item_wowhead_url: https://www.wowhead.com/cn/item=143490
 dbc:
   creature_model_data:
     id: 104354
     flags: 2
+    model_name: creature\roguemount\roguemount.m2
   creature_display_info:
     id: 140354
     model_id: 104354
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: roguemountraven_red
+    texture_variation_2: roguemountsaddle_red
   spell:
     id: 80354
     visual_id: 9140354
     name: 暗影之刃的猩红预兆
     description: 召唤或解散你的暗影之刃的猩红预兆。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 143490
     class: 15

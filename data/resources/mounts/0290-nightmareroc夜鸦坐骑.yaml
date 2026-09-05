@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104286
     flags: 2
+    model_name: creature\nightmareroc\nightmareroc.m2
   creature_display_info:
     id: 140286
     model_id: 104286
@@ -20,6 +21,7 @@ dbc:
   spell:
     id: 80286
     visual_id: 9140286
+    speed: 100
   item:
     id: 0
     class: 15

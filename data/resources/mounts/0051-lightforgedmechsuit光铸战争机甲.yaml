@@ -29,6 +29,7 @@ dbc:
     name: 光铸战争机甲
     description: 召唤或解散一只可供骑乘的光铸战争机甲。只能在外域或诺森德召唤这种坐骑。
     flight_speed: 310
+    speed: 100
   item:
     id: 91048
     class: 15

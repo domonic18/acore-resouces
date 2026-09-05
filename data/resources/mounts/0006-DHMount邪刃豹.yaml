@@ -32,6 +32,7 @@ dbc:
     icon_id: 18892
     name: 邪刃豹
     description: 召唤或解散一只可供骑乘的邪刃豹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91003
     class: 15

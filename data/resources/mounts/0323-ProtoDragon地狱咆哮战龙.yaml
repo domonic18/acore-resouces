@@ -10,6 +10,7 @@ dbc:
   creature_model_data:
     id: 104319
     flags: 2
+    model_name: creature\ProtoDragon\KorKronProtodrakeMount.m2
   creature_display_info:
     id: 140319
     model_id: 104319
@@ -20,6 +21,8 @@ dbc:
   spell:
     id: 80319
     visual_id: 9140319
+    speed: 100
+    flight_speed: 280
   item:
     id: 0
     class: 15

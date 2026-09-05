@@ -28,6 +28,7 @@ dbc:
     icon_id: 32332
     name: 情侣沼泽跃蛙
     description: 召唤或解散一只可供骑乘的情侣沼泽跃蛙。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 182651
     class: 15

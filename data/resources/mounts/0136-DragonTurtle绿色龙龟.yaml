@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104131
     flags: 2
+    model_name: creature\DragonTurtle\RidingDragonTurtleEpic.m2
   creature_display_info:
     id: 140131
     model_id: 104131
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: RidingDragonTurtlePurple
+    texture_variation_2: RidingDragonTurtleSaddleEpicPurple
   spell:
     id: 80131
     visual_id: 9140131
     name: 巨型紫色龙龟
     description: 召唤或解散一只可供骑乘的巨型紫色龙龟。
+    swim_speed: 60
   item:
     id: 87805
     class: 15

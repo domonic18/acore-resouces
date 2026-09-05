@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104206
     flags: 2
+    model_name: creature\Hippogryph2\hippogryph2mount.m2
   creature_display_info:
     id: 140206
     model_id: 104206
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hippogryph2valshara
+    texture_variation_2: hippogryph2valsharasaddle
   spell:
     id: 80206
     visual_id: 9140206
     name: 失落已久的角鹰兽
     description: 召唤或解散一匹可骑乘的失落已久的角鹰兽。这是飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 138258
     class: 15

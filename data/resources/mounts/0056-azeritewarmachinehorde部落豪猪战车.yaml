@@ -27,6 +27,7 @@ dbc:
     visual_id: 9140053
     icon_id: 3766
     description: 召唤或解散一个可供骑乘的部落豪猪战车。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91053
     class: 15

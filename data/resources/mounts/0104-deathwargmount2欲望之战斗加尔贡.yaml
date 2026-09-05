@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104099
     flags: 2
+    model_name: creature\deathwargmount2\deathwargmount2.m2
   creature_display_info:
     id: 140099
     model_id: 104099
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: deathwargmount2black
   spell:
     id: 80099
     visual_id: 9140099
     name: 战斗加尔贡弗雷德尼克
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180948
     class: 15

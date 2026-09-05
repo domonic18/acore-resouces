@@ -35,6 +35,8 @@ dbc:
     name: 狡狐魔使
     description: 召唤或解散一只可供骑乘的狡狐魔使。这是一种速度非常快的坐骑。
     spell_visual_id: 5160
+    speed: 100
+    flight_speed: 280
   item:
     id: 166775
     class: 15

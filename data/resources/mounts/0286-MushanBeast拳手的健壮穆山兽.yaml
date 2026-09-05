@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104282
     flags: 2
+    model_name: creature\MushanBeast\mushanbeastmount.m2
   creature_display_info:
     id: 140282
     model_id: 104282
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mushanbeastmount1black
   spell:
     id: 80282
     visual_id: 9140282
     name: 灰皮穆山兽
     description: 召唤或解散一头可供骑乘的灰皮穆山兽。
+    speed: 100
   item:
     id: 103638
     class: 15

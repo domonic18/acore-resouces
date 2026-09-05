@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104439
     flags: 2
+    model_name: creature\viciouswarmechanostrider\viciouswarmechanostrider.m2
   creature_display_info:
     id: 140439
     model_id: 104439
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: viciouswarmechanostrider
+    texture_variation_2: viciouswarmechanostrider
+    texture_variation_3: viciouswarmechanostrider
   spell:
     id: 80439
     visual_id: 9140439
     name: 勇猛的战斗机械陆行鸟
     description: 召唤或解散一部可供骑乘的勇猛的战斗机械陆行鸟。
+    speed: 100
   item:
     id: 124089
     class: 15

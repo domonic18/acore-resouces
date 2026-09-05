@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104422
     flags: 2
+    model_name: creature\TyraelMount\tyraelmount.m2
   creature_display_info:
     id: 140422
     model_id: 104422
@@ -25,6 +26,8 @@ dbc:
     visual_id: 9140422
     name: 泰瑞尔的天使战马
     description: 召唤或解散泰瑞尔的天使战马。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 76755
     class: 15

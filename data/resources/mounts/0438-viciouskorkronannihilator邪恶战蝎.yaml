@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104434
     flags: 2
+    model_name: creature\viciouskorkronannihilator\viciouskorkronannihilatorflag.m2
   creature_display_info:
     id: 140434
     model_id: 104434
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140434
     name: 邪恶战蝎
     description: 召唤或解散你的邪恶战蝎。
+    speed: 100
   item:
     id: 142437
     class: 15

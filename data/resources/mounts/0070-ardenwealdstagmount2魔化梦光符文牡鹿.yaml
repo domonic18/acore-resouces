@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104065
     flags: 2
+    model_name: creature\ardenwealdstagmount2\ardenwealdstagmount2.m2
   creature_display_info:
     id: 140065
     model_id: 104065
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: ardenwealdstagmount2_blue
   spell:
     id: 80065
     visual_id: 9140065
     name: 魔化梦光符文牡鹿
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180721
     class: 15

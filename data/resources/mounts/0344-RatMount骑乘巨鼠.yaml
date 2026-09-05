@@ -11,6 +11,8 @@ official_db:
   name: 骑乘巨鼠
   spell_icon_name: inv_ratmount
   icon_name: inv_ratmount
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=215558
+  item_wowhead_url: https://www.wowhead.com/cn/item=138387
 dbc:
   creature_model_data:
     id: 104340
@@ -32,6 +34,7 @@ dbc:
     icon_id: 29608
     name: 骑乘巨鼠
     description: 召唤或解散一只可供骑乘的骑乘巨鼠。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 138387
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104293
     flags: 2
+    model_name: creature\OnyxPanther\OnyxPanther.m2
   creature_display_info:
     id: 140293
     model_id: 104293
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: OnyxPantherYellow
+    texture_variation_2: OnyxPantherArmorYellow
   spell:
     id: 80293
     visual_id: 9140293
     name: 日长石猎豹
     description: 召唤或解散一只可供骑乘的黎明石猎豹。
+    speed: 100
   item:
     id: 83089
     class: 15

@@ -8,10 +8,12 @@ official_db:
   spell_icon_name: inv_pandarenserpentmount_green
   icon_name: inv_pandarenserpentmount_green
   spell_wowhead_url: https://www.wowhead.com/cn/spell=113199
+  item_wowhead_url: https://www.wowhead.com/cn/item=79802
 dbc:
   creature_model_data:
     id: 104309
     flags: 2
+    model_name: creature\PandarenSerpent\PandarenSerpentMount.m2
   creature_display_info:
     id: 140309
     model_id: 104309
@@ -19,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: pandarenserpent_green
+    texture_variation_2: PandarenSerpentMountSaddle_Green
   spell:
     id: 80309
     visual_id: 9140309
     name: 翠绿云端翔龙
     description: 召唤或解散一条可供骑乘的翠绿云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
+    speed: 100
+    flight_speed: 280
   item:
     id: 79802
     class: 15

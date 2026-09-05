@@ -11,6 +11,8 @@ official_db:
   name: 荧光法力鳐
   spell_icon_name: inv_manaraymount_orange
   icon_name: inv_manaraymount_orange
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=253109
+  item_wowhead_url: https://www.wowhead.com/cn/item=152840
 dbc:
   creature_model_data:
     id: 104373
@@ -32,6 +34,8 @@ dbc:
     icon_id: 24432
     name: 荧光法力鳐
     description: 召唤或解散一只可供骑乘的荧光法力鳐。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 152840
     class: 15

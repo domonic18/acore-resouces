@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104461
     flags: 2
+    model_name: creature\zeppelinmount\zeppelinmount.m2
   creature_display_info:
     id: 140461
     model_id: 104461
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: zeppelinmountpurple
   spell:
     id: 80461
     visual_id: 9140461
     name: 暗月飞船
     description: 召唤或解散你的暗月飞船。这种坐骑会依据你的骑乘技能和地区而改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 153485
     class: 15

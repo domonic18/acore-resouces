@@ -32,6 +32,7 @@ dbc:
     icon_id: 33064
     name: 角龙
     description: 召唤或解散一只可供骑乘的角龙。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91050
     class: 15

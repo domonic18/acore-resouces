@@ -12,7 +12,7 @@ dbc:
   creature_model_data:
     id: 4051
     flags: 2
-    model_name: creature\AlliancePVPMount\AlliancePVPMount.M2
+    model_name: creature\AlliancePVPMount\AlliancePVPMount.m2
   creature_display_info:
     id: 140051
     model_id: 4051
@@ -29,6 +29,7 @@ dbc:
     icon_id: 1176
     name: 勇猛的战驹
     description: 召唤或解散一只可供骑乘的勇猛的战驹。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91051
     class: 15

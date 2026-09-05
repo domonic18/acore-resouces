@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104392
     flags: 2
+    model_name: creature\SpiderMount\spidermount.m2
   creature_display_info:
     id: 140392
     model_id: 104392
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140392
     name: 血牙寡妇蛛
     description: 召唤或解散一只可供骑乘的血牙寡妇蜘蛛。
+    speed: 100
   item:
     id: 137570
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104425
     flags: 2
+    model_name: creature\viciousalliancespider\viciousalliancespider.m2
   creature_display_info:
     id: 140425
     model_id: 104425
@@ -25,6 +26,7 @@ dbc:
     visual_id: 9140425
     name: 邪恶战蛛
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 184014
     class: 15

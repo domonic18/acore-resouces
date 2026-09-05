@@ -1,5 +1,6 @@
 import type { Resource } from "@/shared/types";
 import { z } from "zod";
+import { extractWowheadId } from "./id-origin";
 
 export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
   [
@@ -353,4 +354,68 @@ export function matchesTagFilter(
   if (selectedTags.length === 0) return true;
   const tags = computeResourceTags(resource);
   return selectedTags.some((t) => tags.includes(t));
+}
+
+export type DataOriginValue = "official" | "custom";
+
+export const dataOriginSchema = z.enum(["official", "custom"]);
+
+export function parseDataOrigin(value: string | null): DataOriginValue | null {
+  const result = dataOriginSchema.safeParse(value);
+  return result.success ? result.data : null;
+}
+
+/**
+ * 物品数据是否官方：dbc.item.id 与 official_db.item_wowhead_url 中的 ID 一致。
+ * 与编辑页 IdOriginBadge 的物品徽章判定口径一致；法术 ID 按项目约定为
+ * 自定义段（80000+N），故以物品 ID 为准区分官方/自定义。
+ */
+export function hasOfficialItemData(resource: Resource): boolean {
+  const itemId = Number(resource.dbc.item?.id);
+  if (!itemId || Number.isNaN(itemId)) return false;
+  return (
+    extractWowheadId(resource.official_db?.item_wowhead_url, "item") === itemId
+  );
+}
+
+export function matchesOriginFilter(
+  resource: Resource,
+  origin: DataOriginValue,
+): boolean {
+  return origin === "official"
+    ? hasOfficialItemData(resource)
+    : !hasOfficialItemData(resource);
+}
+
+/** 可搜索的 DBC / DB 各类 ID（资源 ID 之外的补充检索字段） */
+function collectSearchableIds(resource: Resource): string[] {
+  const values: unknown[] = [
+    resource.dbc.creature_model_data?.id,
+    resource.dbc.creature_display_info?.id,
+    resource.dbc.spell?.id,
+    resource.dbc.spell?.visual_id,
+    resource.dbc.item?.id,
+    resource.dbc.item?.display_id,
+    resource.db.creature_template?.entry,
+    resource.db.item_template?.entry,
+  ];
+  return values
+    .filter((v) => v !== null && v !== undefined && v !== "")
+    .map((v) => String(v));
+}
+
+/** 搜索匹配：名称、模型文件夹、资源 ID、各类 DBC/DB ID、M2 模型文件路径 */
+export function matchesResourceSearch(
+  resource: Resource,
+  search: string,
+): boolean {
+  if (resource.model_folder.toLowerCase().includes(search)) return true;
+  if ((resource.name ?? "").toLowerCase().includes(search)) return true;
+  if ((resource.official_db.name ?? "").toLowerCase().includes(search))
+    return true;
+  if (String(resource.id).includes(search)) return true;
+  const modelName = resource.dbc.creature_model_data?.model_name;
+  if (typeof modelName === "string" && modelName.toLowerCase().includes(search))
+    return true;
+  return collectSearchableIds(resource).some((v) => v.includes(search));
 }

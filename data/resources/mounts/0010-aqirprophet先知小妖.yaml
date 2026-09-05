@@ -26,6 +26,7 @@ dbc:
     visual_id: 9140007
     icon_id: 1589
     description: 召唤或解散一只可供骑乘的先知小妖。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91007
     class: 15

@@ -11,7 +11,7 @@ dbc:
   creature_model_data:
     id: 4045
     flags: 2
-    model_name: creature\IronJuggernaut\IronJuggernautMount.M2
+    model_name: creature\IronJuggernaut\IronJuggernautMount.m2
   creature_display_info:
     id: 140045
     model_id: 4045
@@ -28,6 +28,7 @@ dbc:
     icon_id: 27402
     name: 库卡隆战蝎
     description: 召唤或解散一只可供骑乘的库卡隆战蝎。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91045
     class: 15

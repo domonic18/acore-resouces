@@ -32,6 +32,7 @@ dbc:
     icon_id: 12357
     name: 洛希恩徘徊者
     description: 召唤或解散一只可供骑乘的洛希恩徘徊者。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91004
     class: 15

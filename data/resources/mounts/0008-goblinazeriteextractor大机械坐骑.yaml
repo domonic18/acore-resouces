@@ -32,6 +32,7 @@ dbc:
     icon_id: 3766
     name: 地精岩石挖掘机
     description: 召唤或解散一个可供骑乘的地精岩石挖掘机。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 91005
     class: 15

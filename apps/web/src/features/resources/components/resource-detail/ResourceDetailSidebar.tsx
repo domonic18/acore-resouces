@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { FolderTree, Layers, Eye, Box, Image as ImageIcon } from "lucide-react";
+import { FolderTree, Layers, Eye, Box, Image as ImageIcon, Maximize2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { AssetFileTree } from "@/components/viewer/AssetFileTree";
 import { ImageGallery } from "@/components/media/ImageGallery";
@@ -141,6 +141,15 @@ export function ResourceDetailSidebar({
           </div>
 
           <div className="relative h-[300px] overflow-hidden rounded-lg border border-border bg-bg-elevated">
+            <Link
+              to={`/preview/${resourceType}/${resourceId}`}
+              target="_blank"
+              rel="noreferrer"
+              title="新标签页打开完整预览"
+              className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-md bg-black/40 text-white/90 backdrop-blur-sm transition-colors hover:bg-black/60 hover:text-white"
+            >
+              <Maximize2 className="h-3.5 w-3.5" />
+            </Link>
             {activeTab === "model" && canShowModel && effectivePreview && (
               <ModelViewer
                 preview={effectivePreview}
@@ -169,6 +178,8 @@ export function ResourceDetailSidebar({
 
           <Link
             to={`/preview/${resourceType}/${resourceId}`}
+            target="_blank"
+            rel="noreferrer"
             className="btn btn-sm btn-primary w-full"
           >
             <Eye className="h-4 w-4" /> 完整预览

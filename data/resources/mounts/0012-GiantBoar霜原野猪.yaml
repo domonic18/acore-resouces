@@ -30,6 +30,7 @@ dbc:
     icon_id: 1578
     name: 石牙斗猪
     description: 召唤或解散一头可供骑乘的石牙斗猪。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 116667
     class: 15

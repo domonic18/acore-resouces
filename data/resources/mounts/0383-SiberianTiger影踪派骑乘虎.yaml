@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104379
     flags: 2
+    model_name: creature\SiberianTiger\siberiantigermount.m2
   creature_display_info:
     id: 140379
     model_id: 104379
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: siberiantigermountblue1
+    texture_variation_2: siberiantigermountblue2
   spell:
     id: 80379
     visual_id: 9140379
     name: 蓝色影踪派骑乘虎
     description: 召唤或解散一只可供骑乘的蓝色影踪派骑乘虎。
+    speed: 100
   item:
     id: 89307
     class: 15

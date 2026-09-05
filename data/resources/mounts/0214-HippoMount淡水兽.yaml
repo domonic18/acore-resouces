@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104210
     flags: 2
+    model_name: creature\HippoMount\hippomount.m2
   creature_display_info:
     id: 140210
     model_id: 104210
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: hippomountgreen
   spell:
     id: 80210
     visual_id: 9140210
     name: 苔皮淡水兽
     description: 召唤或解散你的苔皮淡水兽。
+    speed: 100
   item:
     id: 116768
     class: 15

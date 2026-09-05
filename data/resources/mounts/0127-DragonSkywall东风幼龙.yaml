@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104122
     flags: 2
+    model_name: creature\DragonSkywall\dragonskywallmount.m2
   creature_display_info:
     id: 140122
     model_id: 104122
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: dragonskywallmountred1
+    texture_variation_2: dragonskywallmountred2
+    texture_variation_3: dragonskywallmountsaddlered
   spell:
     id: 80122
     visual_id: 9140122
     name: 东风幼龙
     description: 召唤或解散一只可供骑乘的东风幼龙。这是一种飞行坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 62901
     class: 15

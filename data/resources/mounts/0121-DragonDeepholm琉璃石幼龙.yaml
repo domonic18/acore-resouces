@@ -11,11 +11,13 @@ official_db:
   name: 磷光石幼龙
   spell_icon_name: inv_misc_stonedragonpurple
   icon_name: inv_misc_stonedragonpurple
+  spell_wowhead_url: https://www.wowhead.com/cn/spell=88718
+  item_wowhead_url: https://www.wowhead.com/cn/item=63042
 dbc:
   creature_model_data:
     id: 104116
     flags: 2
-    model_name: creature\DragonDeepholm\DragonDeepholmMount.M2
+    model_name: creature\DragonDeepholm\DragonDeepholmMount.m2
   creature_display_info:
     id: 140116
     model_id: 104116
@@ -32,6 +34,8 @@ dbc:
     icon_id: 27082
     name: 磷光石幼龙
     description: 召唤或解散一只可供骑乘的磷光石幼龙。只能在外域或诺森德召唤这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 63042
     class: 15

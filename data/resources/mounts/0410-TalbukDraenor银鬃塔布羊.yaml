@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104406
     flags: 2
+    model_name: creature\TalbukDraenor\talbukdraenormount.m2
   creature_display_info:
     id: 140406
     model_id: 104406
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: talbukdraenor_black
+    texture_variation_2: talbukdraenorsaddleblue
   spell:
     id: 80406
     visual_id: 9140406
     name: 暗鬃冲锋者
     description: 召唤或解散你的暗鬃冲锋者。
+    speed: 100
   item:
     id: 116772
     class: 15

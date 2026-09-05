@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104154
     flags: 2
+    model_name: creature\falcosauros\falcosaurosmount.m2
   creature_display_info:
     id: 140154
     model_id: 104154
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: falcosaurosmount_green
+    texture_variation_2: falcosaurosmountsaddle_green
   spell:
     id: 80154
     visual_id: 9140154
     name: 翠绿利爪龙
     description: 召唤或解散你的翠绿利爪龙。
+    speed: 100
   item:
     id: 137580
     class: 15

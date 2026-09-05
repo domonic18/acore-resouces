@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104316
     flags: 2
+    model_name: creature\parrotmount\parrotmount.m2
   creature_display_info:
     id: 140316
     model_id: 104316
@@ -20,11 +21,15 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: parrot_red
+    texture_variation_2: saddle_red
   spell:
     id: 80316
     visual_id: 9140316
     name: 召唤鲨鱼饵
     description: 召唤或解散你的鲨鱼饵（和美味的饼干）。这种坐骑的速度会根据你的骑术等级和所在区域改变。
+    speed: 100
+    flight_speed: 280
   item:
     id: 159842
     class: 15

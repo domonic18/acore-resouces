@@ -20,8 +20,16 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.search-box svg {
+.search-box.has-clear input {
+  @apply pr-8;
+}
+
+.search-box > svg {
   @apply absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary;
+}
+
+.search-box .search-clear {
+  @apply absolute right-2 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full text-text-tertiary transition-colors hover:bg-bg-hover hover:text-text-primary;
 }
 
 .content {

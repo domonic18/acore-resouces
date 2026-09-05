@@ -30,6 +30,7 @@ dbc:
     icon_id: 19982
     name: 幽灵军马
     description: 召唤或解散一只可供骑乘的幽灵军马。这是一种速度非常快的坐骑。
+    speed: 100
   item:
     id: 93671
     class: 15

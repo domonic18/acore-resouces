@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104370
     flags: 2
+    model_name: creature\manaraymount\manaraymount.m2
   creature_display_info:
     id: 140370
     model_id: 104370
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: manaray_black
+    texture_variation_2: manaraysaddle_blue
+    texture_variation_3: manarayemissive_black
   spell:
     id: 80370
     visual_id: 9140370
     name: 群居通灵鳐
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 184161
     class: 15

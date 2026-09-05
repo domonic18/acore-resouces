@@ -86,8 +86,13 @@ class Spell(DBCRecord):
     icon_id: int | None = Field(default=None)
     name: str | None = Field(default=None)
     description: str | None = Field(default=None)
-    # 飞行坐骑速度百分比（280/280%、310/310%），缺省 280；导出时写入 EffectBasePoints_2 = 值 - 1
+    # 速度百分比字段按光环类型定位效果槽位写入（EffectBasePoints_N = 值 - 1）：
+    # speed → 光环 32（移动速度，陆地坐骑=骑乘速度、飞行坐骑=地面速度）
+    # flight_speed → 光环 207（飞行速度，官方档位 280/310，缺省 280）
+    # swim_speed → 光环 58（游泳速度，模板默认 60）
+    speed: int | None = Field(default=None)
     flight_speed: int | None = Field(default=None)
+    swim_speed: int | None = Field(default=None)
 
 
 class Item(DBCRecord):
@@ -99,3 +104,21 @@ class Item(DBCRecord):
     display_id: int | None = Field(default=None)
     inventory_type: int | None = Field(default=None)
     sheath: int | None = Field(default=None)
+
+
+class ItemDisplayInfoEntry(BaseModel):
+    """ItemDisplayInfo.dbc 源文件单条记录（仅读取选择器所需字段）。
+
+    与上方资源 YAML 模型不同：该模型描述项目 DBC 源文件中的记录，
+    icon_name 即 InventoryIcon（第 5 列），决定物品的游戏内图标。
+    """
+
+    id: int
+    icon_name: str | None
+
+
+class ItemDisplayInfoPage(BaseModel):
+    """ItemDisplayInfo.dbc 分页搜索结果。"""
+
+    items: list[ItemDisplayInfoEntry]
+    total: int

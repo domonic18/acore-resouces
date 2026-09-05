@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104220
     flags: 2
+    model_name: creature\horse2bastionmount\horse2bastionmount.m2
   creature_display_info:
     id: 140220
     model_id: 104220
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: horse2bastionmount_yellow
   spell:
     id: 80220
     visual_id: 9140220
     name: 日舞者
     description: 召唤或解散这种坐骑。
+    speed: 100
   item:
     id: 180773
     class: 15

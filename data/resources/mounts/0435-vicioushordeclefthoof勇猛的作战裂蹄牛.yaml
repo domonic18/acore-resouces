@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104431
     flags: 2
+    model_name: creature\vicioushordeclefthoof\vicioushordeclefthoof.m2
   creature_display_info:
     id: 140431
     model_id: 104431
@@ -20,11 +21,14 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: vicioushordeclefthoof
+    texture_variation_2: vicioushordeclefthoofmount
   spell:
     id: 80431
     visual_id: 9140431
     name: 勇猛的作战裂蹄牛
     description: 召唤或解散你的勇猛的作战裂蹄牛。
+    speed: 100
   item:
     id: 163124
     class: 15

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104082
     flags: 2
+    model_name: creature\Camel\CamelMount.m2
   creature_display_info:
     id: 140082
     model_id: 104082
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: CAMELMOUNT_GRAY
   spell:
     id: 80082
     visual_id: 9140082
     name: 灰色骑乘骆驼
     description: 召唤或解散一个可供骑乘的灰色骑乘骆驼。
+    speed: 100
   item:
     id: 63046
     class: 15

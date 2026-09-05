@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104284
     flags: 2
+    model_name: creature\nbsabermount\nbsabermount.m2
   creature_display_info:
     id: 140284
     model_id: 104284
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: nbsabermount_purple
   spell:
     id: 80284
     visual_id: 9140284
     name: 夜之子魔刃豹
     description: 召唤或解散你的夜之子魔刃豹。
+    speed: 100
   item:
     id: 156487
     class: 15

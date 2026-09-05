@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104270
     flags: 2
+    model_name: creature\mechanicalparrotmount\mechanicalparrotmount.m2
   creature_display_info:
     id: 140270
     model_id: 104270
@@ -25,6 +26,8 @@ dbc:
     visual_id: 9140270
     name: 奇迹之翼2.0版
     description: 召唤或解散这种坐骑。
+    speed: 100
+    flight_speed: 280
   item:
     id: 169162
     class: 15

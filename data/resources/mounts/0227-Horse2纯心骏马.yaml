@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104223
     flags: 2
+    model_name: creature\Horse2\Horse2.m2
   creature_display_info:
     id: 140223
     model_id: 104223
@@ -20,11 +21,13 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: Horse2_White
   spell:
     id: 80223
     visual_id: 9140223
     name: 纯心骏马
     description: 召唤或解散你的纯心骏马。
+    speed: 100
   item:
     id: 163982
     class: 15

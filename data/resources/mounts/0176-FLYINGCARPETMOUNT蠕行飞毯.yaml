@@ -25,6 +25,8 @@ dbc:
     visual_id: 9140171
     name: 飞毯
     description: 召唤或解散一张飞毯。只能在外域和诺森德使用。需要裁缝技能达到300点。
+    speed: 100
+    flight_speed: 280
   item:
     id: 44554
     class: 15

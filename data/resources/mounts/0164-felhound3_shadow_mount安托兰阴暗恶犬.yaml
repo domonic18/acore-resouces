@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104159
     flags: 2
+    model_name: creature\felhound3_shadow_mount\felhound3_shadow_mount.m2
   creature_display_info:
     id: 140159
     model_id: 104159
@@ -20,11 +21,16 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: felhound3_shadow_mount
+    texture_variation_2: felhound3_shadow_mount_wings
+    texture_variation_3: felhound3_mount_saddle
   spell:
     id: 80159
     visual_id: 9140159
     name: 安托兰阴暗恶犬
     description: 召唤或解散你的安托兰阴暗恶犬。
+    speed: 100
+    flight_speed: 280
   item:
     id: 152815
     class: 15
