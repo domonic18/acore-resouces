@@ -21,9 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: siberiantiger
-    texture_variation_2: siberiantiger
-    texture_variation_3: siberiantiger
+    texture_variation_1: siberiantigermountgreen1
+    texture_variation_2: siberiantigermountgreen2
+    texture_variation_3: siberiantigermountgreen2
   spell:
     id: 80380
     visual_id: 9140380
