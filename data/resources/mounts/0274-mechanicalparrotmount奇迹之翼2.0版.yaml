@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104270
     flags: 2
+    model_name: creature\mechanicalparrotmount\mechanicalparrotmount.m2
   creature_display_info:
     id: 140270
     model_id: 104270

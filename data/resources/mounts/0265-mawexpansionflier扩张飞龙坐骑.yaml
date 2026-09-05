@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104261
     flags: 2
+    model_name: creature\mawexpansionflier\mawexpansionflier.m2
   creature_display_info:
     id: 140261
     model_id: 104261
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: mawexpansionflier_yellow
   spell:
     id: 80261
     visual_id: 9140261
