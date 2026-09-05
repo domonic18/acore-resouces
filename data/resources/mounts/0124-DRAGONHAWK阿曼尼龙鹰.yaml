@@ -13,7 +13,7 @@ dbc:
   creature_model_data:
     id: 104119
     flags: 2
-    model_name: creature\DRAGONHAWK\dragonhawkarmormounthorde.m2
+    model_name: creature\DRAGONHAWK\dragonhawkarmormountalliance.m2
   creature_display_info:
     id: 140119
     model_id: 104119
@@ -21,8 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: dragonhawkarmoredmounthorde1
-    texture_variation_2: dragonhawkarmoredmounthorde2
+    texture_variation_1: dragonhawkarmoredmountalliance1
+    texture_variation_2: dragonhawkarmoredmountalliance2
   spell:
     id: 80119
     visual_id: 9140119

@@ -21,8 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: GiantBoarGrey1
-    texture_variation_2: GiantBoarGrey2
+    texture_variation_1: GiantBoarMountPurple1
+    texture_variation_2: GiantBoarMountPurple3
   spell:
     id: 80180
     visual_id: 9140180

@@ -21,8 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: hippogryph2azsuna
-    texture_variation_2: hippogryph2azsunasaddle
+    texture_variation_1: hippogryph2valshara
+    texture_variation_2: hippogryph2valsharasaddle
   spell:
     id: 80206
     visual_id: 9140206

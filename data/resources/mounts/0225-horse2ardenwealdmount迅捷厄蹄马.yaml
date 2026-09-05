@@ -21,7 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
-    texture_variation_1: 'horse2ardenwealdmount_blue '
+    texture_variation_1: horse2ardenwealdmount_blue
   spell:
     id: 80221
     visual_id: 9140221
