@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104248
     flags: 2
+    model_name: creature\LesserGronn\LesserGronnMount.m2
   creature_display_info:
     id: 140248
     model_id: 104248
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: LesserGronnMount_Blue
+    texture_variation_2: LesserGronnMount_Blue
+    texture_variation_3: LesserGronnMount_Blue
   spell:
     id: 80248
     visual_id: 9140248

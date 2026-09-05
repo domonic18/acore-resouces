@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104251
     flags: 2
+    model_name: creature\lightforgedelekk\lightforgedelekk.m2
   creature_display_info:
     id: 140251
     model_id: 104251
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: lightforgedelekk_blue
   spell:
     id: 80251
     visual_id: 9140251

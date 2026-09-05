@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104255
     flags: 2
+    model_name: creature\maldraxxusboarmount\maldraxxusboarmount.m2
   creature_display_info:
     id: 140255
     model_id: 104255
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: maldraxxusboarmount_purple
   spell:
     id: 80255
     visual_id: 9140255

@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104257
     flags: 2
+    model_name: creature\maldraxxusflyermount\maldraxxusflyermount.m2
   creature_display_info:
     id: 140257
     model_id: 104257
@@ -20,6 +21,7 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: maldraxxusflyermount_black
   spell:
     id: 80257
     visual_id: 9140257
