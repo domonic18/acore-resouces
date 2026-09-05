@@ -4,6 +4,7 @@ import { FormGroup } from "@/components/form/FormGroup";
 import { NumberInput } from "@/components/form/NumberInput";
 import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
+import { isRequiredEmpty, REQUIRED_FIELD_HINT } from "../../requiredFields";
 import { cn } from "@/shared/utils";
 import type { Resource, ResourceAssets, AssetFile } from "@/shared/types";
 
@@ -107,11 +108,13 @@ function ModelNameInput({
   candidates,
   onChange,
   compact,
+  invalid,
 }: {
   value: unknown;
   candidates: (AssetFile & { modelName: string })[];
   onChange: (value: string) => void;
   compact?: boolean;
+  invalid?: boolean;
 }) {
   const current = value === null || value === undefined ? "" : String(value);
 
@@ -125,7 +128,11 @@ function ModelNameInput({
   return (
     <div className="space-y-2">
       <select
-        className={cn(compact ? "form-select-compact" : "form-select")}
+        className={cn(
+          compact ? "form-select-compact" : "form-select",
+          invalid && "form-input-invalid",
+        )}
+        aria-invalid={invalid || undefined}
         value={currentCandidate?.relative_path || current}
         onChange={(e) => {
           const selected = candidates.find(
@@ -172,7 +179,7 @@ export function CreatureModelDataSection({
     setCreatureModelDataDbc((prev) => ({ ...prev, [key]: value }));
   }
 
-  function renderField(field: FieldDef) {
+  function renderField(field: FieldDef, invalid: boolean) {
     const value = getValue(field.key);
 
     if (field.type === "readonly-int") {
@@ -186,33 +193,13 @@ export function CreatureModelDataSection({
       );
     }
 
-    if (field.type === "int") {
+    if (field.type === "int" || field.type === "float") {
       return (
         <NumberInput
           value={value}
           onChange={(v) => setValue(field.key, v)}
           compact={compact}
-        />
-      );
-    }
-
-    if (field.type === "float") {
-      return (
-        <input
-          type="number"
-          step={field.step ?? 0.01}
-          className={cn(compact ? "form-input-compact" : "form-input")}
-          value={value === null || value === undefined ? "" : String(value)}
-          onChange={(e) => {
-            const raw = e.target.value;
-            if (raw === "") {
-              setValue(field.key, null);
-            } else {
-              const n = Number(raw);
-              setValue(field.key, Number.isNaN(n) ? null : n);
-            }
-          }}
-          onWheel={(e) => e.currentTarget.blur()}
+          invalid={invalid}
         />
       );
     }
@@ -223,6 +210,7 @@ export function CreatureModelDataSection({
         candidates={m2Candidates}
         onChange={(v) => setValue(field.key, v || null)}
         compact={compact}
+        invalid={invalid}
       />
     );
   }
@@ -237,12 +225,16 @@ export function CreatureModelDataSection({
             field.type === "int" ||
             field.type === "float" ||
             field.type === "model";
+          const invalid =
+            (field.key === "id" || field.key === "model_name") &&
+            isRequiredEmpty(getValue(field.key));
           return (
             <FormGroup
               key={field.key}
               label={field.label}
               compact={compact}
               className="group"
+              error={invalid ? REQUIRED_FIELD_HINT : undefined}
               hint={
                 <FieldHint
                   description={field.description}
@@ -265,7 +257,7 @@ export function CreatureModelDataSection({
                 />
               }
             >
-              {renderField(field)}
+              {renderField(field, invalid)}
             </FormGroup>
           );
         })}

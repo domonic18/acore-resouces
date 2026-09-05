@@ -5,6 +5,7 @@ import { NumberInput } from "@/components/form/NumberInput";
 import { FieldHint } from "@/components/form/FieldHint";
 import { useFieldReference } from "@/features/resources/hooks/useFieldReference";
 import { useLinkedFieldValue } from "../../hooks/useLinkedFieldValue";
+import { isRequiredEmpty, REQUIRED_FIELD_HINT } from "../../requiredFields";
 import { cn } from "@/shared/utils";
 import type { Resource } from "@/shared/types";
 import { IconEditor } from "./IconEditor";
@@ -57,6 +58,9 @@ export function SpellInfoSection({
   const isWater = mountType === "水上坐骑";
 
   const [visualIdLocked, setVisualIdLocked] = useState(true);
+  const spellIdInvalid = isRequiredEmpty(spellDbc.id);
+  const creatureEntryInvalid = isRequiredEmpty(spellDb.entry);
+  const creatureNameInvalid = isRequiredEmpty(spellDb.name);
 
   const liveCreatureEntry = useMemo(() => {
     const raw = spellDb.entry;
@@ -101,11 +105,13 @@ export function SpellInfoSection({
               hint={
                 <FieldHint description="自定义坐骑法术 ID，按 80000+资源ID 生成，注意避开官方法术段位" />
               }
+              error={spellIdInvalid ? REQUIRED_FIELD_HINT : undefined}
             >
               <NumberInput
                 value={spellDbc.id}
                 onChange={(v) => setSpellDbc((prev) => ({ ...prev, id: v }))}
                 compact={compact}
+                invalid={spellIdInvalid}
               />
             </FormGroup>
             <FormGroup
@@ -118,11 +124,13 @@ export function SpellInfoSection({
               hint={
                 <FieldHint description="数据库侧挂骑生物 entry（creature_template.entry），自定义段 9140000+资源ID，法术 Visual ID 默认跟随此值" />
               }
+              error={creatureEntryInvalid ? REQUIRED_FIELD_HINT : undefined}
             >
               <NumberInput
                 value={spellDb.entry}
                 onChange={(v) => setSpellDb((prev) => ({ ...prev, entry: v }))}
                 compact={compact}
+                invalid={creatureEntryInvalid}
               />
             </FormGroup>
           </div>
@@ -337,10 +345,15 @@ export function SpellInfoSection({
                 hint={
                   <FieldHint description="坐骑生物在游戏中的名称，建议与官方译名一致" />
                 }
+                error={creatureNameInvalid ? REQUIRED_FIELD_HINT : undefined}
               >
                 <input
                   type="text"
-                  className={cn(compact ? "form-input-compact" : "form-input")}
+                  className={cn(
+                    compact ? "form-input-compact" : "form-input",
+                    creatureNameInvalid && "form-input-invalid",
+                  )}
+                  aria-invalid={creatureNameInvalid || undefined}
                   value={String(spellDb.name ?? "")}
                   onChange={(e) =>
                     setSpellDb((prev) => ({

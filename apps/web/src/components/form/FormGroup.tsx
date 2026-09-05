@@ -3,6 +3,7 @@ import { cn } from "@/shared/utils";
 interface FormGroupProps {
   label: React.ReactNode;
   hint?: React.ReactNode;
+  error?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   compact?: boolean;
@@ -11,6 +12,7 @@ interface FormGroupProps {
 export function FormGroup({
   label,
   hint,
+  error,
   children,
   className,
   compact,
@@ -24,6 +26,7 @@ export function FormGroup({
         </span>
       </label>
       {children}
+      {error && <p className="form-hint text-danger">{error}</p>}
     </div>
   );
 }

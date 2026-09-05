@@ -284,35 +284,12 @@ export function CreatureDisplayInfoSection({
       );
     }
 
-    if (field.type === "int") {
+    if (field.type === "int" || field.type === "float") {
       return (
         <NumberInput
           value={value}
           onChange={(v) => setValue(field.key, v)}
           compact={compact}
-        />
-      );
-    }
-
-    if (field.type === "float") {
-      return (
-        <input
-          type="number"
-          step={field.step ?? 0.01}
-          min={field.min}
-          max={field.max}
-          className={cn(compact ? "form-input-compact" : "form-input")}
-          value={value === null || value === undefined ? "" : String(value)}
-          onChange={(e) => {
-            const raw = e.target.value;
-            if (raw === "") {
-              setValue(field.key, null);
-            } else {
-              const n = Number(raw);
-              setValue(field.key, Number.isNaN(n) ? null : n);
-            }
-          }}
-          onWheel={(e) => e.currentTarget.blur()}
         />
       );
     }

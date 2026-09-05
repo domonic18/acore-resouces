@@ -25,6 +25,7 @@ import {
   INVENTORY_TYPE_OPTIONS,
 } from "../../constants";
 import { normalizeInt } from "../../lib/detail-helpers";
+import { isRequiredEmpty, REQUIRED_FIELD_HINT } from "../../requiredFields";
 
 interface ItemInfoSectionProps {
   itemIcon: string;
@@ -98,6 +99,10 @@ export function ItemInfoSection({
   // 左侧唯一图标框：优先显示 display_id 解析出的图标（即游戏内实际图标），未收录时回退 Item 图标
   const previewIcon = displayIconName ?? (itemIcon.trim() ? itemIcon.trim() : null);
 
+  const dbcIdInvalid = isRequiredEmpty(itemDbc.id);
+  const dbEntryInvalid = isRequiredEmpty(itemDb.entry);
+  const nameInvalid = isRequiredEmpty(itemDb.name);
+
   return (
     <SectionCard title="物品信息" compact={compact}>
       <div className="space-y-3">
@@ -126,11 +131,13 @@ export function ItemInfoSection({
               hint={
                 <FieldHint description="物品 entry（item_template.entry）。官方坐骑用官方物品 ID，自定义坐骑走自定义段位" />
               }
+              error={dbcIdInvalid ? REQUIRED_FIELD_HINT : undefined}
             >
               <NumberInput
                 value={itemDbc.id}
                 onChange={(v) => setItemDbc((prev) => ({ ...prev, id: v }))}
                 compact={compact}
+                invalid={dbcIdInvalid}
               />
             </FormGroup>
             <FormGroup
@@ -148,11 +155,13 @@ export function ItemInfoSection({
               hint={
                 <FieldHint description="数据库侧引用的物品 entry，一般与 DBC ID 保持一致" />
               }
+              error={dbEntryInvalid ? REQUIRED_FIELD_HINT : undefined}
             >
               <NumberInput
                 value={itemDb.entry}
                 onChange={(v) => setItemDb((prev) => ({ ...prev, entry: v }))}
                 compact={compact}
+                invalid={dbEntryInvalid}
               />
             </FormGroup>
           </div>
@@ -376,10 +385,15 @@ export function ItemInfoSection({
                 hint={
                   <FieldHint description="数据库侧物品名称，建议与官方译名一致" />
                 }
+                error={nameInvalid ? REQUIRED_FIELD_HINT : undefined}
               >
                 <input
                   type="text"
-                  className={cn(compact ? "form-input-compact" : "form-input")}
+                  className={cn(
+                    compact ? "form-input-compact" : "form-input",
+                    nameInvalid && "form-input-invalid",
+                  )}
+                  aria-invalid={nameInvalid || undefined}
                   value={String(itemDb.name ?? "")}
                   onChange={(e) =>
                     setItemDb((prev) => ({ ...prev, name: e.target.value }))
