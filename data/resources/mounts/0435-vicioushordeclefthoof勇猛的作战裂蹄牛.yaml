@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104431
     flags: 2
+    model_name: creature\vicioushordeclefthoof\vicioushordeclefthoof.m2
   creature_display_info:
     id: 140431
     model_id: 104431
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: vicioushordeclefthoof
+    texture_variation_2: vicioushordeclefthoofmount
   spell:
     id: 80431
     visual_id: 9140431

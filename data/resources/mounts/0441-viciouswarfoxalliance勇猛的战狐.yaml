@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104437
     flags: 2
+    model_name: creature\viciouswarfoxalliance\viciouswarfoxalliance.m2
   creature_display_info:
     id: 140437
     model_id: 104437
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: viciouswarfoxalliance
+    texture_variation_2: viciouswarfoxalliance_armor
   spell:
     id: 80437
     visual_id: 9140437

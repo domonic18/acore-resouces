@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104436
     flags: 2
+    model_name: creature\viciouswarelekk\viciouswarelekk.m2
   creature_display_info:
     id: 140436
     model_id: 104436

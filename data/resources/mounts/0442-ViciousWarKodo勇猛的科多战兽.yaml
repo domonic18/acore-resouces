@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104438
     flags: 2
+    model_name: creature\viciouswarkodo\viciouswarkodo.m2
   creature_display_info:
     id: 140438
     model_id: 104438

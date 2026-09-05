@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104440
     flags: 2
+    model_name: creature\viciouswarram\viciouswarram.m2
   creature_display_info:
     id: 140440
     model_id: 104440
