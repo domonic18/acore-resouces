@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104425
     flags: 2
+    model_name: creature\viciousalliancespider\viciousalliancespider.m2
   creature_display_info:
     id: 140425
     model_id: 104425

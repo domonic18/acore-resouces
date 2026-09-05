@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104417
     flags: 2
+    model_name: creature\Triceratops\triceratopsmount.m2
   creature_display_info:
     id: 140417
     model_id: 104417
@@ -20,6 +21,9 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: triceratopsmountblue2
+    texture_variation_2: triceratopsmountblue2
+    texture_variation_3: triceratopsmountblue2
   spell:
     id: 80417
     visual_id: 9140417

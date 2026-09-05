@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104427
     flags: 2
+    model_name: creature\viciousgoblintrike\viciousgoblintrike.m2
   creature_display_info:
     id: 140427
     model_id: 104427

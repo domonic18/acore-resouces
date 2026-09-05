@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104426
     flags: 2
+    model_name: creature\viciousdragonturtlemount\viciousdragonturtlemount.m2
   creature_display_info:
     id: 140426
     model_id: 104426
@@ -20,6 +21,8 @@ dbc:
     extra_display_information_id: 0
     scale: 1.0
     opacity: 255
+    texture_variation_1: viciousdragonturtlemount_alliance
+    texture_variation_2: viciousdragonturtlemountsaddle_alliance
   spell:
     id: 80426
     visual_id: 9140426

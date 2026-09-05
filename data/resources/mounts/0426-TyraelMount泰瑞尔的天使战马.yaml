@@ -13,6 +13,7 @@ dbc:
   creature_model_data:
     id: 104422
     flags: 2
+    model_name: creature\TyraelMount\tyraelmount.m2
   creature_display_info:
     id: 140422
     model_id: 104422
