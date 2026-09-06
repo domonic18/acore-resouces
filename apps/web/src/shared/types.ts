@@ -168,7 +168,6 @@ export interface SystemInfo {
     project_root: string;
     data_dir: string;
     resources_dir: string;
-    imports_dir: string;
     sources_dir: string;
     workspace_dir: string;
     patch_jobs_dir: string;

@@ -6,7 +6,6 @@ const PATH_LABELS: { key: string; label: string }[] = [
   { key: "project_root", label: "项目根目录" },
   { key: "data_dir", label: "数据目录" },
   { key: "resources_dir", label: "资源定义（YAML 真相源）" },
-  { key: "imports_dir", label: "xlsx 导入源" },
   { key: "sources_dir", label: "原始资源（M2/BLP）" },
   { key: "workspace_dir", label: "工作区" },
   { key: "patch_jobs_dir", label: "补丁任务" },

@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
-  Upload,
   Download,
   Eye,
   Search,
@@ -86,9 +85,6 @@ export function DashboardPage() {
               onClick={handleSearch}
             />
           </div>
-          <Link to="/import" className="btn btn-primary">
-            <Upload className="h-4 w-4" /> 导入
-          </Link>
         </div>
       </header>
 
@@ -243,13 +239,6 @@ export function DashboardPage() {
           </div>
           <div className="card-body">
             <div className="space-y-3">
-              <QuickActionCard
-                to="/import"
-                icon={<Upload className="h-5 w-5" />}
-                title="导入 Excel"
-                desc="从 xlsx 批量导入资源"
-                color="blue"
-              />
               <QuickActionCard
                 to="/export"
                 icon={<Download className="h-5 w-5" />}
