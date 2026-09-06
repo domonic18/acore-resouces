@@ -319,9 +319,25 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 
 ### 14.3 集成点
 
-- `build_mpq`（`mount_patch_builder.py`）按批次配置混淆等级（`job.json` 请求参数或全局配置）。
-- 发布产物需可识别混淆等级（发布清单/命名约定），避免把 `encrypted` 产物误判为损坏。
-- 上线顺序：先 `basic`（无客户端风险）→ `encrypted` 经测试服验证后再开放。
+**配置面**：
+
+- HTTP：`POST /api/patches/build` 请求体可选 `obfuscation: none | basic | encrypted`（默认 `none`，`basic` 验证稳定后迁移默认值）。
+- CLI：`patch build --obfuscation <level>`。
+- `build_mpq`（`mount_patch_builder.py`）按该参数在 `mpqcli create` 追加对应参数（见 14.1 等级表）。
+
+**产物标记**：
+
+- 构建时写入 `workspace/mpq/{batch}/manifest.json`：文件清单 + `obfuscation` 字段——同一产物兼作审计对照与 MPQ 查看器清单回退（见 [04 §9.4](04模型与贴图渲染架构.md)）。
+- `publish` 到 `workspace/dist/` 时沿用批次混淆标记，避免把 `encrypted` 产物误判为损坏。
+- Web 任务列表以徽章显示混淆等级。
+
+**与查看器联动**：`basic` 混淆档案的枚举依赖 manifest / 外部 listfile；`encrypted` 不影响系统侧枚举（StormLib 按文件名派生密钥自动解密）。见 04 §9.4。
+
+**上线顺序与验证**：
+
+1. 先启用 `basic`（文件内容不变、客户端无感，无验证依赖）。
+2. `encrypted` 需测试服实测通过后才开放，checklist：① `DBFilesClient` 的 DBC 正常加载 → ② `Interface` 图标 BLP 正常显示 → ③ creature 模型/贴图正常渲染 → ④ 骑乘后进入世界无崩溃；逐项记录环境与结果。
+3. 回滚：同批次 `patch build --force --obfuscation none` 重建并重新发布。
 
 ## 十五、规划：DBC 数据查看与维护（守卫式）🚧
 
@@ -341,7 +357,18 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 
 ### 15.2 守卫式编辑设计
 
-**资源管理记录判定**：服务层从 `data/registry.json` + 各资源 YAML 的 `dbc.*` 引用（`spell.id`、`item.id`、`display_id` 等）派生「管理 ID 集」`{(dbc_file, record_id) → [来源资源]}`，按 mtime 缓存。
+**管理 / 引用记录判定**：服务层从 `data/registry.json` + 各资源 YAML 的 `dbc.*` 子结构派生两类集合（`{(dbc_file, record_id) → [来源资源]}`，按 mtime 缓存）。「管理」= patch build 所写记录（禁直改直删）；「引用」= 指向官方记录的外键（可改，删除时引用检查）：
+
+| 类别 | YAML 字段 → DBC 文件 | 守卫行为 |
+|------|----------------------|---------|
+| 管理 | `dbc.creature_model_data.id` → CreatureModelData.dbc | 禁直改直删，409 + 来源资源清单 |
+| 管理 | `dbc.creature_display_info.id` → CreatureDisplayInfo.dbc | 同上 |
+| 管理 | `dbc.spell.id` → Spell.dbc | 同上 |
+| 管理 | `dbc.item.id` → Item.dbc | 同上 |
+| 引用 | `dbc.item.display_id` → ItemDisplayInfo.dbc | 可改；删除时引用检查警告 |
+| 引用 | `dbc.spell.icon_id` → SpellIcon.dbc、`dbc.spell.visual_id` → SpellVisual*.dbc | 同上 |
+
+（pets / npcs 取各自 YAML 子集；字段结构以 `schemas/dbc.py:45-107` 与实际 YAML 为准。）
 
 **三层守卫**：
 
@@ -351,22 +378,40 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | 写操作拦截 | 编辑 / 删除 API 命中管理记录时返回 409 + 来源资源清单，引导走资源编辑 + `patch build` |
 | 删除引用检查 | 删除前交叉检查是否被其他 DBC / SQL 记录引用（扩展 `resource_validation` 思路），需二次确认 |
 
+**与 `patch build` 并发互斥**：维护写操作（edit / delete / restore）执行前检查构建运行状态（参照 `build_runner.py:27` 的模块级锁 + 状态快照模式），构建运行中返回 409 拒绝；build 侧无需感知维护操作（维护低频、文件级粒度）。
+
 **安全与恢复**：
 
-- 保存前自动备份原文件到 `workspace/backups/dbc/{file}.{timestamp}`，支持按备份恢复；`data/wow-dbc` 为 git 子模块，已提交历史仍可经 git 恢复。
-- 操作日志 `workspace/reports/dbc-ops.jsonl`：字段级 before → after + 操作入口（Web/CLI）+ 时间；与 §十二 审计体系同源，可一并纳入审计报告查阅。
+- 保存前自动备份原文件到 `workspace/backups/dbc/{file}.{timestamp}`；每文件默认保留最近 20 份，随 §十三 clean 一并清理；`data/wow-dbc` 为 git 子模块，已提交历史仍可经 git 恢复。
+- 恢复动作本身先备份当前态再回写，并记入操作日志（`action: restore`）。
+- 操作日志 `workspace/reports/dbc-ops.jsonl`（JSONL，每行一条）：
+
+| 字段 | 说明 |
+|------|------|
+| `ts` | ISO 时间戳 |
+| `entry` | 操作入口：`web` / `cli` |
+| `file` / `record_id` | 目标 DBC 文件与记录 |
+| `action` | `edit` / `delete` / `restore` |
+| `changes` | `[{field, before, after}]`（delete 记录全字段） |
+| `backup` | 备份文件路径 |
+
+  与 §十二 审计体系同源（同放 `workspace/reports/`），可一并纳入审计报告查阅。
 
 ### 15.3 API / CLI / Web 设计
 
-**API**（扩展 `api/dbc.py`，规划）：
+**API**（扩展 `api/dbc.py`，规划；分页遵循系统约定 `page/page_size` + `{total, page, page_size, items}`，参照 `resources.py:216-233`）：
 
 | 端点 | 说明 |
 |------|------|
 | `GET /api/dbc/files` | DBC 文件清单（记录数、大小、schema 注册状态） |
-| `GET /api/dbc/{file}/records` | 记录分页列表（`offset/limit/filters`，字段名来自 schema） |
-| `GET /api/dbc/{file}/records/{id}` | 单记录详情（含管理标注与来源资源） |
-| `PUT /api/dbc/{file}/records/{id}` | 编辑（守卫 + 备份 + 日志） |
-| `DELETE /api/dbc/{file}/records/{id}` | 删除（守卫 + 引用检查 + 二次确认 + 日志） |
+| `GET /api/dbc/{file}/records` | 记录分页列表（`page/page_size` + 字段过滤，字段名来自 schema） |
+| `GET /api/dbc/{file}/records/{id}` | 单记录详情（含管理 / 引用标注与来源资源） |
+| `PUT /api/dbc/{file}/records/{id}` | 编辑（守卫 + 构建互斥 + 备份 + 日志） |
+| `DELETE /api/dbc/{file}/records/{id}` | 删除（守卫 + 引用检查 + 构建互斥 + 二次确认 + 日志） |
+| `GET /api/dbc/{file}/backups` | 备份列表 |
+| `POST /api/dbc/{file}/backups/{timestamp}/restore` | 恢复（先备份当前态 + 日志） |
+
+**服务模块布局**：守卫与写路径落 `services/dbc_maintenance.py`（管理 / 引用集合派生、守卫检查、备份恢复、操作日志）；通用读取泛化沿用 `services/dbc_query.py:28-62` 的 mtime 缓存模式扩展，`api/dbc.py` 仅做薄路由。
 
 **CLI**：扩展 §6.1 已规划的 `dbc` 组——子模块管理命令保留，新增数据维护子命令 `dbc query / get / edit / delete`（带守卫，写操作需 `--yes`）。
 
