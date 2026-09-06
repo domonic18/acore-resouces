@@ -26,7 +26,6 @@ def system_info() -> dict[str, Any]:
             "project_root": str(settings.project_root),
             "data_dir": str(settings.data_dir),
             "resources_dir": str(settings.resources_dir),
-            "imports_dir": str(settings.imports_dir),
             "sources_dir": str(settings.sources_dir),
             "workspace_dir": str(settings.workspace_dir),
             "patch_jobs_dir": str(settings.patch_jobs_dir),
