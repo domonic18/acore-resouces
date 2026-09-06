@@ -1,6 +1,6 @@
 # UI 原型图
 
-> **状态**：本目录为 HTML 静态原型，已与正式实现对齐（最后同步：2026-09-06，xlsx 导入链路下线时一并更新）。正式前端实现位于 [`apps/web/`](../../apps/web/)，使用 React 18 + TypeScript + Vite + Tailwind CSS + Three.js 构建，UI 与功能均以 `apps/web` 为准。
+> **状态**：本目录为 HTML 静态原型，已与正式实现对齐（最后同步：2026-09-06，新增 Phase 4 规划原型：DBC 数据 / MPQ 查看 / 导出页混淆与审计扩展）。正式前端实现位于 [`apps/web/`](../../apps/web/)，使用 React 18 + TypeScript + Vite + Tailwind CSS + Three.js 构建，UI 与功能均以 `apps/web` 为准。
 
 本目录包含 `acore-resouces` 资源管理系统的 HTML 交互原型图，用于确认页面结构、信息架构与交互流程。
 
@@ -11,9 +11,11 @@
 | 仪表盘 | [index.html](index.html) | `pages/DashboardPage.tsx` + `features/resources/lib/dashboard-stats.ts` | 已对齐：坐骑筛选统计看板（数据来源/类型/星级/添加/调试/健康分布卡） |
 | 资源列表 | [resources.html](resources.html) | `pages/ResourceListPage.tsx` + `features/resources/components/ResourceFilters.tsx` | 已对齐：数据来源筛选、必填缺失快捷筛选与行内徽章、状态标签组 |
 | 资源详情 | [resource-detail.html](resource-detail.html) | `pages/ResourceDetailPage.tsx` + `components/form/` | 已对齐：编辑态校验（必填空值红框、校验错误汇总） |
-| 导出补丁 | [export.html](export.html) | `pages/ExportPage.tsx` + `features/resources/components/patch-export/` | 已对齐：多选创建任务 → dry-run/强制构建 → 发布 → 任务列表完整链路 |
+| 导出补丁 | [export.html](export.html) | `pages/ExportPage.tsx` + `features/resources/components/patch-export/` | 已对齐：多选创建任务 → dry-run/强制构建 → 发布 → 任务列表完整链路；🚧 规划扩展：混淆等级选择（none/basic/encrypted，见 [07 §十四](../arch/07DBC维护与同步方案.md)）、任务操作列（查看 MPQ / 审计 / 删除）与任务审计视图（见 [07 §十二](../arch/07DBC维护与同步方案.md)） |
 | 资源预览 | [preview.html](preview.html) | `pages/PreviewPage.tsx` + `components/viewer/`（ModelViewer / TextureViewer / AssetFileTree） | 基本一致 |
 | 设置 | [settings.html](settings.html) | `pages/SettingsPage.tsx` + `shared/system.ts` | 已对齐：只读系统信息（数据概览、路径配置、健康检查） |
+| DBC 数据查看 | [dbc.html](dbc.html) | 🚧 规划：`pages/` + `DbcTableViewer`，见 [07 §十五](../arch/07DBC维护与同步方案.md) | 规划中：只读查看器（文件列表 + 记录分页表格 + 字段过滤 + 来源资源标注徽章；数据修改经资源编辑 + 补丁流程） |
+| MPQ 查看 | [mpq.html](mpq.html) | 🚧 规划：`pages/` + `services/mpq_inspector.py`，见 [04 §九](../arch/04模型与贴图渲染架构.md) | 规划中：只读查看器（档案列表含混淆等级徽章 + 层级文件树 + 内容面板按扩展名分发；basic 混淆档案经批次 manifest 回退枚举） |
 
 > 历史原型 `import.html`（xlsx 导入）已随导入链路下线一并删除；未来导入将以模型文件 `.zip` / 模型文件夹为单位（见[需求 v1.0 §3.1.3](../requirement/资源管理系统需求v1.0.md)）。
 >

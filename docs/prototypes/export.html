@@ -36,6 +36,15 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
           资源预览
         </a>
+        <div class="nav-label" style="margin-top: 16px">数据查看 🚧</div>
+        <a href="dbc.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          DBC 数据
+        </a>
+        <a href="mpq.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+          MPQ 查看
+        </a>
         <div class="nav-label" style="margin-top: 16px">系统</div>
         <a href="settings.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -53,7 +62,7 @@
       </div>
     </aside>
 
-    <main class="main">    <main class="main">
+    <main class="main">
       <header class="topbar">
         <h1 class="page-title">导出补丁</h1>
         <div class="topbar-actions">
@@ -120,6 +129,15 @@
               </div>
             </div>
             <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
+                <span style="font-size: 13px; color: var(--text-secondary); font-weight: 600;">混淆等级</span>
+                <select class="filter-select" style="min-width: 240px;">
+                  <option selected>none — 不混淆（默认）</option>
+                  <option>basic — 裁剪 (listfile) / (attributes)</option>
+                  <option>encrypted — 加密（实验性 · 需测试服验证）</option>
+                </select>
+              </div>
+              <div class="form-hint" style="margin: 0 0 12px;">等级写入批次 <span style="font-family: monospace;">manifest.json</span>；basic 档案在 MPQ 查看器经 manifest 回退枚举。</div>
               <div style="display: flex; flex-direction: column; gap: 10px;">
                 <label class="form-check"><input type="checkbox" checked> 干跑模式（仅校验冲突并生成计划，不修改源文件）</label>
                 <label class="form-check danger"><input type="checkbox"> 强制重写已存在的 DBC 记录（全量重建）</label>
@@ -129,6 +147,7 @@
                 <div class="alert-title">干跑完成 · 处理 2 个任务</div>
                 <ul>
                   <li>新增 SQL：2 个文件</li>
+                  <li>MPQ 清单：workspace/mpq/{batch}/manifest.json（混淆等级 none）</li>
                   <li>校验报告：workspace/reports/build-20260906.json</li>
                 </ul>
               </div>
@@ -182,8 +201,10 @@
                   <th>Job ID</th>
                   <th>资源</th>
                   <th>状态</th>
+                  <th>混淆</th>
                   <th>创建时间</th>
                   <th>请求来源</th>
+                  <th style="width: 190px;">操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -199,8 +220,14 @@
                     </div>
                   </td>
                   <td><span class="badge badge-blue">requested</span></td>
+                  <td><span style="font-size: 11px; color: var(--text-tertiary);">未构建</span></td>
                   <td>2026-09-06 10:12</td>
                   <td>web</td>
+                  <td>
+                    <div style="display: flex; gap: 6px;">
+                      <button class="btn btn-sm btn-danger">删除</button>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td style="font-family: monospace;">mount_0091</td>
@@ -214,8 +241,16 @@
                     </div>
                   </td>
                   <td><span class="badge badge-green">generated</span></td>
+                  <td><span class="badge badge-gray">none</span></td>
                   <td>2026-09-06 10:12</td>
                   <td>web</td>
+                  <td>
+                    <div style="display: flex; gap: 6px;">
+                      <a href="mpq.html" class="btn btn-sm">查看 MPQ</a>
+                      <a href="#audit" class="btn btn-sm">审计</a>
+                      <button class="btn btn-sm btn-danger">删除</button>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td style="font-family: monospace;">mount_0101</td>
@@ -229,8 +264,16 @@
                     </div>
                   </td>
                   <td><span class="badge badge-gray">applied</span></td>
+                  <td><span class="badge badge-orange">basic</span></td>
                   <td>2026-09-03 15:40</td>
                   <td>cli</td>
+                  <td>
+                    <div style="display: flex; gap: 6px;">
+                      <a href="mpq.html" class="btn btn-sm">查看 MPQ</a>
+                      <a href="#audit" class="btn btn-sm">审计</a>
+                      <button class="btn btn-sm btn-danger">删除</button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -242,6 +285,60 @@
               <button class="page-btn active">1</button>
               <button class="page-btn">2</button>
               <button class="page-btn">›</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 任务审计视图 🚧 规划 -->
+        <div class="card" style="margin-top: 24px;" id="audit">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🔍 任务审计 · mount_0091 死亡使者的绽翼兽 <span class="badge badge-gray" style="margin-left: 8px;">🚧 规划中</span></div>
+              <div class="card-subtitle">audit-report.json · workspace/reports/20260906-1029/ · 构建时由服务层生成（CLI `patch audit` 输出同一报告）</div>
+            </div>
+            <button class="btn btn-sm">下载报告 JSON</button>
+          </div>
+          <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+            <div>
+              <div class="form-label">DBC 字段变更（before → after）</div>
+              <table class="data-table" style="border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <thead>
+                  <tr><th>文件 · 记录</th><th>字段</th><th>变更</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-family: monospace; font-size: 11px;">Spell.dbc<br>80001</td>
+                    <td style="font-family: monospace; font-size: 11px;">Name_lang</td>
+                    <td style="font-size: 11px;"><s style="color: var(--text-tertiary);">0</s> → 死亡使者的绽翼兽</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family: monospace; font-size: 11px;">Item.dbc<br>91091</td>
+                    <td style="font-family: monospace; font-size: 11px;">DisplayInfoID</td>
+                    <td style="font-size: 11px;"><s style="color: var(--text-tertiary);">0</s> → 95357</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <div class="form-label">SQL 补丁字段</div>
+              <div class="log-panel" style="max-height: 180px;">
+                <div class="log-entry log-success">+ mounts/0091.sql（新增）</div>
+                <div class="log-entry">  creature_template.entry = 91091</div>
+                <div class="log-entry">  creature_template.name = 死亡使者的绽翼兽</div>
+                <div class="log-entry">  item_template.entry = 91091</div>
+                <div class="log-entry">  item_template.spellid[0] = 80001</div>
+              </div>
+            </div>
+            <div>
+              <div class="form-label">MPQ 清单（manifest.json）</div>
+              <div class="log-panel" style="max-height: 180px;">
+                <div class="log-entry log-info">批次 20260906-2-mounts</div>
+                <div class="log-entry">混淆等级: none</div>
+                <div class="log-entry">文件数: 9（5 .dbc + 4 .blp）</div>
+                <div class="log-entry">DBFilesClient/Spell.dbc</div>
+                <div class="log-entry">DBFilesClient/Item.dbc</div>
+                <div class="log-entry log-info">… 见 <a href="mpq.html" style="text-decoration: underline;">MPQ 查看</a></div>
+              </div>
             </div>
           </div>
         </div>
