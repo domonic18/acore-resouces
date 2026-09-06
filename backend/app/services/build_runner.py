@@ -85,6 +85,8 @@ def run_build(
             "sql_files": [str(p) for p in result.get("sql_files", [])],
             "mpq_path": str(result.get("mpq_path") or ""),
             "report_path": str(result.get("report_path") or ""),
+            "audit_path": str(result.get("audit_path") or ""),
+            "manifest_path": str(result.get("manifest_path") or ""),
             "dry_run": result.get("dry_run", False),
         }
     except DBCConflictError as e:

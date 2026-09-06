@@ -300,9 +300,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                 continue
             for slot in (1, 2, 3):
                 if spell_template.get(f"EffectAura_{slot}") == aura_id:
-                    spell_fields[f"EffectBasePoints_{slot}"] = (
-                        int(speed_value) - 1
-                    )
+                    spell_fields[f"EffectBasePoints_{slot}"] = int(speed_value) - 1
         plans.append(
             DBCPlanFile(
                 dbc_file="Spell.dbc",

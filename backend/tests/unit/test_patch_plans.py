@@ -881,6 +881,70 @@ def test_apply_dbc_operations_force_rewrites_existing(
     assert _blood_id() == 3
 
 
+@_requires_dbc_source
+def test_apply_dbc_operations_captures_audit_records(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """apply_dbc_operations 返回字段级审计记录（before→after 与 action_taken）。"""
+    import shutil as sh
+
+    dbc_dir = tmp_path / "dbc"
+    dbc_dir.mkdir()
+    sh.copy2(mpb.WOW_DBC_DIR / "CreatureModelData.dbc", dbc_dir / "CreatureModelData.dbc")
+    monkeypatch.setattr(mpb, "WOW_DBC_DIR", dbc_dir)
+
+    fields: dict[str, Any] = {
+        "ID": 499998,
+        "Flags": 2,
+        "ModelName": r"creature\test\audit_check.m2",
+        "ModelScale": 1.0,
+        "BloodID": 7,
+        "CollisionWidth": 0.6111,
+        "CollisionHeight": 2.031,
+        "MountHeight": 0.0,
+        "AttachedEffectScale": 1.0,
+    }
+
+    def _ops(blood_id: int) -> dict[str, list[tuple[None, dict[str, Any]]]]:
+        return {
+            "CreatureModelData.dbc": [
+                (
+                    None,
+                    {
+                        "action": "add",
+                        "record_id": 499998,
+                        "fields": {**fields, "BloodID": blood_id},
+                    },
+                )
+            ]
+        }
+
+    # 新增记录：before 为 None
+    records = mpb.apply_dbc_operations(_ops(7))
+    assert len(records) == 1
+    added = records[0]
+    assert added["dbc_file"] == "CreatureModelData.dbc"
+    assert added["record_id"] == 499998
+    assert added["action_taken"] == "added"
+    assert added["before"] is None
+    assert added["after"]["BloodID"] == 7
+
+    # 已存在默认跳过：before 捕获旧值
+    records = mpb.apply_dbc_operations(_ops(9))
+    skipped = records[0]
+    assert skipped["action_taken"] == "skipped_existing"
+    assert skipped["before"]["BloodID"] == 7
+    assert skipped["after"]["BloodID"] == 9
+
+    # force 重写：edited，before 仍为旧值
+    records = mpb.apply_dbc_operations(_ops(9), force=True)
+    edited = records[0]
+    assert edited["action_taken"] == "edited"
+    assert edited["before"]["BloodID"] == 7
+    assert edited["after"]["BloodID"] == 9
+
+
 def test_validate_job_checks_creature_template_model_link(
     sample_mount: Mount,
     tmp_path: Path,

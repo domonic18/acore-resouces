@@ -41,6 +41,8 @@ def test_run_build_success(monkeypatch):
             "sql_files": [],
             "mpq_path": "/tmp/patch.mpq",
             "report_path": "/tmp/report.md",
+            "audit_path": "/tmp/audit-report.json",
+            "manifest_path": "/tmp/manifest.json",
             "dry_run": False,
         }
 
@@ -54,6 +56,8 @@ def test_run_build_success(monkeypatch):
     assert status["finished_at"] is not None
     assert status["result"]["jobs"] == ["job-1"]
     assert status["result"]["mpq_path"] == "/tmp/patch.mpq"
+    assert status["result"]["audit_path"] == "/tmp/audit-report.json"
+    assert status["result"]["manifest_path"] == "/tmp/manifest.json"
 
 
 def test_run_build_dbc_conflict(monkeypatch):
