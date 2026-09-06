@@ -22,7 +22,6 @@ acore-resouces/
 │   │   ├── mounts/             # 命名：{id:04d}-{model_folder}.yaml
 │   │   ├── pets/
 │   │   └── npcs/
-│   ├── mapping/                # xlsx 列映射配置
 │   ├── sql/azerothcore-updates/# patch build 写入的 SQL 补丁
 │   ├── wow-dbc/                # 子模块：原始 DBC 真相源
 │   └── registry.json           # 资源索引（系统自动生成）
@@ -94,7 +93,6 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | | `update` | 更新字段：`key=value`，支持点号路径（如 `official_db.name=新名称`） |
 | | `delete` | 删除资源（默认二次确认，`--yes` 跳过） |
 | | `validate` | 校验资源（关联一致性 + 跨资源重复 ID 检测） |
-| `xlsx` | `import` | 从 `.xlsx` 一次性导入（支持 `--dry-run` / `--limit` / `--no-check-duplicates`） |
 | `wowhead` | `lookup-pet` / `lookup-mount` | Wowhead 官方数据查询，自动回退 WotLK/零售版与中英文 |
 | `wago` | `builds` / `latest` / `search` / `download` | wago.tools CASC 文件查询与下载 |
 | `patch` | `export` | 为单个资源创建补丁任务（`--type`、`--id`） |
@@ -127,20 +125,7 @@ uv run --project backend python -m app.cli resource delete mount 3 --yes
 uv run --project backend python -m app.cli resource validate --type mount --id 3
 ```
 
-### 3.4 xlsx 一次性导入
-
-`.xlsx` 仅作为一次性导入源，导入后不再反向同步。
-
-```bash
-# 从默认路径 imports/坐骑列表.xlsx 导入
-uv run --project backend python -m app.cli xlsx import mount
-
-# 指定文件并干跑预览
-uv run --project backend python -m app.cli xlsx import mount \
-    --input imports/坐骑列表.xlsx --dry-run --limit 50
-```
-
-### 3.5 官方数据补全（Wowhead / wago.tools）
+### 3.4 官方数据补全（Wowhead / wago.tools）
 
 ```bash
 # 查询 Wowhead 坐骑官方数据（JSON 输出）
@@ -160,7 +145,7 @@ uv run --project backend python -m app.cli wago download \
 
 > 这两个命令通常被 `enrich-mount-data` / `enrich-pet-data` Skill 间接调用，Agent 也可以直接使用它们做一次性查询。
 
-### 3.6 补丁任务接口
+### 3.5 补丁任务接口
 
 补丁工作流分为三段：**创建补丁任务** → **构建产物** → **发布分发**。
 
@@ -197,7 +182,7 @@ uv run --project backend python -m app.cli patch get mount_0003
 4. 调用 `wow-mpq-cli` 打包到 `workspace/mpq/{batch}/patch-mounts.mpq`。
 5. 输出 `workspace/reports/{batch}/validation-report.json` 校验报告，更新 `job.json` 状态为 `generated`。
 
-### 3.7 补丁任务结构
+### 3.6 补丁任务结构
 
 ```text
 workspace/patch-jobs/{job_id}/
@@ -319,10 +304,9 @@ CLI patch publish --start-number {next}
 
 Agent **不得**直接执行以下操作：
 
-- 直接修改 `.xlsx` 文件结构（`.xlsx` 仅作为一次性导入源）。
 - 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`（必须由 `patch build` 通过 `wow-dbc-tool` 写入）。
 - 直接连接 `acore-world` 数据库执行写入（必须通过 `acore-update-db.sh` 或追加到 `data/sql/azerothcore-updates/`）。
-- 直接删除原始图片资源目录或 `.xlsx` 源文件。
+- 直接删除原始图片资源目录。
 - 直接修改 `registry.json`（必须由系统同步生成）。
 - 强制覆盖 `data/sql/azerothcore-updates/`（该目录是软链接到 `acore-deploy`，破坏后会影响部署）。
 
@@ -332,7 +316,6 @@ Agent **不得**直接执行以下操作：
 |------|---------|
 | 读取资源 | 直接读取 YAML 或调用 CLI `resource get` |
 | 修改资源 | CLI `resource update` 或直接写 YAML + `resource validate` |
-| xlsx 一次性导入 | CLI `xlsx import` |
 | 创建补丁任务 | CLI `patch export` 或 Web 前端批量导出 |
 | 构建 DBC/SQL/MPQ | CLI `patch build` |
 | 发布 MPQ | CLI `patch publish` |
@@ -340,7 +323,6 @@ Agent **不得**直接执行以下操作：
 
 ### 5.3 大文件处理
 
-- `.xlsx` 文件共约 730MB+，仅用于一次性导入；导入后不再读取。
 - 图片目录数 GB，Agent 不应遍历所有图片；优先使用 `registry.json` 和单资源 YAML 文件，必要时再访问 `sources/{type}/{model_folder}/`。
 - `.m2` / `.blp` 文件按需通过预览 API 或桌面应用访问，避免在 Agent 中读取整个二进制。
 

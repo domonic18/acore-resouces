@@ -30,10 +30,6 @@ acore-resouces/
 │   ├── pets/              # 宠物预览图与原始模型/贴图
 │   ├── npcs/              # NPC 预览图与原始模型/贴图
 │   └── icons/             # 游戏图标（BLP）及索引
-├── imports/               # 一次性 xlsx 导入源（不入 Git）
-│   ├── 坐骑列表.xlsx
-│   ├── 宠物列表.xlsx
-│   └── NPC列表.xlsx
 └── workspace/             # 运行时数据（不入 Git）
     ├── data/              # SQLite 运行时缓存
     ├── assets/            # BLP → WebP 缩略图缓存
@@ -42,16 +38,6 @@ acore-resouces/
     ├── dist/              # 已发布 MPQ 分发目录
     └── reports/           # 补丁校验报告
 ```
-
-## 核心数据文件
-
-| 文件 | 说明 | 大小（约） |
-|------|------|-----------|
-| `imports/NPC列表.xlsx` | NPC 名称、模型路径、预览图等元数据 | ~439 MB |
-| `imports/宠物列表.xlsx` | 宠物名称、模型路径、预览图等元数据 | ~140 MB |
-| `imports/坐骑列表.xlsx` | 坐骑名称、模型路径、预览图等元数据 | ~153 MB |
-
-这些 `.xlsx` 文件是项目的历史数据源，**不纳入 Git 版本管理**（体积超过 GitHub 单文件限制），后续通过 Release/网盘分发。系统初始化时一次性导入为 `data/resources/` 下的 YAML 文件，导入后 `.xlsx` 不再作为同步来源。
 
 ## 资源目录说明
 
@@ -102,7 +88,7 @@ uv run --project backend python -m app.cli resource list --type mount
 uv run --project backend python -m app.cli patch build --all-requested
 ```
 
-命令组：`resource`（资源 CRUD/校验）、`xlsx`（一次性导入）、`wowhead`（官方数据查询）、`wago`（CASC 文件下载）、`patch`（补丁任务导出/构建/发布）。详见 `docs/arch/03Agent交互架构.md`。
+命令组：`resource`（资源 CRUD/校验）、`wowhead`（官方数据查询）、`wago`（CASC 文件下载）、`patch`（补丁任务导出/构建/发布）。详见 `docs/arch/03Agent交互架构.md`。
 
 ## 版本管理
 
@@ -122,6 +108,6 @@ git tag -a v1.0.0 -m "初始版本：NPC/宠物/坐骑资源 v1.0.0"
 
 ## 注意事项
 
-- 本项目中的 `.xlsx` 文件和原始资源目录体积较大，不纳入 Git；若需版本管理可考虑本地备份或 Git LFS。
+- 原始资源目录体积较大，不纳入 Git；若需版本管理可考虑本地备份或 Git LFS。
 - 资源图片为游戏相关素材，仅供学习、研究和本地化开发使用。
-- 运行时数据（SQLite、日志、缓存）存放在 `workspace/` 和 `assets/`，不纳入 Git。
+- 运行时数据（SQLite、日志、缓存）存放在 `workspace/`，不纳入 Git。
