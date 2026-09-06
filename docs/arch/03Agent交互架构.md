@@ -35,7 +35,7 @@ acore-resouces/
 ```json
 {
   "version": "1.0",
-  "counts": { "mounts": 451, "pets": 107, "npcs": 226 },
+  "counts": { "mounts": 430, "pets": 107, "npcs": 226 },
   "mounts": [
     {
       "id": 3,
@@ -98,7 +98,7 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | `wowhead` | `lookup-pet` / `lookup-mount` | Wowhead 官方数据查询，自动回退 WotLK/零售版与中英文 |
 | `wago` | `builds` / `latest` / `search` / `download` | wago.tools CASC 文件查询与下载 |
 | `patch` | `export` | 为单个资源创建补丁任务（`--type`、`--id`） |
-| | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`） |
+| | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`、`--force`） |
 | | `publish` | 发布 MPQ 到 `workspace/dist/`（`--start-number`、`--dry-run`） |
 | | `list` / `get` / `update` | 补丁任务查询与状态更新 |
 
@@ -178,6 +178,9 @@ uv run --project backend python -m app.cli patch build --jobs mount_0003 --jobs 
 # 仅校验冲突，现场生成的计划写入各任务 plans/ 子目录供审查
 uv run --project backend python -m app.cli patch build --all-requested --dry-run
 
+# 全量重建：已存在的 DBC 记录强制重写，SQL 跳过历史条目检查
+uv run --project backend python -m app.cli patch build --all-requested --force
+
 # 3) 发布 MPQ 到 workspace/dist/patch-zhCN-{N}.mpq
 uv run --project backend python -m app.cli patch publish --start-number 5
 
@@ -189,8 +192,8 @@ uv run --project backend python -m app.cli patch get mount_0003
 `patch build` 会：
 
 1. 按 `job.json` 中的 `resource_id` 现场读取 `data/resources/` 最新 YAML，在内存中生成 DBC/SQL 计划与资源清单（不落盘快照）。
-2. 调用 `wow-dbc-tool` 编辑 `data/wow-dbc/src/dbc/*.dbc`（仅新增缺失记录）。
-3. 按坐骑生成 SQL 到 `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`（软链接到 `acore-deploy`）。
+2. 调用 `wow-dbc-tool` 编辑 `data/wow-dbc/src/dbc/*.dbc`（默认仅新增缺失记录；`--force` 时已存在记录按计划重写）。
+3. 按坐骑生成 SQL 到 `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`（软链接到 AzerothCore 部署目录）。
 4. 调用 `wow-mpq-cli` 打包到 `workspace/mpq/{batch}/patch-mounts.mpq`。
 5. 输出 `workspace/reports/{batch}/validation-report.json` 校验报告，更新 `job.json` 状态为 `generated`。
 
@@ -254,7 +257,7 @@ Agent 收到"把坐骑 X 加入游戏"指令
    ↓
 CLI patch export 创建补丁任务（仅写 workspace/patch-jobs/{job_id}/job.json）
    ↓
-（或 Web 前端勾选资源点击"导出补丁原料"批量创建）
+（或 Web 导出页 /export：勾选资源创建任务 → 构建 → 发布，全流程可视化）
    ↓
 CLI patch build --all-requested
    ├─ 按 job.json 中的资源 ID 现场读取 data/resources/ YAML 生成计划
@@ -405,13 +408,23 @@ uv run --project backend python -m app.cli patch export --type mount --id 3
 | `GET /api/resources/{type}` | 分页列出资源（支持 `search` / `added` / `debug_passed` / `sort_by` / `sort_order`） |
 | `GET /api/resources/{type}/{id}` | 获取单个资源详情（含 `duplicate_issues`） |
 | `PUT /api/resources/{type}/{id}` | 更新资源字段（`ResourceUpdateRequest`） |
+| `PUT /api/resources/{type}/{id}/icon` | 更新资源图标字段 |
 | `GET /api/resources/{type}/{id}/assets` | 资源目录下的 `.m2` / `.blp` / 图标清单 |
 | `GET /api/preview/blp/{path}` | BLP → WebP 预览（可选 `?size=`） |
+| `GET /api/preview/file/{path}` | 普通图片字节流（png/gif/jpg） |
 | `GET /api/preview/icon/{icon_name}` | 按图标名查找并预览 |
 | `GET /api/preview/icons` | 所有可用图标列表 |
 | `GET /api/preview/model/{model_folder}` | M2 元数据 + skin/blp/anim 清单 |
 | `GET /api/preview/m2/{model_folder}/file/{relative_path}` | 流式返回 M2/skin/anim 字节 |
 | `GET /api/files/tree?root=sources&depth=N` | 目录树（懒加载） |
 | `GET /api/files/tree/{root}?path=...` | 子目录树 |
-| `POST /api/patches/export-request` | 批量创建补丁任务 |
-| `GET /api/patches` | 分页列出补丁任务 |
+| `GET /api/dbc/item-display-info` | 查询 ItemDisplayInfo.dbc 记录（分页/搜索） |
+| `GET /api/dbc/item-display-info/{record_id}` | 查询单条 ItemDisplayInfo 记录 |
+| `POST /api/patches/export-request` | 批量创建补丁任务（当前仅 mount） |
+| `GET /api/patches` | 分页列出补丁任务（支持 `status` 筛选） |
+| `GET /api/patches/{job_id}` | 获取单个补丁任务 |
+| `PUT /api/patches/{job_id}` | 更新补丁任务状态 |
+| `POST /api/patches/build` | 启动后台构建（`all_requested`/`job_ids`、`dry_run`、`force`；202 返回，冲突运行返回 409） |
+| `GET /api/patches/build/status` | 查询构建运行状态与上次结果 |
+| `POST /api/patches/publish` | 发布 MPQ 到分发目录（`start_number`、`dry_run`） |
+| `GET /api/system/info` | 只读系统信息（路径配置、资源计数、健康检查） |

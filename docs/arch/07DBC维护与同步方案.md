@@ -1,6 +1,6 @@
 # DBC 维护职责迁移与同步方案
 
-> **状态**：方案已落地。`patch export` / `patch build` / `patch publish` 三段式工作流已实现；`dbc` 与 `deploy` 命令组尚未在 CLI 中暴露（见第六节待办）。
+> **状态**：方案已落地。`patch export` / `patch build` / `patch publish` 三段式工作流已实现（CLI 与 HTTP 端点双入口，Web 导出页 `/export` 提供全流程可视化）；`dbc` 与 `deploy` 命令组尚未在 CLI 中暴露（见第六节待办）。
 
 ## 一、背景与问题
 
@@ -84,7 +84,7 @@ uv run --project backend python -m app.cli patch <command> [options]
 | 命令 | 用途 | 关键参数 |
 |------|------|---------|
 | `patch export` | 为单个资源创建补丁任务 | `--type`、`--id` |
-| `patch build` | 批量构建 DBC/SQL/MPQ | `--all-requested` 或 `--jobs` 多次；`--dry-run` |
+| `patch build` | 批量构建 DBC/SQL/MPQ | `--all-requested` 或 `--jobs` 多次；`--dry-run`；`--force`（已存在 DBC 记录强制重写、SQL 跳过历史条目检查） |
 | `patch publish` | 发布 MPQ 到 `workspace/dist/` | `--start-number`、`--dry-run` |
 | `patch list` | 分页列出补丁任务 | `--status`、`--type`、`--limit` |
 | `patch get` | 查看单个补丁任务详情 | `{job_id}` |
@@ -177,7 +177,8 @@ workspace/patch-jobs/mount_0003/
 | `backend/app/services/patch_exporter.py` | 创建补丁任务目录、写 `job.json` |
 | `backend/app/services/mount_patch_builder.py` | 现场读取真相源构建 `JobContext`，调用 `wow-dbc-tool` / `wow-mpq-cli` 构建 DBC/SQL/MPQ |
 | `backend/app/services/patch_publisher.py` | 发布 MPQ 到 `workspace/dist/{timestamp}/` |
-| `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request`、`GET /api/patches` |
+| `backend/app/services/build_runner.py` | HTTP 侧构建运行器：线程锁串行化 + 状态查询（`POST /api/patches/build` 的后台执行体） |
+| `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request`、`GET /api/patches`、`POST /api/patches/build`、`GET /api/patches/build/status`、`POST /api/patches/publish`、`GET/PUT /api/patches/{job_id}` |
 | `backend/app/cli/patch.py` | `patch export/build/publish/list/get/update` CLI |
 | `backend/app/schemas/patch.py` | `PatchJob`、`PatchJobUpdateRequest` 等 Pydantic 模型 |
 | `.claude/skills/build-mount-patch/SKILL.md` | Claude Skill：读取补丁任务（job.json + 真相源 YAML）生成最终 DBC/SQL/MPQ |
