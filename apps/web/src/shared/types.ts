@@ -141,6 +141,45 @@ export interface PatchExportResponse {
   total: number;
 }
 
+export interface PatchBuildResult {
+  jobs: string[];
+  sql_files: string[];
+  mpq_path: string;
+  report_path: string;
+  dry_run: boolean;
+}
+
+export interface BuildStatus {
+  running: boolean;
+  started_at: string | null;
+  finished_at: string | null;
+  result: PatchBuildResult | null;
+  error: string | null;
+}
+
+export interface PublishResult {
+  published: { batch: string; path: string }[];
+  skipped: string[];
+  next_number: number;
+}
+
+export interface SystemInfo {
+  paths: {
+    project_root: string;
+    data_dir: string;
+    resources_dir: string;
+    imports_dir: string;
+    sources_dir: string;
+    workspace_dir: string;
+    patch_jobs_dir: string;
+    acore_sql_updates_dir: string | null;
+    logs_dir: string;
+    db_file: string;
+  };
+  counts: { mounts: number; pets: number; npcs: number };
+  health: { registry_exists: boolean; db_exists: boolean };
+}
+
 export interface Paginated<T> {
   total: number;
   page: number;
