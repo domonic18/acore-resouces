@@ -20,6 +20,9 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# mpqcli 宿主机构建产物（macOS 二进制，容器内单独编译）
+tools/wow-mpq-cli/build/
+
 # 运行时数据（通过 volumes 挂载，不进入镜像）
 sources/
 imports/

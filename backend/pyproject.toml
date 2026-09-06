@@ -91,7 +91,7 @@ where = ["."]
 include = ["app*"]
 
 [tool.uv.sources]
-wow-dbc-tool = { path = "../tools/wow-dbc-tool" }
+wow-dbc-tool = { path = "../tools/wow-dbc-tool", editable = true }
 
 [dependency-groups]
 dev = [

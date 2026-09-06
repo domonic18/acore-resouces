@@ -64,7 +64,7 @@ requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0.25" },
     { name = "typer", specifier = ">=0.12.0" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.29.0" },
-    { name = "wow-dbc-tool", directory = "../tools/wow-dbc-tool" },
+    { name = "wow-dbc-tool", editable = "../tools/wow-dbc-tool" },
 ]
 provides-extras = ["dev"]
 
@@ -1481,7 +1481,7 @@ wheels = [
 [[package]]
 name = "wow-dbc-tool"
 version = "0.1.0"
-source = { directory = "../tools/wow-dbc-tool" }
+source = { editable = "../tools/wow-dbc-tool" }
 
 [package.metadata]
 requires-dist = [
