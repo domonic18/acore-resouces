@@ -102,6 +102,9 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | | `audit` | 🚧 规划：输出批次审计报告（DBC before→after / SQL 字段 / MPQ 清单，见 [07 §十二](07DBC维护与同步方案.md)） |
 | | `delete` | 🚧 规划：删除补丁任务记录（默认二次确认，不影响真相源与审计报告） |
 | | `clean` | 🚧 规划：清理中间产物（`--dry-run` 预览路径与体积，见 [07 §十三](07DBC维护与同步方案.md)） |
+| `dbc` 🚧 规划 | `status` / `pull` / `diff` | `data/wow-dbc` 子模块管理（见 [07 §6.1](07DBC维护与同步方案.md)） |
+| | `query` / `get` | DBC 记录查看与搜索（含资源管理记录守卫标注，见 [07 §十五](07DBC维护与同步方案.md)） |
+| | `edit` / `delete` | DBC 记录维护（仅非资源管理记录，写操作需 `--yes`） |
 
 > 命令的具体选项可能随版本演进，使用 `--help` 查看最新参数：例如 `uv run --project backend python -m app.cli patch build --help`。
 
@@ -308,7 +311,7 @@ CLI patch publish --start-number {next}
 
 Agent **不得**直接执行以下操作：
 
-- 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`（必须由 `patch build` 通过 `wow-dbc-tool` 写入）。
+- 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`：**资源管理记录**（资源 YAML `dbc.*` 引用的条目）必须由 `patch build` 通过 `wow-dbc-tool` 写入；基础数据修正仅可经 DBC 维护器（🚧 规划，[07 §十五](07DBC维护与同步方案.md)，限非管理记录），Agent 优先走资源编辑 + 补丁流程。
 - 直接连接 `acore-world` 数据库执行写入（必须通过 `acore-update-db.sh` 或追加到 `data/sql/azerothcore-updates/`）。
 - 直接删除原始图片资源目录。
 - 直接修改 `registry.json`（必须由系统同步生成）。
@@ -325,6 +328,7 @@ Agent **不得**直接执行以下操作：
 | 发布 MPQ | CLI `patch publish` |
 | 清理中间产物 | 🚧 规划：CLI `patch clean --dry-run` 预览后执行 |
 | 删除任务记录 | 🚧 规划：CLI `patch delete` 或 Web 任务列表操作列 |
+| 维护 DBC 基础数据 | 🚧 规划：Web `/dbc` 页或 CLI `dbc edit`（仅非资源管理记录，见 [07 §十五](07DBC维护与同步方案.md)） |
 | 应用到 acore-deploy | 人工执行 `acore-update-dbc.sh` / `acore-update-db.sh` |
 
 ### 5.3 大文件处理

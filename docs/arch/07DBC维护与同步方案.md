@@ -323,7 +323,69 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 - 发布产物需可识别混淆等级（发布清单/命名约定），避免把 `encrypted` 产物误判为损坏。
 - 上线顺序：先 `basic`（无客户端风险）→ `encrypted` 经测试服验证后再开放。
 
-## 十五、相关文档
+## 十五、规划：DBC 数据查看与维护（守卫式）🚧
+
+> 对应需求 v1.2 §3.10。目标：在系统内直接查看 / 搜索 / 编辑 / 删除 `data/wow-dbc/src/dbc/` 的 DBC 记录；**资源管理记录守卫保护**（只读 + 来源引导），仅非管理记录可直改，避免 YAML↔DBC 双向漂移。
+
+### 15.1 能力与数据源
+
+| 能力 | 可行性 | 现状依据 |
+|------|--------|---------|
+| 查看 / 搜索 | ✅ 能力现成 | `wow_dbc_tool` 的 `DBCFile.query` 支持按字段过滤（`ID__gt`、`Name__contains` 等后缀语法，`dbc_file.py:86, 18-26`）；`schemas/` 目录 245 个 JSON schema 与 245 个 DBC 一一对应（`schema/registry.py:95-113`）；后端已有 mtime 进程缓存模式可泛化（`services/dbc_query.py:28-62`） |
+| 编辑 | ✅ API 现成，需守卫 | `DBCFile.edit`（`dbc_file.py:146`）/ `add`（:177）/ `save`（:206，全量重建 string block 无悬空引用；推断 schema 且含字符串的文件拒绝保存 :223-228） |
+| 删除 | ✅ API 现成，需守卫 | `DBCFile.delete`（`dbc_file.py:161`，按过滤删记录并返回数量） |
+
+规模约束：`data/wow-dbc/src/dbc/` 共 **245 个文件约 93MB**（Spell.dbc 最大）→ 记录读取必须分页 + mtime 缓存，禁止全量载入响应。
+
+现有差距：`api/dbc.py` 仅硬编码 ItemDisplayInfo 两个 GET 端点（`api/dbc.py:13-35`）；写路径仅 `mount_patch_builder.apply_dbc_operations`（add/edit，`mount_patch_builder.py:332-367`），全系统无 DBC delete 调用；前端无通用 DBC 表格组件。
+
+### 15.2 守卫式编辑设计
+
+**资源管理记录判定**：服务层从 `data/registry.json` + 各资源 YAML 的 `dbc.*` 引用（`spell.id`、`item.id`、`display_id` 等）派生「管理 ID 集」`{(dbc_file, record_id) → [来源资源]}`，按 mtime 缓存。
+
+**三层守卫**：
+
+| 层 | 行为 |
+|----|------|
+| 查看标注 | 记录表格对管理记录标注来源资源徽章，点击跳转资源详情 |
+| 写操作拦截 | 编辑 / 删除 API 命中管理记录时返回 409 + 来源资源清单，引导走资源编辑 + `patch build` |
+| 删除引用检查 | 删除前交叉检查是否被其他 DBC / SQL 记录引用（扩展 `resource_validation` 思路），需二次确认 |
+
+**安全与恢复**：
+
+- 保存前自动备份原文件到 `workspace/backups/dbc/{file}.{timestamp}`，支持按备份恢复；`data/wow-dbc` 为 git 子模块，已提交历史仍可经 git 恢复。
+- 操作日志 `workspace/reports/dbc-ops.jsonl`：字段级 before → after + 操作入口（Web/CLI）+ 时间；与 §十二 审计体系同源，可一并纳入审计报告查阅。
+
+### 15.3 API / CLI / Web 设计
+
+**API**（扩展 `api/dbc.py`，规划）：
+
+| 端点 | 说明 |
+|------|------|
+| `GET /api/dbc/files` | DBC 文件清单（记录数、大小、schema 注册状态） |
+| `GET /api/dbc/{file}/records` | 记录分页列表（`offset/limit/filters`，字段名来自 schema） |
+| `GET /api/dbc/{file}/records/{id}` | 单记录详情（含管理标注与来源资源） |
+| `PUT /api/dbc/{file}/records/{id}` | 编辑（守卫 + 备份 + 日志） |
+| `DELETE /api/dbc/{file}/records/{id}` | 删除（守卫 + 引用检查 + 二次确认 + 日志） |
+
+**CLI**：扩展 §6.1 已规划的 `dbc` 组——子模块管理命令保留，新增数据维护子命令 `dbc query / get / edit / delete`（带守卫，写操作需 `--yes`）。
+
+**Web**：新路由 `/dbc` + 页面（文件列表侧栏 + `DbcTableViewer` 记录表格 + 守卫徽章）；`DbcTableViewer` 为新组件，与 04 §九 MPQ 查看器共用。
+
+### 15.4 与其他规划的关系
+
+- **§十二 审计记录**：dbc-ops.jsonl 与补丁审计报告同放 `workspace/reports/`，查阅入口一致。
+- **§6.1 `dbc` 命令组**：子模块管理（status/pull/diff）与数据维护（query/get/edit/delete）同组不同子命令。
+- **04 §九 MPQ 查看器**：通用 DBC 读取能力统一由本节定义（api/dbc.py）；MPQ 内提取出的 `.dbc` 复用同一 API 形态与 `DbcTableViewer`。
+
+### 15.5 已知限制（须如实提示）
+
+- 仅支持标准 20 字节 WDBC 格式（`header.py:15-24`）；WDB2 等扩展格式不支持（现有 245 个文件均在能力范围内）。
+- 4 字节对齐假设：`record_size ≠ field_count × 4` 的文件信任原 header，编辑字段可能错位（`header.py:66` 注释）。
+- 字符串按 UTF-8 写回，官方客户端为 latin-1——非 ASCII 字符需实测客户端显示。
+- 推断 schema（未注册字段定义）且含字符串的文件拒绝保存（`dbc_file.py:223-228`），避免字符串块悬空。
+
+## 十六、相关文档
 
 | 文档 | 路径 |
 |------|------|
