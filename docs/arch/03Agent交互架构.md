@@ -99,6 +99,9 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`、`--force`） |
 | | `publish` | 发布 MPQ 到 `workspace/dist/`（`--start-number`、`--dry-run`） |
 | | `list` / `get` / `update` | 补丁任务查询与状态更新 |
+| | `audit` | 🚧 规划：输出批次审计报告（DBC before→after / SQL 字段 / MPQ 清单，见 [07 §十二](07DBC维护与同步方案.md)） |
+| | `delete` | 🚧 规划：删除补丁任务记录（默认二次确认，不影响真相源与审计报告） |
+| | `clean` | 🚧 规划：清理中间产物（`--dry-run` 预览路径与体积，见 [07 §十三](07DBC维护与同步方案.md)） |
 
 > 命令的具体选项可能随版本演进，使用 `--help` 查看最新参数：例如 `uv run --project backend python -m app.cli patch build --help`。
 
@@ -196,6 +199,7 @@ workspace/patch-jobs/{job_id}/
 > - `job_id` 当前实现为 `{resource_type}_{id:04d}`（如 `mount_0003`），不再带时间戳，便于幂等重跑。
 > - 资源定义的唯一真相源是 `data/resources/mounts/*.yaml`：`patch export` 不再生成 `input/` 快照，`patch build` 按 `job.json` 中的 `resource_id` 现场读取最新 YAML。
 > - 构建产物不在任务目录内：DBC 直接编辑 `data/wow-dbc/src/dbc/`，SQL 写入 `data/sql/azerothcore-updates/mounts/`（每坐骑独立目录），MPQ 写入 `workspace/mpq/{batch}/`。
+> - 🚧 规划：正式 build 将在服务层生成批次级审计报告 `workspace/reports/{timestamp}/audit-report.json`（DBC before→after、SQL 字段、MPQ 清单，入口无关），并在 `job.json` 的 `artifacts` 中登记 `audit` 路径；审计报告不随任务删除而清理（见 [07 §十二](07DBC维护与同步方案.md)）。
 
 ---
 
@@ -319,6 +323,8 @@ Agent **不得**直接执行以下操作：
 | 创建补丁任务 | CLI `patch export` 或 Web 前端批量导出 |
 | 构建 DBC/SQL/MPQ | CLI `patch build` |
 | 发布 MPQ | CLI `patch publish` |
+| 清理中间产物 | 🚧 规划：CLI `patch clean --dry-run` 预览后执行 |
+| 删除任务记录 | 🚧 规划：CLI `patch delete` 或 Web 任务列表操作列 |
 | 应用到 acore-deploy | 人工执行 `acore-update-dbc.sh` / `acore-update-db.sh` |
 
 ### 5.3 大文件处理

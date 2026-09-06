@@ -239,7 +239,91 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | `export-mount-jobs` | Web 端批量勾选坐骑导出 | 等价于多次 `patch export` |
 | `publish-patch` | 将 `workspace/mpq/` 发布到 `workspace/dist/` | 等价于 `patch publish` |
 
-## 十二、相关文档
+## 十二、规划：补丁产物审计记录 🚧
+
+> 对应需求 v1.1 §3.7（补丁任务审查记录）。目标：字段级改动审计，让用户能逐项核对生成结果与预期。
+
+### 12.1 数据源与可行性
+
+审计数据**无需重新生成**——构建主流程内存中已持有字段级完整计划：
+
+| 数据 | 来源 | 现状 |
+|------|------|------|
+| DBC 改动计划 | `ctx.dbc_plan`（`schemas/patch.py` `DBCPlan`/`DBCPlanFile`，operations 含 action/record_id/fields） | ✅ 字段级完整，dry-run 与正式构建同源 |
+| SQL 改动计划 | `ctx.sql_plan`（`SQLPlan`/`SQLPlanTable`，表名+记录 dict） | ✅ 可直接还原"表+记录+字段"结构 |
+| MPQ 文件清单 | `build_mpq` 返回的 `job_assets: dict[job_id, list[Path]]` | ⚠️ 内存可得但未持久化 |
+| DBC before 值 | `apply_dbc_operations` 中读到 `existing` 记录 | ❌ 未捕获，需增加 `existing.to_dict()` 保留 |
+
+### 12.2 产物设计
+
+- **批次级审计文件**：`workspace/reports/{timestamp}/audit-report.json`，与 `validation-report.json` 同目录：
+  - `jobs`：本次制作资源清单（job_id、名称、模型文件夹）
+  - `dbc`：每文件 operations，`before`（force 重写时捕获）→ `after`（计划字段值）
+  - `sql`：每文件目标表、记录、字段级内容
+  - `mpq`：批次 MPQ 路径、内部文件清单、与上一批次的文件级 diff（新增/替换）
+- **任务级关联**：`job.json` 的 `artifacts` 增 `audit` 路径字段；`schemas/patch.py` 的 DBC operation 模型增可选 `before` 字段。
+- **可对照**：审计结构与 dry-run `plans/{dbc-plan,sql-plan,assets}` 同构（计划 → 实际产物逐项比对）。
+
+### 12.3 入口无关与查阅
+
+- 审计在 `build_mount_patches` 服务层统一生成——CLI `patch build`、HTTP `POST /api/patches/build`（`build_runner`）、AI Agent 调用均同源，天然满足"入口无关"。
+- 查阅方式（规划）：CLI `patch audit {timestamp|job_id}`、Web 导出页任务审计视图、JSON 导出。
+
+### 12.4 与现有校验报告的关系
+
+`validation-report.json`（ID 一致性 pass/fail 检查）保留不变；`audit-report.json` 回答"改了什么"，前者回答"对不对"。
+
+## 十三、规划：任务删除与中间产物清理 🚧
+
+> 对应需求 v1.1 §3.9.1 / §3.9.2。
+
+### 13.1 任务记录删除
+
+| 层 | 改动 |
+|----|------|
+| 服务 | `patch_exporter.py` 增 `delete_patch_job(job_id)`（校验 job_id 命名模式防路径穿越，rmtree 任务目录） |
+| API | `DELETE /api/patches/{job_id}` |
+| CLI | `patch delete {job_id} [--yes]` |
+| Web | 任务列表加操作列 + 二次确认 |
+
+边界：删除仅移除 `workspace/patch-jobs/{job_id}/`；真相源（YAML/DBC）与已生成 SQL/MPQ 产物默认保留；批次级审计记录不随任务删除。
+
+### 13.2 中间产物清理
+
+- **新服务** `backend/app/services/workspace_cleaner.py`（规划）：
+  - 清理目标：`workspace/patch-jobs/`（含遗留 `plans/`）、`workspace/mpq/{timestamp}/`、`workspace/reports/{timestamp}/`
+  - dry-run 预览：列出将被清理的路径与占用体积
+  - 守卫：`build_runner` 构建运行中拒绝清理；真相源与 `workspace/dist/` 永不在清理范围；MPQ 批次若已被 publish（dist 中存在对应产物）默认跳过
+- 入口（规划）：CLI `patch clean [--dry-run] [--older-than]`、API、Web 导出页/设置页按钮。
+
+## 十四、规划：MPQ 加密与混淆（不改子模块路线）🚧
+
+> 对应需求 v1.1 §3.8。前提：不修改 `wow-mpq-cli` 子模块，仅用 `mpqcli create` 现有参数。
+
+### 14.1 混淆等级
+
+| 等级 | 参数 | 效果 |
+|------|------|------|
+| `none`（现状） | — | 常规 MPQ，任意工具可完整解包 |
+| `basic`（基础混淆，推荐默认） | `--file-flags1 0 --file-flags2 0`（省略内部 `(listfile)`/`(attributes)` 文件） | 常见 MPQ 工具无法列出文件名，需逐个猜路径才能提取 |
+| `encrypted`（实验性） | `basic` + `--flags 0x00010000`（MPQ_FILE_ENCRYPTED） | 文件内容按 MPQ 标准加密存储 |
+
+可选附加：`-s` 弱数字签名（防篡改校验，非保密）。
+
+### 14.2 已知限制（须如实告知用户）
+
+- StormLib 的 MPQ 文件加密密钥由**文件名派生**、客户端可自动解密——该加密**不构成真正的保密**，只提高提取门槛。
+- 内部路径**不可改名**：客户端按 `DBFilesClient\*.dbc` 等标准路径加载，混淆空间仅在"是否可枚举"层面。
+- `encrypted` 级别下客户端能否正常读取加密的 `DBFilesClient` **需测试服实测**，存在不兼容风险；`basic` 级不改变文件内容，客户端无感。
+- 强混淆（自定义密钥、彻底改名映射）需 fork `wow-mpq-cli` 子模块——记录为备选升级路线，本轮不采用。
+
+### 14.3 集成点
+
+- `build_mpq`（`mount_patch_builder.py`）按批次配置混淆等级（`job.json` 请求参数或全局配置）。
+- 发布产物需可识别混淆等级（发布清单/命名约定），避免把 `encrypted` 产物误判为损坏。
+- 上线顺序：先 `basic`（无客户端风险）→ `encrypted` 经测试服验证后再开放。
+
+## 十五、相关文档
 
 | 文档 | 路径 |
 |------|------|
