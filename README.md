@@ -1,6 +1,13 @@
 # 魔兽世界资源库
 
-本项目用于整理、归档和版本管理《魔兽世界》（World of Warcraft）相关资源数据，包括 NPC、宠物、坐骑的预览图、图标以及对应的元数据清单。
+本项目用于整理、归档和版本管理《魔兽世界》（World of Warcraft）相关资源数据，包括 NPC、宠物、坐骑的预览图、图标以及对应的元数据清单，并提供 DBC / SQL / MPQ 补丁导出能力，将自定义资源落地到 AzerothCore 3.3.5a。
+
+## 功能特性
+
+- **资源管理**：坐骑 / 宠物 / NPC 的 CRUD、搜索、筛选、排序、分页，字段校验与跨资源 DBC ID 冲突检测（Web UI + REST API + CLI）。
+- **预览服务**：`.blp` 贴图/图标解码预览、`.m2` 元数据读取、前端 Three.js 原生 M2 3D 渲染与贴图变体切换。
+- **补丁导出**：创建补丁任务 → dry-run 校验 → 构建 DBC 修改 / AzerothCore SQL / MPQ 客户端补丁 → 发布分发（CLI `patch export/build/publish` 与 Web 导出页均可）。
+- **Agent 接口**：Typer CLI + YAML/JSON 真相源，配合 `.claude/skills/` 下的数据补全与补丁构建 Skill。
 
 ## 目录结构
 
@@ -12,8 +19,12 @@ acore-resouces/
 ├── backend/               # Python FastAPI 后端 + CLI
 ├── apps/web/              # React + Vite 前端（Electron 内嵌）
 ├── apps/desktop/          # Electron 桌面外壳
-├── tools/model-converter/ # Rust M2 → glTF 转换工具
+├── tools/                 # wow-dbc-tool / wow-mpq-cli（git 子模块）
+├── docker/                # backend / web 容器构建文件
 ├── data/                  # 纳入 Git 的结构化数据（YAML/JSON/Schema/映射）
+│   ├── resources/         # 单资源 YAML（真相源）
+│   ├── wow-dbc/           # 原始 DBC 真相源（git 子模块）
+│   └── sql/azerothcore-updates/  # 生成的 SQL 补丁（软链接到 AzerothCore）
 ├── sources/               # 原始资源（不入 Git）
 │   ├── mounts/            # 坐骑预览图与原始模型/贴图
 │   ├── pets/              # 宠物预览图与原始模型/贴图
@@ -23,8 +34,13 @@ acore-resouces/
 │   ├── 坐骑列表.xlsx
 │   ├── 宠物列表.xlsx
 │   └── NPC列表.xlsx
-├── assets/                # 运行时缩略图、glTF 缓存（不入 Git）
-└── workspace/             # 运行时数据（SQLite、日志等，不入 Git）
+└── workspace/             # 运行时数据（不入 Git）
+    ├── data/              # SQLite 运行时缓存
+    ├── assets/            # BLP → WebP 缩略图缓存
+    ├── patch-jobs/        # 补丁任务元数据
+    ├── mpq/               # 批次 MPQ 构建产物
+    ├── dist/              # 已发布 MPQ 分发目录
+    └── reports/           # 补丁校验报告
 ```
 
 ## 核心数据文件
@@ -68,9 +84,25 @@ npm run dev
 cd apps/desktop
 npm install
 npm run dev
+
+# Docker 测试环境（web 服务，端口 8080）
+docker compose up -d --build
 ```
 
 根目录 `package.json` 仅作为命令编排入口，不存放依赖，因此**不要在根目录执行 `npm install`**。
+
+## CLI
+
+```bash
+# 统一入口（在仓库根目录执行）
+uv run --project backend python -m app.cli <group> <command>
+
+# 常用示例
+uv run --project backend python -m app.cli resource list --type mount
+uv run --project backend python -m app.cli patch build --all-requested
+```
+
+命令组：`resource`（资源 CRUD/校验）、`xlsx`（一次性导入）、`wowhead`（官方数据查询）、`wago`（CASC 文件下载）、`patch`（补丁任务导出/构建/发布）。详见 `docs/arch/03Agent交互架构.md`。
 
 ## 版本管理
 
