@@ -4,16 +4,23 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
 from pydantic import BaseModel
 
 from app.schemas.patch import PatchJobStatus, PatchJobUpdateRequest
+from app.services.build_runner import (
+    BuildAlreadyRunningError,
+    get_build_status,
+    run_build,
+    start_build,
+)
 from app.services.patch_exporter import (
     create_patch_job,
     get_patch_job,
     list_patch_jobs,
     update_patch_job_status,
 )
+from app.services.patch_publisher import PatchPublisherError, publish_patches
 
 router = APIRouter(prefix="/api/patches", tags=["patches"])
 
@@ -65,6 +72,51 @@ def list_jobs(
         page=page,
         page_size=page_size,
     )
+
+
+class PatchBuildRequest(BaseModel):
+    """补丁构建请求。"""
+
+    all_requested: bool = False
+    job_ids: list[str] | None = None
+    dry_run: bool = False
+    force: bool = False
+
+
+class PatchPublishRequest(BaseModel):
+    """MPQ 发布请求。"""
+
+    start_number: int = 5
+    dry_run: bool = False
+
+
+@router.post("/build", status_code=202)
+def build_patches(background_tasks: BackgroundTasks, body: PatchBuildRequest) -> dict[str, Any]:
+    """后台启动补丁构建，立即返回；进度经 /build/status 轮询。"""
+    if not body.all_requested and not body.job_ids:
+        raise HTTPException(400, "请指定 all_requested 或 job_ids")
+    try:
+        start_build(body.all_requested, body.job_ids, body.dry_run, body.force)
+    except BuildAlreadyRunningError as e:
+        raise HTTPException(409, str(e)) from e
+
+    background_tasks.add_task(run_build, body.all_requested, body.job_ids, body.dry_run, body.force)
+    return {"started": True}
+
+
+@router.get("/build/status")
+def build_status() -> dict[str, Any]:
+    """查询构建运行状态与最近一次结果。"""
+    return get_build_status()
+
+
+@router.post("/publish")
+def publish(body: PatchPublishRequest) -> dict[str, Any]:
+    """发布 MPQ 批次到分发目录（同步执行）。"""
+    try:
+        return publish_patches(start_number=body.start_number, dry_run=body.dry_run)
+    except PatchPublisherError as e:
+        raise HTTPException(500, f"发布失败: {e}") from e
 
 
 @router.get("/{job_id}")
