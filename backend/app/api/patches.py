@@ -14,6 +14,7 @@ from app.services.build_runner import (
     run_build,
     start_build,
 )
+from app.services.patch_audit import load_audit_by_job
 from app.services.patch_exporter import (
     create_patch_job,
     get_patch_job,
@@ -126,6 +127,15 @@ def get_job(job_id: str) -> dict[str, Any]:
     if manifest is None:
         raise HTTPException(404, f"任务 {job_id} 不存在")
     return manifest.model_dump(exclude_none=False)
+
+
+@router.get("/{job_id}/audit")
+def get_job_audit(job_id: str) -> dict[str, Any]:
+    """获取任务的字段级审计切片（批次报告按 job 过滤）。"""
+    try:
+        return load_audit_by_job(job_id)
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e)) from e
 
 
 @router.put("/{job_id}")
