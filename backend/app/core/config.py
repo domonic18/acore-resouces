@@ -13,7 +13,6 @@ class Settings(BaseSettings):
     data_dir: Path = Path("data")
     workspace_dir: Path = Path("workspace")
     sources_dir: Path = Path("sources")
-    imports_dir: Path = Path("imports")
     assets_dir: Path = Path("workspace/assets")
     patch_jobs_dir: Path = Path("workspace/patch-jobs")
 
@@ -22,7 +21,6 @@ class Settings(BaseSettings):
     registry_file: Path = Path("data/registry.json")
     resources_dir: Path = Path("data/resources")
     schemas_dir: Path = Path("data/schemas")
-    mapping_dir: Path = Path("data/mapping")
 
     thumbnails_dir: Path = Path("workspace/assets/thumbnails")
     gltf_dir: Path = Path("workspace/assets/gltf")
@@ -36,7 +34,6 @@ class Settings(BaseSettings):
         self.data_dir = root / "data"
         self.workspace_dir = root / "workspace"
         self.sources_dir = root / "sources"
-        self.imports_dir = root / "imports"
         self.assets_dir = self.workspace_dir / "assets"
         self.patch_jobs_dir = root / "workspace" / "patch-jobs"
 
@@ -45,7 +42,6 @@ class Settings(BaseSettings):
         self.registry_file = self.data_dir / "registry.json"
         self.resources_dir = self.data_dir / "resources"
         self.schemas_dir = self.data_dir / "schemas"
-        self.mapping_dir = self.data_dir / "mapping"
 
         self.thumbnails_dir = self.assets_dir / "thumbnails"
         self.gltf_dir = self.assets_dir / "gltf"

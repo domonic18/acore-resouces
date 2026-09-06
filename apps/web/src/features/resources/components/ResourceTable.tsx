@@ -17,6 +17,7 @@ import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
 import { ResourceTagBadge } from "@/components/badges/ResourceTagBadge";
 import { SortHeader } from "@/components/table/SortHeader";
 import { formatDrop, formatDateTime } from "../lib/resource-list";
+import { getMissingRequiredFields } from "../requiredFields";
 import type { Resource } from "@/shared/types";
 import type { SortKey, SortOrder } from "../lib/resource-list";
 
@@ -46,6 +47,19 @@ function CopyResourceButton({ resource }: { resource: Resource }) {
         <Copy className="h-3.5 w-3.5" />
       )}
     </button>
+  );
+}
+
+function MissingRequiredBadge({ resource }: { resource: Resource }) {
+  const labels = getMissingRequiredFields(resource);
+  if (labels.length === 0) return null;
+  return (
+    <span
+      className="ml-1 inline-flex items-center rounded bg-danger/10 px-1.5 py-0.5 text-xs font-medium text-danger"
+      title={`缺失：${labels.join("、")}`}
+    >
+      必填缺失 {labels.length}
+    </span>
   );
 }
 
@@ -209,6 +223,7 @@ export function ResourceTable({
                 <td>{formatDrop(resource.drop)}</td>
                 <td>
                   <ResourceStatusBadge resource={resource} />
+                  <MissingRequiredBadge resource={resource} />
                 </td>
                 <td>
                   <ResourceTagBadge resource={resource} />

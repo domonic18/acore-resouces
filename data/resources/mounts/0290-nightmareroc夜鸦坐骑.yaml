@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 梦魇巨鸦
   spell_icon_name: ability_mount_fireravengodmount
   icon_name: ability_mount_fireravengodmount
 dbc:
@@ -21,9 +22,11 @@ dbc:
   spell:
     id: 80286
     visual_id: 9140286
+    name: 梦魇巨鸦
+    description: 召唤或解散这种坐骑。
     speed: 100
   item:
-    id: 0
+    id: 91286
     class: 15
     subclass: 5
     display_id: 0
@@ -32,6 +35,7 @@ dbc:
 db:
   creature_template:
     entry: 9140286
+    name: 梦魇巨鸦
     subname: ''
     IconName: ''
     AIName: ''
@@ -61,6 +65,8 @@ db:
   creature_model_info:
     display_id: 140286
   item_template:
+    entry: 91286
+    name: 梦魇巨鸦
     class: 15
     subclass: 5
     spellid_1: 55884

@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 碧波长尾鲨
   spell_icon_name: inv_sharkraymount_2
   icon_name: inv_sharkraymount_2
 dbc:
@@ -24,9 +25,11 @@ dbc:
   spell:
     id: 80409
     visual_id: 9140409
+    name: 碧波长尾鲨
+    description: 召唤或解散这种坐骑。
     swim_speed: 60
   item:
-    id: 0
+    id: 91409
     class: 15
     subclass: 5
     display_id: 0
@@ -35,6 +38,7 @@ dbc:
 db:
   creature_template:
     entry: 9140409
+    name: 碧波长尾鲨
     subname: ''
     IconName: ''
     AIName: ''
@@ -64,6 +68,8 @@ db:
   creature_model_info:
     display_id: 140409
   item_template:
+    entry: 91409
+    name: 碧波长尾鲨
     class: 15
     subclass: 5
     spellid_1: 55884

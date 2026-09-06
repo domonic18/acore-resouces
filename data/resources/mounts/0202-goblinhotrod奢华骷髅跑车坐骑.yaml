@@ -27,7 +27,7 @@ dbc:
     name: 地精改装车
     speed: 100
   item:
-    id: 0
+    id: 91197
     class: 15
     subclass: 5
     display_id: 0
@@ -66,6 +66,7 @@ db:
   creature_model_info:
     display_id: 140197
   item_template:
+    entry: 91197
     name: 地精改装车
     class: 15
     subclass: 5

@@ -30,7 +30,7 @@ dbc:
     speed: 100
     flight_speed: 280
   item:
-    id: 0
+    id: 91318
     class: 15
     subclass: 5
     display_id: 0
@@ -69,6 +69,7 @@ db:
   creature_model_info:
     display_id: 140318
   item_template:
+    entry: 91318
     name: 大祭司的光誓寻觅者
     class: 15
     subclass: 5

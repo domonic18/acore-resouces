@@ -2,7 +2,7 @@
 
 ## 1. 项目概览
 
-- **愿景：** 构建一个本地优先的《魔兽世界》（AzerothCore 3.3.5a）资源管理系统，将历史 `.xlsx` 清单迁移为结构化 YAML/JSON，提供桌面应用浏览、预览和 DBC/SQL 补丁导出能力，同时保持 Agent 可通过 CLI 读取和操作资源元数据。
+- **愿景：** 构建一个本地优先的《魔兽世界》（AzerothCore 3.3.5a）资源管理系统，以结构化 YAML/JSON 管理资源元数据，提供桌面应用浏览、预览和 DBC/SQL 补丁导出能力，同时保持 Agent 可通过 CLI 读取和操作资源元数据。
 
 ## 2. 项目结构
 
@@ -21,7 +21,7 @@ acore-resouces 采用 **Electron 桌面外壳 + Python FastAPI 后端 + React/Vi
 ### 核心模块
 
 - **资源管理**: 坐骑 / 宠物 / NPC 的 CRUD、搜索、筛选、校验
-- **xlsx 导入**: 一次性 `.xlsx` 导入为 YAML
+- **资源导入**: 未来以模型文件压缩包（`.zip`）或模型文件夹为单位导入新资源
 - **DBC/SQL 导出**: 根据资源定义生成 `wow-dbc-tool` 脚本和 AzerothCore SQL 补丁
 - **预览服务**: `.blp` 解码、`.m2` 元数据读取、前端原生 M2/skin 渲染
 - **Agent 接口**: Typer CLI，供 Claude Code 等 Agent 读取和操作资源
@@ -107,10 +107,9 @@ acore-resouces 采用 **Electron 桌面外壳 + Python FastAPI 后端 + React/Vi
 
 ## 4. 大文件与本地资源处理
 
-- `.xlsx` 文件体积大（共约 730MB+），**不纳入 Git**；读取时避免一次性加载整个工作簿到内存。
-- `sources/`、`imports/`、`assets/` 下的原始资源和运行时缓存**不纳入 Git**。
+- `sources/`、`workspace/` 下的原始资源和运行时缓存**不纳入 Git**。
 - 批量操作图片目录（数 GB）前，先确认范围和目标，避免全量遍历。
-- 不要执行会覆盖或删除原始 `.xlsx` 或原始资源目录的操作，除非用户明确授权。
+- 不要执行会覆盖或删除原始资源目录的操作，除非用户明确授权。
 
 ## 5. 任务完成后协议
 

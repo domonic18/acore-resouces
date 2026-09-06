@@ -51,7 +51,6 @@ def _ensure_dirs() -> None:
     for sub in ("mounts", "pets", "npcs"):
         (settings.resources_dir / sub).mkdir(parents=True, exist_ok=True)
     settings.schemas_dir.mkdir(parents=True, exist_ok=True)
-    settings.mapping_dir.mkdir(parents=True, exist_ok=True)
 
 
 def _yaml_path(resource_type: str, resource_id: int, model_folder: str) -> Path:

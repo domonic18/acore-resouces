@@ -28,10 +28,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           资源列表
         </a>
-        <a href="import.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          导入资源
-        </a>
         <a href="export.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           导出补丁
@@ -39,6 +35,15 @@
         <a href="preview.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
           资源预览
+        </a>
+        <div class="nav-label" style="margin-top: 16px">数据查看 🚧</div>
+        <a href="dbc.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          DBC 数据
+        </a>
+        <a href="mpq.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+          MPQ 查看
         </a>
         <div class="nav-label" style="margin-top: 16px">系统</div>
         <a href="settings.html" class="nav-item active">
@@ -60,138 +65,73 @@
     <main class="main">
       <header class="topbar">
         <h1 class="page-title">设置</h1>
+        <div class="topbar-actions">
+          <span style="font-size: 12px; color: var(--text-tertiary);">只读系统信息</span>
+        </div>
       </header>
 
       <div class="content">
-        <div class="detail-layout">
-          <div class="detail-main">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">目录配置</div>
-              </div>
-              <div class="card-body">
-                <div class="form-grid">
-                  <div class="form-group full-width">
-                    <label class="form-label">原始资源目录 (sources/)</label>
-                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/sources">
-                  </div>
-                  <div class="form-group full-width">
-                    <label class="form-label">导入源目录 (imports/)</label>
-                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/imports">
-                  </div>
-                  <div class="form-group full-width">
-                    <label class="form-label">运行时数据目录 (workspace/)</label>
-                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/workspace">
-                  </div>
-                  <div class="form-group full-width">
-                    <label class="form-label">缩略图缓存目录 (assets/)</label>
-                    <input type="text" class="form-input" value="/Users/deadwalk/Code/acore-resouces/assets">
-                  </div>
-                </div>
+        <!-- 数据概览 -->
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 0;">
+          <div class="stat-card">
+            <div class="stat-icon blue">🧭</div>
+            <div class="stat-value">430</div>
+            <div class="stat-label">坐骑资源</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">🐾</div>
+            <div class="stat-value">107</div>
+            <div class="stat-label">宠物资源</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🧙</div>
+            <div class="stat-value">226</div>
+            <div class="stat-label">NPC 资源</div>
+          </div>
+        </div>
+
+        <div class="detail-layout" style="margin-top: 24px; grid-template-columns: 2fr 1fr;">
+          <!-- 路径配置 -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">📁 路径配置</div>
+                <div class="card-subtitle">来自后端环境配置（.env / 默认值），如需修改请编辑后端配置</div>
               </div>
             </div>
-
-            <div class="card" style="margin-top: 24px;">
-              <div class="card-header">
-                <div class="card-title">模型转换工具</div>
-              </div>
-              <div class="card-body">
-                <div class="form-grid">
-                  <div class="form-group full-width">
-                    <label class="form-label">转换器路径</label>
-                    <input type="text" class="form-input" value="tools/model-converter/target/release/model-converter">
-                    <div class="form-hint">Rust 封装的 warcraft-rs CLI 路径</div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">输出格式</label>
-                    <select class="form-select">
-                      <option selected>glTF (.gltf + .bin)</option>
-                      <option>glB (.glb)</option>
-                      <option>两者都生成</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">贴图格式</label>
-                    <select class="form-select">
-                      <option selected>WebP</option>
-                      <option>PNG</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card" style="margin-top: 24px;">
-              <div class="card-header">
-                <div class="card-title">导出默认配置</div>
-              </div>
-              <div class="card-body">
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label class="form-label">补丁输出目录</label>
-                    <input type="text" class="form-input" value="patches/">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">默认版本前缀</label>
-                    <input type="text" class="form-input" value="v">
-                  </div>
-                  <div class="form-group full-width">
-                    <label class="form-label">部署脚本</label>
-                    <input type="text" class="form-input" value="scripts/deploy.sh">
-                    <div class="form-hint">导出后人工确认执行的部署脚本路径</div>
-                  </div>
-                </div>
-              </div>
+            <div style="padding: 0;">
+              <table class="data-table">
+                <tbody>
+                  <tr><td style="width: 260px;">项目根目录</td><td style="font-family: monospace; font-size: 12px;">/Users/gm/Code/acore-resouces</td></tr>
+                  <tr><td>数据目录</td><td style="font-family: monospace; font-size: 12px;">/Users/gm/Code/acore-resouces/data</td></tr>
+                  <tr><td>资源定义（YAML 真相源）</td><td style="font-family: monospace; font-size: 12px;">data/resources</td></tr>
+                  <tr><td>原始资源（M2/BLP）</td><td style="font-family: monospace; font-size: 12px;">sources</td></tr>
+                  <tr><td>工作区</td><td style="font-family: monospace; font-size: 12px;">workspace</td></tr>
+                  <tr><td>补丁任务</td><td style="font-family: monospace; font-size: 12px;">workspace/patch-jobs</td></tr>
+                  <tr><td>SQL 补丁输出（AzerothCore）</td><td style="font-family: monospace; font-size: 12px;">data/sql/azerothcore-updates</td></tr>
+                  <tr><td>日志</td><td style="font-family: monospace; font-size: 12px;">workspace/logs</td></tr>
+                  <tr><td>SQLite 运行时缓存</td><td style="font-family: monospace; font-size: 12px;">workspace/data/acore_resource.db</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
-          <div class="detail-sidebar">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">系统状态</div>
-              </div>
-              <div class="card-body">
-                <div class="meta-list">
-                  <div class="meta-item">
-                    <span class="meta-label">后端状态</span>
-                    <span class="meta-value" style="color: var(--success);">运行中</span>
-                  </div>
-                  <div class="meta-item">
-                    <span class="meta-label">SQLite 同步</span>
-                    <span class="meta-value" style="color: var(--success);">最新</span>
-                  </div>
-                  <div class="meta-item">
-                    <span class="meta-label">registry.json</span>
-                    <span class="meta-value">794 条资源</span>
-                  </div>
-                  <div class="meta-item">
-                    <span class="meta-label">版本</span>
-                    <span class="meta-value">0.1.0-dev</span>
-                  </div>
-                </div>
+          <!-- 健康状态 -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">🗄 健康状态</div>
+                <div class="card-subtitle">关键文件存在性检查</div>
               </div>
             </div>
-
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">维护操作</div>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; font-size: 13px;">
+                <span>registry.json 索引</span>
+                <span class="badge badge-green">正常</span>
               </div>
-              <div class="card-body">
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                  <button class="btn">重新同步 SQLite</button>
-                  <button class="btn">清理缩略图缓存</button>
-                  <button class="btn">重新生成 registry.json</button>
-                  <button class="btn btn-danger">重置运行时数据</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">保存更改</div>
-              </div>
-              <div class="card-body">
-                <button class="btn btn-primary" style="width: 100%;">保存设置</button>
+              <div style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; font-size: 13px;">
+                <span>SQLite 数据库</span>
+                <span class="badge badge-green">正常</span>
               </div>
             </div>
           </div>

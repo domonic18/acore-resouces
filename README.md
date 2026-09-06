@@ -1,6 +1,13 @@
 # 魔兽世界资源库
 
-本项目用于整理、归档和版本管理《魔兽世界》（World of Warcraft）相关资源数据，包括 NPC、宠物、坐骑的预览图、图标以及对应的元数据清单。
+本项目用于整理、归档和版本管理《魔兽世界》（World of Warcraft）相关资源数据，包括 NPC、宠物、坐骑的预览图、图标以及对应的元数据清单，并提供 DBC / SQL / MPQ 补丁导出能力，将自定义资源落地到 AzerothCore 3.3.5a。
+
+## 功能特性
+
+- **资源管理**：坐骑 / 宠物 / NPC 的 CRUD、搜索、筛选、排序、分页，字段校验与跨资源 DBC ID 冲突检测（Web UI + REST API + CLI）。
+- **预览服务**：`.blp` 贴图/图标解码预览、`.m2` 元数据读取、前端 Three.js 原生 M2 3D 渲染与贴图变体切换。
+- **补丁导出**：创建补丁任务 → dry-run 校验 → 构建 DBC 修改 / AzerothCore SQL / MPQ 客户端补丁 → 发布分发（CLI `patch export/build/publish` 与 Web 导出页均可）。
+- **Agent 接口**：Typer CLI + YAML/JSON 真相源，配合 `.claude/skills/` 下的数据补全与补丁构建 Skill。
 
 ## 目录结构
 
@@ -12,30 +19,25 @@ acore-resouces/
 ├── backend/               # Python FastAPI 后端 + CLI
 ├── apps/web/              # React + Vite 前端（Electron 内嵌）
 ├── apps/desktop/          # Electron 桌面外壳
-├── tools/model-converter/ # Rust M2 → glTF 转换工具
+├── tools/                 # wow-dbc-tool / wow-mpq-cli（git 子模块）
+├── docker/                # backend / web 容器构建文件
 ├── data/                  # 纳入 Git 的结构化数据（YAML/JSON/Schema/映射）
+│   ├── resources/         # 单资源 YAML（真相源）
+│   ├── wow-dbc/           # 原始 DBC 真相源（git 子模块）
+│   └── sql/azerothcore-updates/  # 生成的 SQL 补丁（软链接到 AzerothCore）
 ├── sources/               # 原始资源（不入 Git）
 │   ├── mounts/            # 坐骑预览图与原始模型/贴图
 │   ├── pets/              # 宠物预览图与原始模型/贴图
 │   ├── npcs/              # NPC 预览图与原始模型/贴图
 │   └── icons/             # 游戏图标（BLP）及索引
-├── imports/               # 一次性 xlsx 导入源（不入 Git）
-│   ├── 坐骑列表.xlsx
-│   ├── 宠物列表.xlsx
-│   └── NPC列表.xlsx
-├── assets/                # 运行时缩略图、glTF 缓存（不入 Git）
-└── workspace/             # 运行时数据（SQLite、日志等，不入 Git）
+└── workspace/             # 运行时数据（不入 Git）
+    ├── data/              # SQLite 运行时缓存
+    ├── assets/            # BLP → WebP 缩略图缓存
+    ├── patch-jobs/        # 补丁任务元数据
+    ├── mpq/               # 批次 MPQ 构建产物
+    ├── dist/              # 已发布 MPQ 分发目录
+    └── reports/           # 补丁校验报告
 ```
-
-## 核心数据文件
-
-| 文件 | 说明 | 大小（约） |
-|------|------|-----------|
-| `imports/NPC列表.xlsx` | NPC 名称、模型路径、预览图等元数据 | ~439 MB |
-| `imports/宠物列表.xlsx` | 宠物名称、模型路径、预览图等元数据 | ~140 MB |
-| `imports/坐骑列表.xlsx` | 坐骑名称、模型路径、预览图等元数据 | ~153 MB |
-
-这些 `.xlsx` 文件是项目的历史数据源，**不纳入 Git 版本管理**（体积超过 GitHub 单文件限制），后续通过 Release/网盘分发。系统初始化时一次性导入为 `data/resources/` 下的 YAML 文件，导入后 `.xlsx` 不再作为同步来源。
 
 ## 资源目录说明
 
@@ -68,9 +70,25 @@ npm run dev
 cd apps/desktop
 npm install
 npm run dev
+
+# Docker 测试环境（web 服务，端口 8080）
+docker compose up -d --build
 ```
 
 根目录 `package.json` 仅作为命令编排入口，不存放依赖，因此**不要在根目录执行 `npm install`**。
+
+## CLI
+
+```bash
+# 统一入口（在仓库根目录执行）
+uv run --project backend python -m app.cli <group> <command>
+
+# 常用示例
+uv run --project backend python -m app.cli resource list --type mount
+uv run --project backend python -m app.cli patch build --all-requested
+```
+
+命令组：`resource`（资源 CRUD/校验）、`wowhead`（官方数据查询）、`wago`（CASC 文件下载）、`patch`（补丁任务导出/构建/发布）。详见 `docs/arch/03Agent交互架构.md`。
 
 ## 版本管理
 
@@ -90,6 +108,6 @@ git tag -a v1.0.0 -m "初始版本：NPC/宠物/坐骑资源 v1.0.0"
 
 ## 注意事项
 
-- 本项目中的 `.xlsx` 文件和原始资源目录体积较大，不纳入 Git；若需版本管理可考虑本地备份或 Git LFS。
+- 原始资源目录体积较大，不纳入 Git；若需版本管理可考虑本地备份或 Git LFS。
 - 资源图片为游戏相关素材，仅供学习、研究和本地化开发使用。
-- 运行时数据（SQLite、日志、缓存）存放在 `workspace/` 和 `assets/`，不纳入 Git。
+- 运行时数据（SQLite、日志、缓存）存放在 `workspace/`，不纳入 Git。

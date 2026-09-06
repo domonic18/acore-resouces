@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 蔚蓝侍从
   spell_icon_name: inv_horse2bastionmount_blue
   icon_name: inv_horse2bastionmount_blue
 dbc:
@@ -24,9 +25,11 @@ dbc:
   spell:
     id: 80395
     visual_id: 9140395
+    name: 蔚蓝侍从
+    description: 召唤或解散这种坐骑。
     speed: 100
   item:
-    id: 0
+    id: 91395
     class: 15
     subclass: 5
     display_id: 0
@@ -35,6 +38,7 @@ dbc:
 db:
   creature_template:
     entry: 9140395
+    name: 蔚蓝侍从
     subname: ''
     IconName: ''
     AIName: ''
@@ -64,6 +68,8 @@ db:
   creature_model_info:
     display_id: 140395
   item_template:
+    entry: 91395
+    name: 蔚蓝侍从
     class: 15
     subclass: 5
     spellid_1: 55884

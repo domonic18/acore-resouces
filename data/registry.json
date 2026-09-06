@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "counts": {
-    "mounts": 451,
+    "mounts": 430,
     "pets": 107,
     "npcs": 226
   },
@@ -177,7 +177,7 @@
     {
       "id": 24,
       "name": "雄壮商队雷龙",
-      "model_folder": "brontosaurusmount雄壮商队雷龙",
+      "model_folder": "brontosauruspack蛇颈龙坐骑",
       "file": "data/resources/mounts/0024-brontosaurusmount雄壮商队雷龙.yaml",
       "debug_passed": false,
       "added": false
@@ -423,14 +423,6 @@
       "added": false
     },
     {
-      "id": 63,
-      "name": "黄金狮王的缰绳",
-      "model_folder": "AllianceLionMount联盟战狮",
-      "file": "data/resources/mounts/0063-AllianceLionMount联盟战狮.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 64,
       "name": "暴风城逐天战机",
       "model_folder": "allianceshipmount联盟龙鹰飞艇坐骑",
@@ -543,14 +535,6 @@
       "added": false
     },
     {
-      "id": 78,
-      "name": "阿曼尼斗熊",
-      "model_folder": "BEARMOUNT阿曼尼斗熊",
-      "file": "data/resources/mounts/0078-BEARMOUNT阿曼尼斗熊.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 79,
       "name": "蜜背收割者",
       "model_folder": "beemount蜜背收割者",
@@ -563,38 +547,6 @@
       "name": "孢林抱齿兽",
       "model_folder": "bloodtrollfemalebeast_mount孢林抱齿兽",
       "file": "data/resources/mounts/0080-bloodtrollfemalebeast_mount孢林抱齿兽.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 81,
-      "name": "血牙寡妇蛛",
-      "model_folder": "bonespider2蜘蛛坐骑",
-      "file": "data/resources/mounts/0081-bonespider2蜘蛛坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 82,
-      "name": "雄壮商队雷龙",
-      "model_folder": "brontosauruspack蛇颈龙坐骑",
-      "file": "data/resources/mounts/0082-brontosauruspack蛇颈龙坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 83,
-      "name": "丝柔烁光蛾",
-      "model_folder": "butterfly白蝴蝶坐骑",
-      "file": "data/resources/mounts/0083-butterfly白蝴蝶坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 84,
-      "name": "褐色骑乘骆驼",
-      "model_folder": "camelmount2行脚骆驼坐骑",
-      "file": "data/resources/mounts/0084-camelmount2行脚骆驼坐骑.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -1055,14 +1007,6 @@
       "added": false
     },
     {
-      "id": 143,
-      "name": "钴蓝翼手龙",
-      "model_folder": "druidflightzandalaritroll翼龙坐骑",
-      "file": "data/resources/mounts/0143-druidflightzandalaritroll翼龙坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 144,
       "name": "重装狮鹫",
       "model_folder": "elitegryphon重装狮鹫",
@@ -1239,14 +1183,6 @@
       "added": true
     },
     {
-      "id": 166,
-      "name": "煤拳小戈隆",
-      "model_folder": "FelLesserGronn踏血小戈隆",
-      "file": "data/resources/mounts/0166-FelLesserGronn踏血小戈隆.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 167,
       "name": "魔钢歼灭者",
       "model_folder": "FelReaverMount魔钢歼灭者",
@@ -1319,14 +1255,6 @@
       "added": true
     },
     {
-      "id": 176,
-      "name": "飞毯",
-      "model_folder": "FLYINGCARPETMOUNT蠕行飞毯",
-      "file": "data/resources/mounts/0176-FLYINGCARPETMOUNT蠕行飞毯.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 177,
       "name": "黑曜夜之翼",
       "model_folder": "FlyingPanther黑曜夜之翼",
@@ -1395,14 +1323,6 @@
       "name": "巨型灰牙野猪",
       "model_folder": "GiantBoar霜原野猪",
       "file": "data/resources/mounts/0185-GiantBoar霜原野猪.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 186,
-      "name": "石牙斗猪",
-      "model_folder": "GiantBoar霜原野猪",
-      "file": "data/resources/mounts/0186-GiantBoar霜原野猪.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -1535,14 +1455,6 @@
       "added": false
     },
     {
-      "id": 203,
-      "name": "飞天魔像",
-      "model_folder": "GOBLINSHREDDERMOUNT伐木工坐骑",
-      "file": "data/resources/mounts/0203-GOBLINSHREDDERMOUNT伐木工坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 204,
       "name": "地精三轮摩托",
       "model_folder": "goblintrike地精三轮摩托",
@@ -1663,14 +1575,6 @@
       "added": false
     },
     {
-      "id": 219,
-      "name": "勇猛的战狼",
-      "model_folder": "HordePVPMount勇猛的战狼",
-      "file": "data/resources/mounts/0219-HordePVPMount勇猛的战狼.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 220,
       "name": "琥珀巨蝎",
       "model_folder": "HordeScorpionMount琥珀巨蝎",
@@ -1779,14 +1683,6 @@
       "name": "R-21/X型空中单位",
       "model_folder": "hunterkillership锈栓抵抗者",
       "file": "data/resources/mounts/0234-hunterkillership锈栓抵抗者.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 235,
-      "name": "锈栓抵抗者",
-      "model_folder": "hunterkillership锈栓抵抗者",
-      "file": "data/resources/mounts/0235-hunterkillership锈栓抵抗者.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -1911,14 +1807,6 @@
       "added": true
     },
     {
-      "id": 251,
-      "name": "踏血小戈隆",
-      "model_folder": "LesserGronn踏血小戈隆",
-      "file": "data/resources/mounts/0251-LesserGronn踏血小戈隆.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 252,
       "name": "煤拳小戈隆",
       "model_folder": "LesserGronn踏血小戈隆",
@@ -1999,22 +1887,6 @@
       "added": false
     },
     {
-      "id": 262,
-      "name": "灰谷奇美拉",
-      "model_folder": "maldraxxusflyermount髓牙",
-      "file": "data/resources/mounts/0262-maldraxxusflyermount髓牙.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 263,
-      "name": "荧光法力鳐",
-      "model_folder": "manaraymount鳐鱼缰绳",
-      "file": "data/resources/mounts/0263-manaraymount鳐鱼缰绳.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 264,
       "name": "黯光刀翼兽",
       "model_folder": "mawexpansionfliermount扩张飞龙缰绳",
@@ -2059,14 +1931,6 @@
       "name": "机轮车W型",
       "model_folder": "mechacycle锈废漂移者",
       "file": "data/resources/mounts/0269-mechacycle锈废漂移者.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 270,
-      "name": "锈废漂移者",
-      "model_folder": "mechacycle锈废漂移者",
-      "file": "data/resources/mounts/0270-mechacycle锈废漂移者.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -2216,7 +2080,7 @@
     },
     {
       "id": 289,
-      "name": "necrodragon鳞龙坐骑",
+      "name": "腐骨死灵龙",
       "model_folder": "necrodragon鳞龙坐骑",
       "file": "data/resources/mounts/0289-necrodragon鳞龙坐骑.yaml",
       "debug_passed": false,
@@ -2224,17 +2088,9 @@
     },
     {
       "id": 290,
-      "name": "nightmareroc夜鸦坐骑",
+      "name": "梦魇巨鸦",
       "model_folder": "nightmareroc夜鸦坐骑",
       "file": "data/resources/mounts/0290-nightmareroc夜鸦坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 291,
-      "name": "血牙寡妇蛛",
-      "model_folder": "nightmarespider夜蜘蛛坐骑",
-      "file": "data/resources/mounts/0291-nightmarespider夜蜘蛛坐骑.yaml",
       "debug_passed": false,
       "added": false
     },
@@ -2272,7 +2128,7 @@
     },
     {
       "id": 296,
-      "name": "nzothserpent大毒蛇坐骑",
+      "name": "恩佐斯魔蛇",
       "model_folder": "nzothserpent大毒蛇坐骑",
       "file": "data/resources/mounts/0296-nzothserpent大毒蛇坐骑.yaml",
       "debug_passed": false,
@@ -2488,7 +2344,7 @@
     },
     {
       "id": 323,
-      "name": "ProtoDragon地狱咆哮战龙",
+      "name": "地狱咆哮战龙",
       "model_folder": "ProtoDragon地狱咆哮战龙",
       "file": "data/resources/mounts/0323-ProtoDragon地狱咆哮战龙.yaml",
       "debug_passed": false,
@@ -2693,14 +2549,6 @@
       "file": "data/resources/mounts/0348-RIDINGHORSE鬼灵战马.yaml",
       "debug_passed": true,
       "added": true
-    },
-    {
-      "id": 349,
-      "name": "装甲拉扎什迅猛龙",
-      "model_folder": "RIDINGRAPTOR野蛮迅猛龙",
-      "file": "data/resources/mounts/0349-RIDINGRAPTOR野蛮迅猛龙.yaml",
-      "debug_passed": false,
-      "added": false
     },
     {
       "id": 350,
@@ -2928,7 +2776,7 @@
     },
     {
       "id": 378,
-      "name": "sharkray鳐鱼坐骑",
+      "name": "幽紫深渊鳐",
       "model_folder": "sharkray鳐鱼坐骑",
       "file": "data/resources/mounts/0378-sharkray鳐鱼坐骑.yaml",
       "debug_passed": false,
@@ -3040,7 +2888,7 @@
     },
     {
       "id": 392,
-      "name": "soulhound多面体坐骑",
+      "name": "苍白缚魂猎犬",
       "model_folder": "soulhound多面体坐骑",
       "file": "data/resources/mounts/0392-soulhound多面体坐骑.yaml",
       "debug_passed": false,
@@ -3064,7 +2912,7 @@
     },
     {
       "id": 395,
-      "name": "spidercrab红蜘蛛坐骑",
+      "name": "绯红始源蟹蛛",
       "model_folder": "spidercrab红蜘蛛坐骑",
       "file": "data/resources/mounts/0395-spidercrab红蜘蛛坐骑.yaml",
       "debug_passed": false,
@@ -3080,7 +2928,7 @@
     },
     {
       "id": 397,
-      "name": "steamtank公羊战车",
+      "name": "黑铁公羊战车",
       "model_folder": "steamtank公羊战车",
       "file": "data/resources/mounts/0397-steamtank公羊战车.yaml",
       "debug_passed": false,
@@ -3096,7 +2944,7 @@
     },
     {
       "id": 399,
-      "name": "steward蓝马",
+      "name": "蔚蓝侍从",
       "model_folder": "steward蓝马",
       "file": "data/resources/mounts/0399-steward蓝马.yaml",
       "debug_passed": false,
@@ -3208,7 +3056,7 @@
     },
     {
       "id": 413,
-      "name": "threshershark鲨鱼坐骑",
+      "name": "碧波长尾鲨",
       "model_folder": "threshershark鲨鱼坐骑",
       "file": "data/resources/mounts/0413-threshershark鲨鱼坐骑.yaml",
       "debug_passed": false,
@@ -3391,14 +3239,6 @@
       "added": false
     },
     {
-      "id": 436,
-      "name": "邪恶战蛛",
-      "model_folder": "vicioushordespider邪恶蜘蛛",
-      "file": "data/resources/mounts/0436-vicioushordespider邪恶蜘蛛.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 437,
       "name": "勇猛的吉尔尼斯战马",
       "model_folder": "vicioushorse勇猛的吉尔尼斯战马",
@@ -3552,7 +3392,7 @@
     },
     {
       "id": 457,
-      "name": "whaleshark鲸鲨坐骑",
+      "name": "翡翠鲸鲨",
       "model_folder": "whaleshark鲸鲨坐骑",
       "file": "data/resources/mounts/0457-whaleshark鲸鲨坐骑.yaml",
       "debug_passed": false,
@@ -3591,26 +3431,18 @@
       "added": false
     },
     {
-      "id": 463,
-      "name": "奢华暴掠龙",
-      "model_folder": "zandalaridevilsaur迅猛龙坐骑",
-      "file": "data/resources/mounts/0463-zandalaridevilsaur迅猛龙坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
-      "id": 464,
-      "name": "翡翠原始恐角龙",
-      "model_folder": "zandalaritriceratops犍牛坐骑",
-      "file": "data/resources/mounts/0464-zandalaritriceratops犍牛坐骑.yaml",
-      "debug_passed": false,
-      "added": false
-    },
-    {
       "id": 465,
       "name": "暗月飞船",
       "model_folder": "zeppelinmount暗月飞船",
       "file": "data/resources/mounts/0465-zeppelinmount暗月飞船.yaml",
+      "debug_passed": false,
+      "added": false
+    },
+    {
+      "id": 466,
+      "name": "幼年商队雷龙",
+      "model_folder": "brontosaurusmount雄壮商队雷龙",
+      "file": "data/resources/mounts/0466-brontosaurusmount雄壮商队雷龙.yaml",
       "debug_passed": false,
       "added": false
     }

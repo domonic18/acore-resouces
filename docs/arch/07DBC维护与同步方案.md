@@ -1,6 +1,6 @@
 # DBC 维护职责迁移与同步方案
 
-> **状态**：方案已落地。`patch export` / `patch build` / `patch publish` 三段式工作流已实现；`dbc` 与 `deploy` 命令组尚未在 CLI 中暴露（见第六节待办）。
+> **状态**：方案已落地。`patch export` / `patch build` / `patch publish` 三段式工作流已实现（CLI 与 HTTP 端点双入口，Web 导出页 `/export` 提供全流程可视化）；`dbc` 与 `deploy` 命令组尚未在 CLI 中暴露（见第六节待办）。
 
 ## 一、背景与问题
 
@@ -84,7 +84,7 @@ uv run --project backend python -m app.cli patch <command> [options]
 | 命令 | 用途 | 关键参数 |
 |------|------|---------|
 | `patch export` | 为单个资源创建补丁任务 | `--type`、`--id` |
-| `patch build` | 批量构建 DBC/SQL/MPQ | `--all-requested` 或 `--jobs` 多次；`--dry-run` |
+| `patch build` | 批量构建 DBC/SQL/MPQ | `--all-requested` 或 `--jobs` 多次；`--dry-run`；`--force`（已存在 DBC 记录强制重写、SQL 跳过历史条目检查） |
 | `patch publish` | 发布 MPQ 到 `workspace/dist/` | `--start-number`、`--dry-run` |
 | `patch list` | 分页列出补丁任务 | `--status`、`--type`、`--limit` |
 | `patch get` | 查看单个补丁任务详情 | `{job_id}` |
@@ -146,6 +146,24 @@ workspace/patch-jobs/mount_0003/
 - `patch build` 负责按 `job.json` 现场读取资源，调用 `wow-dbc-tool` / `wow-mpq-cli` 生成最终产物。
 - 应用 DBC/SQL、同步部署需要人工确认或显式参数。
 
+### 5.4 任务状态流转
+
+状态存储在 `job.json` 的 `status` 字段（`backend/app/schemas/patch.py` 中 `PatchJobStatus`）：
+
+```text
+requested ──patch build──▶ generated ──人工应用 SQL/MPQ──▶ applied
+    │       （成功）   │
+    │                 └──构建失败──▶ failed
+    └──构建失败──▶ failed
+```
+
+| 状态 | 触发时机 |
+|------|---------|
+| `requested` | `patch export` / Web 导出页创建任务后。 |
+| `generated` | `patch build` 成功生成该任务的 DBC/SQL 产物后。 |
+| `failed` | 构建过程出错（如 DBC 冲突、资源校验失败）后。 |
+| `applied` | 人工将 SQL 应用到 `acore-world`、MPQ 放入客户端后手动标记（CLI `patch update` / Web 任务列表）。 |
+
 ## 六、尚未实现：`dbc` 与 `deploy` 命令组（规划中）
 
 `backend/app/cli/` 当前仅注册了 `patch` 命令组。以下两组尚未落地，使用时通过手工命令替代。
@@ -177,7 +195,8 @@ workspace/patch-jobs/mount_0003/
 | `backend/app/services/patch_exporter.py` | 创建补丁任务目录、写 `job.json` |
 | `backend/app/services/mount_patch_builder.py` | 现场读取真相源构建 `JobContext`，调用 `wow-dbc-tool` / `wow-mpq-cli` 构建 DBC/SQL/MPQ |
 | `backend/app/services/patch_publisher.py` | 发布 MPQ 到 `workspace/dist/{timestamp}/` |
-| `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request`、`GET /api/patches` |
+| `backend/app/services/build_runner.py` | HTTP 侧构建运行器：线程锁串行化 + 状态查询（`POST /api/patches/build` 的后台执行体） |
+| `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request`、`GET /api/patches`、`POST /api/patches/build`、`GET /api/patches/build/status`、`POST /api/patches/publish`、`GET/PUT /api/patches/{job_id}` |
 | `backend/app/cli/patch.py` | `patch export/build/publish/list/get/update` CLI |
 | `backend/app/schemas/patch.py` | `PatchJob`、`PatchJobUpdateRequest` 等 Pydantic 模型 |
 | `.claude/skills/build-mount-patch/SKILL.md` | Claude Skill：读取补丁任务（job.json + 真相源 YAML）生成最终 DBC/SQL/MPQ |
@@ -220,7 +239,160 @@ workspace/patch-jobs/mount_0003/
 | `export-mount-jobs` | Web 端批量勾选坐骑导出 | 等价于多次 `patch export` |
 | `publish-patch` | 将 `workspace/mpq/` 发布到 `workspace/dist/` | 等价于 `patch publish` |
 
-## 十二、相关文档
+## 十二、规划：补丁产物审计记录 🚧
+
+> 对应需求 v1.1 §3.7（补丁任务审查记录）。目标：字段级改动审计，让用户能逐项核对生成结果与预期。
+
+### 12.1 数据源与可行性
+
+审计数据**无需重新生成**——构建主流程内存中已持有字段级完整计划：
+
+| 数据 | 来源 | 现状 |
+|------|------|------|
+| DBC 改动计划 | `ctx.dbc_plan`（`schemas/patch.py` `DBCPlan`/`DBCPlanFile`，operations 含 action/record_id/fields） | ✅ 字段级完整，dry-run 与正式构建同源 |
+| SQL 改动计划 | `ctx.sql_plan`（`SQLPlan`/`SQLPlanTable`，表名+记录 dict） | ✅ 可直接还原"表+记录+字段"结构 |
+| MPQ 文件清单 | `build_mpq` 返回的 `job_assets: dict[job_id, list[Path]]` | ⚠️ 内存可得但未持久化 |
+| DBC before 值 | `apply_dbc_operations` 中读到 `existing` 记录 | ❌ 未捕获，需增加 `existing.to_dict()` 保留 |
+
+### 12.2 产物设计
+
+- **批次级审计文件**：`workspace/reports/{timestamp}/audit-report.json`，与 `validation-report.json` 同目录：
+  - `jobs`：本次制作资源清单（job_id、名称、模型文件夹）
+  - `dbc`：每文件 operations，`before`（force 重写时捕获）→ `after`（计划字段值）
+  - `sql`：每文件目标表、记录、字段级内容
+  - `mpq`：批次 MPQ 路径、内部文件清单、与上一批次的文件级 diff（新增/替换）
+- **任务级关联**：`job.json` 的 `artifacts` 增 `audit` 路径字段；`schemas/patch.py` 的 DBC operation 模型增可选 `before` 字段。
+- **可对照**：审计结构与 dry-run `plans/{dbc-plan,sql-plan,assets}` 同构（计划 → 实际产物逐项比对）。
+
+### 12.3 入口无关与查阅
+
+- 审计在 `build_mount_patches` 服务层统一生成——CLI `patch build`、HTTP `POST /api/patches/build`（`build_runner`）、AI Agent 调用均同源，天然满足"入口无关"。
+- 查阅方式（规划）：CLI `patch audit {timestamp|job_id}`、Web 导出页任务审计视图、JSON 导出。
+
+### 12.4 与现有校验报告的关系
+
+`validation-report.json`（ID 一致性 pass/fail 检查）保留不变；`audit-report.json` 回答"改了什么"，前者回答"对不对"。
+
+## 十三、规划：任务删除与中间产物清理 🚧
+
+> 对应需求 v1.1 §3.9.1 / §3.9.2。
+
+### 13.1 任务记录删除
+
+| 层 | 改动 |
+|----|------|
+| 服务 | `patch_exporter.py` 增 `delete_patch_job(job_id)`（校验 job_id 命名模式防路径穿越，rmtree 任务目录） |
+| API | `DELETE /api/patches/{job_id}` |
+| CLI | `patch delete {job_id} [--yes]` |
+| Web | 任务列表加操作列 + 二次确认 |
+
+边界：删除仅移除 `workspace/patch-jobs/{job_id}/`；真相源（YAML/DBC）与已生成 SQL/MPQ 产物默认保留；批次级审计记录不随任务删除。
+
+### 13.2 中间产物清理
+
+- **新服务** `backend/app/services/workspace_cleaner.py`（规划）：
+  - 清理目标：`workspace/patch-jobs/`（含遗留 `plans/`）、`workspace/mpq/{timestamp}/`、`workspace/reports/{timestamp}/`
+  - dry-run 预览：列出将被清理的路径与占用体积
+  - 守卫：`build_runner` 构建运行中拒绝清理；真相源与 `workspace/dist/` 永不在清理范围；MPQ 批次若已被 publish（dist 中存在对应产物）默认跳过
+- 入口（规划）：CLI `patch clean [--dry-run] [--older-than]`、API、Web 导出页/设置页按钮。
+
+## 十四、规划：MPQ 加密与混淆（不改子模块路线）🚧
+
+> 对应需求 v1.1 §3.8。前提：不修改 `wow-mpq-cli` 子模块，仅用 `mpqcli create` 现有参数。
+
+### 14.1 混淆等级
+
+| 等级 | 参数 | 效果 |
+|------|------|------|
+| `none`（现状） | — | 常规 MPQ，任意工具可完整解包 |
+| `basic`（基础混淆，推荐默认） | `--file-flags1 0 --file-flags2 0`（省略内部 `(listfile)`/`(attributes)` 文件） | 常见 MPQ 工具无法列出文件名，需逐个猜路径才能提取 |
+| `encrypted`（实验性） | `basic` + `--flags 0x00010000`（MPQ_FILE_ENCRYPTED） | 文件内容按 MPQ 标准加密存储 |
+
+可选附加：`-s` 弱数字签名（防篡改校验，非保密）。
+
+### 14.2 已知限制（须如实告知用户）
+
+- StormLib 的 MPQ 文件加密密钥由**文件名派生**、客户端可自动解密——该加密**不构成真正的保密**，只提高提取门槛。
+- 内部路径**不可改名**：客户端按 `DBFilesClient\*.dbc` 等标准路径加载，混淆空间仅在"是否可枚举"层面。
+- `encrypted` 级别下客户端能否正常读取加密的 `DBFilesClient` **需测试服实测**，存在不兼容风险；`basic` 级不改变文件内容，客户端无感。
+- 强混淆（自定义密钥、彻底改名映射）需 fork `wow-mpq-cli` 子模块——记录为备选升级路线，本轮不采用。
+
+### 14.3 集成点
+
+**配置面**：
+
+- HTTP：`POST /api/patches/build` 请求体可选 `obfuscation: none | basic | encrypted`（默认 `none`，`basic` 验证稳定后迁移默认值）。
+- CLI：`patch build --obfuscation <level>`。
+- `build_mpq`（`mount_patch_builder.py`）按该参数在 `mpqcli create` 追加对应参数（见 14.1 等级表）。
+
+**产物标记**：
+
+- 构建时写入 `workspace/mpq/{batch}/manifest.json`：文件清单 + `obfuscation` 字段——同一产物兼作审计对照与 MPQ 查看器清单回退（见 [04 §9.4](04模型与贴图渲染架构.md)）。
+- `publish` 到 `workspace/dist/` 时沿用批次混淆标记，避免把 `encrypted` 产物误判为损坏。
+- Web 任务列表以徽章显示混淆等级。
+
+**与查看器联动**：`basic` 混淆档案的枚举依赖 manifest / 外部 listfile；`encrypted` 不影响系统侧枚举（StormLib 按文件名派生密钥自动解密）。见 04 §9.4。
+
+**上线顺序与验证**：
+
+1. 先启用 `basic`（文件内容不变、客户端无感，无验证依赖）。
+2. `encrypted` 需测试服实测通过后才开放，checklist：① `DBFilesClient` 的 DBC 正常加载 → ② `Interface` 图标 BLP 正常显示 → ③ creature 模型/贴图正常渲染 → ④ 骑乘后进入世界无崩溃；逐项记录环境与结果。
+3. 回滚：同批次 `patch build --force --obfuscation none` 重建并重新发布。
+
+## 十五、规划：DBC 数据查看器（只读）🚧
+
+> 对应需求 v1.3 §3.10。目标：在系统内**只读**查看 / 搜索 `data/wow-dbc/src/dbc/` 的 DBC 记录，便于数据排查与对照。查看器不提供任何写入口——数据修改统一经资源编辑 + `patch build`（YAML 真相源单向数据流）。
+
+### 15.1 能力与数据源
+
+| 能力 | 可行性 | 现状依据 |
+|------|--------|---------|
+| 查看 / 搜索 | ✅ 能力现成 | `wow_dbc_tool` 的 `DBCFile.query` 支持按字段过滤（`ID__gt`、`Name__contains` 等后缀语法，`dbc_file.py:86, 18-26`）；`schemas/` 目录 245 个 JSON schema 与 245 个 DBC 一一对应（`schema/registry.py:95-113`）；后端已有 mtime 进程缓存模式可泛化（`services/dbc_query.py:28-62`） |
+
+规模约束：`data/wow-dbc/src/dbc/` 共 **245 个文件约 93MB**（Spell.dbc 最大）→ 记录读取必须分页 + mtime 缓存，禁止全量载入响应。
+
+现有差距：`api/dbc.py` 仅硬编码 ItemDisplayInfo 两个 GET 端点（`api/dbc.py:13-35`）；前端无通用 DBC 表格组件。
+
+### 15.2 来源资源标注
+
+只读查看器的核心增值：服务层从 `data/registry.json` + 各资源 YAML 的 `dbc.*` 子结构派生来源映射（`{(dbc_file, record_id) → [来源资源]}`，按 mtime 缓存），记录表格对命中记录标注来源资源徽章，点击跳转资源详情：
+
+| 类别 | YAML 字段 → DBC 文件 |
+|------|---------------------|
+| 补丁写入（patch build 维护） | `dbc.creature_model_data.id` → CreatureModelData.dbc、`dbc.creature_display_info.id` → CreatureDisplayInfo.dbc、`dbc.spell.id` → Spell.dbc、`dbc.item.id` → Item.dbc |
+| 官方引用（资源指向官方记录） | `dbc.item.display_id` → ItemDisplayInfo.dbc、`dbc.spell.icon_id` → SpellIcon.dbc、`dbc.spell.visual_id` → SpellVisual*.dbc |
+
+（pets / npcs 取各自 YAML 子集；字段结构以 `schemas/dbc.py:45-107` 与实际 YAML 为准。两类记录在查看器中仅作标注区分，均不可编辑。）
+
+### 15.3 API / CLI / Web 设计
+
+**API**（扩展 `api/dbc.py`，规划；仅只读 GET；分页遵循系统约定 `page/page_size` + `{total, page, page_size, items}`，参照 `resources.py:216-233`）：
+
+| 端点 | 说明 |
+|------|------|
+| `GET /api/dbc/files` | DBC 文件清单（记录数、大小、schema 注册状态） |
+| `GET /api/dbc/{file}/records` | 记录分页列表（`page/page_size` + 字段过滤，字段名来自 schema） |
+| `GET /api/dbc/{file}/records/{id}` | 单记录详情（含来源资源标注） |
+
+**服务模块布局**：通用读取泛化沿用 `services/dbc_query.py:28-62` 的 mtime 缓存模式扩展；来源资源标注集合派生落同模块（纯函数），`api/dbc.py` 仅做薄路由。
+
+**CLI**：扩展 §6.1 已规划的 `dbc` 组——子模块管理命令保留，新增数据查看子命令 `dbc query / get`（只读）。
+
+**Web**：新路由 `/dbc` + 只读页面（文件列表侧栏 + `DbcTableViewer` 记录表格 + 来源资源徽章）；`DbcTableViewer` 为新组件，与 04 §九 MPQ 查看器共用。
+
+### 15.4 与其他规划的关系
+
+- **§6.1 `dbc` 命令组**：子模块管理（status/pull/diff）与数据查看（query/get）同组不同子命令。
+- **04 §九 MPQ 查看器**：通用 DBC 读取能力统一由本节定义（api/dbc.py）；MPQ 内提取出的 `.dbc` 复用同一 API 形态与 `DbcTableViewer`。
+- **§十二 审计记录**：查看器不产生写操作；DBC 变化仍全部来自 `patch build`，其审计由 §十二 覆盖。
+
+### 15.5 已知限制（须如实提示）
+
+- 仅支持标准 20 字节 WDBC 格式（`header.py:15-24`）；WDB2 等扩展格式不支持（现有 245 个文件均在能力范围内）。
+- 4 字节对齐假设：`record_size ≠ field_count × 4` 的文件信任原 header 解析（`header.py:66` 注释），字段展示以 schema 为准。
+- 字符串存储编码为 latin-1 系，界面显示非 ASCII 字符时需按实际编码处理，异常字节显示转义而非报错。
+
+## 十六、相关文档
 
 | 文档 | 路径 |
 |------|------|

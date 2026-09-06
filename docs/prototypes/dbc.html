@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBC 数据 — acore-resouces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mark">A</div>
+        <div>
+          <div class="logo-text">acore-resouces</div>
+          <div class="logo-version">AzerothCore 资源管理</div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">主菜单</div>
+        <a href="index.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          仪表盘
+        </a>
+        <a href="resources.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          资源列表
+        </a>
+        <a href="export.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出补丁
+        </a>
+        <a href="preview.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          资源预览
+        </a>
+        <div class="nav-label" style="margin-top: 16px">数据查看 🚧</div>
+        <a href="dbc.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          DBC 数据
+        </a>
+        <a href="mpq.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+          MPQ 查看
+        </a>
+        <div class="nav-label" style="margin-top: 16px">系统</div>
+        <a href="settings.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          设置
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">GM</div>
+          <div class="user-info">
+            <div class="user-name">Game Master</div>
+            <div class="user-role">资源管理员</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title">DBC 数据</h1>
+        <div class="topbar-actions">
+          <span class="badge badge-gray">🚧 规划中</span>
+          <span style="font-size: 12px; color: var(--text-tertiary);">只读查看器 · 数据修改经资源编辑 + 补丁流程</span>
+        </div>
+      </header>
+
+      <div class="content" style="display: grid; grid-template-columns: 280px minmax(0, 1fr) 400px; gap: 20px; align-items: start;">
+        <!-- 文件列表 -->
+        <div class="card">
+          <div class="card-header" style="padding: 14px 16px;">
+            <div>
+              <div class="card-title">📂 DBC 文件</div>
+              <div class="card-subtitle">data/wow-dbc/src/dbc</div>
+            </div>
+          </div>
+          <div style="padding: 12px 16px 4px;">
+            <div class="search-box" style="width: 100%;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="搜索文件名..." style="width: 100%;">
+            </div>
+          </div>
+          <div style="max-height: 560px; overflow-y: auto; padding: 8px;" class="file-tree">
+            <div class="file-tree-item" style="background: var(--accent-soft); color: var(--accent); justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                <b style="font-weight: 600;">Spell.dbc</b>
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">38.6 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                CreatureDisplayInfo.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">12.4 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                CreatureModelData.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">2.1 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                Item.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">1.2 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                ItemDisplayInfo.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">8.9 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                SpellIcon.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">0.3 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                Map.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">0.1 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                ChrRaces.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">&lt; 0.1 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                Talent.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">0.2 MB</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+                SoundEntries.dbc
+              </span>
+              <span style="font-size: 10px; color: var(--text-tertiary); flex-shrink: 0;">1.8 MB</span>
+            </div>
+          </div>
+          <div class="pagination" style="padding: 12px 16px;">
+            <span style="font-size: 11px;">共 245 个文件 · 93 MB<br>243 个已注册 schema</span>
+          </div>
+        </div>
+
+        <!-- 记录表格 -->
+        <div class="card">
+          <div class="card-header" style="flex-wrap: wrap; gap: 8px;">
+            <div>
+              <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                Spell.dbc
+                <span class="badge badge-green">schema 已注册</span>
+                <span class="badge badge-purple">来源资源标注 452 条</span>
+              </div>
+              <div class="card-subtitle">42,175 条记录 · 38.6 MB · mtime 2026-09-03 15:40（上次 patch build 写入）· 表格为摘要列，点击行查看全部字段</div>
+            </div>
+            <div class="table-filters">
+              <select class="filter-select" style="min-width: 130px;">
+                <option selected>ID</option>
+                <option>Name_lang</option>
+                <option>NameSubtext_lang</option>
+                <option>Description_lang</option>
+                <option>SpellIconID</option>
+              </select>
+              <select class="filter-select" style="min-width: 90px;">
+                <option selected>contains</option>
+                <option>eq</option>
+                <option>gt</option>
+                <option>lt</option>
+              </select>
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" placeholder="如 80000 或 符文牡鹿" style="width: 200px;">
+              </div>
+              <button class="btn btn-sm btn-primary">搜索</button>
+              <button class="btn btn-sm">列显示 6 / 235 ▾</button>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 20px; border-bottom: 1px solid var(--border);">
+            <span class="badge badge-gray">文件头：WDBC</span>
+            <span class="badge badge-gray">字段数 235 / 条</span>
+            <span class="badge badge-gray">记录大小 940 B</span>
+            <span class="badge badge-gray">字符串块 1.24 MB</span>
+            <span class="badge badge-gray">locale zhCN</span>
+            <span class="badge badge-gray">build 12340</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 90px;">ID</th>
+                  <th>Name_lang</th>
+                  <th>NameSubtext_lang</th>
+                  <th>Description_lang</th>
+                  <th style="width: 110px;">SpellIconID</th>
+                  <th style="width: 200px;">来源资源</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family: monospace;">116</td>
+                  <td style="color: var(--text-primary);">寒冰箭</td>
+                  <td style="color: var(--text-tertiary);">等级 1</td>
+                  <td style="color: var(--text-secondary);">向目标射出一支寒冰箭，造成 18 至 21 点冰霜伤害并使其移动速度降低 50%，持续 5 秒。</td>
+                  <td style="font-family: monospace;">21</td>
+                  <td><span style="font-size: 11px; color: var(--text-tertiary);">—</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">133</td>
+                  <td style="color: var(--text-primary);">火球术</td>
+                  <td style="color: var(--text-tertiary);">等级 1</td>
+                  <td style="color: var(--text-secondary);">投掷一枚火球，造成 19 至 25 点火焰伤害。</td>
+                  <td style="font-family: monospace;">11</td>
+                  <td><span style="font-size: 11px; color: var(--text-tertiary);">—</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">79998</td>
+                  <td style="color: var(--text-primary);">石牙斗猪</td>
+                  <td style="color: var(--text-tertiary);">Mount</td>
+                  <td style="color: var(--text-secondary);">召唤或解散一头可供骑乘的石牙斗猪。</td>
+                  <td style="font-family: monospace;">132416</td>
+                  <td><span style="font-size: 11px; color: var(--text-tertiary);">—</span></td>
+                </tr>
+                <tr style="background: var(--accent-soft); cursor: pointer;">
+                  <td style="font-family: monospace;">▶ 80000</td>
+                  <td style="color: var(--text-primary);">梦光符文牡鹿</td>
+                  <td style="color: var(--text-tertiary);">Mount</td>
+                  <td style="color: var(--text-secondary);">召唤或解散一头可供骑乘的梦光符文牡鹿。这是一种飞行坐骑。</td>
+                  <td style="font-family: monospace;">136221</td>
+                  <td><a href="resource-detail.html" class="badge badge-purple">0003 · 梦光符文牡鹿 →</a></td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">80001</td>
+                  <td style="color: var(--text-primary);">死亡使者的绽翼兽</td>
+                  <td style="color: var(--text-tertiary);">Mount</td>
+                  <td style="color: var(--text-secondary);">召唤或解散一只可供骑乘的死亡使者的绽翼兽。这是一种飞行坐骑。</td>
+                  <td style="font-family: monospace;">136118</td>
+                  <td><a href="resource-detail.html" class="badge badge-purple">0091 · 死亡使者的绽翼兽 →</a></td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">80002</td>
+                  <td style="color: var(--text-primary);">绿色龙龟</td>
+                  <td style="color: var(--text-tertiary);">Mount</td>
+                  <td style="color: var(--text-secondary);">召唤或解散一头可供骑乘的绿色龙龟。</td>
+                  <td style="font-family: monospace;">136240</td>
+                  <td><a href="resource-detail.html" class="badge badge-purple">0146 · 绿色龙龟 →</a></td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">80003</td>
+                  <td style="color: var(--text-primary);">影叶符文牡鹿</td>
+                  <td style="color: var(--text-tertiary);">Mount</td>
+                  <td style="color: var(--text-secondary);">召唤或解散一头可供骑乘的影叶符文牡鹿。这是一种飞行坐骑。</td>
+                  <td style="font-family: monospace;">136221</td>
+                  <td><span style="font-size: 11px; color: var(--text-tertiary);">—</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>共 42,175 条 · 每页 20 条 · 当前过滤 <span style="font-family: monospace;">ID__gte=79990</span> · 点击行在右侧查看完整记录</span>
+            <div class="page-nav">
+              <button class="page-btn">‹</button>
+              <button class="page-btn">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn active">3</button>
+              <button class="page-btn">4</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">2,109</button>
+              <button class="page-btn">›</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 记录详情：全字段 -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                记录 #80000
+                <a href="resource-detail.html" class="badge badge-purple">来源：0003 · 梦光符文牡鹿 →</a>
+              </div>
+              <div class="card-subtitle">Spell.dbc · 展示全部 235 个字段（名称 · 类型 · 值）</div>
+            </div>
+            <span class="badge badge-gray">只读</span>
+          </div>
+          <div style="padding: 12px 16px 4px;">
+            <div class="search-box" style="width: 100%;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="搜索字段名 / 值..." style="width: 100%;">
+            </div>
+          </div>
+          <div style="max-height: 620px; overflow-y: auto;">
+            <div style="padding: 12px 16px 6px; font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em;">▾ 基本信息 <span style="font-weight: 400; text-transform: none;">· 13 个字段</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">ID <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">80000</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Name_lang <i style="font-style: normal; color: var(--text-tertiary);">string</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">梦光符文牡鹿</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">NameSubtext_lang <i style="font-style: normal; color: var(--text-tertiary);">string</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">Mount</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Description_lang <i style="font-style: normal; color: var(--text-tertiary);">string</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">召唤或解散一头可供骑乘的梦光符文牡鹿。这是一种飞行坐骑。</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">AuraDescription_lang <i style="font-style: normal; color: var(--text-tertiary);">string</i></span><span style="font-size: 12px; color: var(--text-tertiary); text-align: right;">（空）</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">SpellFamilyName <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Category <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Dispel <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0（无）</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Mechanic <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0（无）</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Attributes[0] <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right; font-family: monospace;">0x00000180</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Attributes[1] <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right; font-family: monospace;">0x00002000</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Attributes[2] <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right; font-family: monospace;">0x00000000</span></div>
+
+            <div style="padding: 12px 16px 6px; font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em;">▾ 图标与视觉 <span style="font-weight: 400; text-transform: none;">· 4 个字段</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">SpellIconID <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right; font-family: monospace;">136221</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">ActiveIconID <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">SpellVisual[0] <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right; font-family: monospace;">14382</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">SpellVisual[1] <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+
+            <div style="padding: 12px 16px 6px; font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em;">▾ 施法与消耗 <span style="font-weight: 400; text-transform: none;">· 10 个字段</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">CastingTimeIndex <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">1（瞬发）</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">DurationIndex <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">21</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">RangeIndex <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">1（自身）</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Speed <i style="font-style: normal; color: var(--text-tertiary);">float</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">PowerType <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0（法力）</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">ManaCost <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">ManaCostPercentage <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">ManaCostPerlevel <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">RecoveryTime <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">CategoryRecoveryTime <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+
+            <div style="padding: 12px 16px 6px; font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em;">▾ 效果（3 槽位） <span style="font-weight: 400; text-transform: none;">· 15 个字段</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border); background: rgba(99, 102, 241, 0.06);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Effect_1 <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">78 · Apply Aura</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectBasePoints_1 <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border); background: rgba(99, 102, 241, 0.06);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectAura_1 <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">207 · Mounted</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectAuraPeriod_1 <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border); background: rgba(99, 102, 241, 0.06);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectMiscValue_1 <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">140000 → CreatureDisplayInfo.dbc</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">Effect_2 / Effect_3 <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0 / 0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectBasePoints_2 / _3 <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0 / 0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectAura_2 / _3 <i style="font-style: normal; color: var(--text-tertiary);">uint32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0 / 0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectAuraPeriod_2 / _3 <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0 / 0</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border);"><span style="font-family: monospace; font-size: 11px; color: var(--text-secondary); flex-shrink: 0;">EffectMiscValue_2 / _3 <i style="font-style: normal; color: var(--text-tertiary);">int32</i></span><span style="font-size: 12px; color: var(--text-primary); text-align: right;">0 / 0</span></div>
+
+            <div class="file-tree-item" style="justify-content: space-between; padding: 10px 16px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">▸ 中断与打断 <span style="font-weight: 400; text-transform: none;">· 8 个字段</span></span>
+              <span style="font-size: 10px; color: var(--accent);">展开</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between; padding: 10px 16px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">▸ 触发与冷却 <span style="font-weight: 400; text-transform: none;">· 14 个字段</span></span>
+              <span style="font-size: 10px; color: var(--accent);">展开</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between; padding: 10px 16px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">▸ 变形限制 <span style="font-weight: 400; text-transform: none;">· 6 个字段</span></span>
+              <span style="font-size: 10px; color: var(--accent);">展开</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between; padding: 10px 16px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">▸ 声音与动画 <span style="font-weight: 400; text-transform: none;">· 4 个字段</span></span>
+              <span style="font-size: 10px; color: var(--accent);">展开</span>
+            </div>
+            <div class="file-tree-item" style="justify-content: space-between; padding: 10px 16px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase;">▸ 其余字段 <span style="font-weight: 400; text-transform: none;">· 161 个（学习技能 / 目标条件 / 字符串引用块等）</span></span>
+              <span style="font-size: 10px; color: var(--accent);">展开</span>
+            </div>
+          </div>
+          <div class="pagination" style="font-size: 11px; padding: 12px 16px;">
+            <span>共 235 个字段 · 字段名与类型来自 Spell.json schema · 分组仅为折叠展示，字段顺序与文件一致</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

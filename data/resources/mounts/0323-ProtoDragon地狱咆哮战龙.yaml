@@ -4,6 +4,7 @@ debug_passed: false
 added: false
 drop: {}
 official_db:
+  name: 地狱咆哮战龙
   spell_icon_name: ability_mount_korkronprotodrake
   icon_name: ability_mount_korkronprotodrake
 dbc:
@@ -21,10 +22,12 @@ dbc:
   spell:
     id: 80319
     visual_id: 9140319
+    name: 地狱咆哮战龙
+    description: 召唤或解散这种坐骑。
     speed: 100
     flight_speed: 280
   item:
-    id: 0
+    id: 91319
     class: 15
     subclass: 5
     display_id: 0
@@ -33,6 +36,7 @@ dbc:
 db:
   creature_template:
     entry: 9140319
+    name: 地狱咆哮战龙
     subname: ''
     IconName: ''
     AIName: ''
@@ -62,6 +66,8 @@ db:
   creature_model_info:
     display_id: 140319
   item_template:
+    entry: 91319
+    name: 地狱咆哮战龙
     class: 15
     subclass: 5
     spellid_1: 55884

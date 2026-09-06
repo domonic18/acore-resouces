@@ -31,7 +31,7 @@ dbc:
     description: 召唤或解散一辆地精三轮摩托涡轮增压型。
     speed: 100
   item:
-    id: 91202
+    id: 91200
     class: 15
     subclass: 5
     display_id: 0
@@ -70,7 +70,7 @@ db:
   creature_model_info:
     display_id: 140200
   item_template:
-    entry: 91202
+    entry: 91200
     name: 地精三轮摩托涡轮增压型
     class: 15
     subclass: 5

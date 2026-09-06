@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPQ 查看 — acore-resouces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mark">A</div>
+        <div>
+          <div class="logo-text">acore-resouces</div>
+          <div class="logo-version">AzerothCore 资源管理</div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">主菜单</div>
+        <a href="index.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          仪表盘
+        </a>
+        <a href="resources.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          资源列表
+        </a>
+        <a href="export.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出补丁
+        </a>
+        <a href="preview.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          资源预览
+        </a>
+        <div class="nav-label" style="margin-top: 16px">数据查看 🚧</div>
+        <a href="dbc.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+          DBC 数据
+        </a>
+        <a href="mpq.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+          MPQ 查看
+        </a>
+        <div class="nav-label" style="margin-top: 16px">系统</div>
+        <a href="settings.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          设置
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">GM</div>
+          <div class="user-info">
+            <div class="user-name">Game Master</div>
+            <div class="user-role">资源管理员</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title">MPQ 查看</h1>
+        <div class="topbar-actions">
+          <span class="badge badge-gray">🚧 规划中</span>
+          <span style="font-size: 12px; color: var(--text-tertiary);">只读 · workspace/mpq 与 workspace/dist 下的 .mpq</span>
+        </div>
+      </header>
+
+      <div class="content" style="display: grid; grid-template-columns: 300px 320px 1fr; gap: 20px; align-items: start;">
+        <!-- 档案列表 -->
+        <div class="card">
+          <div class="card-header" style="padding: 14px 16px;">
+            <div>
+              <div class="card-title">🗄 档案列表</div>
+              <div class="card-subtitle">构建批次与已发布产物</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column;">
+            <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--accent-soft); cursor: pointer;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 600; color: var(--accent);">patch-20260903.mpq</span>
+                <span class="badge badge-orange">basic</span>
+              </div>
+              <div class="resource-meta" style="margin-top: 4px;">20260903-126-mounts · 6.8 MB</div>
+              <div class="resource-meta">workspace/mpq · 2026-09-03 15:40</div>
+            </div>
+            <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 600;">patch-20260906.mpq</span>
+                <span class="badge badge-gray">none</span>
+              </div>
+              <div class="resource-meta" style="margin-top: 4px;">20260906-2-mounts · 0.2 MB</div>
+              <div class="resource-meta">workspace/mpq · 2026-09-06 10:31</div>
+            </div>
+            <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 600;">patch-zhCN-5.mpq</span>
+                <span class="badge badge-gray">none</span>
+              </div>
+              <div class="resource-meta" style="margin-top: 4px;">已发布 · 6.8 MB</div>
+              <div class="resource-meta">workspace/dist · 2026-09-06 10:35</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 12px 16px;">
+            <div class="form-hint" style="margin: 0;">混淆等级来自批次 <span style="font-family: monospace;">manifest.json</span>；basic 裁剪 (listfile)/(attributes)，encrypted 为实验性。</div>
+          </div>
+        </div>
+
+        <!-- 目录树 -->
+        <div class="card">
+          <div class="card-header" style="padding: 14px 16px;">
+            <div>
+              <div class="card-title">📁 文件树</div>
+              <div class="card-subtitle">patch-20260903.mpq · 9 个文件</div>
+            </div>
+          </div>
+          <div class="alert alert-warning" style="margin: 12px 16px 0; border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08); color: var(--warning);">
+            <div class="alert-title" style="font-size: 11px;">清单来源：manifest.json</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">basic 混淆已移除 (listfile)，mpqcli 无法直接枚举，此处展示构建时持久化的批次清单。</div>
+          </div>
+          <div style="padding: 12px 8px;" class="file-tree">
+            <div class="file-tree-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+              <b style="font-weight: 600;">DBFilesClient</b>
+            </div>
+            <div class="file-tree-item" style="padding-left: 28px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              CreatureDisplayInfo.dbc
+            </div>
+            <div class="file-tree-item" style="padding-left: 28px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              CreatureModelData.dbc
+            </div>
+            <div class="file-tree-item" style="padding-left: 28px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              Item.dbc
+            </div>
+            <div class="file-tree-item" style="padding-left: 28px; background: var(--bg-hover); color: var(--text-primary);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              Spell.dbc
+            </div>
+            <div class="file-tree-item" style="padding-left: 28px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              SpellIcon.dbc
+            </div>
+            <div class="file-tree-item" style="margin-top: 4px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+              <b style="font-weight: 600;">Interface</b>
+            </div>
+            <div class="file-tree-item" style="padding-left: 28px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+              ICONS
+            </div>
+            <div class="file-tree-item" style="padding-left: 48px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+              INV_Box_01.blp
+            </div>
+            <div class="file-tree-item" style="padding-left: 48px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+              Spell_Nature_Whirl.blp
+            </div>
+          </div>
+        </div>
+
+        <!-- 内容面板 -->
+        <div class="card">
+          <div class="card-header" style="flex-wrap: wrap; gap: 8px;">
+            <div>
+              <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                Interface/ICONS/INV_Box_01.blp
+                <span class="badge badge-blue">贴图</span>
+              </div>
+              <div class="card-subtitle">提取缓存 workspace/assets/mpq-cache/{archive-hash}/</div>
+            </div>
+            <button class="btn btn-sm">在资源预览中打开</button>
+          </div>
+          <div class="card-body">
+            <div class="preview-frame" style="max-width: 420px; margin: 0 auto;">
+              <div class="preview-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+                <p>BLP 解码 → WebP 缩略图（复用预览链路缓存）</p>
+              </div>
+            </div>
+            <div class="table-toolbar" style="margin-top: 16px;">
+              <span style="font-size: 12px; color: var(--text-tertiary);">64 × 64 · BLP2 · 未压缩</span>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-sm">下载原始 .blp</button>
+              </div>
+            </div>
+            <div class="form-hint" style="margin-top: 16px;">
+              按扩展名分发：<span style="font-family: monospace;">.blp</span> → 贴图预览；<span style="font-family: monospace;">.dbc</span> → DBC 数据页只读表格（DbcTableViewer）；文本类 → 原文展示。
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

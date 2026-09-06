@@ -22,7 +22,6 @@ acore-resouces/
 │   │   ├── mounts/             # 命名：{id:04d}-{model_folder}.yaml
 │   │   ├── pets/
 │   │   └── npcs/
-│   ├── mapping/                # xlsx 列映射配置
 │   ├── sql/azerothcore-updates/# patch build 写入的 SQL 补丁
 │   ├── wow-dbc/                # 子模块：原始 DBC 真相源
 │   └── registry.json           # 资源索引（系统自动生成）
@@ -35,7 +34,7 @@ acore-resouces/
 ```json
 {
   "version": "1.0",
-  "counts": { "mounts": 451, "pets": 107, "npcs": 226 },
+  "counts": { "mounts": 430, "pets": 107, "npcs": 226 },
   "mounts": [
     {
       "id": 3,
@@ -94,13 +93,17 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | | `update` | 更新字段：`key=value`，支持点号路径（如 `official_db.name=新名称`） |
 | | `delete` | 删除资源（默认二次确认，`--yes` 跳过） |
 | | `validate` | 校验资源（关联一致性 + 跨资源重复 ID 检测） |
-| `xlsx` | `import` | 从 `.xlsx` 一次性导入（支持 `--dry-run` / `--limit` / `--no-check-duplicates`） |
 | `wowhead` | `lookup-pet` / `lookup-mount` | Wowhead 官方数据查询，自动回退 WotLK/零售版与中英文 |
 | `wago` | `builds` / `latest` / `search` / `download` | wago.tools CASC 文件查询与下载 |
 | `patch` | `export` | 为单个资源创建补丁任务（`--type`、`--id`） |
-| | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`） |
+| | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`、`--force`） |
 | | `publish` | 发布 MPQ 到 `workspace/dist/`（`--start-number`、`--dry-run`） |
 | | `list` / `get` / `update` | 补丁任务查询与状态更新 |
+| | `audit` | 🚧 规划：输出批次审计报告（DBC before→after / SQL 字段 / MPQ 清单，见 [07 §十二](07DBC维护与同步方案.md)） |
+| | `delete` | 🚧 规划：删除补丁任务记录（默认二次确认，不影响真相源与审计报告） |
+| | `clean` | 🚧 规划：清理中间产物（`--dry-run` 预览路径与体积，见 [07 §十三](07DBC维护与同步方案.md)） |
+| `dbc` 🚧 规划 | `status` / `pull` / `diff` | `data/wow-dbc` 子模块管理（见 [07 §6.1](07DBC维护与同步方案.md)） |
+| | `query` / `get` | DBC 记录查看与搜索（只读，含来源资源标注，见 [07 §十五](07DBC维护与同步方案.md)） |
 
 > 命令的具体选项可能随版本演进，使用 `--help` 查看最新参数：例如 `uv run --project backend python -m app.cli patch build --help`。
 
@@ -127,20 +130,7 @@ uv run --project backend python -m app.cli resource delete mount 3 --yes
 uv run --project backend python -m app.cli resource validate --type mount --id 3
 ```
 
-### 3.4 xlsx 一次性导入
-
-`.xlsx` 仅作为一次性导入源，导入后不再反向同步。
-
-```bash
-# 从默认路径 imports/坐骑列表.xlsx 导入
-uv run --project backend python -m app.cli xlsx import mount
-
-# 指定文件并干跑预览
-uv run --project backend python -m app.cli xlsx import mount \
-    --input imports/坐骑列表.xlsx --dry-run --limit 50
-```
-
-### 3.5 官方数据补全（Wowhead / wago.tools）
+### 3.4 官方数据补全（Wowhead / wago.tools）
 
 ```bash
 # 查询 Wowhead 坐骑官方数据（JSON 输出）
@@ -160,7 +150,7 @@ uv run --project backend python -m app.cli wago download \
 
 > 这两个命令通常被 `enrich-mount-data` / `enrich-pet-data` Skill 间接调用，Agent 也可以直接使用它们做一次性查询。
 
-### 3.6 补丁任务接口
+### 3.5 补丁任务接口
 
 补丁工作流分为三段：**创建补丁任务** → **构建产物** → **发布分发**。
 
@@ -178,6 +168,9 @@ uv run --project backend python -m app.cli patch build --jobs mount_0003 --jobs 
 # 仅校验冲突，现场生成的计划写入各任务 plans/ 子目录供审查
 uv run --project backend python -m app.cli patch build --all-requested --dry-run
 
+# 全量重建：已存在的 DBC 记录强制重写，SQL 跳过历史条目检查
+uv run --project backend python -m app.cli patch build --all-requested --force
+
 # 3) 发布 MPQ 到 workspace/dist/patch-zhCN-{N}.mpq
 uv run --project backend python -m app.cli patch publish --start-number 5
 
@@ -189,12 +182,12 @@ uv run --project backend python -m app.cli patch get mount_0003
 `patch build` 会：
 
 1. 按 `job.json` 中的 `resource_id` 现场读取 `data/resources/` 最新 YAML，在内存中生成 DBC/SQL 计划与资源清单（不落盘快照）。
-2. 调用 `wow-dbc-tool` 编辑 `data/wow-dbc/src/dbc/*.dbc`（仅新增缺失记录）。
-3. 按坐骑生成 SQL 到 `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`（软链接到 `acore-deploy`）。
+2. 调用 `wow-dbc-tool` 编辑 `data/wow-dbc/src/dbc/*.dbc`（默认仅新增缺失记录；`--force` 时已存在记录按计划重写）。
+3. 按坐骑生成 SQL 到 `data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`（软链接到 AzerothCore 部署目录）。
 4. 调用 `wow-mpq-cli` 打包到 `workspace/mpq/{batch}/patch-mounts.mpq`。
 5. 输出 `workspace/reports/{batch}/validation-report.json` 校验报告，更新 `job.json` 状态为 `generated`。
 
-### 3.7 补丁任务结构
+### 3.6 补丁任务结构
 
 ```text
 workspace/patch-jobs/{job_id}/
@@ -208,6 +201,7 @@ workspace/patch-jobs/{job_id}/
 > - `job_id` 当前实现为 `{resource_type}_{id:04d}`（如 `mount_0003`），不再带时间戳，便于幂等重跑。
 > - 资源定义的唯一真相源是 `data/resources/mounts/*.yaml`：`patch export` 不再生成 `input/` 快照，`patch build` 按 `job.json` 中的 `resource_id` 现场读取最新 YAML。
 > - 构建产物不在任务目录内：DBC 直接编辑 `data/wow-dbc/src/dbc/`，SQL 写入 `data/sql/azerothcore-updates/mounts/`（每坐骑独立目录），MPQ 写入 `workspace/mpq/{batch}/`。
+> - 🚧 规划：正式 build 将在服务层生成批次级审计报告 `workspace/reports/{timestamp}/audit-report.json`（DBC before→after、SQL 字段、MPQ 清单，入口无关），并在 `job.json` 的 `artifacts` 中登记 `audit` 路径；审计报告不随任务删除而清理（见 [07 §十二](07DBC维护与同步方案.md)）。
 
 ---
 
@@ -254,7 +248,7 @@ Agent 收到"把坐骑 X 加入游戏"指令
    ↓
 CLI patch export 创建补丁任务（仅写 workspace/patch-jobs/{job_id}/job.json）
    ↓
-（或 Web 前端勾选资源点击"导出补丁原料"批量创建）
+（或 Web 导出页 /export：勾选资源创建任务 → 构建 → 发布，全流程可视化）
    ↓
 CLI patch build --all-requested
    ├─ 按 job.json 中的资源 ID 现场读取 data/resources/ YAML 生成计划
@@ -316,10 +310,9 @@ CLI patch publish --start-number {next}
 
 Agent **不得**直接执行以下操作：
 
-- 直接修改 `.xlsx` 文件结构（`.xlsx` 仅作为一次性导入源）。
-- 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`（必须由 `patch build` 通过 `wow-dbc-tool` 写入）。
+- 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`：**资源管理记录**（资源 YAML `dbc.*` 引用的条目）必须由 `patch build` 通过 `wow-dbc-tool` 写入；系统内 DBC 查看器为只读（🚧 规划，[07 §十五](07DBC维护与同步方案.md)），不提供写入口，Agent 优先走资源编辑 + 补丁流程。
 - 直接连接 `acore-world` 数据库执行写入（必须通过 `acore-update-db.sh` 或追加到 `data/sql/azerothcore-updates/`）。
-- 直接删除原始图片资源目录或 `.xlsx` 源文件。
+- 直接删除原始图片资源目录。
 - 直接修改 `registry.json`（必须由系统同步生成）。
 - 强制覆盖 `data/sql/azerothcore-updates/`（该目录是软链接到 `acore-deploy`，破坏后会影响部署）。
 
@@ -329,15 +322,15 @@ Agent **不得**直接执行以下操作：
 |------|---------|
 | 读取资源 | 直接读取 YAML 或调用 CLI `resource get` |
 | 修改资源 | CLI `resource update` 或直接写 YAML + `resource validate` |
-| xlsx 一次性导入 | CLI `xlsx import` |
 | 创建补丁任务 | CLI `patch export` 或 Web 前端批量导出 |
 | 构建 DBC/SQL/MPQ | CLI `patch build` |
 | 发布 MPQ | CLI `patch publish` |
+| 清理中间产物 | 🚧 规划：CLI `patch clean --dry-run` 预览后执行 |
+| 删除任务记录 | 🚧 规划：CLI `patch delete` 或 Web 任务列表操作列 |
 | 应用到 acore-deploy | 人工执行 `acore-update-dbc.sh` / `acore-update-db.sh` |
 
 ### 5.3 大文件处理
 
-- `.xlsx` 文件共约 730MB+，仅用于一次性导入；导入后不再读取。
 - 图片目录数 GB，Agent 不应遍历所有图片；优先使用 `registry.json` 和单资源 YAML 文件，必要时再访问 `sources/{type}/{model_folder}/`。
 - `.m2` / `.blp` 文件按需通过预览 API 或桌面应用访问，避免在 Agent 中读取整个二进制。
 
@@ -405,13 +398,23 @@ uv run --project backend python -m app.cli patch export --type mount --id 3
 | `GET /api/resources/{type}` | 分页列出资源（支持 `search` / `added` / `debug_passed` / `sort_by` / `sort_order`） |
 | `GET /api/resources/{type}/{id}` | 获取单个资源详情（含 `duplicate_issues`） |
 | `PUT /api/resources/{type}/{id}` | 更新资源字段（`ResourceUpdateRequest`） |
+| `PUT /api/resources/{type}/{id}/icon` | 更新资源图标字段 |
 | `GET /api/resources/{type}/{id}/assets` | 资源目录下的 `.m2` / `.blp` / 图标清单 |
 | `GET /api/preview/blp/{path}` | BLP → WebP 预览（可选 `?size=`） |
+| `GET /api/preview/file/{path}` | 普通图片字节流（png/gif/jpg） |
 | `GET /api/preview/icon/{icon_name}` | 按图标名查找并预览 |
 | `GET /api/preview/icons` | 所有可用图标列表 |
 | `GET /api/preview/model/{model_folder}` | M2 元数据 + skin/blp/anim 清单 |
 | `GET /api/preview/m2/{model_folder}/file/{relative_path}` | 流式返回 M2/skin/anim 字节 |
 | `GET /api/files/tree?root=sources&depth=N` | 目录树（懒加载） |
 | `GET /api/files/tree/{root}?path=...` | 子目录树 |
-| `POST /api/patches/export-request` | 批量创建补丁任务 |
-| `GET /api/patches` | 分页列出补丁任务 |
+| `GET /api/dbc/item-display-info` | 查询 ItemDisplayInfo.dbc 记录（分页/搜索） |
+| `GET /api/dbc/item-display-info/{record_id}` | 查询单条 ItemDisplayInfo 记录 |
+| `POST /api/patches/export-request` | 批量创建补丁任务（当前仅 mount） |
+| `GET /api/patches` | 分页列出补丁任务（支持 `status` 筛选） |
+| `GET /api/patches/{job_id}` | 获取单个补丁任务 |
+| `PUT /api/patches/{job_id}` | 更新补丁任务状态 |
+| `POST /api/patches/build` | 启动后台构建（`all_requested`/`job_ids`、`dry_run`、`force`；202 返回，冲突运行返回 409） |
+| `GET /api/patches/build/status` | 查询构建运行状态与上次结果 |
+| `POST /api/patches/publish` | 发布 MPQ 到分发目录（`start_number`、`dry_run`） |
+| `GET /api/system/info` | 只读系统信息（路径配置、资源计数、健康检查） |
