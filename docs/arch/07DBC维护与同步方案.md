@@ -239,35 +239,33 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | `export-mount-jobs` | Web 端批量勾选坐骑导出 | 等价于多次 `patch export` |
 | `publish-patch` | 将 `workspace/mpq/` 发布到 `workspace/dist/` | 等价于 `patch publish` |
 
-## 十二、规划：补丁产物审计记录 🚧
+## 十二、补丁产物审计记录（已实现）
 
-> 对应需求 v1.1 §3.7（补丁任务审查记录）。目标：字段级改动审计，让用户能逐项核对生成结果与预期。
+> 对应需求 v1.1 §3.7（补丁任务审查记录）。目标：字段级改动审计，让用户能逐项核对生成结果与预期。实现：`app/services/patch_audit.py` + `mount_patch_builder` 构建时接线。
 
-### 12.1 数据源与可行性
+### 12.1 数据来源（构建内存，无需重新生成）
 
-审计数据**无需重新生成**——构建主流程内存中已持有字段级完整计划：
-
-| 数据 | 来源 | 现状 |
+| 数据 | 来源 | 说明 |
 |------|------|------|
-| DBC 改动计划 | `ctx.dbc_plan`（`schemas/patch.py` `DBCPlan`/`DBCPlanFile`，operations 含 action/record_id/fields） | ✅ 字段级完整，dry-run 与正式构建同源 |
-| SQL 改动计划 | `ctx.sql_plan`（`SQLPlan`/`SQLPlanTable`，表名+记录 dict） | ✅ 可直接还原"表+记录+字段"结构 |
-| MPQ 文件清单 | `build_mpq` 返回的 `job_assets: dict[job_id, list[Path]]` | ⚠️ 内存可得但未持久化 |
-| DBC before 值 | `apply_dbc_operations` 中读到 `existing` 记录 | ❌ 未捕获，需增加 `existing.to_dict()` 保留 |
+| DBC before 值 | `apply_dbc_operations` 中 `existing.to_dict()` 的计划字段子集（edit 前捕获） | 新增记录为 `null`；已存在未 force 重写标记 `action_taken: skipped_existing` |
+| DBC after 值 | `ctx.dbc_plan` operations 的 `fields` | dry-run 与正式构建同源 |
+| SQL 改动计划 | `ctx.sql_plan`（表名 + 记录 dict）+ `generate_sql` 是否落盘 | `status: written / already_exists` |
+| MPQ 文件清单 | `build_mpq` 在 rmtree(staging) 前对归档文件计算 size/sha256 | 持久化为 `workspace/mpq/{batch}/manifest.json`（文件清单 + `obfuscation` 等级，当前恒为 `none`，兼作 4.3 MPQ 查看器的清单回退） |
 
-### 12.2 产物设计
+### 12.2 产物结构
 
-- **批次级审计文件**：`workspace/reports/{timestamp}/audit-report.json`，与 `validation-report.json` 同目录：
-  - `jobs`：本次制作资源清单（job_id、名称、模型文件夹）
-  - `dbc`：每文件 operations，`before`（force 重写时捕获）→ `after`（计划字段值）
-  - `sql`：每文件目标表、记录、字段级内容
-  - `mpq`：批次 MPQ 路径、内部文件清单、与上一批次的文件级 diff（新增/替换）
-- **任务级关联**：`job.json` 的 `artifacts` 增 `audit` 路径字段；`schemas/patch.py` 的 DBC operation 模型增可选 `before` 字段。
-- **可对照**：审计结构与 dry-run `plans/{dbc-plan,sql-plan,assets}` 同构（计划 → 实际产物逐项比对）。
+- **批次清单** `workspace/mpq/{batch}/manifest.json`：`{batch, mpq, obfuscation, generated_at, jobs, files: [{path, size_bytes, sha256, kind: dbc|asset|icon}]}`；清单本身不打入 MPQ 归档。
+- **批次级审计文件** `workspace/reports/{timestamp}/audit-report.json`（与 `validation-report.json` 同目录）：
+  - `jobs`：本次构建资源清单（job_id、名称、模型文件夹）
+  - `dbc`：每条 operation 的 `before → after` 与 `action_taken`（added / edited / skipped_existing）
+  - `sql`：每任务的 `output_sql_file`、落盘状态与目标表记录
+  - `mpq`：批次路径、混淆等级、文件计数、完整清单及与上一含 manifest 批次的文件级 `diff`（added / replaced / unchanged，无前批清单时为 `null`）
+- **任务级关联**：`job.json` 的 `artifacts.output` 增 `audit` 相对路径；构建结果（CLI 输出、`GET /api/patches/build/status`）增 `audit_path` / `manifest_path`。
 
 ### 12.3 入口无关与查阅
 
-- 审计在 `build_mount_patches` 服务层统一生成——CLI `patch build`、HTTP `POST /api/patches/build`（`build_runner`）、AI Agent 调用均同源，天然满足"入口无关"。
-- 查阅方式（规划）：CLI `patch audit {timestamp|job_id}`、Web 导出页任务审计视图、JSON 导出。
+- 审计在 `build_mount_patches` 服务层统一生成——CLI `patch build`、HTTP `POST /api/patches/build`（`build_runner`）、AI Agent 调用均同源。
+- 查阅：CLI `patch audit {job_id|timestamp}`（`--json` 直出报告）；Web 导出页任务列表操作列「审计」按钮 → 三栏视图（DBC before→after / SQL 字段 / MPQ 清单，附下载报告 JSON）；HTTP `GET /api/patches/{job_id}/audit`。查阅侧 `job.json` 一律裸读（builder 裸写 JSON，不经 Pydantic）；审计功能上线前的任务返回明确 404 提示。
 
 ### 12.4 与现有校验报告的关系
 
