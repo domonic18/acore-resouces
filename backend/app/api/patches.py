@@ -16,11 +16,16 @@ from app.services.build_runner import (
 )
 from app.services.patch_exporter import (
     create_patch_job,
+    delete_patch_job,
     get_patch_job,
     list_patch_jobs,
     update_patch_job_status,
 )
 from app.services.patch_publisher import PatchPublisherError, publish_patches
+from app.services.workspace_cleaner import (
+    WorkspaceCleanerError,
+    clean_workspace,
+)
 
 router = APIRouter(prefix="/api/patches", tags=["patches"])
 
@@ -119,6 +124,29 @@ def publish(body: PatchPublishRequest) -> dict[str, Any]:
         raise HTTPException(500, f"发布失败: {e}") from e
 
 
+class WorkspaceCleanRequest(BaseModel):
+    """工作区中间产物清理请求。"""
+
+    execute: bool = False
+    older_than_days: int | None = None
+    include_published: bool = False
+
+
+@router.post("/clean")
+def clean(body: WorkspaceCleanRequest) -> dict[str, Any]:
+    """预览或清理工作区中间产物（默认仅预览）。"""
+    if body.older_than_days is not None and body.older_than_days < 0:
+        raise HTTPException(400, "older_than_days 不能为负数")
+    try:
+        return clean_workspace(
+            execute=body.execute,
+            older_than_days=body.older_than_days,
+            include_published=body.include_published,
+        )
+    except WorkspaceCleanerError as e:
+        raise HTTPException(409, str(e)) from e
+
+
 @router.get("/{job_id}")
 def get_job(job_id: str) -> dict[str, Any]:
     """获取单个补丁任务详情。"""
@@ -140,3 +168,17 @@ def update_job(job_id: str, body: PatchJobUpdateRequest) -> dict[str, Any]:
     if manifest is None:
         raise HTTPException(404, f"任务 {job_id} 不存在")
     return manifest.model_dump(exclude_none=False)
+
+
+@router.delete("/{job_id}")
+def delete_job(job_id: str) -> dict[str, Any]:
+    """删除单个补丁任务（仅移除任务目录，不影响真相源与已生成产物）。"""
+    try:
+        deleted = delete_patch_job(job_id)
+    except ValueError as e:
+        raise HTTPException(400, str(e)) from e
+    except BuildAlreadyRunningError as e:
+        raise HTTPException(409, str(e)) from e
+    if not deleted:
+        raise HTTPException(404, f"任务 {job_id} 不存在")
+    return {"deleted": True, "job_id": job_id}
