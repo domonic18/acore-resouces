@@ -339,96 +339,58 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 2. `encrypted` 需测试服实测通过后才开放，checklist：① `DBFilesClient` 的 DBC 正常加载 → ② `Interface` 图标 BLP 正常显示 → ③ creature 模型/贴图正常渲染 → ④ 骑乘后进入世界无崩溃；逐项记录环境与结果。
 3. 回滚：同批次 `patch build --force --obfuscation none` 重建并重新发布。
 
-## 十五、规划：DBC 数据查看与维护（守卫式）🚧
+## 十五、规划：DBC 数据查看器（只读）🚧
 
-> 对应需求 v1.2 §3.10。目标：在系统内直接查看 / 搜索 / 编辑 / 删除 `data/wow-dbc/src/dbc/` 的 DBC 记录；**资源管理记录守卫保护**（只读 + 来源引导），仅非管理记录可直改，避免 YAML↔DBC 双向漂移。
+> 对应需求 v1.3 §3.10。目标：在系统内**只读**查看 / 搜索 `data/wow-dbc/src/dbc/` 的 DBC 记录，便于数据排查与对照。查看器不提供任何写入口——数据修改统一经资源编辑 + `patch build`（YAML 真相源单向数据流）。
 
 ### 15.1 能力与数据源
 
 | 能力 | 可行性 | 现状依据 |
 |------|--------|---------|
 | 查看 / 搜索 | ✅ 能力现成 | `wow_dbc_tool` 的 `DBCFile.query` 支持按字段过滤（`ID__gt`、`Name__contains` 等后缀语法，`dbc_file.py:86, 18-26`）；`schemas/` 目录 245 个 JSON schema 与 245 个 DBC 一一对应（`schema/registry.py:95-113`）；后端已有 mtime 进程缓存模式可泛化（`services/dbc_query.py:28-62`） |
-| 编辑 | ✅ API 现成，需守卫 | `DBCFile.edit`（`dbc_file.py:146`）/ `add`（:177）/ `save`（:206，全量重建 string block 无悬空引用；推断 schema 且含字符串的文件拒绝保存 :223-228） |
-| 删除 | ✅ API 现成，需守卫 | `DBCFile.delete`（`dbc_file.py:161`，按过滤删记录并返回数量） |
 
 规模约束：`data/wow-dbc/src/dbc/` 共 **245 个文件约 93MB**（Spell.dbc 最大）→ 记录读取必须分页 + mtime 缓存，禁止全量载入响应。
 
-现有差距：`api/dbc.py` 仅硬编码 ItemDisplayInfo 两个 GET 端点（`api/dbc.py:13-35`）；写路径仅 `mount_patch_builder.apply_dbc_operations`（add/edit，`mount_patch_builder.py:332-367`），全系统无 DBC delete 调用；前端无通用 DBC 表格组件。
+现有差距：`api/dbc.py` 仅硬编码 ItemDisplayInfo 两个 GET 端点（`api/dbc.py:13-35`）；前端无通用 DBC 表格组件。
 
-### 15.2 守卫式编辑设计
+### 15.2 来源资源标注
 
-**管理 / 引用记录判定**：服务层从 `data/registry.json` + 各资源 YAML 的 `dbc.*` 子结构派生两类集合（`{(dbc_file, record_id) → [来源资源]}`，按 mtime 缓存）。「管理」= patch build 所写记录（禁直改直删）；「引用」= 指向官方记录的外键（可改，删除时引用检查）：
+只读查看器的核心增值：服务层从 `data/registry.json` + 各资源 YAML 的 `dbc.*` 子结构派生来源映射（`{(dbc_file, record_id) → [来源资源]}`，按 mtime 缓存），记录表格对命中记录标注来源资源徽章，点击跳转资源详情：
 
-| 类别 | YAML 字段 → DBC 文件 | 守卫行为 |
-|------|----------------------|---------|
-| 管理 | `dbc.creature_model_data.id` → CreatureModelData.dbc | 禁直改直删，409 + 来源资源清单 |
-| 管理 | `dbc.creature_display_info.id` → CreatureDisplayInfo.dbc | 同上 |
-| 管理 | `dbc.spell.id` → Spell.dbc | 同上 |
-| 管理 | `dbc.item.id` → Item.dbc | 同上 |
-| 引用 | `dbc.item.display_id` → ItemDisplayInfo.dbc | 可改；删除时引用检查警告 |
-| 引用 | `dbc.spell.icon_id` → SpellIcon.dbc、`dbc.spell.visual_id` → SpellVisual*.dbc | 同上 |
+| 类别 | YAML 字段 → DBC 文件 |
+|------|---------------------|
+| 补丁写入（patch build 维护） | `dbc.creature_model_data.id` → CreatureModelData.dbc、`dbc.creature_display_info.id` → CreatureDisplayInfo.dbc、`dbc.spell.id` → Spell.dbc、`dbc.item.id` → Item.dbc |
+| 官方引用（资源指向官方记录） | `dbc.item.display_id` → ItemDisplayInfo.dbc、`dbc.spell.icon_id` → SpellIcon.dbc、`dbc.spell.visual_id` → SpellVisual*.dbc |
 
-（pets / npcs 取各自 YAML 子集；字段结构以 `schemas/dbc.py:45-107` 与实际 YAML 为准。）
-
-**三层守卫**：
-
-| 层 | 行为 |
-|----|------|
-| 查看标注 | 记录表格对管理记录标注来源资源徽章，点击跳转资源详情 |
-| 写操作拦截 | 编辑 / 删除 API 命中管理记录时返回 409 + 来源资源清单，引导走资源编辑 + `patch build` |
-| 删除引用检查 | 删除前交叉检查是否被其他 DBC / SQL 记录引用（扩展 `resource_validation` 思路），需二次确认 |
-
-**与 `patch build` 并发互斥**：维护写操作（edit / delete / restore）执行前检查构建运行状态（参照 `build_runner.py:27` 的模块级锁 + 状态快照模式），构建运行中返回 409 拒绝；build 侧无需感知维护操作（维护低频、文件级粒度）。
-
-**安全与恢复**：
-
-- 保存前自动备份原文件到 `workspace/backups/dbc/{file}.{timestamp}`；每文件默认保留最近 20 份，随 §十三 clean 一并清理；`data/wow-dbc` 为 git 子模块，已提交历史仍可经 git 恢复。
-- 恢复动作本身先备份当前态再回写，并记入操作日志（`action: restore`）。
-- 操作日志 `workspace/reports/dbc-ops.jsonl`（JSONL，每行一条）：
-
-| 字段 | 说明 |
-|------|------|
-| `ts` | ISO 时间戳 |
-| `entry` | 操作入口：`web` / `cli` |
-| `file` / `record_id` | 目标 DBC 文件与记录 |
-| `action` | `edit` / `delete` / `restore` |
-| `changes` | `[{field, before, after}]`（delete 记录全字段） |
-| `backup` | 备份文件路径 |
-
-  与 §十二 审计体系同源（同放 `workspace/reports/`），可一并纳入审计报告查阅。
+（pets / npcs 取各自 YAML 子集；字段结构以 `schemas/dbc.py:45-107` 与实际 YAML 为准。两类记录在查看器中仅作标注区分，均不可编辑。）
 
 ### 15.3 API / CLI / Web 设计
 
-**API**（扩展 `api/dbc.py`，规划；分页遵循系统约定 `page/page_size` + `{total, page, page_size, items}`，参照 `resources.py:216-233`）：
+**API**（扩展 `api/dbc.py`，规划；仅只读 GET；分页遵循系统约定 `page/page_size` + `{total, page, page_size, items}`，参照 `resources.py:216-233`）：
 
 | 端点 | 说明 |
 |------|------|
 | `GET /api/dbc/files` | DBC 文件清单（记录数、大小、schema 注册状态） |
 | `GET /api/dbc/{file}/records` | 记录分页列表（`page/page_size` + 字段过滤，字段名来自 schema） |
-| `GET /api/dbc/{file}/records/{id}` | 单记录详情（含管理 / 引用标注与来源资源） |
-| `PUT /api/dbc/{file}/records/{id}` | 编辑（守卫 + 构建互斥 + 备份 + 日志） |
-| `DELETE /api/dbc/{file}/records/{id}` | 删除（守卫 + 引用检查 + 构建互斥 + 二次确认 + 日志） |
-| `GET /api/dbc/{file}/backups` | 备份列表 |
-| `POST /api/dbc/{file}/backups/{timestamp}/restore` | 恢复（先备份当前态 + 日志） |
+| `GET /api/dbc/{file}/records/{id}` | 单记录详情（含来源资源标注） |
 
-**服务模块布局**：守卫与写路径落 `services/dbc_maintenance.py`（管理 / 引用集合派生、守卫检查、备份恢复、操作日志）；通用读取泛化沿用 `services/dbc_query.py:28-62` 的 mtime 缓存模式扩展，`api/dbc.py` 仅做薄路由。
+**服务模块布局**：通用读取泛化沿用 `services/dbc_query.py:28-62` 的 mtime 缓存模式扩展；来源资源标注集合派生落同模块（纯函数），`api/dbc.py` 仅做薄路由。
 
-**CLI**：扩展 §6.1 已规划的 `dbc` 组——子模块管理命令保留，新增数据维护子命令 `dbc query / get / edit / delete`（带守卫，写操作需 `--yes`）。
+**CLI**：扩展 §6.1 已规划的 `dbc` 组——子模块管理命令保留，新增数据查看子命令 `dbc query / get`（只读）。
 
-**Web**：新路由 `/dbc` + 页面（文件列表侧栏 + `DbcTableViewer` 记录表格 + 守卫徽章）；`DbcTableViewer` 为新组件，与 04 §九 MPQ 查看器共用。
+**Web**：新路由 `/dbc` + 只读页面（文件列表侧栏 + `DbcTableViewer` 记录表格 + 来源资源徽章）；`DbcTableViewer` 为新组件，与 04 §九 MPQ 查看器共用。
 
 ### 15.4 与其他规划的关系
 
-- **§十二 审计记录**：dbc-ops.jsonl 与补丁审计报告同放 `workspace/reports/`，查阅入口一致。
-- **§6.1 `dbc` 命令组**：子模块管理（status/pull/diff）与数据维护（query/get/edit/delete）同组不同子命令。
+- **§6.1 `dbc` 命令组**：子模块管理（status/pull/diff）与数据查看（query/get）同组不同子命令。
 - **04 §九 MPQ 查看器**：通用 DBC 读取能力统一由本节定义（api/dbc.py）；MPQ 内提取出的 `.dbc` 复用同一 API 形态与 `DbcTableViewer`。
+- **§十二 审计记录**：查看器不产生写操作；DBC 变化仍全部来自 `patch build`，其审计由 §十二 覆盖。
 
 ### 15.5 已知限制（须如实提示）
 
 - 仅支持标准 20 字节 WDBC 格式（`header.py:15-24`）；WDB2 等扩展格式不支持（现有 245 个文件均在能力范围内）。
-- 4 字节对齐假设：`record_size ≠ field_count × 4` 的文件信任原 header，编辑字段可能错位（`header.py:66` 注释）。
-- 字符串按 UTF-8 写回，官方客户端为 latin-1——非 ASCII 字符需实测客户端显示。
-- 推断 schema（未注册字段定义）且含字符串的文件拒绝保存（`dbc_file.py:223-228`），避免字符串块悬空。
+- 4 字节对齐假设：`record_size ≠ field_count × 4` 的文件信任原 header 解析（`header.py:66` 注释），字段展示以 schema 为准。
+- 字符串存储编码为 latin-1 系，界面显示非 ASCII 字符时需按实际编码处理，异常字节显示转义而非报错。
 
 ## 十六、相关文档
 
