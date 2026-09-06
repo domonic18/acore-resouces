@@ -27,9 +27,10 @@ const STATUS_OPTIONS: { value: string; label: string }[] = [
 
 interface PatchJobsTableProps {
   building: boolean;
+  onAudit: (jobId: string) => void;
 }
 
-export function PatchJobsTable({ building }: PatchJobsTableProps) {
+export function PatchJobsTable({ building, onAudit }: PatchJobsTableProps) {
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
   const { data, isLoading } = usePatchJobs(status || undefined, page, building);
@@ -70,6 +71,7 @@ export function PatchJobsTable({ building }: PatchJobsTableProps) {
               <th>状态</th>
               <th>创建时间</th>
               <th>摘要</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -95,18 +97,31 @@ export function PatchJobsTable({ building }: PatchJobsTableProps) {
                 <td className="max-w-56 truncate text-xs text-text-secondary">
                   {job.summary || "—"}
                 </td>
+                <td>
+                  {job.artifacts?.output?.audit ? (
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => onAudit(job.job_id)}
+                    >
+                      审计
+                    </button>
+                  ) : (
+                    <span className="text-xs text-text-tertiary">—</span>
+                  )}
+                </td>
               </tr>
             ))}
             {!isLoading && (data?.items.length ?? 0) === 0 && (
               <tr>
-                <td colSpan={5} className="py-8 text-center text-text-secondary">
+                <td colSpan={6} className="py-8 text-center text-text-secondary">
                   暂无补丁任务
                 </td>
               </tr>
             )}
             {isLoading && (
               <tr>
-                <td colSpan={5} className="py-8 text-center text-text-secondary">
+                <td colSpan={6} className="py-8 text-center text-text-secondary">
                   加载中...
                 </td>
               </tr>

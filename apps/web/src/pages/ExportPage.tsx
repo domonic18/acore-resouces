@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Hammer, ListChecks, PackagePlus, UploadCloud } from "lucide-react";
 import { MountMultiSelect } from "@/features/resources/components/patch-export/MountMultiSelect";
 import { BuildPanel } from "@/features/resources/components/patch-export/BuildPanel";
+import { JobAuditCard } from "@/features/resources/components/patch-export/JobAuditCard";
 import { PublishPanel } from "@/features/resources/components/patch-export/PublishPanel";
 import { PatchJobsTable } from "@/features/resources/components/patch-export/PatchJobsTable";
 import { BulkPatchExportButton } from "@/features/resources/components/BulkPatchExportButton";
@@ -9,6 +10,7 @@ import { useBuildStatus } from "@/features/resources/hooks/usePatchBuild";
 
 export function ExportPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [auditJobId, setAuditJobId] = useState<string | null>(null);
   const buildStatus = useBuildStatus();
   const building = buildStatus.data?.running ?? false;
 
@@ -91,9 +93,13 @@ export function ExportPage() {
           </div>
         </div>
         <div className="card-body">
-          <PatchJobsTable building={building} />
+          <PatchJobsTable building={building} onAudit={setAuditJobId} />
         </div>
       </div>
+
+      {auditJobId && (
+        <JobAuditCard jobId={auditJobId} onClose={() => setAuditJobId(null)} />
+      )}
     </div>
   );
 }

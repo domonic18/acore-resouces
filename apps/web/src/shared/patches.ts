@@ -4,6 +4,7 @@ import type {
   Paginated,
   PatchExportResponse,
   PatchJob,
+  PatchJobAudit,
   PublishResult,
 } from "@/shared/types";
 
@@ -73,4 +74,12 @@ export function publishPatches(body: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   }).then((res) => res.json() as Promise<PublishResult>);
+}
+
+export function getPatchJobAudit(jobId: string): Promise<PatchJobAudit> {
+  return apiGetJson<PatchJobAudit>(`/api/patches/${jobId}/audit`);
+}
+
+export function getPatchJobAuditUrl(jobId: string): string {
+  return `${API_BASE}/api/patches/${jobId}/audit`;
 }
