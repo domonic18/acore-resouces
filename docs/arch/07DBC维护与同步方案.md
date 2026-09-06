@@ -146,6 +146,24 @@ workspace/patch-jobs/mount_0003/
 - `patch build` 负责按 `job.json` 现场读取资源，调用 `wow-dbc-tool` / `wow-mpq-cli` 生成最终产物。
 - 应用 DBC/SQL、同步部署需要人工确认或显式参数。
 
+### 5.4 任务状态流转
+
+状态存储在 `job.json` 的 `status` 字段（`backend/app/schemas/patch.py` 中 `PatchJobStatus`）：
+
+```text
+requested ──patch build──▶ generated ──人工应用 SQL/MPQ──▶ applied
+    │       （成功）   │
+    │                 └──构建失败──▶ failed
+    └──构建失败──▶ failed
+```
+
+| 状态 | 触发时机 |
+|------|---------|
+| `requested` | `patch export` / Web 导出页创建任务后。 |
+| `generated` | `patch build` 成功生成该任务的 DBC/SQL 产物后。 |
+| `failed` | 构建过程出错（如 DBC 冲突、资源校验失败）后。 |
+| `applied` | 人工将 SQL 应用到 `acore-world`、MPQ 放入客户端后手动标记（CLI `patch update` / Web 任务列表）。 |
+
 ## 六、尚未实现：`dbc` 与 `deploy` 命令组（规划中）
 
 `backend/app/cli/` 当前仅注册了 `patch` 命令组。以下两组尚未落地，使用时通过手工命令替代。
