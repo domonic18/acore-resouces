@@ -28,10 +28,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           资源列表
         </a>
-        <a href="import.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          导入资源
-        </a>
         <a href="export.html" class="nav-item active">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           导出补丁
@@ -57,154 +53,195 @@
       </div>
     </aside>
 
-    <main class="main">
+    <main class="main">    <main class="main">
       <header class="topbar">
         <h1 class="page-title">导出补丁</h1>
         <div class="topbar-actions">
-          <a href="resources.html" class="btn">返回列表</a>
+          <span style="font-size: 12px; color: var(--text-tertiary);">第一阶段仅支持坐骑资源</span>
         </div>
       </header>
 
       <div class="content">
-        <div class="detail-layout">
-          <div class="detail-main">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <div class="card-title">导出范围</div>
-                  <div class="card-subtitle">选择要生成补丁的资源与输出格式</div>
-                </div>
+        <!-- 创建导出任务 -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">📦 创建导出任务</div>
+              <div class="card-subtitle">选择坐骑生成补丁任务（仅写任务元数据，构建时现场读取真相源）</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" placeholder="搜索名称 / ID / 模型文件夹..." style="width: 320px;">
               </div>
-              <div class="card-body">
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label class="form-label">资源类型</label>
-                    <select class="form-select">
-                      <option selected>全部</option>
-                      <option>坐骑</option>
-                      <option>宠物</option>
-                      <option>NPC</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">导出格式</label>
-                    <select class="form-select">
-                      <option selected>DBC 修改脚本 (Python)</option>
-                      <option>AzerothCore SQL 补丁</option>
-                      <option>两者都导出</option>
-                    </select>
-                  </div>
-                  <div class="form-group full-width">
-                    <label class="form-label">筛选条件</label>
-                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                      <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px;">
-                        <input type="checkbox" checked> 仅调试通过
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px;">
-                        <input type="checkbox" checked> 仅已添加
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 13px;">
-                        <input type="checkbox"> 包含未验证资源
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group full-width">
-                    <label class="form-label">版本标签</label>
-                    <input type="text" class="form-input" value="v2026.07.12">
-                    <div class="form-hint">导出的补丁文件将以此标签命名目录</div>
-                  </div>
-                </div>
-
-                <div style="display: flex; gap: 12px; margin-top: 24px;">
-                  <button class="btn btn-lg" style="flex: 1;">预览 Diff</button>
-                  <button class="btn btn-lg btn-primary" style="flex: 1;">生成补丁</button>
-                </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span style="font-size: 12px; color: var(--text-secondary);">已选 <b style="color: var(--text-primary);">2</b> / 430</span>
+                <button class="btn btn-sm">全选</button>
+                <button class="btn btn-sm">清空</button>
               </div>
             </div>
+            <div class="select-list">
+              <label class="select-list-label">
+                <input type="checkbox" checked>
+                <span class="resource-name" style="margin: 0;">0003 · 梦光符文牡鹿</span>
+                <span class="resource-meta">ardenwealdstagmount影叶符文牡鹿 · 飞行坐骑</span>
+              </label>
+              <label class="select-list-label">
+                <input type="checkbox" checked>
+                <span class="resource-name" style="margin: 0;">0091 · 死亡使者的绽翼兽</span>
+                <span class="resource-meta">chimera2钢铁碎天兽 · 飞行坐骑</span>
+              </label>
+              <label class="select-list-label">
+                <input type="checkbox">
+                <span class="resource-name" style="margin: 0;">0101 · 石牙斗猪</span>
+                <span class="resource-meta">GiantBoar霜原野猪 · 陆地坐骑</span>
+              </label>
+              <label class="select-list-label">
+                <input type="checkbox">
+                <span class="resource-name" style="margin: 0;">0146 · 绿色龙龟</span>
+                <span class="resource-meta">greendragonturtle绿色龙龟 · 陆地坐骑</span>
+              </label>
+            </div>
+            <div style="margin-top: 16px;">
+              <button class="btn btn-primary">创建补丁任务（已选 2）</button>
+            </div>
+          </div>
+        </div>
 
-            <div class="card" style="margin-top: 24px;">
-              <div class="card-header">
-                <div class="card-title">Diff 预览</div>
+        <!-- 构建 / 发布 -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">🔨 构建</div>
+                <div class="card-subtitle">处理全部待构建任务，生成 DBC 修改 / SQL 补丁 / MPQ</div>
               </div>
-              <div class="card-body">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; overflow-x: auto;">
-                  <div style="color: var(--text-tertiary);"># patches/sql/acore-update-mounts-v2026.07.12.sql</div>
-                  <div>
-                    <span style="color: var(--success);">+ INSERT INTO creature_template (entry, modelid1, name, ...) VALUES</span>
-                  </div>
-                  <div>
-                    <span style="color: var(--success);">+   (91009, 80009, '石牙斗猪', ...);</span>
-                  </div>
-                  <div>
-                    <span style="color: var(--success);">+ INSERT INTO creature_template (entry, modelid1, name, ...) VALUES</span>
-                  </div>
-                  <div>
-                    <span style="color: var(--success);">+   (9140177, 80177, '黑色斗猪', ...);</span>
-                  </div>
-                  <div style="color: var(--text-tertiary); margin-top: 12px;"># patches/dbc/mounts-v2026.07.12.py</div>
-                  <div>
-                    <span style="color: var(--success);">+ dbc.CreatureDisplayInfo.add(140009, ...)</span>
-                  </div>
-                  <div>
-                    <span style="color: var(--success);">+ dbc.CreatureDisplayInfo.add(140177, ...)</span>
-                  </div>
-                </div>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label class="form-check"><input type="checkbox" checked> 干跑模式（仅校验冲突并生成计划，不修改源文件）</label>
+                <label class="form-check danger"><input type="checkbox"> 强制重写已存在的 DBC 记录（全量重建）</label>
+              </div>
+              <button class="btn btn-primary" style="width: 100%; margin-top: 12px;">干跑校验全部待处理任务</button>
+              <div class="alert alert-success">
+                <div class="alert-title">干跑完成 · 处理 2 个任务</div>
+                <ul>
+                  <li>新增 SQL：2 个文件</li>
+                  <li>校验报告：workspace/reports/build-20260906.json</li>
+                </ul>
               </div>
             </div>
           </div>
 
-          <div class="detail-sidebar">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">导出统计</div>
-              </div>
-              <div class="card-body">
-                <div class="stats-grid" style="grid-template-columns: 1fr; margin-bottom: 0; gap: 12px;">
-                  <div class="stat-card" style="padding: 16px;">
-                    <div class="stat-value" style="font-size: 24px;">12</div>
-                    <div class="stat-label">待导出坐骑</div>
-                  </div>
-                  <div class="stat-card" style="padding: 16px;">
-                    <div class="stat-value" style="font-size: 24px;">3</div>
-                    <div class="stat-label">待导出宠物</div>
-                  </div>
-                  <div class="stat-card" style="padding: 16px;">
-                    <div class="stat-value" style="font-size: 24px;">5</div>
-                    <div class="stat-label">待导出 NPC</div>
-                  </div>
-                </div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">☁ 发布</div>
+                <div class="card-subtitle">将 workspace/mpq/ 下未发布的批次复制到分发目录</div>
               </div>
             </div>
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <label class="form-check">补丁起始编号
+                  <input type="number" value="5" min="1" class="form-input" style="width: 80px; padding: 6px 10px;">
+                </label>
+                <label class="form-check"><input type="checkbox" checked> 仅预览</label>
+              </div>
+              <button class="btn btn-primary" style="width: 100%; margin-top: 12px;">发布 MPQ 补丁</button>
+              <div class="alert alert-success">
+                <div class="alert-title">已发布 1 个批次（下一个编号 6）</div>
+                <ul>
+                  <li>20260903-126-mounts → workspace/dist/20260906/patch-zhCN-5.mpq</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">历史导出</div>
-              </div>
-              <div class="card-body">
-                <div style="font-size: 13px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
-                    <div>
-                      <div style="font-weight: 600;">v2026.07.12</div>
-                      <div style="font-size: 11px; color: var(--text-tertiary);">20 个资源 · SQL + DBC</div>
+        <!-- 补丁任务列表 -->
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">补丁任务列表</div>
+              <div class="card-subtitle">任务状态在构建过程中自动更新（requested → generated / failed）</div>
+            </div>
+            <select class="filter-select" style="min-width: 140px;">
+              <option>全部状态</option>
+              <option>requested</option>
+              <option>generated</option>
+              <option>applied</option>
+              <option>failed</option>
+            </select>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Job ID</th>
+                  <th>资源</th>
+                  <th>状态</th>
+                  <th>创建时间</th>
+                  <th>请求来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family: monospace;">mount_0003</td>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">🦌</div>
+                      <div>
+                        <div class="resource-name">梦光符文牡鹿</div>
+                        <div class="resource-meta">id: 0003</div>
+                      </div>
                     </div>
-                    <button class="btn btn-sm btn-ghost">下载</button>
-                  </div>
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
-                    <div>
-                      <div style="font-weight: 600;">v2026.07.10</div>
-                      <div style="font-size: 11px; color: var(--text-tertiary);">15 个资源 · SQL</div>
+                  </td>
+                  <td><span class="badge badge-blue">requested</span></td>
+                  <td>2026-09-06 10:12</td>
+                  <td>web</td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">mount_0091</td>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">🦅</div>
+                      <div>
+                        <div class="resource-name">死亡使者的绽翼兽</div>
+                        <div class="resource-meta">id: 0091</div>
+                      </div>
                     </div>
-                    <button class="btn btn-sm btn-ghost">下载</button>
-                  </div>
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
-                    <div>
-                      <div style="font-weight: 600;">v2026.07.05</div>
-                      <div style="font-size: 11px; color: var(--text-tertiary);">8 个资源 · DBC</div>
+                  </td>
+                  <td><span class="badge badge-green">generated</span></td>
+                  <td>2026-09-06 10:12</td>
+                  <td>web</td>
+                </tr>
+                <tr>
+                  <td style="font-family: monospace;">mount_0101</td>
+                  <td>
+                    <div class="name-cell">
+                      <div class="resource-thumb">🐗</div>
+                      <div>
+                        <div class="resource-name">石牙斗猪</div>
+                        <div class="resource-meta">id: 0101</div>
+                      </div>
                     </div>
-                    <button class="btn btn-sm btn-ghost">下载</button>
-                  </div>
-                </div>
-              </div>
+                  </td>
+                  <td><span class="badge badge-gray">applied</span></td>
+                  <td>2026-09-03 15:40</td>
+                  <td>cli</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>共 12 个任务</span>
+            <div class="page-nav">
+              <button class="page-btn">‹</button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">›</button>
             </div>
           </div>
         </div>

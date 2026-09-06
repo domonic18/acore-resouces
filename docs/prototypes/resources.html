@@ -28,10 +28,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           资源列表
         </a>
-        <a href="import.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          导入资源
-        </a>
         <a href="export.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           导出补丁
@@ -75,19 +71,20 @@
       <div class="content">
         <div class="card">
           <div class="tabs">
-            <a href="#" class="tab active">全部 (794)</a>
-            <a href="#" class="tab">坐骑 (461)</a>
+            <a href="#" class="tab active">全部 (763)</a>
+            <a href="#" class="tab">坐骑 (430)</a>
             <a href="#" class="tab">宠物 (107)</a>
             <a href="#" class="tab">NPC (226)</a>
           </div>
 
           <div class="table-toolbar">
-            <div class="table-filters">
+            <div class="table-filters" style="flex-wrap: wrap;">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-tertiary);">⛛ 筛选</span>
               <select class="filter-select">
                 <option>所有类型</option>
                 <option>陆地坐骑</option>
                 <option>飞行坐骑</option>
-                <option>水域坐骑</option>
+                <option>水上坐骑</option>
               </select>
               <select class="filter-select">
                 <option>所有星级</option>
@@ -97,17 +94,24 @@
                 <option>四星</option>
                 <option>五星</option>
               </select>
-              <select class="filter-select">
-                <option>所有状态</option>
-                <option>调试通过</option>
-                <option>待调试</option>
-                <option>已添加</option>
-                <option>未添加</option>
+              <select class="filter-select" title="按物品 ID 是否与 wowhead 官方链接一致判定">
+                <option>所有数据来源</option>
+                <option>官方数据</option>
+                <option>自定义数据</option>
               </select>
+              <input type="date" class="filter-select" style="min-width: 140px;">
+              <span style="align-self: center; font-size: 12px; color: var(--text-tertiary);">至</span>
+              <input type="date" class="filter-select" style="min-width: 140px;">
+              <button class="badge badge-blue" style="border: none; cursor: pointer;">✓ 必填缺失</button>
+              <button class="badge badge-gray" style="border: none; cursor: pointer;">调试通过</button>
+              <button class="badge badge-gray" style="border: none; cursor: pointer;">待调试</button>
+              <button class="badge badge-gray" style="border: none; cursor: pointer;">已添加</button>
+              <button class="badge badge-gray" style="border: none; cursor: pointer;">未添加</button>
+              <button class="badge badge-gray" style="border: none; cursor: pointer;">冲突</button>
             </div>
             <div class="table-filters">
               <button class="btn btn-sm">刷新</button>
-              <button class="btn btn-sm">导出当前页</button>
+              <button class="btn btn-sm" disabled title="导出功能开发中">导出当前页</button>
             </div>
           </div>
 
@@ -179,7 +183,10 @@
                   <td><span class="badge badge-blue">陆地坐骑</span></td>
                   <td>二星</td>
                   <td>—</td>
-                  <td><span class="status-dot warning"></span>待调试 · 未添加</td>
+                  <td>
+                    <span class="status-dot warning"></span>待调试 · 未添加
+                    <span class="badge badge-red" title="缺失：dbc.spell.id、db.item_template.entry">必填缺失 2</span>
+                  </td>
                   <td style="text-align: right;">
                     <a href="resource-detail.html" class="btn btn-sm btn-ghost">编辑</a>
                     <a href="preview.html" class="btn btn-sm btn-ghost">预览</a>
