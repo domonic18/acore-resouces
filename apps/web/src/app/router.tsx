@@ -7,6 +7,7 @@ import { PreviewPage } from "@/pages/PreviewPage";
 import { ResourceFolderPage } from "@/pages/ResourceFolderPage";
 import { ExportPage } from "@/pages/ExportPage";
 import { SettingsPage } from "@/pages/SettingsPage";
+import { DbcPage } from "@/pages/DbcPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { path: "preview", element: <PreviewPage /> },
       { path: "preview/:resourceType/:id", element: <PreviewPage /> },
       { path: "export", element: <ExportPage /> },
+      { path: "dbc", element: <DbcPage /> },
       { path: "settings", element: <SettingsPage /> },
       { path: ":resourceType", element: <Navigate to="/resources" replace /> },
       {
