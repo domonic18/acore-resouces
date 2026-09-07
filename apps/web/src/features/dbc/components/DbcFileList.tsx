@@ -24,8 +24,8 @@ export function DbcFileList({ selectedFile, onSelect }: DbcFileListProps) {
       <div className="card-header">
         <div>
           <div className="card-title">DBC 文件</div>
-          <div className="card-subtitle font-mono text-[11px]">
-            data/wow-dbc/src/dbc
+          <div className="card-subtitle break-all font-mono text-[11px]">
+            {data?.base_dir ?? "data/wow-dbc/src/dbc"}
           </div>
         </div>
       </div>
