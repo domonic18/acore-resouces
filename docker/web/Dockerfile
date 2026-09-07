@@ -24,7 +24,31 @@ ENV VITE_API_BASE_URL=""
 RUN npm run build
 
 # --------------------------------------------------
-# Stage 2: 后端依赖编译
+# Stage 2: mpqcli 编译（Linux 静态二进制，补丁构建 MPQ 打包依赖）
+# 宿主机 build/ 产物为 macOS 二进制，容器内需单独编译
+# --------------------------------------------------
+FROM alpine:3.23 AS mpqcli-builder
+
+RUN apk add --no-cache \
+    build-base \
+    cmake \
+    git
+
+WORKDIR /mpqcli
+
+COPY tools/wow-mpq-cli ./
+
+RUN cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_MPQCLI=ON \
+    -DBUILD_STATIC=ON
+
+RUN cmake --build build
+
+RUN strip build/bin/mpqcli
+
+# --------------------------------------------------
+# Stage 3: 后端依赖编译
 # --------------------------------------------------
 FROM python:3.11-slim-bookworm AS backend-builder
 
@@ -42,7 +66,7 @@ RUN uv venv --python 3.11 .venv
 RUN uv sync --frozen
 
 # --------------------------------------------------
-# Stage 3: 生产镜像
+# Stage 4: 生产镜像
 # --------------------------------------------------
 FROM python:3.11-slim-bookworm AS production
 
@@ -51,6 +75,14 @@ WORKDIR /app
 # 复制虚拟环境
 COPY --from=backend-builder /app/.venv /app/.venv
 ENV PATH="/app/.venv/bin:$PATH"
+
+# 复制 mpqcli（mount_patch_builder 按 tools/wow-mpq-cli/build/bin/mpqcli 相对路径调用）
+COPY --from=mpqcli-builder /mpqcli/build/bin/mpqcli ./tools/wow-mpq-cli/build/bin/mpqcli
+
+# 复制 wow-dbc-tool 源码与 schemas（editable 安装回链项目根，schemas 供 DBC 字段名解析）
+COPY tools/wow-dbc-tool/pyproject.toml /tools/wow-dbc-tool/
+COPY tools/wow-dbc-tool/src /tools/wow-dbc-tool/src
+COPY tools/wow-dbc-tool/schemas /tools/wow-dbc-tool/schemas
 
 # 复制后端代码
 COPY backend/app ./app

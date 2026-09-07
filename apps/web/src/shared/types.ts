@@ -147,6 +147,8 @@ export interface PatchBuildResult {
   sql_files: string[];
   mpq_path: string;
   report_path: string;
+  audit_path: string;
+  manifest_path: string;
   dry_run: boolean;
 }
 
@@ -162,6 +164,56 @@ export interface PublishResult {
   published: { batch: string; path: string }[];
   skipped: string[];
   next_number: number;
+}
+
+export interface AuditDbcEntry {
+  dbc_file: string;
+  record_id: number;
+  job_id: string;
+  action: string;
+  action_taken: string;
+  before: Record<string, unknown> | null;
+  after: Record<string, unknown>;
+}
+
+export interface AuditSqlTable {
+  name: string;
+  operation: string;
+  records: Record<string, unknown>[];
+}
+
+export interface AuditSqlEntry {
+  job_id: string;
+  output_sql_file: string;
+  status: string;
+  tables: AuditSqlTable[];
+}
+
+export interface AuditManifestFile {
+  path: string;
+  size_bytes: number;
+  sha256: string;
+  kind: string;
+}
+
+export interface AuditMpqSummary {
+  batch: string;
+  path: string;
+  obfuscation: string;
+  file_count: number;
+  counts_by_kind: Record<string, number>;
+  files: AuditManifestFile[];
+  diff: { added: string[]; replaced: string[]; unchanged: string[] } | null;
+}
+
+export interface PatchJobAudit {
+  job_id: string;
+  resource_name: string;
+  model_folder: string | null;
+  report: { batch: string | null; generated_at: string | null; path: string };
+  dbc: AuditDbcEntry[];
+  sql: AuditSqlEntry | null;
+  mpq: AuditMpqSummary | null;
 }
 
 export interface CleanTarget {

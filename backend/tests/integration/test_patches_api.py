@@ -34,6 +34,114 @@ def patch_jobs_dir(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
 
 
 @pytest.fixture
+def audit_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
+    """将审计服务的报告/MPQ/任务目录指向临时目录。"""
+    from app.services import patch_audit
+
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    patched = Settings()
+    patched.project_root = tmp_path
+    patched.patch_jobs_dir = tmp_path / "patch-jobs"
+    monkeypatch.setattr(patch_audit, "REPORTS_DIR", reports)
+    monkeypatch.setattr(patch_audit, "MPQ_OUTPUT_DIR", tmp_path / "mpq")
+    monkeypatch.setattr(patch_audit, "settings", patched)
+    return tmp_path
+
+
+def _write_audit_env(tmp_path: Path, *, with_audit: bool = True) -> None:
+    """构造带审计切片的批次报告与任务记录。"""
+    report = {
+        "generated_at": "2026-01-01T12:00:00+00:00",
+        "batch": "20260101_120000",
+        "job_ids": ["mount_0003"],
+        "jobs": [{"job_id": "mount_0003", "resource_name": "审计测试", "model_folder": "audit_mount"}],
+        "dbc": [
+            {
+                "dbc_file": "Spell.dbc",
+                "record_id": 80000,
+                "job_id": "mount_0003",
+                "action": "add",
+                "action_taken": "added",
+                "before": None,
+                "after": {"ID": 80000},
+            }
+        ],
+        "sql": [
+            {
+                "job_id": "mount_0003",
+                "output_sql_file": "data/sql/mounts/0003_x/0003_mount_add.sql",
+                "status": "written",
+                "tables": [{"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}],
+            }
+        ],
+        "mpq": {
+            "batch": "20260101_120000",
+            "path": "patch-mounts.mpq",
+            "obfuscation": "none",
+            "file_count": 1,
+            "counts_by_kind": {"dbc": 1},
+            "files": [{"path": "DBFilesClient/Spell.dbc", "size_bytes": 10, "sha256": "aaa", "kind": "dbc"}],
+            "diff": None,
+        },
+    }
+    report_dir = tmp_path / "reports" / "20260101_120000"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    (report_dir / "audit-report.json").write_text(json.dumps(report, ensure_ascii=False), encoding="utf-8")
+
+    output: dict = {"sql_files": ["data/sql/mounts/0003_x/0003_mount_add.sql"]}
+    if with_audit:
+        output["audit"] = "reports/20260101_120000/audit-report.json"
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    job_dir.mkdir(parents=True, exist_ok=True)
+    (job_dir / "job.json").write_text(
+        json.dumps(
+            {
+                "job_id": "mount_0003",
+                "resource_type": "mount",
+                "resource_id": 3,
+                "resource_name": "审计测试",
+                "resource_model_folder": "audit_mount",
+                "status": "generated",
+                "artifacts": {"output": output},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+
+def test_get_patch_job_audit(client: TestClient, audit_env: Path) -> None:
+    """测试获取任务审计切片。"""
+    _write_audit_env(audit_env)
+
+    response = client.get("/api/patches/mount_0003/audit")
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["job_id"] == "mount_0003"
+    assert data["resource_name"] == "审计测试"
+    assert data["report"]["batch"] == "20260101_120000"
+    assert data["dbc"][0]["after"]["ID"] == 80000
+    assert data["sql"]["status"] == "written"
+    assert data["mpq"]["obfuscation"] == "none"
+
+
+def test_get_patch_job_audit_not_found(client: TestClient, audit_env: Path) -> None:
+    """测试获取不存在任务的审计返回 404。"""
+    assert client.get("/api/patches/mount_9999/audit").status_code == 404
+
+
+def test_get_patch_job_audit_legacy_job(client: TestClient, audit_env: Path) -> None:
+    """审计功能上线前构建的任务（无 audit 路径）返回 404 且提示明确。"""
+    _write_audit_env(audit_env, with_audit=False)
+
+    response = client.get("/api/patches/mount_0003/audit")
+    assert response.status_code == 404
+    assert "审计功能上线前" in response.json()["detail"]
+
+
+@pytest.fixture
 def cleaner_dirs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Path]:
     """将工作区清理范围四目录指向临时目录。"""
     from app.services import workspace_cleaner

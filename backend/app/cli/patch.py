@@ -2,8 +2,13 @@
 
 from __future__ import annotations
 
+import json
+import re
+from typing import Any
+
 import typer
 from rich.console import Console
+from rich.markup import escape
 from rich.table import Table
 
 from app.schemas.patch import PatchJobStatus
@@ -13,6 +18,7 @@ from app.services.mount_patch_builder import (
     MountPatchBuilderError,
     build_mount_patches,
 )
+from app.services.patch_audit import load_audit_by_batch, load_audit_by_job
 from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
@@ -100,6 +106,7 @@ def build_patch(
         console.print("SQL: (无新增)")
     console.print(f"MPQ: {result['mpq_path']}")
     console.print(f"校验报告: {result['report_path']}")
+    console.print(f"审计报告: {result['audit_path']}")
     if result["dry_run"]:
         console.print("[yellow]干跑完成，未修改任何文件。[/yellow]")
 
@@ -187,6 +194,112 @@ def update_patch(
         raise typer.Exit(1)
 
     console.print(f"[green]已更新 {job_id} 状态为 {status}[/green]")
+
+
+@app.command("audit", help="查看补丁审计报告（任务 ID 或批次时间戳）")
+def audit_patch(
+    key: str = typer.Argument(
+        ..., help="任务 ID（如 mount_0091）或批次时间戳（如 20260906_102929）"
+    ),
+    json_output: bool = typer.Option(False, "--json", help="以 JSON 输出完整报告"),
+) -> None:
+    """查看字段级审计报告（DBC before→after / SQL / MPQ 清单）。"""
+    try:
+        if re.fullmatch(r"\d{8}_\d{6}", key):
+            report: dict[str, Any] = load_audit_by_batch(key)
+            console.print(
+                f"[bold]批次审计 · {escape(key)} · {len(report.get('job_ids', []))} 个任务[/bold]\n"
+            )
+        else:
+            report = load_audit_by_job(key)
+            console.print(
+                f"[bold]任务审计 · {escape(key)} {escape(str(report.get('resource_name') or ''))}[/bold]\n"
+            )
+    except FileNotFoundError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    if json_output:
+        console.print_json(json.dumps(report, ensure_ascii=False, indent=2))
+        return
+
+    _print_audit_dbc(report.get("dbc", []))
+    _print_audit_sql(report.get("sql"))
+    _print_audit_mpq(report.get("mpq"))
+
+
+def _print_audit_dbc(entries: list[dict[str, Any]]) -> None:
+    """渲染 DBC 字段变更表（before 删除线 → after）。"""
+    table = Table(title="DBC 字段变更（before → after）")
+    table.add_column("文件 · 记录", style="cyan")
+    table.add_column("字段")
+    table.add_column("变更")
+    for entry in entries:
+        record_label = f"{entry.get('dbc_file')}\n{entry.get('record_id')}"
+        before = entry.get("before")
+        after = entry.get("after") or {}
+        skipped = entry.get("action_taken") == "skipped_existing"
+        for field, new_value in after.items():
+            old_value = before.get(field) if before else None
+            if skipped:
+                change = f"[yellow]源已存在，跳过（现值 {escape(str(old_value))}）[/yellow]"
+            elif before is None:
+                change = f"[dim]新增记录[/dim] → [green]{escape(str(new_value))}[/green]"
+            else:
+                change = f"[dim][s]{escape(str(old_value))}[/s][/dim] → [green]{escape(str(new_value))}[/green]"
+            table.add_row(escape(record_label), escape(str(field)), change)
+        if not after:
+            note = "源已存在，跳过" if skipped else "（无字段）"
+            table.add_row(escape(record_label), "-", f"[yellow]{note}[/yellow]")
+    console.print(table)
+    console.print()
+
+
+def _print_audit_sql(sql: Any) -> None:
+    """渲染 SQL 计划（任务切片为 dict，批次报告为 list）。"""
+    entries = sql if isinstance(sql, list) else ([sql] if sql else [])
+    if not entries:
+        console.print("[yellow]无 SQL 计划[/yellow]\n")
+        return
+    for entry in entries:
+        status = entry.get("status")
+        marker = "[green]+[/green]" if status == "written" else "[dim]=[/dim]"
+        suffix = "（新增）" if status == "written" else "（已存在，未重写）"
+        console.print(f"{marker} {escape(str(entry.get('output_sql_file')))}{suffix}")
+        for tbl in entry.get("tables", []):
+            table_name = tbl.get("name", "?")
+            records = tbl.get("records", [])
+            for idx, record in enumerate(records):
+                prefix = f"[{idx}]." if len(records) > 1 else ""
+                for field, value in record.items():
+                    console.print(
+                        f"    {escape(table_name)}.{prefix}{escape(str(field))} = {escape(str(value))}"
+                    )
+        console.print()
+
+
+def _print_audit_mpq(mpq: dict[str, Any] | None) -> None:
+    """渲染 MPQ 批次清单摘要。"""
+    if not mpq:
+        console.print("[yellow]无 MPQ 清单[/yellow]")
+        return
+    counts = mpq.get("counts_by_kind") or {}
+    console.print(
+        f"[bold]MPQ 批次[/bold] {escape(str(mpq.get('batch')))} · "
+        f"混淆等级 {escape(str(mpq.get('obfuscation')))} · "
+        f"文件数 {mpq.get('file_count', 0)}（{escape(str(counts))}）"
+    )
+    diff = mpq.get("diff")
+    if diff is not None:
+        console.print(
+            f"  与上一批次 diff: 新增 {len(diff.get('added', []))} / "
+            f"替换 {len(diff.get('replaced', []))} / 沿用 {len(diff.get('unchanged', []))}"
+        )
+    files = mpq.get("files", [])
+    for entry in files[:20]:
+        console.print(f"  {escape(str(entry.get('path')))}")
+    if len(files) > 20:
+        console.print(f"  … 共 {len(files)} 个文件（--json 查看全量）")
 
 
 @app.command("delete", help="删除补丁任务（仅移除任务目录，不影响真相源与已生成产物）")

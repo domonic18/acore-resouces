@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import dataclasses
+import hashlib
 import json
 import re
 import shutil
@@ -333,38 +334,70 @@ def apply_dbc_operations(
     grouped_ops: dict[str, list[tuple[JobContext, dict[str, Any]]]],
     dry_run: bool = False,
     force: bool = False,
-) -> None:
-    """应用 DBC 操作。
+) -> list[dict[str, Any]]:
+    """应用 DBC 操作并捕获字段级 before 值供审计。
 
     源 DBC 中已存在的记录默认跳过，避免覆盖历史数据；仅新增缺失记录。
     force=True 时已存在记录按计划字段强制重写（edit），用于全量重建。
+
+    Returns:
+        审计记录列表：{dbc_file, record_id, job_id, action, action_taken,
+        before(计划字段的旧值子集，新增记录为 None), after(计划字段值)}。
     """
+    audit_records: list[dict[str, Any]] = []
     for dbc_file, operations in grouped_ops.items():
         dbc_path = WOW_DBC_DIR / dbc_file
         dbc = DBCFile(dbc_path)
         dbc.load()
 
-        for _ctx, op in operations:
+        for ctx, op in operations:
             action = op.get("action", "add")
             fields = op.get("fields", {})
             record_id = int(op["record_id"])
+            # 既有调用方（单测）允许 ctx 为 None
+            job_id = ctx.job_id if ctx is not None else None
 
             existing = dbc.get(ID=record_id)
+            # to_dict() 每次新建 dict，edit 前捕获即为旧值
+            before_dict = existing.to_dict() if existing is not None else None
+            if before_dict is None:
+                before = None
+            else:
+                before = {k: before_dict[k] for k in fields if k in before_dict}
+            action_taken = "skipped_existing"
             if action == "add":
                 if existing is None:
+                    action_taken = "added"
                     if not dry_run:
                         dbc.add(**fields)
-                elif force and not dry_run:
-                    dbc.edit(existing, **fields)
+                elif force:
+                    action_taken = "edited"
+                    if not dry_run:
+                        dbc.edit(existing, **fields)
                 # 否则已存在则跳过，不执行 edit
             elif action == "edit":
-                if existing is not None and not dry_run:
-                    dbc.edit(existing, **fields)
+                if existing is not None:
+                    action_taken = "edited"
+                    if not dry_run:
+                        dbc.edit(existing, **fields)
             else:
                 raise MountPatchBuilderError(f"不支持的 DBC 操作: {action}")
 
+            audit_records.append(
+                {
+                    "dbc_file": dbc_file,
+                    "record_id": record_id,
+                    "job_id": job_id,
+                    "action": action,
+                    "action_taken": action_taken,
+                    "before": before,
+                    "after": fields,
+                }
+            )
+
         if not dry_run:
             dbc.save(dbc_path)
+    return audit_records
 
 
 def _sql_value(value: Any) -> str:
@@ -603,12 +636,44 @@ def _copy_assets_to_staging(assets: dict[str, Any], staging: Path) -> list[Path]
     return written
 
 
+def _manifest_kind(rel: Path) -> str:
+    """按归档内路径判定清单条目类型。"""
+    parts = rel.parts
+    if parts[:1] == ("DBFilesClient",):
+        return "dbc"
+    if parts[:2] == ("Interface", "icons"):
+        return "icon"
+    return "asset"
+
+
+def _manifest_files(staging: Path) -> list[dict[str, Any]]:
+    """枚举 staging 文件生成清单条目（相对路径 + 体积 + sha256）。
+
+    须在 staging 被 rmtree 前调用；清单本身不打入 MPQ 归档。
+    """
+    entries: list[dict[str, Any]] = []
+    for f in sorted(staging.rglob("*")):
+        if not f.is_file():
+            continue
+        rel = f.relative_to(staging)
+        data = f.read_bytes()
+        entries.append(
+            {
+                "path": rel.as_posix(),
+                "size_bytes": len(data),
+                "sha256": hashlib.sha256(data).hexdigest(),
+                "kind": _manifest_kind(rel),
+            }
+        )
+    return entries
+
+
 def build_mpq(
     contexts: list[JobContext],
     sql_files: list[Path],
     dry_run: bool = False,
-) -> tuple[Path, dict[str, list[Path]]]:
-    """构建批次 MPQ。
+) -> tuple[Path, dict[str, list[Path]], dict[str, Any]]:
+    """构建批次 MPQ 并持久化 manifest.json。
 
     Args:
         contexts: 要处理的任务上下文列表。
@@ -616,15 +681,24 @@ def build_mpq(
         dry_run: 为 True 时只返回路径，不创建文件。
 
     Returns:
-        (mpq_path, {job_id: [相对路径列表]})
+        (mpq_path, {job_id: [相对路径列表]}, 批次清单 dict)
     """
     timestamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
     mpq_dir = MPQ_OUTPUT_DIR / timestamp
     mpq_path = mpq_dir / "patch-mounts.mpq"
     staging = mpq_dir / "staging"
 
+    manifest: dict[str, Any] = {
+        "batch": timestamp,
+        "mpq": "patch-mounts.mpq",
+        # 4.5 混淆等级开关的挂点，当前恒为 none
+        "obfuscation": "none",
+        "generated_at": datetime.now(UTC).isoformat(),
+        "jobs": [ctx.job_id for ctx in contexts],
+        "files": [],
+    }
     if dry_run:
-        return mpq_path, {}
+        return mpq_path, {}, manifest
 
     mpq_dir.mkdir(parents=True, exist_ok=True)
 
@@ -639,11 +713,15 @@ def build_mpq(
     for ctx in contexts:
         job_assets[ctx.job_id] = _copy_assets_to_staging(ctx.assets, staging)
 
+    manifest["files"] = _manifest_files(staging)
+
     subprocess.run(
         [str(MPQCLI), "create", str(staging), "--output", str(mpq_path), "--game", "wow-wotlk"],
         check=True,
     )
     shutil.rmtree(staging, ignore_errors=True)
+
+    save_json(mpq_dir / "manifest.json", manifest)
 
     readme = mpq_dir / "readme.txt"
     mount_names = ", ".join(ctx.resource.official_db.name or ctx.job_id for ctx in contexts)
@@ -657,7 +735,7 @@ def build_mpq(
         encoding="utf-8",
     )
 
-    return mpq_path, job_assets
+    return mpq_path, job_assets, manifest
 
 
 def update_job_records(
@@ -665,6 +743,7 @@ def update_job_records(
     sql_files: list[Path],
     mpq_path: Path,
     report_path: Path,
+    audit_path: Path,
     dry_run: bool = False,
 ) -> None:
     """更新各任务 job.json 为 generated 状态。"""
@@ -682,6 +761,7 @@ def update_job_records(
             "sql_files": relative_sql_files,
             "mpq": str(mpq_path.relative_to(settings.project_root)),
             "validation_report": str(report_path.relative_to(settings.project_root)),
+            "audit": str(audit_path.relative_to(settings.project_root)),
         }
         manifest["artifacts"] = artifacts
         if not dry_run:
@@ -1002,21 +1082,30 @@ def build_mount_patches(
         _clear_plans(contexts)
 
     print("应用 DBC 操作（直接编辑源 DBC）...")
-    apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
+    dbc_audit_records = apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
 
     print("生成坐骑 SQL（每只坐骑独立目录）...")
     sql_files: list[Path] = []
+    sql_entries: list[dict[str, Any]] = []
     for ctx in contexts:
         written = generate_sql(ctx, dry_run=dry_run, force=force)
         for f in written:
             print(f"  {f}")
             sql_files.append(f)
+        sql_entries.append(
+            {
+                "job_id": ctx.job_id,
+                "output_sql_file": ctx.sql_plan.output_sql_file,
+                "status": "written" if written else "already_exists",
+                "tables": ctx.sql_plan.model_dump()["tables"],
+            }
+        )
     if not sql_files:
         print("  无新增 SQL（所有坐骑均已存在 SQL 文件）。")
     print()
 
     print("构建 MPQ...")
-    mpq_path, job_assets = build_mpq(contexts, sql_files, dry_run=dry_run)
+    mpq_path, job_assets, mpq_manifest = build_mpq(contexts, sql_files, dry_run=dry_run)
     print(f"  {mpq_path}\n")
 
     timestamp = mpq_path.parent.name
@@ -1024,19 +1113,30 @@ def build_mount_patches(
     report_path = write_validation_report(contexts, job_assets, timestamp, dry_run=dry_run)
     print(f"  {report_path}\n")
 
+    print("生成审计报告...")
+    from app.services.patch_audit import write_audit_report
+
+    audit_path = write_audit_report(
+        contexts, dbc_audit_records, sql_entries, mpq_manifest, timestamp, dry_run=dry_run
+    )
+    print(f"  {audit_path}\n")
+
     print("更新任务状态...")
-    update_job_records(contexts, sql_files, mpq_path, report_path, dry_run=dry_run)
+    update_job_records(contexts, sql_files, mpq_path, report_path, audit_path, dry_run=dry_run)
 
     if dry_run:
         print("干跑完成，未修改任何源文件。")
     else:
         print("完成。请手动提交 data/wow-dbc 子模块的 DBC 改动。")
         print(f"校验报告：{report_path}")
+        print(f"审计报告：{audit_path}")
 
     return {
         "jobs": [ctx.job_id for ctx in contexts],
         "sql_files": [str(f) for f in sql_files],
         "mpq_path": str(mpq_path),
         "report_path": str(report_path),
+        "audit_path": str(audit_path),
+        "manifest_path": str(mpq_path.parent / "manifest.json"),
         "dry_run": dry_run,
     }

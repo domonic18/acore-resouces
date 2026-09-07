@@ -28,9 +28,10 @@ const STATUS_OPTIONS: { value: string; label: string }[] = [
 
 interface PatchJobsTableProps {
   building: boolean;
+  onAudit: (jobId: string) => void;
 }
 
-export function PatchJobsTable({ building }: PatchJobsTableProps) {
+export function PatchJobsTable({ building, onAudit }: PatchJobsTableProps) {
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
   const [pendingDelete, setPendingDelete] = useState<PatchJob | null>(null);
@@ -100,15 +101,28 @@ export function PatchJobsTable({ building }: PatchJobsTableProps) {
                   {job.summary || "—"}
                 </td>
                 <td>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-danger"
-                    disabled={building || deleteMutation.isPending}
-                    onClick={() => setPendingDelete(job)}
-                    title={building ? "构建运行中，禁止删除" : "删除任务"}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" /> 删除
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    {job.artifacts?.output?.audit ? (
+                      <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => onAudit(job.job_id)}
+                      >
+                        审计
+                      </button>
+                    ) : (
+                      <span className="text-xs text-text-tertiary">—</span>
+                    )}
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger"
+                      disabled={building || deleteMutation.isPending}
+                      onClick={() => setPendingDelete(job)}
+                      title={building ? "构建运行中，禁止删除" : "删除任务"}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> 删除
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
