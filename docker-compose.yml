@@ -19,6 +19,9 @@ services:
       - ./imports:/app/imports
       - ./backend/app:/app/app
       - ./apps/web/dist:/app/app/static
+      # data/sql/azerothcore-updates 是指向 AzerothCore updates 的绝对路径软链接，
+      # 容器内需按原路径挂载目标目录，否则链接悬空导致 SQL 写入报 EEXIST
+      - /Users/deadwalk/Code/azerothcore-wotlk/modules/mod-custom-content/data/sql/db-world/updates:/Users/deadwalk/Code/azerothcore-wotlk/modules/mod-custom-content/data/sql/db-world/updates
     networks:
       - acore-resources-network
     restart: unless-stopped
