@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { usePatchJobDelete } from "@/features/resources/hooks/usePatchJobDelete";
 import { usePatchJobs } from "@/features/resources/hooks/usePatchJobs";
 import type { PatchJob } from "@/shared/types";
 
@@ -32,6 +33,8 @@ interface PatchJobsTableProps {
 export function PatchJobsTable({ building }: PatchJobsTableProps) {
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
+  const [pendingDelete, setPendingDelete] = useState<PatchJob | null>(null);
+  const deleteMutation = usePatchJobDelete();
   const { data, isLoading } = usePatchJobs(status || undefined, page, building);
 
   const totalPages = data ? Math.max(1, Math.ceil(data.total / 20)) : 1;
@@ -70,6 +73,7 @@ export function PatchJobsTable({ building }: PatchJobsTableProps) {
               <th>状态</th>
               <th>创建时间</th>
               <th>摘要</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -95,18 +99,29 @@ export function PatchJobsTable({ building }: PatchJobsTableProps) {
                 <td className="max-w-56 truncate text-xs text-text-secondary">
                   {job.summary || "—"}
                 </td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-danger"
+                    disabled={building || deleteMutation.isPending}
+                    onClick={() => setPendingDelete(job)}
+                    title={building ? "构建运行中，禁止删除" : "删除任务"}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" /> 删除
+                  </button>
+                </td>
               </tr>
             ))}
             {!isLoading && (data?.items.length ?? 0) === 0 && (
               <tr>
-                <td colSpan={5} className="py-8 text-center text-text-secondary">
+                <td colSpan={6} className="py-8 text-center text-text-secondary">
                   暂无补丁任务
                 </td>
               </tr>
             )}
             {isLoading && (
               <tr>
-                <td colSpan={5} className="py-8 text-center text-text-secondary">
+                <td colSpan={6} className="py-8 text-center text-text-secondary">
                   加载中...
                 </td>
               </tr>
@@ -141,6 +156,56 @@ export function PatchJobsTable({ building }: PatchJobsTableProps) {
           </button>
         </div>
       </div>
+
+      {pendingDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setPendingDelete(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-lg border border-border bg-bg-surface p-5 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-base font-semibold text-text-primary">
+              确认删除任务
+            </h3>
+            <p className="mt-2 text-sm text-text-secondary">
+              将删除{" "}
+              <span className="font-mono text-xs">{pendingDelete.job_id}</span>
+              （{pendingDelete.resource_name || pendingDelete.resource_model_folder}
+              ）。仅移除任务目录，不影响真相源与已生成产物。
+            </p>
+            {deleteMutation.isError && (
+              <div className="mt-3 rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
+                {deleteMutation.error instanceof Error
+                  ? deleteMutation.error.message
+                  : "删除失败"}
+              </div>
+            )}
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-sm"
+                onClick={() => setPendingDelete(null)}
+              >
+                取消
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                disabled={deleteMutation.isPending}
+                onClick={() =>
+                  deleteMutation.mutate(pendingDelete.job_id, {
+                    onSuccess: () => setPendingDelete(null),
+                  })
+                }
+              >
+                {deleteMutation.isPending ? "删除中..." : "确认删除"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -11,7 +11,7 @@
 | 仪表盘 | [index.html](index.html) | `pages/DashboardPage.tsx` + `features/resources/lib/dashboard-stats.ts` | 已对齐：坐骑筛选统计看板（数据来源/类型/星级/添加/调试/健康分布卡） |
 | 资源列表 | [resources.html](resources.html) | `pages/ResourceListPage.tsx` + `features/resources/components/ResourceFilters.tsx` | 已对齐：数据来源筛选、必填缺失快捷筛选与行内徽章、状态标签组 |
 | 资源详情 | [resource-detail.html](resource-detail.html) | `pages/ResourceDetailPage.tsx` + `components/form/` | 已对齐：编辑态校验（必填空值红框、校验错误汇总） |
-| 导出补丁 | [export.html](export.html) | `pages/ExportPage.tsx` + `features/resources/components/patch-export/` | 已对齐：多选创建任务 → dry-run/强制构建 → 发布 → 任务列表完整链路；🚧 规划扩展：混淆等级选择（none/basic/encrypted，见 [07 §十四](../arch/07DBC维护与同步方案.md)）、任务操作列（查看 MPQ / 审计 / 删除）与任务审计视图（见 [07 §十二](../arch/07DBC维护与同步方案.md)） |
+| 导出补丁 | [export.html](export.html) | `pages/ExportPage.tsx` + `features/resources/components/patch-export/` | 已对齐：多选创建任务 → dry-run/强制构建 → 发布 → 任务列表完整链路 + 任务删除（操作列，见 [07 §十三](../arch/07DBC维护与同步方案.md)）+ 清理工作区按钮（dry-run 预览 → 确认执行）；🚧 规划扩展：混淆等级选择（none/basic/encrypted，见 [07 §十四](../arch/07DBC维护与同步方案.md)）、任务操作列的查看 MPQ / 审计入口与任务审计视图（见 [07 §十二](../arch/07DBC维护与同步方案.md)） |
 | 资源预览 | [preview.html](preview.html) | `pages/PreviewPage.tsx` + `components/viewer/`（ModelViewer / TextureViewer / AssetFileTree） | 基本一致 |
 | 设置 | [settings.html](settings.html) | `pages/SettingsPage.tsx` + `shared/system.ts` | 已对齐：只读系统信息（数据概览、路径配置、健康检查） |
 | DBC 数据查看 | [dbc.html](dbc.html) | 🚧 规划：`pages/` + `DbcTableViewer`，见 [07 §十五](../arch/07DBC维护与同步方案.md) | 规划中：只读查看器（文件列表 + 文件头信息 + 记录分页表格（摘要列可配置）+ 记录详情面板展示全部 235 个字段 + 来源资源标注徽章；数据修改经资源编辑 + 补丁流程） |

@@ -11,6 +11,7 @@ DBC/SQL 计划由补丁构建阶段（mount_patch_builder）现场从真相源�
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from datetime import UTC, datetime
 from pathlib import Path
@@ -27,6 +28,7 @@ from app.schemas.patch import (
     SQLPlanTable,
 )
 from app.schemas.resource import Mount, Resource
+from app.services.build_runner import BuildAlreadyRunningError, get_build_status
 from app.services.resource_store import load_resource
 
 # 坐骑召唤法术模板，逐字段核对自 live Spell.dbc 中 MCC 已部署的 127 条
@@ -300,9 +302,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                 continue
             for slot in (1, 2, 3):
                 if spell_template.get(f"EffectAura_{slot}") == aura_id:
-                    spell_fields[f"EffectBasePoints_{slot}"] = (
-                        int(speed_value) - 1
-                    )
+                    spell_fields[f"EffectBasePoints_{slot}"] = int(speed_value) - 1
         plans.append(
             DBCPlanFile(
                 dbc_file="Spell.dbc",
@@ -619,3 +619,36 @@ def update_patch_job_status(
     job_dir = settings.patch_jobs_dir / job_id
     _write_json(job_dir / "job.json", manifest.model_dump(exclude_none=False))
     return manifest
+
+
+# 与 _build_job_id 的产出一致：{resource_type}_{id:04d}，仅允许小写字母、下划线与四位数字
+_JOB_ID_PATTERN = re.compile(r"^[a-z]+_\d{4}$")
+
+
+def delete_patch_job(job_id: str) -> bool:
+    """删除单个补丁任务目录。
+
+    仅移除 `workspace/patch-jobs/{job_id}/`；资源 YAML/DBC 真相源与
+    已生成的 SQL/MPQ 产物不在删除范围。
+
+    Args:
+        job_id: 任务 ID，必须符合 `{resource_type}_{id:04d}` 命名模式。
+
+    Returns:
+        任务存在并删除返回 True，任务不存在返回 False。
+
+    Raises:
+        ValueError: job_id 不符合命名模式（防路径穿越）。
+        BuildAlreadyRunningError: 构建任务运行中，拒绝删除。
+    """
+    if not _JOB_ID_PATTERN.match(job_id):
+        raise ValueError(f"非法任务 ID: {job_id}")
+    if get_build_status()["running"]:
+        raise BuildAlreadyRunningError("构建任务运行中，禁止删除任务")
+
+    job_dir = settings.patch_jobs_dir / job_id
+    if not job_dir.exists():
+        return False
+
+    shutil.rmtree(job_dir)
+    return True

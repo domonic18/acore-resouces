@@ -14,7 +14,8 @@ class PatchArtifacts(BaseModel):
 
     model_config = ConfigDict(extra="allow")
 
-    output: dict[str, str] = Field(default_factory=dict)
+    # builder 裸写 job.json，sql_files 等值为列表，这里只做透传不做结构约束
+    output: dict[str, Any] = Field(default_factory=dict)
 
 
 class PatchJobManifest(BaseModel):
