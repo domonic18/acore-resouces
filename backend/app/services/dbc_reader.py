@@ -23,6 +23,7 @@ from wow_dbc_tool import DBCFile, DBCRecord, FieldDef, SchemaRegistry
 from wow_dbc_tool.core.exceptions import DBCError, DBCSchemaError
 
 from app.core.config import settings
+from app.services.path_display import display_path
 
 logger = logging.getLogger(__name__)
 
@@ -31,10 +32,10 @@ WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
 FILE_NAME_RE = re.compile(r"^[A-Za-z0-9_]+\.dbc$")
 VALID_OPS = ("eq", "contains", "gt", "lt")
 
-# 进程内 LRU 缓存：file -> ((mtime_ns, size), DBCFile)。
+# 进程内 LRU 缓存：(file, root) -> ((mtime_ns, size), DBCFile)。
 # 解析结果较大（Spell.dbc 数万记录），限制缓存文件数避免内存失控。
 _DBC_CACHE_LIMIT = 16
-_dbc_cache: OrderedDict[str, tuple[tuple[int, int], DBCFile]] = OrderedDict()
+_dbc_cache: OrderedDict[tuple[str, str], tuple[tuple[int, int], DBCFile]] = OrderedDict()
 
 
 class DbcFileNotFoundError(FileNotFoundError):
@@ -49,11 +50,11 @@ class DbcInvalidQueryError(ValueError):
     """查询参数非法（字段不存在、操作符不支持或值类型不匹配）。"""
 
 
-def _resolve_path(file: str) -> Path:
-    """校验文件名并解析为 DBC 目录下的绝对路径。"""
+def _resolve_path(file: str, base_dir: Path | None = None) -> Path:
+    """校验文件名并解析为 DBC 目录（或 base_dir）下的绝对路径。"""
     if not FILE_NAME_RE.fullmatch(file):
         raise DbcFileNotFoundError(f"非法 DBC 文件名：{file!r}")
-    path = WOW_DBC_DIR / file
+    path = (base_dir or WOW_DBC_DIR) / file
     if not path.is_file():
         raise DbcFileNotFoundError(f"DBC 文件不存在：{file}")
     return path
@@ -83,8 +84,9 @@ def list_dbc_files() -> dict[str, Any]:
     """列出 DBC 目录下全部文件（名称、大小、记录数、schema 注册状态、文件头信息）。
 
     Returns:
-        {"total": 文件数, "items": [{"name", "size", "mtime", "record_count",
-        "schema_registered", "header": {...} | None}]}，按名称排序。
+        {"total": 文件数, "base_dir": 展示用目录路径, "items": [{"name", "size",
+        "mtime", "record_count", "schema_registered", "header": {...} | None}]}，
+        按名称排序。
     """
     registered = set(SchemaRegistry.list_all())
     items: list[dict[str, Any]] = []
@@ -101,23 +103,25 @@ def list_dbc_files() -> dict[str, Any]:
                 "header": header,
             }
         )
-    return {"total": len(items), "items": items}
+    return {"total": len(items), "base_dir": display_path(WOW_DBC_DIR), "items": items}
 
 
-def _load(file: str) -> DBCFile:
-    """按文件名加载 DBCFile，(mtime_ns, size) 为键做 LRU 缓存。"""
-    path = _resolve_path(file)
+def _load(file: str, base_dir: Path | None = None) -> DBCFile:
+    """按文件名加载 DBCFile，(file, root, mtime_ns, size) 为键做 LRU 缓存。"""
+    root = str(base_dir or WOW_DBC_DIR)
+    path = _resolve_path(file, base_dir)
     stat = path.stat()
-    cache_key = (stat.st_mtime_ns, stat.st_size)
-    cached = _dbc_cache.get(file)
-    if cached is not None and cached[0] == cache_key:
-        _dbc_cache.move_to_end(file)
+    stat_key = (stat.st_mtime_ns, stat.st_size)
+    lru_key = (file, root)
+    cached = _dbc_cache.get(lru_key)
+    if cached is not None and cached[0] == stat_key:
+        _dbc_cache.move_to_end(lru_key)
         return cached[1]
     try:
         dbc = DBCFile(path).load()
     except (DBCError, struct.error) as exc:
         raise DbcUnreadableError(f"无法解析 DBC 文件 {file}：{exc}") from exc
-    _dbc_cache[file] = (cache_key, dbc)
+    _dbc_cache[lru_key] = (stat_key, dbc)
     while len(_dbc_cache) > _DBC_CACHE_LIMIT:
         _dbc_cache.popitem(last=False)
     logger.info("DBC 已加载：%s（%d 条记录，%d 字段）", file, len(dbc.records), len(dbc.schema))
@@ -176,6 +180,7 @@ def query_records(
     field: str | None = None,
     op: str = "eq",
     value: str | None = None,
+    base_dir: Path | None = None,
 ) -> dict[str, Any]:
     """分页查询 DBC 记录，可选单字段过滤（op ∈ eq/contains/gt/lt）。
 
@@ -186,6 +191,7 @@ def query_records(
         field: 过滤字段名，None 表示不过滤。
         op: 过滤操作符。
         value: 过滤值（按字段类型转换）。
+        base_dir: 文件所在目录，None 用默认 DBC 目录（MPQ 提取件复用）。
 
     Returns:
         {"total", "page", "page_size", "items": [{...字段值, "_record_id", "_index"}],
@@ -196,7 +202,7 @@ def query_records(
         DbcUnreadableError: 文件无法解析。
         DbcInvalidQueryError: 过滤字段/操作符/值非法。
     """
-    dbc = _load(file)
+    dbc = _load(file, base_dir)
     all_records = dbc.all()
     index_of = {id(r): i for i, r in enumerate(all_records)}
 
@@ -234,7 +240,7 @@ def query_records(
     }
 
 
-def get_record(file: str, record_id: int) -> dict[str, Any] | None:
+def get_record(file: str, record_id: int, *, base_dir: Path | None = None) -> dict[str, Any] | None:
     """查询单条记录全字段详情。
 
     有 ID 字段的表按 ID 值匹配；无 ID 字段的表按 1-based 行号取。
@@ -242,6 +248,7 @@ def get_record(file: str, record_id: int) -> dict[str, Any] | None:
     Args:
         file: DBC 文件名。
         record_id: 记录 ID（或行号）。
+        base_dir: 文件所在目录，None 用默认 DBC 目录（MPQ 提取件复用）。
 
     Returns:
         {"file", "record_id", "index", "fields": [{"name", "type", "value"}]}；
@@ -251,7 +258,7 @@ def get_record(file: str, record_id: int) -> dict[str, Any] | None:
         DbcFileNotFoundError: 文件名不合法或不存在。
         DbcUnreadableError: 文件无法解析。
     """
-    dbc = _load(file)
+    dbc = _load(file, base_dir)
     all_records = dbc.all()
     has_id = _has_id_field(dbc)
 
