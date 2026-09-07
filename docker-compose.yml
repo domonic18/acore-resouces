@@ -12,6 +12,8 @@ services:
       - "8080:8000"
     environment:
       - PROJECT_ROOT=/app
+      # 宿主侧项目根：前端展示的文件路径由 /app 映射回宿主真实路径（复制后可直接前往）
+      - HOST_PROJECT_ROOT=${PWD}
     volumes:
       - ./sources:/app/sources
       - ./data:/app/data

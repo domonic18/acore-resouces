@@ -29,6 +29,10 @@ class Settings(BaseSettings):
     acore_sql_updates_dir: Path | None = None
     acore_sql_mounts_subdir: Path = Path("mounts")
 
+    # 容器部署时宿主侧的项目根（如 /Users/xxx/acore-resouces）。
+    # 设置后对外展示的磁盘路径由 /app 前缀映射回宿主真实路径，便于复制/前往。
+    host_project_root: str = ""
+
     def model_post_init(self, __context: Any) -> None:
         root = self.project_root
         self.data_dir = root / "data"
