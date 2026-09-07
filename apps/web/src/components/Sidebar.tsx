@@ -5,6 +5,7 @@ import {
   Upload,
   Download,
   FolderTree,
+  Database,
   Settings,
 } from "lucide-react";
 import { cn } from "@/shared/utils";
@@ -42,6 +43,11 @@ const mainNav: NavItem[] = [
     label: "资源列表",
     path: "/resources/folders",
     icon: <FolderTree className="h-[18px] w-[18px]" />,
+  },
+  {
+    label: "DBC 数据",
+    path: "/dbc",
+    icon: <Database className="h-[18px] w-[18px]" />,
   },
 ];
 

@@ -340,9 +340,11 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 2. `encrypted` 需测试服实测通过后才开放，checklist：① `DBFilesClient` 的 DBC 正常加载 → ② `Interface` 图标 BLP 正常显示 → ③ creature 模型/贴图正常渲染 → ④ 骑乘后进入世界无崩溃；逐项记录环境与结果。
 3. 回滚：同批次 `patch build --force --obfuscation none` 重建并重新发布。
 
-## 十五、规划：DBC 数据查看器（只读）🚧
+## 十五、DBC 数据查看器（只读）（已实现，Phase 4.4）
 
 > 对应需求 v1.3 §3.10。目标：在系统内**只读**查看 / 搜索 `data/wow-dbc/src/dbc/` 的 DBC 记录，便于数据排查与对照。查看器不提供任何写入口——数据修改统一经资源编辑 + `patch build`（YAML 真相源单向数据流）。
+>
+> **实现落点**：`services/dbc_reader.py`（20B header 轻读 + DBCFile LRU mtime 缓存 + 单字段过滤分页）、`services/dbc_annotation.py`（registry mtime 缓存的来源映射）、`api/dbc.py` 三个通用端点与既有 ItemDisplayInfo 端点并存、CLI `dbc files/query/get`、Web `/dbc` 三栏页（`pages/DbcPage.tsx` + `features/dbc/`）。记录标识：schema 含 `ID` 字段用其值，否则回退 1-based 行号。增量：记录 Diff 对比（对比模式指定 A/B 两条记录 → 宽弹窗字段级对比，仅差异/全部过滤 + 字段搜索，可复制为纯文本供外部 AI 分析；纯前端计算，复用 records/{id} 端点）。
 
 ### 15.1 能力与数据源
 
@@ -367,7 +369,7 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 
 ### 15.3 API / CLI / Web 设计
 
-**API**（扩展 `api/dbc.py`，规划；仅只读 GET；分页遵循系统约定 `page/page_size` + `{total, page, page_size, items}`，参照 `resources.py:216-233`）：
+**API**（扩展 `api/dbc.py`，已实现；仅只读 GET；分页遵循系统约定 `page/page_size` + `{total, page, page_size, items}`，参照 `resources.py:216-233`）：
 
 | 端点 | 说明 |
 |------|------|
@@ -375,9 +377,9 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | `GET /api/dbc/{file}/records` | 记录分页列表（`page/page_size` + 字段过滤，字段名来自 schema） |
 | `GET /api/dbc/{file}/records/{id}` | 单记录详情（含来源资源标注） |
 
-**服务模块布局**：通用读取泛化沿用 `services/dbc_query.py:28-62` 的 mtime 缓存模式扩展；来源资源标注集合派生落同模块（纯函数），`api/dbc.py` 仅做薄路由。
+**服务模块布局**：通用读取落 `services/dbc_reader.py`（文件列表 20B header 轻读；记录读取 `DBCFile` LRU 缓存，键 `(mtime_ns, size)`）；来源资源标注落 `services/dbc_annotation.py`（registry.json mtime 缓存）；`api/dbc.py` 仅做薄路由。过滤参数显式三段 `?field=&op=&value=`（op ∈ eq/contains/gt/lt），字段不在 schema 或值类型不匹配返回 400。
 
-**CLI**：扩展 §6.1 已规划的 `dbc` 组——子模块管理命令保留，新增数据查看子命令 `dbc query / get`（只读）。
+**CLI**：`backend/app/cli/dbc.py` 提供 `dbc files` / `dbc query FILE` / `dbc get FILE ID`（均支持 `--json`；§6.1 子模块管理命令另行规划）。
 
 **Web**：新路由 `/dbc` + 只读页面（文件列表侧栏 + `DbcTableViewer` 记录表格 + 来源资源徽章）；`DbcTableViewer` 为新组件，与 04 §九 MPQ 查看器共用。
 

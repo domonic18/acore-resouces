@@ -267,3 +267,68 @@ export interface ItemDisplayInfoPage {
   items: ItemDisplayInfoEntry[];
   total: number;
 }
+
+export interface DbcFieldDef {
+  name: string;
+  type: string;
+}
+
+export interface DbcFileInfo {
+  name: string;
+  size: number;
+  mtime: string;
+  record_count: number | null;
+  schema_registered: boolean;
+  header: {
+    magic: string;
+    record_count: number;
+    field_count: number;
+    record_size: number;
+    string_block_size: number;
+  } | null;
+}
+
+export interface DbcFilesPage {
+  total: number;
+  items: DbcFileInfo[];
+}
+
+export interface DbcSourceResource {
+  id: number | null;
+  type: string;
+  name: string | null;
+  model_folder: string | null;
+}
+
+export interface DbcAnnotation {
+  record_id: number;
+  resources: DbcSourceResource[];
+}
+
+export type DbcRecordRow = { _record_id: number; _index: number } & Record<
+  string,
+  unknown
+>;
+
+export interface DbcRecordsPage {
+  total: number;
+  page: number;
+  page_size: number;
+  items: DbcRecordRow[];
+  fields: DbcFieldDef[];
+  annotations: DbcAnnotation[];
+}
+
+export interface DbcRecordField {
+  name: string;
+  type: string;
+  value: unknown;
+}
+
+export interface DbcRecordDetail {
+  file: string;
+  record_id: number;
+  index: number;
+  fields: DbcRecordField[];
+  resources: DbcSourceResource[];
+}
