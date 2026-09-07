@@ -20,9 +20,13 @@ export function defaultColumns(fields: DbcFieldDef[]): string[] {
 
 const COLUMN_STORAGE_PREFIX = "dbc-cols:";
 
-export function loadColumns(file: string, fields: DbcFieldDef[]): string[] {
+export function loadColumns(
+  file: string,
+  fields: DbcFieldDef[],
+  storageKey?: string,
+): string[] {
   try {
-    const raw = localStorage.getItem(`${COLUMN_STORAGE_PREFIX}${file}`);
+    const raw = localStorage.getItem(storageKey ?? `${COLUMN_STORAGE_PREFIX}${file}`);
     if (raw) {
       const saved = JSON.parse(raw) as string[];
       const valid = saved.filter((name) => fields.some((f) => f.name === name));
@@ -36,9 +40,16 @@ export function loadColumns(file: string, fields: DbcFieldDef[]): string[] {
   return defaultColumns(fields);
 }
 
-export function saveColumns(file: string, columns: string[]): void {
+export function saveColumns(
+  file: string,
+  columns: string[],
+  storageKey?: string,
+): void {
   try {
-    localStorage.setItem(`${COLUMN_STORAGE_PREFIX}${file}`, JSON.stringify(columns));
+    localStorage.setItem(
+      storageKey ?? `${COLUMN_STORAGE_PREFIX}${file}`,
+      JSON.stringify(columns),
+    );
   } catch {
     // localStorage 不可用时静默降级为会话内记忆
   }
