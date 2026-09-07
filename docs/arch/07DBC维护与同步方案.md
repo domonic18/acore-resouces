@@ -271,28 +271,31 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 
 `validation-report.json`（ID 一致性 pass/fail 检查）保留不变；`audit-report.json` 回答"改了什么"，前者回答"对不对"。
 
-## 十三、规划：任务删除与中间产物清理 🚧
+## 十三、任务删除与中间产物清理（已实现）
 
 > 对应需求 v1.1 §3.9.1 / §3.9.2。
 
 ### 13.1 任务记录删除
 
-| 层 | 改动 |
+| 层 | 实现 |
 |----|------|
-| 服务 | `patch_exporter.py` 增 `delete_patch_job(job_id)`（校验 job_id 命名模式防路径穿越，rmtree 任务目录） |
-| API | `DELETE /api/patches/{job_id}` |
-| CLI | `patch delete {job_id} [--yes]` |
-| Web | 任务列表加操作列 + 二次确认 |
+| 服务 | `patch_exporter.py` `delete_patch_job(job_id)`：job_id 命名模式校验（`^[a-z]+_\d{4}$`）防路径穿越；构建运行中抛 `BuildAlreadyRunningError`；rmtree 任务目录 |
+| API | `DELETE /api/patches/{job_id}`（非法 ID 400 / 不存在 404 / 构建运行中 409） |
+| CLI | `patch delete {job_id} [--yes]`（默认二次确认） |
+| Web | 任务列表操作列删除按钮 + 确认弹窗（构建运行中禁用） |
 
-边界：删除仅移除 `workspace/patch-jobs/{job_id}/`；真相源（YAML/DBC）与已生成 SQL/MPQ 产物默认保留；批次级审计记录不随任务删除。
+边界：删除仅移除 `workspace/patch-jobs/{job_id}/`；真相源（YAML/DBC）与已生成 SQL/MPQ 产物保留；批次级审计记录不随任务删除。
 
 ### 13.2 中间产物清理
 
-- **新服务** `backend/app/services/workspace_cleaner.py`（规划）：
-  - 清理目标：`workspace/patch-jobs/`（含遗留 `plans/`）、`workspace/mpq/{timestamp}/`、`workspace/reports/{timestamp}/`
-  - dry-run 预览：列出将被清理的路径与占用体积
-  - 守卫：`build_runner` 构建运行中拒绝清理；真相源与 `workspace/dist/` 永不在清理范围；MPQ 批次若已被 publish（dist 中存在对应产物）默认跳过
-- 入口（规划）：CLI `patch clean [--dry-run] [--older-than]`、API、Web 导出页/设置页按钮。
+- **服务** `backend/app/services/workspace_cleaner.py` `clean_workspace(execute, older_than_days, include_published)`：
+  - 清理目标：`workspace/patch-jobs/{job_id}/`（含遗留 `plans/`）、`workspace/mpq/{batch}/`、`workspace/reports/{batch}/`（仅 `YYYYMMDD_HHMMSS` 批次目录）
+  - 预览与执行同形响应：`targets`（路径 + 体积 + 原因）/ `skipped`（已发布批次 / 非批次目录 / 未到期）/ `total_size_bytes` / `errors`（逐目录容错）
+  - 守卫：构建运行中抛 `WorkspaceCleanerError` 拒绝；只扫描三个白名单父目录，真相源与 `workspace/dist/` 永不在范围；已发布批次（`patch_publisher.is_batch_published`）默认跳过，`include_published=True` 才包含；`older_than_days` 按目录 mtime 过滤
+- 入口：
+  - CLI `patch clean [--execute] [--older-than N] [--include-published]`——**默认 dry-run 预览**，`--execute` 前再次确认（对应风险应对「全部先 dry-run」）
+  - API `POST /api/patches/clean`（body `{execute, older_than_days, include_published}`，默认仅预览；构建运行中 409）
+  - Web 导出页任务列表卡「清理工作区」按钮：打开即 dry-run 预览，确认后执行
 
 ## 十四、规划：MPQ 加密与混淆（不改子模块路线）🚧
 

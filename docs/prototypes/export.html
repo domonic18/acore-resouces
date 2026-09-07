@@ -186,13 +186,16 @@
               <div class="card-title">补丁任务列表</div>
               <div class="card-subtitle">任务状态在构建过程中自动更新（requested → generated / failed）</div>
             </div>
-            <select class="filter-select" style="min-width: 140px;">
-              <option>全部状态</option>
-              <option>requested</option>
-              <option>generated</option>
-              <option>applied</option>
-              <option>failed</option>
-            </select>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <select class="filter-select" style="min-width: 140px;">
+                <option>全部状态</option>
+                <option>requested</option>
+                <option>generated</option>
+                <option>applied</option>
+                <option>failed</option>
+              </select>
+              <button class="btn btn-sm">清理工作区</button>
+            </div>
           </div>
           <div style="overflow-x: auto;">
             <table class="data-table">

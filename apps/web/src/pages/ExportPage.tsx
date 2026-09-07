@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Hammer, ListChecks, PackagePlus, UploadCloud } from "lucide-react";
+import { Hammer, ListChecks, PackagePlus, Trash2, UploadCloud } from "lucide-react";
 import { MountMultiSelect } from "@/features/resources/components/patch-export/MountMultiSelect";
 import { BuildPanel } from "@/features/resources/components/patch-export/BuildPanel";
 import { JobAuditCard } from "@/features/resources/components/patch-export/JobAuditCard";
 import { PublishPanel } from "@/features/resources/components/patch-export/PublishPanel";
 import { PatchJobsTable } from "@/features/resources/components/patch-export/PatchJobsTable";
+import { CleanDialog } from "@/features/resources/components/patch-export/CleanDialog";
 import { BulkPatchExportButton } from "@/features/resources/components/BulkPatchExportButton";
 import { useBuildStatus } from "@/features/resources/hooks/usePatchBuild";
 
 export function ExportPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [auditJobId, setAuditJobId] = useState<string | null>(null);
+  const [cleanOpen, setCleanOpen] = useState(false);
   const buildStatus = useBuildStatus();
   const building = buildStatus.data?.running ?? false;
 
@@ -91,6 +93,13 @@ export function ExportPage() {
               任务状态在构建过程中自动更新（requested → generated / failed）
             </div>
           </div>
+          <button
+            type="button"
+            className="btn btn-sm"
+            onClick={() => setCleanOpen(true)}
+          >
+            <Trash2 className="h-3.5 w-3.5" /> 清理工作区
+          </button>
         </div>
         <div className="card-body">
           <PatchJobsTable building={building} onAudit={setAuditJobId} />
@@ -99,6 +108,10 @@ export function ExportPage() {
 
       {auditJobId && (
         <JobAuditCard jobId={auditJobId} onClose={() => setAuditJobId(null)} />
+      )}
+
+      {cleanOpen && (
+        <CleanDialog building={building} onClose={() => setCleanOpen(false)} />
       )}
     </div>
   );

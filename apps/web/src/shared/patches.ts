@@ -1,6 +1,7 @@
 import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
   BuildStatus,
+  CleanResult,
   Paginated,
   PatchExportResponse,
   PatchJob,
@@ -82,4 +83,27 @@ export function getPatchJobAudit(jobId: string): Promise<PatchJobAudit> {
 
 export function getPatchJobAuditUrl(jobId: string): string {
   return `${API_BASE}/api/patches/${jobId}/audit`;
+}
+
+export function deletePatchJob(jobId: string): Promise<{
+  deleted: boolean;
+  job_id: string;
+}> {
+  return apiFetch(`/api/patches/${jobId}`, { method: "DELETE" }).then(
+    (res) => res.json() as Promise<{ deleted: boolean; job_id: string }>,
+  );
+}
+
+export interface WorkspaceCleanRequest {
+  execute?: boolean;
+  older_than_days?: number;
+  include_published?: boolean;
+}
+
+export function cleanWorkspace(body: WorkspaceCleanRequest): Promise<CleanResult> {
+  return apiFetch("/api/patches/clean", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  }).then((res) => res.json() as Promise<CleanResult>);
 }

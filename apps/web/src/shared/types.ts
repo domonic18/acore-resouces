@@ -130,7 +130,8 @@ export interface PatchJob {
   status: "requested" | "generated" | "applied" | "failed";
   updated_at: string | null;
   artifacts: {
-    output: Record<string, string>;
+    // 后端 job.json 的 sql_files 等值为数组，此处只透传不约束结构
+    output: Record<string, unknown>;
   };
   completed_at: string | null;
   summary: string | null;
@@ -213,6 +214,25 @@ export interface PatchJobAudit {
   dbc: AuditDbcEntry[];
   sql: AuditSqlEntry | null;
   mpq: AuditMpqSummary | null;
+}
+
+export interface CleanTarget {
+  path: string;
+  size_bytes: number;
+  reason: string;
+}
+
+export interface CleanSkipItem {
+  path: string;
+  reason: string;
+}
+
+export interface CleanResult {
+  dry_run: boolean;
+  targets: CleanTarget[];
+  skipped: CleanSkipItem[];
+  total_size_bytes: number;
+  errors: { path: string; error: string }[];
 }
 
 export interface SystemInfo {

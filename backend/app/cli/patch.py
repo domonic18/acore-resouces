@@ -12,6 +12,7 @@ from rich.markup import escape
 from rich.table import Table
 
 from app.schemas.patch import PatchJobStatus
+from app.services.build_runner import BuildAlreadyRunningError
 from app.services.mount_patch_builder import (
     DBCConflictError,
     MountPatchBuilderError,
@@ -20,14 +21,29 @@ from app.services.mount_patch_builder import (
 from app.services.patch_audit import load_audit_by_batch, load_audit_by_job
 from app.services.patch_exporter import (
     create_patch_job,
+    delete_patch_job,
     get_patch_job,
     list_patch_jobs,
     update_patch_job_status,
 )
 from app.services.patch_publisher import PatchPublisherError, publish_patches
+from app.services.workspace_cleaner import (
+    WorkspaceCleanerError,
+    clean_workspace,
+)
 
 app = typer.Typer(help="补丁任务管理命令")
 console = Console()
+
+
+def _format_size(size_bytes: int) -> str:
+    """字节数转可读大小。"""
+    size = float(size_bytes)
+    for unit in ("B", "KB", "MB", "GB", "TB"):
+        if size < 1024 or unit == "TB":
+            return f"{size:.1f} {unit}" if unit != "B" else f"{int(size)} B"
+        size /= 1024
+    return f"{size_bytes} B"
 
 
 @app.command("export", help="创建补丁任务（仅写任务元数据，构建时现场读取真相源）")
@@ -284,3 +300,84 @@ def _print_audit_mpq(mpq: dict[str, Any] | None) -> None:
         console.print(f"  {escape(str(entry.get('path')))}")
     if len(files) > 20:
         console.print(f"  … 共 {len(files)} 个文件（--json 查看全量）")
+
+
+@app.command("delete", help="删除补丁任务（仅移除任务目录，不影响真相源与已生成产物）")
+def delete_patch(
+    job_id: str = typer.Argument(..., help="任务 ID"),
+    yes: bool = typer.Option(False, "--yes", "-y", help="跳过确认"),
+) -> None:
+    """删除单个补丁任务目录。"""
+    manifest = get_patch_job(job_id)
+    if manifest is None:
+        console.print(f"[red]未找到任务 {job_id}[/red]")
+        raise typer.Exit(1)
+
+    console.print(
+        f"任务: {job_id}（{manifest.resource_type}-{manifest.resource_id:04d} "
+        f"{manifest.resource_name}，状态 {manifest.status}）"
+    )
+    if not yes:
+        typer.confirm("确认删除？仅移除任务目录，不影响真相源与已生成产物", abort=True)
+
+    try:
+        delete_patch_job(job_id)
+    except ValueError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+    except BuildAlreadyRunningError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    console.print(f"[green]已删除任务 {job_id}[/green]")
+
+
+@app.command("clean", help="清理工作区中间产物（默认 dry-run 预览，--execute 才真正删除）")
+def clean_workspace_cmd(
+    execute: bool = typer.Option(False, "--execute", help="真正执行删除（默认仅预览）"),
+    older_than: int | None = typer.Option(None, "--older-than", help="仅清理 N 天前的产物"),
+    include_published: bool = typer.Option(False, "--include-published", help="包含已发布批次"),
+) -> None:
+    """预览或清理工作区中间产物（任务记录 / 未发布 MPQ 批次 / 未发布报告）。"""
+    if execute:
+        typer.confirm("确认清理？已发布批次默认跳过，dist 与真相源永不受影响", abort=True)
+
+    try:
+        result = clean_workspace(
+            execute=execute,
+            older_than_days=older_than,
+            include_published=include_published,
+        )
+    except WorkspaceCleanerError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    if result["targets"]:
+        table = Table(title="清理目标")
+        table.add_column("路径", style="cyan")
+        table.add_column("大小", style="yellow", justify="right")
+        table.add_column("原因", style="magenta")
+        for target in result["targets"]:
+            table.add_row(target["path"], _format_size(target["size_bytes"]), target["reason"])
+        console.print(table)
+    else:
+        console.print("没有可清理的产物。")
+
+    if result["skipped"]:
+        skipped_table = Table(title="跳过项")
+        skipped_table.add_column("路径", style="cyan")
+        skipped_table.add_column("原因", style="magenta")
+        for item in result["skipped"]:
+            skipped_table.add_row(item["path"], item["reason"])
+        console.print(skipped_table)
+
+    console.print(f"总计可释放: [yellow]{_format_size(result['total_size_bytes'])}[/yellow]")
+
+    if result["errors"]:
+        for err in result["errors"]:
+            console.print(f"[red]删除失败 {err['path']}: {err['error']}[/red]")
+
+    if result["dry_run"]:
+        console.print("[yellow]dry-run 预览，未删除任何文件；加 --execute 执行[/yellow]")
+    else:
+        console.print(f"[green]清理完成，共删除 {len(result['targets'])} 个目录[/green]")

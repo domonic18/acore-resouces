@@ -11,14 +11,19 @@ from app.services.mount_patch_builder import DBCConflictError
 @pytest.fixture(autouse=True)
 def _reset_status():
     """每个用例前后重置运行器状态，并保证锁不处于持有状态。"""
-    build_runner._status.update(
-        running=False,
-        started_at=None,
-        finished_at=None,
-        result=None,
-        error=None,
-    )
+
+    def _reset() -> None:
+        build_runner._status.update(
+            running=False,
+            started_at=None,
+            finished_at=None,
+            result=None,
+            error=None,
+        )
+
+    _reset()
     yield
+    _reset()
     try:
         build_runner._lock.release()
     except RuntimeError:
