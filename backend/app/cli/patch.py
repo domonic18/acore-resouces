@@ -107,16 +107,22 @@ def build_patch(
     console.print(f"MPQ: {result['mpq_path']}")
     console.print(f"校验报告: {result['report_path']}")
     console.print(f"审计报告: {result['audit_path']}")
-    if result["dry_run"]:
+    if not result["dry_run"]:
+        console.print(f"变更日志: {result['changelog_path']}")
+    else:
         console.print("[yellow]干跑完成，未修改任何文件。[/yellow]")
 
 
 @app.command("publish", help="发布 MPQ 补丁到分发目录")
 def publish_patch(
     start_number: int = typer.Option(5, "--start-number", help="补丁编号起始值"),
-    dry_run: bool = typer.Option(False, "--dry-run", help="仅预览，不执行复制"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="仅预览，不执行发布"),
 ) -> None:
-    """将 workspace/mpq/ 下未发布的批次复制到 workspace/dist/。"""
+    """将 workspace/mpq/ 下未发布的批次移动发布到 workspace/dist/。
+
+    MPQ 大文件移动改名（不重复占磁盘），manifest/readme 等元数据随发布
+    复制到 dist，发布成功后清理构建侧批次目录。
+    """
     try:
         result = publish_patches(start_number=start_number, dry_run=dry_run)
     except PatchPublisherError as e:

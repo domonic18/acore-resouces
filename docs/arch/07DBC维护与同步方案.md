@@ -224,7 +224,7 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 - [x] `data/wow-dbc/src/dbc/Spell.dbc` 存在。
 - [x] `patch export --type mount --id 3` 成功创建补丁任务（job.json）。
 - [x] `patch build --jobs mount_0003` 成功编辑 `data/wow-dbc/src/dbc/`、生成 `data/sql/azerothcore-updates/mounts/0003_{slug}/` SQL、`workspace/mpq/{batch}/patch-mounts.mpq`。
-- [x] `patch publish --start-number N` 将 MPQ 复制到 `workspace/dist/{timestamp}/patch-zhCN-N.mpq`。
+- [x] `patch publish --start-number N` 将 MPQ 移动发布到 `workspace/dist/{timestamp}/patch-zhCN-N.mpq`（manifest/readme 随附复制，构建侧批次目录发布后清理）。
 - [x] 类型检查与测试通过（`uv run mypy app/`、`uv run ruff check app/`、`uv run pytest`）。
 - [ ] `dbc status/pull/diff` CLI 命令组（待实现，见第六节）。
 - [ ] `deploy sync-dbc` CLI 命令组（待实现，见第六节）。

@@ -162,12 +162,14 @@ cd backend
 uv run python -m app.cli patch publish
 ```
 
-发布结果：
+发布结果（移动语义：MPQ 移动改名不重复占磁盘，manifest/readme 随附复制，
+发布成功后 `workspace/mpq/{timestamp}/` 构建侧目录自动清理）：
 
 ```text
 workspace/dist/
 └── {timestamp}/
     ├── patch-zhCN-{number}.mpq
+    ├── manifest.json
     └── readme.txt
 ```
 

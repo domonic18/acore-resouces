@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from app.api import dbc, files, patches, preview, resources, system
+from app.api import dbc, files, mpq, patches, preview, resources, settings, system
 
 app = FastAPI(title="acore-resouces API", version="0.1.0")
 
@@ -19,9 +19,11 @@ app.add_middleware(
 
 app.include_router(resources.router)
 app.include_router(dbc.router)
+app.include_router(mpq.router)
 app.include_router(preview.router)
 app.include_router(files.router)
 app.include_router(patches.router)
+app.include_router(settings.router)
 app.include_router(system.router)
 
 

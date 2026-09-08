@@ -290,6 +290,7 @@ export interface DbcFileInfo {
 
 export interface DbcFilesPage {
   total: number;
+  base_dir?: string;
   items: DbcFileInfo[];
 }
 
@@ -331,4 +332,93 @@ export interface DbcRecordDetail {
   index: number;
   fields: DbcRecordField[];
   resources: DbcSourceResource[];
+}
+
+export interface MpqArchiveItem {
+  name: string;
+  batch: string;
+  source: "mpq" | "dist";
+  rel_path: string;
+  abs_path?: string;
+  size: number;
+  mtime: string;
+  obfuscation: string | null;
+  file_count: number | null;
+  has_manifest: boolean;
+  has_changelog: boolean;
+  published: boolean;
+}
+
+export interface MpqArchivesPage {
+  total: number;
+  items: MpqArchiveItem[];
+}
+
+export interface MpqFileEntry {
+  name: string;
+  path: string;
+  type: "dir" | "file";
+  size?: number | null;
+  kind?: string | null;
+  file_count?: number;
+}
+
+export interface MpqFilesPage {
+  archive: string;
+  rel_path: string;
+  source: string;
+  obfuscation: string | null;
+  total_files: number;
+  prefix?: string;
+  truncated?: boolean;
+  entries: MpqFileEntry[];
+  archive_info?: Record<string, string>;
+}
+
+export interface MpqFilePreview {
+  kind: "text" | "blp" | "dbc" | "binary";
+  path: string;
+  size: number;
+  cache_path: string | null;
+  cache_abs_path?: string | null;
+  content?: string;
+  preview_url?: string;
+  download_url?: string;
+}
+
+export interface MpqChangelog {
+  archive: string;
+  batch: string;
+  content: string;
+}
+
+export interface AiConfig {
+  configured: boolean;
+  base_url: string;
+  model: string;
+  protocol: "openai" | "anthropic";
+  api_key_masked: string | null;
+  timeout_seconds: number;
+  max_tokens: number;
+  enabled: boolean;
+  last_tested_at: string | null;
+  last_test_status: string | null;
+  last_test_error: string | null;
+}
+
+export interface AiConfigUpdateRequest {
+  base_url: string;
+  model: string;
+  protocol: "openai" | "anthropic";
+  api_key?: string;
+  clear_api_key?: boolean;
+  timeout_seconds: number;
+  max_tokens: number;
+  enabled: boolean;
+}
+
+export interface AiConfigTestResult {
+  ok: boolean;
+  error: string | null;
+  tested_at: string;
 }

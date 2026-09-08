@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/shared/utils";
+import { CopyButton } from "@/shared/components/CopyButton";
 import { useDbcFiles, useDbcRecords } from "@/features/dbc/hooks/useDbcViewer";
 import { DbcColumnConfig } from "@/features/dbc/components/DbcColumnConfig";
 import { DbcTableViewer } from "@/features/dbc/components/DbcTableViewer";
@@ -139,6 +140,20 @@ export function DbcRecordsPanel({
               </>
             )}
           </div>
+          {file && filesQuery.data?.base_dir && (
+            <div className="mt-1.5 flex items-center gap-2">
+              <code
+                className="min-w-0 flex-1 break-all rounded bg-bg-surface px-2 py-1 font-mono text-[11px] text-text-secondary"
+                title="文件磁盘位置"
+              >
+                {filesQuery.data.base_dir}/{file}
+              </code>
+              <CopyButton
+                value={`${filesQuery.data.base_dir}/${file}`}
+                title="复制文件完整路径"
+              />
+            </div>
+          )}
           {fileInfo && (
             <div className="card-subtitle mt-1 flex flex-wrap items-center gap-2">
               {fileInfo.header && (

@@ -6,6 +6,7 @@ import {
   Download,
   FolderTree,
   Database,
+  Package,
   Settings,
 } from "lucide-react";
 import { cn } from "@/shared/utils";
@@ -48,6 +49,11 @@ const mainNav: NavItem[] = [
     label: "DBC 数据",
     path: "/dbc",
     icon: <Database className="h-[18px] w-[18px]" />,
+  },
+  {
+    label: "MPQ 查看",
+    path: "/mpq",
+    icon: <Package className="h-[18px] w-[18px]" />,
   },
 ];
 

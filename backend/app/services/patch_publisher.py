@@ -1,10 +1,13 @@
 """MPQ 补丁发布服务。
 
-扫描 `workspace/mpq/` 下的批次构建结果，将每个未发布的批次复制到
+扫描 `workspace/mpq/` 下的批次构建结果，将每个未发布的批次移动到
 `workspace/dist/{batch_name}/` 下，并将 MPQ 文件重命名为魔兽世界客户端
 补丁命名方式 `patch-zhCN-{number}.mpq`。
 
-只发布 `.mpq` 和 `readme.txt`；staging/ 等中间产物不会复制。
+发布为移动语义：`.mpq` 大文件移动（不重复占用磁盘），`manifest.json`、
+`readme.txt`、`listfile.txt`、`changelog.md` 等元数据随发布复制到 dist
+（MPQ 查看器依赖 manifest 提供混淆等级与文件清单、changelog 提供变更
+日志浏览）；发布成功后清理构建侧批次目录。
 """
 
 from __future__ import annotations
@@ -45,8 +48,15 @@ def is_batch_published(batch_dir: Path, dist_dir: Path) -> bool:
     return target_dir.exists() and any(target_dir.glob("patch-zhCN-*.mpq"))
 
 
+# 随发布复制到 dist 的元数据文件（MPQ 查看器枚举/混淆等级依赖 manifest）
+METADATA_FILES = ("manifest.json", "readme.txt", "listfile.txt", "changelog.md")
+
+
 def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
-    """发布单个批次到分发目录，返回发布后的 MPQ 路径。
+    """发布单个批次到分发目录（移动语义），返回发布后的 MPQ 路径。
+
+    元数据先复制、MPQ 后移动：中途失败时 dist 侧不完整（is_batch_published
+    判定未发布），重跑发布可自愈；全部成功后清理构建侧批次目录。
 
     Args:
         batch_dir: workspace/mpq/ 下的批次目录。
@@ -59,21 +69,26 @@ def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
     Raises:
         PatchPublisherError: 批次中没有 MPQ 文件。
     """
-    target_dir = dist_dir / batch_dir.name
-    target_dir.mkdir(parents=True, exist_ok=True)
-
     mpq_sources = list(batch_dir.glob("patch-*.mpq"))
     if not mpq_sources:
         raise PatchPublisherError(f"批次 {batch_dir.name} 中没有找到 MPQ 文件")
 
+    target_dir = dist_dir / batch_dir.name
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    for name in METADATA_FILES:
+        source = batch_dir / name
+        if source.is_file():
+            shutil.copy2(source, target_dir / name)
+
     mpq_source = mpq_sources[0]
     mpq_target = target_dir / f"patch-zhCN-{number}.mpq"
-    shutil.copy2(mpq_source, mpq_target)
+    shutil.move(str(mpq_source), str(mpq_target))
 
-    readme_source = batch_dir / "readme.txt"
-    readme_target = target_dir / "readme.txt"
-    if readme_source.exists():
-        shutil.copy2(readme_source, readme_target)
+    try:
+        shutil.rmtree(batch_dir)
+    except OSError as e:
+        print(f"[警告] 发布成功但清理构建目录失败（可稍后用 workspace 清理移除）：{e}")
 
     return mpq_target
 
@@ -86,7 +101,7 @@ def publish_patches(
 
     Args:
         start_number: 补丁编号起始值，默认固定为 5。
-        dry_run: 为 True 时只预览，不执行复制。
+        dry_run: 为 True 时只预览，不执行发布。
 
     Returns:
         包含 published, skipped, next_number 的字典。
@@ -126,7 +141,7 @@ def publish_patches(
         print(f"\n已跳过（已发布）: {', '.join(skipped)}")
 
     if dry_run:
-        print("\n干跑完成，未执行任何复制。")
+        print("\n干跑完成，未执行任何发布。")
     else:
         print(f"\n共发布 {len(published)} 个批次。")
 

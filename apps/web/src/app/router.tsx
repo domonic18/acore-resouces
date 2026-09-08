@@ -8,6 +8,7 @@ import { ResourceFolderPage } from "@/pages/ResourceFolderPage";
 import { ExportPage } from "@/pages/ExportPage";
 import { SettingsPage } from "@/pages/SettingsPage";
 import { DbcPage } from "@/pages/DbcPage";
+import { MpqPage } from "@/pages/MpqPage";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "preview/:resourceType/:id", element: <PreviewPage /> },
       { path: "export", element: <ExportPage /> },
       { path: "dbc", element: <DbcPage /> },
+      { path: "mpq", element: <MpqPage /> },
       { path: "settings", element: <SettingsPage /> },
       { path: ":resourceType", element: <Navigate to="/resources" replace /> },
       {

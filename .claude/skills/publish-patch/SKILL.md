@@ -16,7 +16,7 @@ model: sonnet
 
 - 无参数：自动发布所有未发布的批次。
 - `--start-number N`：指定补丁编号起始值（默认 5）。
-- `--dry-run`：仅预览，不执行复制。
+- `--dry-run`：仅预览，不执行发布。
 
 ## 执行流程
 
@@ -47,20 +47,23 @@ uv run python -m app.cli patch publish --dry-run
 
 ### 3. 输出产物
 
-每个批次会发布到 `workspace/dist/{batch_name}/`：
+每个批次会发布到 `workspace/dist/{batch_name}/`（移动语义：MPQ 移动改名、
+manifest/readme/changelog 等元数据随附复制，发布成功后清理构建侧批次目录）：
 
 ```text
 workspace/dist/
 └── 20260724_123045/
     ├── patch-zhCN-5.mpq
-    └── readme.txt
+    ├── manifest.json
+    ├── readme.txt
+    └── changelog.md
 ```
 
 ## 失败处理
 
 - **无批次可发布**：命令提示 `workspace/mpq/ 中没有可发布的批次。`
 - **批次缺少 MPQ 文件**：报错并跳过该批次。
-- **复制失败**：保留源文件，报告错误路径。
+- **发布失败**：dist 侧不完整（判定未发布），重跑发布可自愈。
 
 ## 依赖
 
