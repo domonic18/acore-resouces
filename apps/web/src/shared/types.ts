@@ -384,3 +384,34 @@ export interface MpqFilePreview {
   preview_url?: string;
   download_url?: string;
 }
+
+export interface AiConfig {
+  configured: boolean;
+  base_url: string;
+  model: string;
+  protocol: "openai" | "anthropic";
+  api_key_masked: string | null;
+  timeout_seconds: number;
+  max_tokens: number;
+  enabled: boolean;
+  last_tested_at: string | null;
+  last_test_status: string | null;
+  last_test_error: string | null;
+}
+
+export interface AiConfigUpdateRequest {
+  base_url: string;
+  model: string;
+  protocol: "openai" | "anthropic";
+  api_key?: string;
+  clear_api_key?: boolean;
+  timeout_seconds: number;
+  max_tokens: number;
+  enabled: boolean;
+}
+
+export interface AiConfigTestResult {
+  ok: boolean;
+  error: string | null;
+  tested_at: string;
+}

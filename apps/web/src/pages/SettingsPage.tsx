@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Compass, Database, FolderCog, PawPrint, Users } from "lucide-react";
+import { AiConfigCard } from "@/features/settings/components/AiConfigCard";
 import { getSystemInfo } from "@/shared/system";
 
 const PATH_LABELS: { key: string; label: string }[] = [
@@ -46,7 +47,7 @@ export function SettingsPage() {
       <header className="topbar">
         <h1 className="page-title">设置</h1>
         <div className="topbar-actions">
-          <span className="text-xs text-text-tertiary">只读系统信息</span>
+          <span className="text-xs text-text-tertiary">系统信息与 AI 服务配置</span>
         </div>
       </header>
 
@@ -144,6 +145,10 @@ export function SettingsPage() {
           </div>
         </>
       )}
+
+      <div className="mt-6 max-w-2xl">
+        <AiConfigCard />
+      </div>
     </div>
   );
 }
