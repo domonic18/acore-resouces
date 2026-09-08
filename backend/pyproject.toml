@@ -33,6 +33,7 @@ dependencies = [
     "playwright>=1.61.0",
     "httpx>=0.28.1",
     "wow-dbc-tool",
+    "cryptography>=50.0.1",
 ]
 
 [project.optional-dependencies]
