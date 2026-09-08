@@ -84,6 +84,26 @@ class TestListArchives:
         assert item["file_count"] is None
         assert item["has_manifest"] is False
 
+    def test_dist_side_manifest_after_publish(self, env: dict[str, Path]) -> None:
+        """发布移动语义后：manifest 随附在 dist，构建侧批次目录已清理。"""
+        _make_archive(env["dist"], "20260907_024029", "patch-zhCN-4.mpq")
+        _write_manifest(
+            env["dist"],
+            "20260907_024029",
+            {
+                "batch": "20260907_024029",
+                "obfuscation": "basic",
+                "files": [{"path": "a.dbc"}],
+            },
+        )
+
+        item = mpq_inspector.list_archives()["items"][0]
+
+        assert item["rel_path"] == "dist/20260907_024029/patch-zhCN-4.mpq"
+        assert item["obfuscation"] == "basic"
+        assert item["file_count"] == 1
+        assert item["has_manifest"] is True
+
 
 class TestListFiles:
     def test_manifest_source_priority(
@@ -113,6 +133,23 @@ class TestListFiles:
         assert result["total_files"] == 2
         # manifest 命中即不调 mpqcli list（info 元信息调用除外）
         assert all(args[0] != "list" for args in calls)
+
+    def test_dist_archive_reads_dist_manifest(
+        self, env: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """dist 档案优先读同侧 manifest（发布随附），不再依赖构建侧目录。"""
+        _make_archive(env["dist"], "b9", "patch-zhCN-4.mpq")
+        _write_manifest(env["dist"], "b9", {"files": [{"path": "x.dbc"}]})
+        monkeypatch.setattr(
+            mpq_inspector,
+            "_run_mpqcli",
+            lambda args: subprocess.CompletedProcess([], 0, "", ""),
+        )
+
+        result = mpq_inspector.list_files("dist/b9/patch-zhCN-4.mpq")
+
+        assert result["source"] == "manifest"
+        assert result["total_files"] == 1
 
     def test_listfile_fallback(self, env: dict[str, Path], monkeypatch: pytest.MonkeyPatch) -> None:
         archive = _make_archive(env["mpq"], "b2")

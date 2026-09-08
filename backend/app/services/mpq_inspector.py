@@ -5,11 +5,12 @@
 提取（带缓存）与按扩展名的内容分发。不提供任何写操作——MPQ 产物一律
 经补丁构建 / 发布流程生成。
 
-清单三级来源：① 同批次 manifest.json（构建时持久化，含 size/sha256/kind）
-→ ② workspace/mpq/{batch}/listfile.txt 外部清单（经 mpqcli list -l）
-→ ③ mpqcli list（依赖档案内 (listfile)，仅 none 混淆有效）。三级全部
-落空时抛「无法枚举」而非返回空列表——basic 混淆档案剥除 (listfile) 后
-哈希表只存哈希，无法还原文件名；按显式路径 extract 不受混淆影响。
+清单三级来源：① 同批次 manifest.json（构建时持久化、发布时随附复制到
+dist，含 size/sha256/kind）→ ② 同批次 listfile.txt 外部清单（经
+mpqcli list -l）→ ③ mpqcli list（依赖档案内 (listfile)，仅 none 混淆
+有效）。三级全部落空时抛「无法枚举」而非返回空列表——basic 混淆档案
+剥除 (listfile) 后哈希表只存哈希，无法还原文件名；按显式路径 extract
+不受混淆影响。
 """
 
 from __future__ import annotations
@@ -117,10 +118,19 @@ def _validate_inner_path(path: str) -> str:
     return norm
 
 
+def _find_batch_file(batch: str, filename: str) -> Path | None:
+    """在两个档案根下查找批次伴随文件（manifest 发布时随附复制到 dist）。"""
+    for root in ARCHIVE_ROOTS.values():
+        candidate = root / batch / filename
+        if candidate.is_file():
+            return candidate
+    return None
+
+
 def _load_manifest(batch: str) -> dict[str, Any] | None:
-    """读取批次 manifest.json（dist 批次回 workspace/mpq/{batch} 查找）。"""
-    path = MPQ_OUTPUT_DIR / batch / "manifest.json"
-    if not path.is_file():
+    """读取批次 manifest.json（mpq/dist 任一根，历史 dist 批次回 mpq 查找）。"""
+    path = _find_batch_file(batch, "manifest.json")
+    if path is None:
         return None
     try:
         manifest = json.loads(path.read_text(encoding="utf-8"))
@@ -177,8 +187,8 @@ def _list_paths(archive: Path, batch: str) -> tuple[list[dict[str, Any]], str]:
     if manifest and manifest.get("files"):
         return manifest["files"], "manifest"
 
-    listfile = MPQ_OUTPUT_DIR / batch / "listfile.txt"
-    if listfile.is_file():
+    listfile = _find_batch_file(batch, "listfile.txt")
+    if listfile is not None:
         proc = _run_mpqcli(["list", str(archive), "-l", str(listfile)])
         _check_proc(proc, archive.name)
         paths = _normalize_list_lines(proc.stdout)
