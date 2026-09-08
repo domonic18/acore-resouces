@@ -48,14 +48,15 @@ uv run python -m app.cli patch publish --dry-run
 ### 3. 输出产物
 
 每个批次会发布到 `workspace/dist/{batch_name}/`（移动语义：MPQ 移动改名、
-manifest/readme 等元数据随附复制，发布成功后清理构建侧批次目录）：
+manifest/readme/changelog 等元数据随附复制，发布成功后清理构建侧批次目录）：
 
 ```text
 workspace/dist/
 └── 20260724_123045/
     ├── patch-zhCN-5.mpq
     ├── manifest.json
-    └── readme.txt
+    ├── readme.txt
+    └── changelog.md
 ```
 
 ## 失败处理

@@ -93,7 +93,8 @@ uv run python -m app.cli patch build --jobs mount_0003
    - 仅对真正新增的坐骑写入 `DELETE` + `INSERT` 语句，保证幂等。
 6. **构建批次 MPQ**：在 `workspace/mpq/YYYYMMDD_HHMMSS/` 下创建 `patch-mounts.mpq` 与 `readme.txt`，包含编辑后的 DBC 与各任务的客户端资源。
 7. **一致性校验**：生成校验报告 `workspace/reports/YYYYMMDD_HHMMSS/validation-report.json`，检查 DBC/SQL/MPQ 之间的 ID 与路径一致性。
-8. **更新任务状态**：将参与批次的每个任务 `status` 改为 `generated`，`artifacts.output` 指向批次 SQL/MPQ/报告路径。
+8. **生成变更日志**：校验后自动生成批次 `changelog.md`（中文两段式：玩家公告 + 维护摘要）；设置页已配置 AI 时由 LLM 起草（OpenAI 兼容或 Anthropic 协议），失败回退代码模板，不阻塞构建；dry-run 跳过。
+9. **更新任务状态**：将参与批次的每个任务 `status` 改为 `generated`，`artifacts.output` 指向批次 SQL/MPQ/报告路径。
 
 ### 3. 验证产物
 
@@ -154,7 +155,8 @@ data/sql/azerothcore-updates/ -> /Users/deadwalk/Code/azerothcore-wotlk/.../upda
 
 workspace/mpq/20260724_123045/
 ├── patch-mounts.mpq
-└── readme.txt
+├── readme.txt
+└── changelog.md            (批次变更日志，AI 起草/模板回退)
 
 workspace/reports/20260724_123045/
 └── validation-report.json
