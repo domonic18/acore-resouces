@@ -29,12 +29,13 @@ def pub_dirs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Path]
 
 
 def _make_batch(mpq_dir: Path, name: str = "20260907_024029") -> Path:
-    """构造含 MPQ/manifest/readme/staging 的批次目录。"""
+    """构造含 MPQ/manifest/readme/changelog/staging 的批次目录。"""
     batch = mpq_dir / name
     batch.mkdir(parents=True)
     (batch / "patch-mounts.mpq").write_bytes(b"MPQ\x1a fake")
     (batch / "manifest.json").write_text('{"obfuscation": "basic"}', encoding="utf-8")
     (batch / "readme.txt").write_text("readme", encoding="utf-8")
+    (batch / "changelog.md").write_text("## 玩家公告", encoding="utf-8")
     (batch / "staging").mkdir()
     (batch / "staging" / "tmp.txt").write_text("x", encoding="utf-8")
     return batch
@@ -53,6 +54,7 @@ def test_publish_batch_moves_mpq_and_copies_metadata(pub_dirs: dict[str, Path]) 
         '{"obfuscation": "basic"}'
     )
     assert (dist_batch / "readme.txt").exists()
+    assert (dist_batch / "changelog.md").read_text(encoding="utf-8") == "## 玩家公告"
     # 构建侧批次目录（含 staging 中间产物）整体清理
     assert not batch.exists()
 

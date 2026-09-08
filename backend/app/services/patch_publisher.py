@@ -5,8 +5,9 @@
 补丁命名方式 `patch-zhCN-{number}.mpq`。
 
 发布为移动语义：`.mpq` 大文件移动（不重复占用磁盘），`manifest.json`、
-`readme.txt`、`listfile.txt` 等元数据随发布复制到 dist（MPQ 查看器依赖
-manifest 提供混淆等级与文件清单）；发布成功后清理构建侧批次目录。
+`readme.txt`、`listfile.txt`、`changelog.md` 等元数据随发布复制到 dist
+（MPQ 查看器依赖 manifest 提供混淆等级与文件清单、changelog 提供变更
+日志浏览）；发布成功后清理构建侧批次目录。
 """
 
 from __future__ import annotations
@@ -48,7 +49,7 @@ def is_batch_published(batch_dir: Path, dist_dir: Path) -> bool:
 
 
 # 随发布复制到 dist 的元数据文件（MPQ 查看器枚举/混淆等级依赖 manifest）
-METADATA_FILES = ("manifest.json", "readme.txt", "listfile.txt")
+METADATA_FILES = ("manifest.json", "readme.txt", "listfile.txt", "changelog.md")
 
 
 def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:

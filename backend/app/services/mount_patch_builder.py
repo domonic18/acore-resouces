@@ -1113,6 +1113,17 @@ def build_mount_patches(
     report_path = write_validation_report(contexts, job_assets, timestamp, dry_run=dry_run)
     print(f"  {report_path}\n")
 
+    changelog_path = mpq_path.parent / "changelog.md"
+    if dry_run:
+        print("干跑：跳过变更日志生成。\n")
+    else:
+        print("生成变更日志（changelog.md）...")
+        from app.services import changelog_writer
+
+        changelog_ctx = changelog_writer.build_context(contexts, sql_files, mpq_manifest, report_path)
+        changelog_source = changelog_writer.write_changelog(mpq_path.parent, changelog_ctx)
+        print(f"  {changelog_path}（{'AI 起草' if changelog_source == 'ai' else '模板生成'}）\n")
+
     print("生成审计报告...")
     from app.services.patch_audit import write_audit_report
 
@@ -1138,5 +1149,6 @@ def build_mount_patches(
         "report_path": str(report_path),
         "audit_path": str(audit_path),
         "manifest_path": str(mpq_path.parent / "manifest.json"),
+        "changelog_path": str(changelog_path),
         "dry_run": dry_run,
     }

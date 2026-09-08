@@ -107,7 +107,9 @@ def build_patch(
     console.print(f"MPQ: {result['mpq_path']}")
     console.print(f"校验报告: {result['report_path']}")
     console.print(f"审计报告: {result['audit_path']}")
-    if result["dry_run"]:
+    if not result["dry_run"]:
+        console.print(f"变更日志: {result['changelog_path']}")
+    else:
         console.print("[yellow]干跑完成，未修改任何文件。[/yellow]")
 
 
