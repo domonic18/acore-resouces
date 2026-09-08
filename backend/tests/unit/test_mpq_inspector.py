@@ -104,6 +104,26 @@ class TestListArchives:
         assert item["file_count"] == 1
         assert item["has_manifest"] is True
 
+    def test_has_changelog_badge_and_read(self, env: dict[str, Path]) -> None:
+        """changelog.md 存在时档案列表标记，read_changelog 返回内容。"""
+        _make_archive(env["dist"], "20260907_024029", "patch-zhCN-4.mpq")
+        (env["dist"] / "20260907_024029" / "changelog.md").write_text(
+            "## 玩家公告\n测试", encoding="utf-8"
+        )
+
+        item = mpq_inspector.list_archives()["items"][0]
+        assert item["has_changelog"] is True
+
+        result = mpq_inspector.read_changelog("dist/20260907_024029/patch-zhCN-4.mpq")
+        assert result["batch"] == "20260907_024029"
+        assert "玩家公告" in result["content"]
+
+    def test_read_changelog_missing_raises(self, env: dict[str, Path]) -> None:
+        _make_archive(env["dist"], "20260907_024029", "patch-zhCN-4.mpq")
+        assert mpq_inspector.list_archives()["items"][0]["has_changelog"] is False
+        with pytest.raises(mpq_inspector.MpqFileNotFoundError):
+            mpq_inspector.read_changelog("dist/20260907_024029/patch-zhCN-4.mpq")
+
 
 class TestListFiles:
     def test_manifest_source_priority(

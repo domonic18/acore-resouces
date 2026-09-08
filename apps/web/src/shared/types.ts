@@ -345,6 +345,7 @@ export interface MpqArchiveItem {
   obfuscation: string | null;
   file_count: number | null;
   has_manifest: boolean;
+  has_changelog: boolean;
   published: boolean;
 }
 
@@ -383,6 +384,12 @@ export interface MpqFilePreview {
   content?: string;
   preview_url?: string;
   download_url?: string;
+}
+
+export interface MpqChangelog {
+  archive: string;
+  batch: string;
+  content: string;
 }
 
 export interface AiConfig {

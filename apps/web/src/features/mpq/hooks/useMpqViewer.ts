@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   fetchMpqArchives,
+  fetchMpqChangelog,
   fetchMpqDbcRecord,
   fetchMpqDbcRecords,
   fetchMpqFile,
@@ -65,6 +66,16 @@ export function useMpqDbcRecord(
     queryFn: () =>
       fetchMpqDbcRecord(archive as string, path as string, recordId as number),
     enabled: !!archive && !!path && recordId !== null,
+    retry: false,
+    staleTime: 60 * 1000,
+  });
+}
+
+export function useMpqChangelog(archive: string | null) {
+  return useQuery({
+    queryKey: ["mpq", "changelog", archive],
+    queryFn: () => fetchMpqChangelog(archive as string),
+    enabled: !!archive,
     retry: false,
     staleTime: 60 * 1000,
   });

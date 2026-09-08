@@ -3,6 +3,7 @@ import type {
   DbcRecordDetail,
   DbcRecordsPage,
   MpqArchivesPage,
+  MpqChangelog,
   MpqFilePreview,
   MpqFilesPage,
 } from "@/shared/types";
@@ -65,4 +66,9 @@ export function fetchMpqDbcRecord(
     record_id: String(recordId),
   });
   return apiGetJson<DbcRecordDetail>(`/api/mpq/file/record?${query.toString()}`);
+}
+
+export function fetchMpqChangelog(archive: string): Promise<MpqChangelog> {
+  const query = new URLSearchParams({ archive });
+  return apiGetJson<MpqChangelog>(`/api/mpq/changelog?${query.toString()}`);
 }

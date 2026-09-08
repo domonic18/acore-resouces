@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { FileText, Search } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { formatBytes } from "@/features/dbc/lib/columns";
 import { useMpqArchives } from "@/features/mpq/hooks/useMpqViewer";
@@ -34,9 +34,14 @@ function ObfuscationBadge({ level }: { level: string | null }) {
 interface MpqArchiveListProps {
   selected: string | null;
   onSelect: (relPath: string) => void;
+  onViewChangelog: (item: MpqArchiveItem) => void;
 }
 
-export function MpqArchiveList({ selected, onSelect }: MpqArchiveListProps) {
+export function MpqArchiveList({
+  selected,
+  onSelect,
+  onViewChangelog,
+}: MpqArchiveListProps) {
   const [search, setSearch] = useState("");
   const { data, isLoading, isError } = useMpqArchives();
 
@@ -82,12 +87,16 @@ export function MpqArchiveList({ selected, onSelect }: MpqArchiveListProps) {
             </div>
           )}
           {items.map((item: MpqArchiveItem) => (
-            <button
+            <div
               key={item.rel_path}
-              type="button"
+              role="button"
+              tabIndex={0}
               onClick={() => onSelect(item.rel_path)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") onSelect(item.rel_path);
+              }}
               className={cn(
-                "w-full rounded-md border px-3 py-2 text-left cursor-pointer",
+                "w-full cursor-pointer rounded-md border px-3 py-2 text-left",
                 selected === item.rel_path
                   ? "border-accent/40 bg-accent-soft"
                   : "border-transparent bg-bg-surface hover:bg-bg-hover",
@@ -97,8 +106,26 @@ export function MpqArchiveList({ selected, onSelect }: MpqArchiveListProps) {
                 <span className="truncate font-mono text-xs text-text-primary">
                   {item.name}
                 </span>
-                <span className="shrink-0 text-[10px] text-text-tertiary">
-                  {formatBytes(item.size)}
+                <span className="flex shrink-0 items-center gap-1.5">
+                  <span className="text-[10px] text-text-tertiary">
+                    {formatBytes(item.size)}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-sm px-1.5 py-0.5"
+                    disabled={!item.has_changelog}
+                    title={
+                      item.has_changelog
+                        ? "查看该批次的补丁变更日志"
+                        : "该批次没有 changelog.md（旧批次或未生成）"
+                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onViewChangelog(item);
+                    }}
+                  >
+                    <FileText className="h-3 w-3" />
+                  </button>
                 </span>
               </div>
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
@@ -119,7 +146,7 @@ export function MpqArchiveList({ selected, onSelect }: MpqArchiveListProps) {
                 批次 {item.batch} ·{" "}
                 {new Date(item.mtime).toLocaleString()}
               </div>
-            </button>
+            </div>
           ))}
           {!isLoading && !isError && items.length === 0 && (
             <div className="py-6 text-center text-xs text-text-tertiary">

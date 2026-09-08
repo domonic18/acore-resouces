@@ -32,6 +32,19 @@ def list_mpq_files_endpoint(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
+@router.get("/changelog")
+def read_mpq_changelog_endpoint(
+    archive: str = Query(..., max_length=300, description="档案工作区相对路径"),
+) -> dict:
+    """读取批次变更日志（changelog.md，AI 起草或模板回退生成）。"""
+    try:
+        return mpq_inspector.read_changelog(archive)
+    except mpq_inspector.MpqArchiveNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except mpq_inspector.MpqFileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
 @router.get("/file")
 def read_mpq_file_endpoint(
     archive: str = Query(..., max_length=300, description="档案工作区相对路径"),

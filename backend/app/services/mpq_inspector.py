@@ -169,6 +169,7 @@ def list_archives() -> dict[str, Any]:
                     "obfuscation": manifest.get("obfuscation") if manifest else None,
                     "file_count": len(manifest.get("files", [])) if manifest else None,
                     "has_manifest": manifest is not None,
+                    "has_changelog": _find_batch_file(batch, "changelog.md") is not None,
                     "published": key == "dist",
                 }
             )
@@ -329,6 +330,21 @@ def extract_file(archive_rel: str, inner_path: str) -> Path:
         raise MpqFileNotFoundError(f"路径不存在于档案中：{inner}")
     logger.info("MPQ 提取：%s → %s", inner, target)
     return target
+
+
+def read_changelog(archive_rel: str) -> dict[str, str]:
+    """读取同批次 changelog.md（mpq/dist 双根查找），供查看器展示。
+
+    Raises:
+        MpqArchiveNotFoundError: 档案不存在。
+        MpqFileNotFoundError: 批次没有 changelog.md（旧批次或未生成）。
+    """
+    archive = _resolve_archive(archive_rel)
+    batch = archive.parent.name
+    path = _find_batch_file(batch, "changelog.md")
+    if path is None:
+        raise MpqFileNotFoundError(f"该批次没有变更日志：{batch}")
+    return {"archive": archive.name, "batch": batch, "content": path.read_text(encoding="utf-8")}
 
 
 def read_file_preview(archive_rel: str, inner_path: str) -> dict[str, Any]:
