@@ -19,7 +19,11 @@ from app.services.patch_publisher import (
 
 @pytest.fixture
 def pub_dirs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Path]:
-    """将发布范围目录指向临时目录（publish_patches 输出依赖 project_root）。"""
+    """将发布范围目录指向临时目录（publish_patches 输出依赖 project_root）。
+
+    默认禁用分发端推送：backend/.env 可能配置了真实 DISTRO_BASE_URL，
+    不屏蔽会把测试产物推到线上；推送用例自行覆盖为 True。
+    """
     mpq_dir = tmp_path / "mpq"
     dist_dir = tmp_path / "dist"
     mpq_dir.mkdir()
@@ -27,6 +31,7 @@ def pub_dirs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Path]
     monkeypatch.setattr(patch_publisher, "MPQ_DIR", mpq_dir)
     monkeypatch.setattr(patch_publisher, "DIST_DIR", dist_dir)
     monkeypatch.setattr(settings, "project_root", tmp_path)
+    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: False)
     return {"mpq": mpq_dir, "dist": dist_dir}
 
 
