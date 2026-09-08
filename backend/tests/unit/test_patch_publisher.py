@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -50,9 +52,13 @@ def test_publish_batch_moves_mpq_and_copies_metadata(pub_dirs: dict[str, Path]) 
     dist_batch = pub_dirs["dist"] / "20260907_024029"
     assert target == dist_batch / "patch-zhCN-6.mpq"
     assert target.read_bytes() == b"MPQ\x1a fake"
-    assert (dist_batch / "manifest.json").read_text(encoding="utf-8") == (
-        '{"obfuscation": "basic"}'
-    )
+    # dist 侧 manifest 回写发布信息：序号/文件名/大小/校验和
+    stamped = json.loads((dist_batch / "manifest.json").read_text(encoding="utf-8"))
+    assert stamped["obfuscation"] == "basic"
+    assert stamped["patch_number"] == 6
+    assert stamped["patch_file"] == "patch-zhCN-6.mpq"
+    assert stamped["patch_size_bytes"] == len(b"MPQ\x1a fake")
+    assert stamped["patch_sha256"] == hashlib.sha256(b"MPQ\x1a fake").hexdigest()
     assert (dist_batch / "readme.txt").exists()
     assert (dist_batch / "changelog.md").read_text(encoding="utf-8") == "## 玩家公告"
     # 构建侧批次目录（含 staging 中间产物）整体清理
@@ -81,6 +87,19 @@ def test_publish_batches_end_to_end(pub_dirs: dict[str, Path]) -> None:
     assert result["next_number"] == 6
     assert (pub_dirs["dist"] / "20260907_024029" / "patch-zhCN-5.mpq").exists()
     assert not (pub_dirs["mpq"] / "20260907_024029").exists()
+
+
+def test_publish_number_continues_after_max_published(pub_dirs: dict[str, Path]) -> None:
+    """dist 已有更大序号时，新发布批次续编（WoW 客户端高序号后加载覆盖低序号）。"""
+    _make_batch(pub_dirs["mpq"])
+    legacy = pub_dirs["dist"] / "20260903_010709"
+    legacy.mkdir()
+    (legacy / "patch-zhCN-6.mpq").write_bytes(b"z")
+
+    result = publish_patches(start_number=5)
+
+    assert (pub_dirs["dist"] / "20260907_024029" / "patch-zhCN-7.mpq").exists()
+    assert result["next_number"] == 8
 
 
 def test_publish_batches_dry_run_keeps_everything(pub_dirs: dict[str, Path]) -> None:
@@ -114,3 +133,60 @@ def test_collect_source_batches_ignores_empty_batch(pub_dirs: dict[str, Path]) -
     (empty / "readme.txt").write_text("x", encoding="utf-8")
 
     assert patch_publisher.collect_source_batches() == []
+
+
+def test_publish_auto_pushes_when_configured(
+    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """配置分发端时发布成功后自动推送，结果计入 distro_pushed。"""
+    _make_batch(pub_dirs["mpq"])
+    pushed: list[Path] = []
+    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
+    monkeypatch.setattr(
+        patch_publisher,
+        "push_batch",
+        lambda batch_dir, **kw: pushed.append(batch_dir)
+        or {"batch": batch_dir.name, "patch_number": 5, "size_bytes": 10},
+    )
+
+    result = publish_patches(start_number=5)
+
+    assert result["distro_pushed"] == ["20260907_024029"]
+    assert result["distro_push_failed"] == []
+    assert [d.name for d in pushed] == ["20260907_024029"]
+
+
+def test_publish_push_failure_does_not_block_publish(
+    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """推送失败仅告警：本地发布仍成功，批次计入 distro_push_failed。"""
+    _make_batch(pub_dirs["mpq"])
+    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
+    from app.services.patch_distro_client import DistroPushError
+
+    def _boom(batch_dir: Path, **kw: object) -> dict[str, object]:
+        raise DistroPushError("endpoint down")
+
+    monkeypatch.setattr(patch_publisher, "push_batch", _boom)
+
+    result = publish_patches(start_number=5)
+
+    assert result["distro_pushed"] == []
+    assert result["distro_push_failed"] == ["20260907_024029"]
+    # 本地发布不受影响
+    assert (pub_dirs["dist"] / "20260907_024029" / "patch-zhCN-5.mpq").exists()
+
+
+def test_publish_without_distro_config_skips_push(
+    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """未配置分发端时不推送（distro_pushed 为空）。"""
+    _make_batch(pub_dirs["mpq"])
+    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: False)
+    monkeypatch.setattr(
+        patch_publisher, "push_batch", lambda *a, **kw: pytest.fail("不应推送")
+    )
+
+    result = publish_patches(start_number=5)
+
+    assert result["distro_pushed"] == []
