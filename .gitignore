@@ -65,3 +65,6 @@ venv/
 node_modules/
 dist/
 *.tsbuildinfo
+
+# 本地环境配置（含分发端推送密钥，不入 Git）
+backend/.env
