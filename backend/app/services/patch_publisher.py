@@ -32,12 +32,15 @@ DEFAULT_START_NUMBER = 5
 _HASH_CHUNK = 1024 * 1024
 
 
-def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
+def _digest_file(path: Path) -> tuple[str, str]:
+    """一次遍历同时计算 (sha256, md5)。"""
+    sha = hashlib.sha256()
+    md5 = hashlib.md5()
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(_HASH_CHUNK), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+            sha.update(chunk)
+            md5.update(chunk)
+    return sha.hexdigest(), md5.hexdigest()
 
 
 class PatchPublisherError(Exception):
@@ -100,7 +103,7 @@ def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
 
     mpq_source = mpq_sources[0]
     mpq_target = target_dir / f"patch-zhCN-{number}.mpq"
-    patch_sha256 = _sha256_file(mpq_source)
+    patch_sha256, patch_md5 = _digest_file(mpq_source)
     shutil.move(str(mpq_source), str(mpq_target))
 
     # 回写发布信息到 dist 侧 manifest：序号/文件名/大小/校验和，
@@ -114,6 +117,7 @@ def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
                 data["patch_file"] = mpq_target.name
                 data["patch_size_bytes"] = mpq_target.stat().st_size
                 data["patch_sha256"] = patch_sha256
+                data["patch_md5"] = patch_md5
                 target_manifest.write_text(
                     json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
                 )

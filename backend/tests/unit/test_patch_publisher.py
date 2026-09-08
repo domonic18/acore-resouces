@@ -64,6 +64,7 @@ def test_publish_batch_moves_mpq_and_copies_metadata(pub_dirs: dict[str, Path]) 
     assert stamped["patch_file"] == "patch-zhCN-6.mpq"
     assert stamped["patch_size_bytes"] == len(b"MPQ\x1a fake")
     assert stamped["patch_sha256"] == hashlib.sha256(b"MPQ\x1a fake").hexdigest()
+    assert stamped["patch_md5"] == hashlib.md5(b"MPQ\x1a fake").hexdigest()
     assert (dist_batch / "readme.txt").exists()
     assert (dist_batch / "changelog.md").read_text(encoding="utf-8") == "## 玩家公告"
     # 构建侧批次目录（含 staging 中间产物）整体清理

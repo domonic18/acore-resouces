@@ -34,19 +34,22 @@ def is_distro_configured() -> bool:
     return bool(settings.distro_base_url.strip() and settings.distro_api_key.strip())
 
 
-def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
+def _digest_file(path: Path) -> tuple[str, str]:
+    """一次遍历同时计算 (sha256, md5)。"""
+    sha = hashlib.sha256()
+    md5 = hashlib.md5()
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(CHUNK_SIZE), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+            sha.update(chunk)
+            md5.update(chunk)
+    return sha.hexdigest(), md5.hexdigest()
 
 
 def build_push_payload(batch_dir: Path) -> tuple[dict[str, Any], Path]:
     """从本地 dist 批次目录组装契约 payload，返回 (payload, mpq 路径)。
 
     新批次直接读发布时回写的 patch_* 字段；存量批次（无回写字段）从
-    文件名解析序号、现算 sha256 与大小。
+    文件名解析序号、现算 sha256/md5 与大小。
     """
 
     def fail(reason: str) -> None:
@@ -85,8 +88,13 @@ def build_push_payload(batch_dir: Path) -> tuple[dict[str, Any], Path]:
         size_bytes = mpq_path.stat().st_size
 
     sha256 = manifest.get("patch_sha256")
-    if not isinstance(sha256, str) or not sha256:
-        sha256 = _sha256_file(mpq_path)
+    md5 = manifest.get("patch_md5")
+    if (not isinstance(sha256, str) or not sha256) or (not isinstance(md5, str) or not md5):
+        calc_sha, calc_md5 = _digest_file(mpq_path)
+        if not isinstance(sha256, str) or not sha256:
+            sha256 = calc_sha
+        if not isinstance(md5, str) or not md5:
+            md5 = calc_md5
 
     changelog = ""
     changelog_path = batch_dir / "changelog.md"
@@ -110,6 +118,7 @@ def build_push_payload(batch_dir: Path) -> tuple[dict[str, Any], Path]:
         "obfuscation": manifest.get("obfuscation"),
         "size_bytes": size_bytes,
         "sha256": sha256,
+        "md5": md5,
         "changelog": changelog,
     }
     return payload, mpq_path

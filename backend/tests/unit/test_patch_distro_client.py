@@ -46,6 +46,7 @@ def _make_dist_batch(
                 "patch_file": "patch-zhCN-7.mpq",
                 "patch_size_bytes": len(PATCH_BYTES),
                 "patch_sha256": hashlib.sha256(PATCH_BYTES).hexdigest(),
+                "patch_md5": hashlib.md5(PATCH_BYTES).hexdigest(),
             }
         )
     (batch / "manifest.json").write_text(
@@ -68,6 +69,7 @@ def test_build_payload_uses_stamped_manifest(tmp_path: Path) -> None:
     assert payload["patch_file"] == "patch-zhCN-7.mpq"
     assert payload["size_bytes"] == len(PATCH_BYTES)
     assert payload["sha256"] == hashlib.sha256(PATCH_BYTES).hexdigest()
+    assert payload["md5"] == hashlib.md5(PATCH_BYTES).hexdigest()
     assert payload["mount_count"] == 2
     assert payload["file_count"] == 5
     assert payload["obfuscation"] == "none"
@@ -75,7 +77,7 @@ def test_build_payload_uses_stamped_manifest(tmp_path: Path) -> None:
 
 
 def test_build_payload_legacy_batch_falls_back(tmp_path: Path) -> None:
-    """存量批次：序号从文件名解析，sha256/大小现算，无 changelog 为空串。"""
+    """存量批次：序号从文件名解析，sha256/md5/大小现算，无 changelog 为空串。"""
     batch = _make_dist_batch(tmp_path, stamped=False, with_changelog=False)
 
     payload, _ = build_push_payload(batch)
@@ -83,6 +85,7 @@ def test_build_payload_legacy_batch_falls_back(tmp_path: Path) -> None:
     assert payload["patch_number"] == 7
     assert payload["size_bytes"] == len(PATCH_BYTES)
     assert payload["sha256"] == hashlib.sha256(PATCH_BYTES).hexdigest()
+    assert payload["md5"] == hashlib.md5(PATCH_BYTES).hexdigest()
     assert payload["changelog"] == ""
 
 
