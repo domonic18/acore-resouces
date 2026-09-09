@@ -191,12 +191,25 @@ export interface PatchBuildResult {
   dry_run: boolean;
 }
 
+export interface BuildLogEntry {
+  ts: string;
+  message: string;
+}
+
+export interface BuildProgress {
+  current: number;
+  total: number;
+  current_job: string | null;
+}
+
 export interface BuildStatus {
   running: boolean;
   started_at: string | null;
   finished_at: string | null;
   result: PatchBuildResult | null;
   error: string | null;
+  log: BuildLogEntry[];
+  progress: BuildProgress;
 }
 
 export interface PublishResult {
