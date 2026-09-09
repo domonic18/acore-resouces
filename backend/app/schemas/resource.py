@@ -25,6 +25,7 @@ def _normalize_dict_values(data: dict[str, Any], cls: type[BaseModel]) -> dict[s
 
 
 class DropInfo(BaseModel):
+    source: Literal["creature", "gameobject"] = "creature"
     entry: int | None = None
     instance: str | None = None
     boss: str | None = None

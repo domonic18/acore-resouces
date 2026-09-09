@@ -485,7 +485,7 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
     loot_tables: list[dict[str, Any]] = []
     for table in ctx.sql_plan.tables:
         table_dict = table.model_dump()
-        if table.name == "creature_loot_template":
+        if table.name in ("creature_loot_template", "gameobject_loot_template"):
             loot_tables.append(table_dict)
         else:
             add_tables.append(table_dict)
@@ -563,7 +563,7 @@ def _build_sql_file_content(
 
 def _build_delete_where_clause(table_name: str, record: dict[str, Any]) -> str | None:
     """根据表名构造 DELETE WHERE 子句；不支持主键推断时返回 None。"""
-    if table_name == "creature_loot_template":
+    if table_name in ("creature_loot_template", "gameobject_loot_template"):
         entry = record.get("Entry")
         item = record.get("Item")
         if entry is None or item is None:
