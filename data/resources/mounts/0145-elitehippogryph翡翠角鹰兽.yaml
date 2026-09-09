@@ -2,6 +2,11 @@ id: 145
 model_folder: elitehippogryph翡翠角鹰兽
 debug_passed: true
 added: true
+drop:
+  entry: 23577
+  instance: 祖阿曼
+  boss: 祖尔金
+  rate: 0.03
 official_db:
   name: 翡翠角鹰兽
   spell_icon_name: inv_misc_elitehippogryph

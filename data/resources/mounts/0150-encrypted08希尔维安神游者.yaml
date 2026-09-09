@@ -2,6 +2,11 @@ id: 150
 model_folder: encrypted08希尔维安神游者
 debug_passed: true
 added: true
+drop:
+  entry: 24892
+  instance: 太阳井高地
+  boss: 萨斯罗瓦
+  rate: 0.02
 official_db:
   name: 希尔维安神游者
   spell_icon_name: inv_encrypted08
