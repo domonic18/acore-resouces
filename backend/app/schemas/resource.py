@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Annotated, Any, Literal, get_type_hints
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
 from app.schemas.sql import CreatureModelInfo, CreatureTemplate, ItemTemplate
@@ -79,10 +79,16 @@ class ResourceBase(BaseModel):
     added: bool = False
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    notes: str | None = None
     drop: DropInfo = Field(default_factory=DropInfo)
     official_db: OfficialDbInfo = Field(default_factory=OfficialDbInfo)
     dbc: DbcInfo = Field(default_factory=DbcInfo)
     db: DbInfo = Field(default_factory=DbInfo)
+
+    @field_validator("notes")
+    @classmethod
+    def _normalize_empty_notes(cls, value: str | None) -> str | None:
+        return value or None
 
 
 class Mount(ResourceBase):
