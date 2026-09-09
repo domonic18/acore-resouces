@@ -15,6 +15,7 @@ from app.services.build_runner import (
     start_build,
 )
 from app.services.patch_audit import load_audit_by_job
+from app.services.patch_batches import list_patch_batches
 from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
@@ -114,6 +115,18 @@ def build_patches(background_tasks: BackgroundTasks, body: PatchBuildRequest) ->
 def build_status() -> dict[str, Any]:
     """查询构建运行状态与最近一次结果。"""
     return get_build_status()
+
+
+@router.get("/batches")
+def list_batches(
+    status: PatchJobStatus | None = Query(None, description="批次聚合状态"),
+) -> dict[str, Any]:
+    """按导出批次（MPQ 构建批次）聚合列出补丁任务。"""
+    items = list_patch_batches(status=status)
+    return {
+        "total": len(items),
+        "items": [b.model_dump(exclude_none=False) for b in items],
+    }
 
 
 @router.post("/publish")

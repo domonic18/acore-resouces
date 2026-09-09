@@ -4,7 +4,7 @@ import { MountMultiSelect } from "@/features/resources/components/patch-export/M
 import { BuildPanel } from "@/features/resources/components/patch-export/BuildPanel";
 import { JobAuditCard } from "@/features/resources/components/patch-export/JobAuditCard";
 import { PublishPanel } from "@/features/resources/components/patch-export/PublishPanel";
-import { PatchJobsTable } from "@/features/resources/components/patch-export/PatchJobsTable";
+import { PatchBatchesTable } from "@/features/resources/components/patch-export/PatchBatchesTable";
 import { CleanDialog } from "@/features/resources/components/patch-export/CleanDialog";
 import { BulkPatchExportButton } from "@/features/resources/components/BulkPatchExportButton";
 import { useBuildStatus } from "@/features/resources/hooks/usePatchBuild";
@@ -87,10 +87,10 @@ export function ExportPage() {
         <div className="card-header">
           <div>
             <div className="card-title flex items-center gap-2">
-              <ListChecks className="h-4 w-4" /> 补丁任务列表
+              <ListChecks className="h-4 w-4" /> 补丁批次列表
             </div>
             <div className="card-subtitle">
-              任务状态在构建过程中自动更新（requested → generated / failed）
+              按导出批次聚合：坐骑数、补丁包与产物路径；展开查看每只坐骑的 DBC/SQL 变更
             </div>
           </div>
           <button
@@ -102,7 +102,7 @@ export function ExportPage() {
           </button>
         </div>
         <div className="card-body">
-          <PatchJobsTable building={building} onAudit={setAuditJobId} />
+          <PatchBatchesTable building={building} onAudit={setAuditJobId} />
         </div>
       </div>
 

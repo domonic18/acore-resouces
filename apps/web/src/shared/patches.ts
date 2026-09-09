@@ -3,6 +3,7 @@ import type {
   BuildStatus,
   CleanResult,
   Paginated,
+  PatchBatch,
   PatchExportResponse,
   PatchJob,
   PatchJobAudit,
@@ -64,6 +65,17 @@ export function listPatchJobs(params: {
   query.set("page", String(params.page ?? 1));
   query.set("page_size", String(params.page_size ?? 20));
   return apiGetJson<Paginated<PatchJob>>(`/api/patches?${query.toString()}`);
+}
+
+export function listPatchBatches(params: {
+  status?: string;
+}): Promise<{ total: number; items: PatchBatch[] }> {
+  const query = new URLSearchParams();
+  if (params.status) query.set("status", params.status);
+  const suffix = query.size > 0 ? `?${query.toString()}` : "";
+  return apiGetJson<{ total: number; items: PatchBatch[] }>(
+    `/api/patches/batches${suffix}`,
+  );
 }
 
 export function publishPatches(body: {

@@ -144,6 +144,43 @@ export interface PatchExportResponse {
   total: number;
 }
 
+export interface PatchBatchJobAudit {
+  /** 变更的 DBC 文件及记录数：[{ dbc_file, record_count }] */
+  dbc_files: { dbc_file: string; record_count: number }[];
+  sql_file: string | null;
+  /** SQL 写入的表及记录数：[{ name, record_count }] */
+  sql_tables: { name: string; record_count: number }[];
+}
+
+export interface PatchBatchJob {
+  job_id: string;
+  resource_id: number;
+  resource_name: string;
+  status: "requested" | "generated" | "applied" | "failed";
+  completed_at: string | null;
+  summary: string | null;
+  audit: PatchBatchJobAudit | null;
+}
+
+export interface PatchBatch {
+  /** MPQ 目录时间戳（YYYYMMDD_HHMMSS）；未构建任务为 "pending" */
+  batch_id: string;
+  created_at: string | null;
+  status: "requested" | "generated" | "applied" | "failed";
+  job_count: number;
+  output: Record<string, unknown> & {
+    mpq?: string;
+    manifest?: string;
+    changelog?: string;
+    readme?: string;
+    dbc_dir?: string;
+    sql_files?: string[];
+    validation_report?: string;
+    audit?: string;
+  };
+  jobs: PatchBatchJob[];
+}
+
 export interface PatchBuildResult {
   jobs: string[];
   sql_files: string[];
