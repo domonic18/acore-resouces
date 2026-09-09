@@ -158,6 +158,7 @@ export function ResourceListPage() {
           selectedIds={selectedIds}
           onSelect={handleSelect}
           onSelectAll={handleSelectAll}
+          showFeatures={typeParam === "mount" || typeParam === "all"}
         />
 
         {!isLoading && !error && (

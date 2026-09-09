@@ -118,4 +118,5 @@ resource_type: mount
 mount_type: 水上坐骑
 star_rating: 三星
 subtype: 海马
+special_features: [水下骑乘]
 

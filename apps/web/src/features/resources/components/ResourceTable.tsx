@@ -73,6 +73,31 @@ interface ResourceTableProps {
   selectedIds?: number[];
   onSelect?: (id: number, selected: boolean) => void;
   onSelectAll?: (selected: boolean) => void;
+  showFeatures?: boolean;
+}
+
+function SpecialFeatureBadges({ resource }: { resource: Resource }) {
+  const features = resource.special_features ?? [];
+  if (features.length === 0) return <span className="text-text-secondary">—</span>;
+  const visible = features.slice(0, 2);
+  const rest = features.length - visible.length;
+  return (
+    <div className="flex flex-wrap items-center gap-1">
+      {visible.map((f) => (
+        <span key={f} className="badge badge-purple" title={f}>
+          {f}
+        </span>
+      ))}
+      {rest > 0 && (
+        <span
+          className="badge badge-gray"
+          title={features.slice(2).join("、")}
+        >
+          +{rest}
+        </span>
+      )}
+    </div>
+  );
 }
 
 export function ResourceTable({
@@ -85,6 +110,7 @@ export function ResourceTable({
   selectedIds = [],
   onSelect,
   onSelectAll,
+  showFeatures = false,
 }: ResourceTableProps) {
   const location = useLocation();
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -165,6 +191,7 @@ export function ResourceTable({
             />
             <th>状态</th>
             <th>标签</th>
+            {showFeatures && <th>功能</th>}
             <th>冲突</th>
             <SortHeader
               label="添加时间"
@@ -228,6 +255,11 @@ export function ResourceTable({
                 <td>
                   <ResourceTagBadge resource={resource} />
                 </td>
+                {showFeatures && (
+                  <td>
+                    <SpecialFeatureBadges resource={resource} />
+                  </td>
+                )}
                 <td>
                   {resource.duplicate_issues &&
                   resource.duplicate_issues.length > 0 ? (
@@ -311,7 +343,7 @@ export function ResourceTable({
                   <tr
                     key={`${resource.resource_type}-${resource.id}-conflicts`}
                   >
-                    <td colSpan={12}>
+                    <td colSpan={showFeatures ? 13 : 12}>
                       <div className="bg-danger/5 px-4 py-3">
                         <div className="flex items-center justify-between">
                           <h4 className="text-sm font-semibold text-danger">
@@ -361,7 +393,7 @@ export function ResourceTable({
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan={12}>
+              <td colSpan={showFeatures ? 13 : 12}>
                 <div className="empty-state">
                   <Search className="mb-3 h-12 w-12 text-text-tertiary" />
                   <h3>暂无资源</h3>

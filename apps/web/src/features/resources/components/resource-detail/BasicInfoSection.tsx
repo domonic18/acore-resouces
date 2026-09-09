@@ -3,6 +3,7 @@ import { FormGroup } from "@/components/form/FormGroup";
 import { cn } from "@/shared/utils";
 import { ExternalLink } from "lucide-react";
 import type { Resource } from "@/shared/types";
+import { SPECIAL_FEATURE_OPTIONS } from "../../lib/resource-list";
 import type { FormState } from "../../hooks/useResourceForm";
 
 interface BasicInfoSectionProps {
@@ -110,6 +111,33 @@ export function BasicInfoSection({
                 value={form.subtype}
                 onChange={(e) => updateField("subtype", e.target.value)}
               />
+            </FormGroup>
+            <FormGroup label="特殊功能" compact={compact}>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1">
+                {SPECIAL_FEATURE_OPTIONS.map((opt) => (
+                  <label
+                    key={opt.value}
+                    className="flex items-center gap-1.5 text-xs text-text-secondary"
+                  >
+                    <input
+                      type="checkbox"
+                      className="h-3.5 w-3.5 accent-blue-500"
+                      checked={form.special_features.includes(opt.value)}
+                      onChange={(e) =>
+                        updateField(
+                          "special_features",
+                          e.target.checked
+                            ? [...form.special_features, opt.value]
+                            : form.special_features.filter(
+                                (f) => f !== opt.value,
+                              ),
+                        )
+                      }
+                    />
+                    {opt.label}
+                  </label>
+                ))}
+              </div>
             </FormGroup>
           </>
         )}

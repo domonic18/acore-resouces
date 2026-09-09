@@ -59,6 +59,12 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
     }
     if (form.subtype !== baseline.subtype)
       update.subtype = form.subtype || null;
+    if (
+      JSON.stringify(form.special_features) !==
+      JSON.stringify(baseline.special_features)
+    ) {
+      update.special_features = form.special_features;
+    }
     if (form.rarity !== baseline.rarity) update.rarity = form.rarity || null;
     if (form.notes !== baseline.notes) update.notes = form.notes || null;
     if (

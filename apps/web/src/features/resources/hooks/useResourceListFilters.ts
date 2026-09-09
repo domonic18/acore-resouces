@@ -8,6 +8,7 @@ import {
   matchesResourceSearch,
   matchesStatusFilter,
   matchesTagFilter,
+  matchesFeatureFilter,
   matchesUpdatedAtFilter,
   matchesOriginFilter,
   hasMissingRequired,
@@ -80,6 +81,11 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
       items = items.filter((r) => matchesTagFilter(r, tags));
     }
 
+    const features = parseParamList(searchParams.get("features"));
+    if (features.length > 0) {
+      items = items.filter((r) => matchesFeatureFilter(r, features));
+    }
+
     const origin = parseDataOrigin(searchParams.get("origin"));
     if (origin) {
       items = items.filter((r) => matchesOriginFilter(r, origin));
@@ -121,7 +127,7 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     setSearchParams(next);
   };
 
-  const toggleParamValue = (key: "status" | "tags", value: string) => {
+  const toggleParamValue = (key: "status" | "tags" | "features", value: string) => {
     const current = parseParamList(searchParams.get(key));
     const nextValues = current.includes(value)
       ? current.filter((v) => v !== value)

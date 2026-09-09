@@ -45,6 +45,7 @@ export interface Resource {
   star_rating?: string | null;
   subtype?: string | null;
   rarity?: string | null;
+  special_features?: string[];
   tags?: string[];
   duplicate_issues?: DuplicateIssue[];
 }
@@ -59,6 +60,7 @@ export interface ResourceUpdate {
   mount_type?: string | null;
   star_rating?: string | null;
   subtype?: string | null;
+  special_features?: string[];
   rarity?: string | null;
   drop?: Partial<DropInfo>;
   dbc_item?: Record<string, unknown>;

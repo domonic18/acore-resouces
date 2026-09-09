@@ -118,4 +118,5 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 雷龙
+special_features: [三人骑乘, 自带商人, 自带拍卖行]
 

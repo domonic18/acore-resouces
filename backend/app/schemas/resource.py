@@ -91,11 +91,31 @@ class ResourceBase(BaseModel):
         return value or None
 
 
+SPECIAL_FEATURES = [
+    "三人骑乘",
+    "双人骑乘",
+    "自带商人",
+    "自带拍卖行",
+    "修理",
+    "水面行走",
+    "水下骑乘",
+    "骑乘采集",
+    "变色涂装",
+]
+
+
 class Mount(ResourceBase):
     resource_type: Literal["mount"] = "mount"
     mount_type: str | None = None
     star_rating: str | None = None
     subtype: str | None = None
+    special_features: list[str] = Field(default_factory=list)
+
+    @field_validator("special_features")
+    @classmethod
+    def _filter_unknown_features(cls, value: list[str]) -> list[str]:
+        """只保留受控词表内的值，防止手改 YAML 写入任意功能标签。"""
+        return [f for f in value if f in SPECIAL_FEATURES]
 
 
 class Pet(ResourceBase):

@@ -120,4 +120,5 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+special_features: [双人骑乘]
 

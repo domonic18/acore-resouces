@@ -41,6 +41,7 @@ class ResourceUpdateRequest(BaseModel):
     mount_type: str | None = None
     star_rating: str | None = None
     subtype: str | None = None
+    special_features: list[str] | None = None
     rarity: str | None = None
     drop: DropUpdate | None = None
     dbc_item: Item | None = None
@@ -271,6 +272,11 @@ def update_resource_endpoint(
         resource.star_rating = body.star_rating
     if "subtype" in body.model_fields_set and resource.resource_type == "mount":
         resource.subtype = body.subtype
+    if (
+        "special_features" in body.model_fields_set
+        and resource.resource_type == "mount"
+    ):
+        resource.special_features = body.special_features or []
     if "rarity" in body.model_fields_set and resource.resource_type in ("pet", "npc"):
         resource.rarity = body.rarity
     if "drop" in body.model_fields_set and body.drop is not None:
