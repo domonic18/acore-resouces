@@ -2,6 +2,11 @@ id: 194
 model_folder: giantvampirebatmount嗜血恐翼蝠
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.x）
+  - **获取**：掉落（海岛探险）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=166468/%E5%85%85%E8%A1%80%E7%8C%8E%E8%9D%A0)
 drop: {}
 official_db:
   name: 充血猎蝠
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 蝙蝠
+

@@ -2,6 +2,11 @@ id: 80
 model_folder: bloodtrollfemalebeast_mount孢林抱齿兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.0，地渊孢林）
+  - **获取**：掉落（不羁畸变怪，地渊孢林（史诗难度））
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=160829/%E5%AD%A2%E6%9E%97%E6%8A%B1%E9%BD%BF%E5%85%BD%E9%9E%8D%E5%85%B7)
 drop: {}
 official_db:
   name: 孢林抱齿兽
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 一星
 subtype: 怪物
+

@@ -2,6 +2,11 @@ id: 409
 model_folder: TalbukDraenor银鬃塔布羊
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.0，纳格兰）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116774/%E9%A9%AF%E5%85%BB%E7%9A%84%E9%93%B6%E9%AC%83%E5%A1%94%E5%B8%83%E7%BE%8A)
 drop: {}
 official_db:
   name: 驯养的银鬃塔布羊
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 羊
+

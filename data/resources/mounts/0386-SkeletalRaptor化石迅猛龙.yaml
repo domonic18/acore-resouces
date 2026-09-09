@@ -2,6 +2,11 @@ id: 386
 model_folder: SkeletalRaptor化石迅猛龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.0.3，考古学）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=60954/%E5%8C%96%E7%9F%B3%E8%BF%85%E7%8C%9B%E9%BE%99)
 drop: {}
 official_db:
   name: 化石迅猛龙
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 迅猛龙
+

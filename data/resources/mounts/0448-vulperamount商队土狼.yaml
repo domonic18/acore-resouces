@@ -2,6 +2,11 @@ id: 448
 model_folder: vulperamount商队土狼
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3，狐人种族坐骑）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=174066/%E5%95%86%E9%98%9F%E5%9C%9F%E7%8B%BC)
 drop: {}
 official_db:
   name: 商队土狼
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 狼
+

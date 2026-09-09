@@ -2,6 +2,11 @@ id: 199
 model_folder: Goat骑乘山羊
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.0）
+  - **获取**：商人出售（四风谷）
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=89362/%E6%A3%95%E8%89%B2%E9%AA%91%E4%B9%98%E5%B1%B1%E7%BE%8A%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 棕色骑乘山羊
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 羊
+

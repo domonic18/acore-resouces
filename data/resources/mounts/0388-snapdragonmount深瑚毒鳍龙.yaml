@@ -2,6 +2,11 @@ id: 388
 model_folder: snapdragonmount深瑚毒鳍龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=169200/%E6%B7%B1%E7%91%9A%E6%AF%92%E9%B3%8D%E9%BE%99)
 drop: {}
 official_db:
   name: 深瑚毒鳍龙
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 怪物
+

@@ -2,6 +2,11 @@ id: 54
 model_folder: AlliancePVPMount勇猛的战驹
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 法术页](https://www.wowhead.com/cn/spell=100332)
 drop: {}
 official_db:
   name: 勇猛的战驹
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 马
+

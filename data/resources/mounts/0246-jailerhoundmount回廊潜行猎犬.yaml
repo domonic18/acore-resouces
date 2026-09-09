@@ -2,6 +2,11 @@ id: 246
 model_folder: jailerhoundmount回廊潜行猎犬
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=184166/%E5%9B%9E%E5%BB%8A%E6%BD%9C%E8%A1%8C%E7%8C%8E%E7%8A%AC)
 drop: {}
 official_db:
   name: 回廊潜行猎犬
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 犬
+

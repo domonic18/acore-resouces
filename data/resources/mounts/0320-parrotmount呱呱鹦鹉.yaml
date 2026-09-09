@@ -2,6 +2,11 @@ id: 320
 model_folder: parrotmount呱呱鹦鹉
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.0，自由镇）
+  - **获取**：掉落（哈兰·斯威提，自由镇（史诗难度））
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=159842/%E9%B2%A8%E9%B1%BC%E9%A5%B5%E6%9C%80%E5%96%9C%E6%AC%A2%E7%9A%84%E5%92%B8%E9%A5%BC%E5%B9%B2)
 drop: {}
 official_db:
   name: 召唤鲨鱼饵
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 鹦鹉
+

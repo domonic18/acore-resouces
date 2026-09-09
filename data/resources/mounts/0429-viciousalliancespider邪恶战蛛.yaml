@@ -2,6 +2,11 @@ id: 429
 model_folder: viciousalliancespider邪恶战蛛
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（PvP 邪恶鞍具）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=184014/%E9%82%AA%E6%81%B6%E6%88%98%E8%9B%9B)
 drop: {}
 official_db:
   name: 邪恶战蛛
@@ -113,3 +118,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 蜘蛛
+

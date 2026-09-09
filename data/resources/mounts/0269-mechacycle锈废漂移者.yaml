@@ -2,6 +2,11 @@ id: 269
 model_folder: mechacycle锈废漂移者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2，麦卡贡）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=168329/%E6%9C%BA%E8%BD%AE%E8%BD%A6w%E5%9E%8B%E7%9A%84%E9%92%A5%E5%8C%99)
 drop: {}
 official_db:
   name: 机轮车W型
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

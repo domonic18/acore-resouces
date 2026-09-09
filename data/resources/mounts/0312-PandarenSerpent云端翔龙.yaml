@@ -2,6 +2,11 @@ id: 312
 model_folder: PandarenSerpent云端翔龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.0）
+  - **获取**：商人出售（需 云端翔龙骑士团 崇拜 声望）
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=85430/%E7%A2%A7%E8%93%9D%E4%BA%91%E7%AB%AF%E7%BF%94%E9%BE%99%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 碧蓝云端翔龙
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 翔龙
+

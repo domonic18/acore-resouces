@@ -2,6 +2,11 @@ id: 243
 model_folder: infernalmount炎狱地狱火
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=137614/%E5%88%BA%E9%AA%A8%E7%9A%84%E9%9C%9C%E8%A3%82%E6%A0%B8%E5%BF%83)
 drop: {}
 official_db:
   name: 霜裂地狱火
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

@@ -2,6 +2,11 @@ id: 252
 model_folder: LesserGronn踏血小戈隆
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.2）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=128311/%E7%85%A4%E6%8B%B3%E5%B0%8F%E6%88%88%E9%9A%86)
 drop: {}
 official_db:
   name: 煤拳小戈隆
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 怪物
+

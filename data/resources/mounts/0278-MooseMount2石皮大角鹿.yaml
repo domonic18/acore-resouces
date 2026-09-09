@@ -2,6 +2,11 @@ id: 278
 model_folder: MooseMount2石皮大角鹿
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=129962/%E9%AA%91%E4%B9%98%E5%A4%A7%E8%A7%92%E9%B9%BF%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 巨型北地大角鹿
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 鹿
+

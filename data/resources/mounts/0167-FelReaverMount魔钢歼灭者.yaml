@@ -2,6 +2,11 @@ id: 167
 model_folder: FelReaverMount魔钢歼灭者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.2，地狱火堡垒）
+  - **获取**：掉落（阿克蒙德，地狱火堡垒）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=123890/%E9%AD%94%E9%92%A2%E6%AD%BC%E7%81%AD%E8%80%85)
 drop: {}
 official_db:
   name: 魔钢歼灭者
@@ -119,3 +124,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 机械
+

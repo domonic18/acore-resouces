@@ -2,6 +2,11 @@ id: 114
 model_folder: devourerswarmermount吞噬者坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.1）
+  - **获取**：掉落（歼灭者孔斯罗格兹，刻希亚）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=187183/%E6%9A%B4%E6%80%92%E7%9A%84%E9%87%8D%E6%AE%B4%E8%80%85)
 drop: {}
 official_db:
   name: 暴怒的重殴者
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 怪物
+

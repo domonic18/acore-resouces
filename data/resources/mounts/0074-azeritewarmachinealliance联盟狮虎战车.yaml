@@ -2,6 +2,10 @@ id: 74
 model_folder: azeritewarmachinealliance联盟狮虎战车
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
 drop: {}
 official_db:
   name: 联盟狮虎战车
@@ -111,3 +115,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

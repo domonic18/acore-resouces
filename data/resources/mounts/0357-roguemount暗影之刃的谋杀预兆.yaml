@@ -2,6 +2,11 @@ id: 357
 model_folder: roguemount暗影之刃的谋杀预兆
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.2，职业坐骑）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=143493/%E9%BB%91%E6%9A%97%E9%A2%84%E5%85%86%E7%9A%84%E5%BC%80%E5%88%83%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 暗影之刃的谋杀预兆
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 角鹰兽
+

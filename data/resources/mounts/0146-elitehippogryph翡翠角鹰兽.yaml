@@ -2,6 +2,11 @@ id: 146
 model_folder: Hippogryph2失落已久的角鹰兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：掉落（法罗迪斯宝箱）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=147806/%E4%BA%91%E7%BF%BC%E8%A7%92%E9%B9%B0%E5%85%BD)
 drop: {}
 official_db:
   name: 云翼角鹰兽
@@ -118,3 +123,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 角鹰兽
+

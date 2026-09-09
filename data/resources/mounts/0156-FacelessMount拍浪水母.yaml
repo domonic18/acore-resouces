@@ -2,6 +2,11 @@ id: 156
 model_folder: FacelessMount拍浪水母
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：掉落（饥渴的库苏莫斯）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=138201/%E6%B7%B1%E6%B5%B7%E6%B0%B4%E6%AF%8D)
 drop: {}
 official_db:
   name: 深海水母
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 水上坐骑
 star_rating: 二星
 subtype: 水母
+

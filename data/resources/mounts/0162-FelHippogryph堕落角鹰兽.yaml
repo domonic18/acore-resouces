@@ -2,6 +2,12 @@ id: 162
 model_folder: FelHippogryph堕落角鹰兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.x）
+  - **获取**：商人出售（兰德鲁·郎绍特，藏宝海湾）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=72582/%E5%A0%95%E8%90%BD%E8%A7%92%E9%B9%B0%E5%85%BD)
 drop: {}
 official_db:
   name: 堕落角鹰兽
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 角鹰兽
+

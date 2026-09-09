@@ -2,6 +2,11 @@ id: 64
 model_folder: allianceshipmount联盟龙鹰飞艇坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x，BlizzCon 2017 赠品）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=151618/%E6%9A%B4%E9%A3%8E%E5%9F%8E%E9%80%90%E5%A4%A9%E6%88%98%E6%9C%BA)
 drop: {}
 official_db:
   name: 暴风城逐天战机
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 机械
+

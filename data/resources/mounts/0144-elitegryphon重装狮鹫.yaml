@@ -2,6 +2,11 @@ id: 144
 model_folder: elitegryphon重装狮鹫
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.1）
+  - **获取**：商人出售（卡桑琅丛林）
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=93168/%E9%87%8D%E8%A3%85%E7%8B%AE%E9%B9%AB)
 drop: {}
 official_db:
   name: 重装狮鹫
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 狮鹫
+

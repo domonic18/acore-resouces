@@ -2,6 +2,11 @@ id: 394
 model_folder: spectralwyvern幽灵驭风者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=76902/%E5%B9%BD%E7%81%B5%E9%A9%AD%E9%A3%8E%E8%80%85)
 drop: {}
 official_db:
   name: 幽灵驭风者
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 双足飞龙
+

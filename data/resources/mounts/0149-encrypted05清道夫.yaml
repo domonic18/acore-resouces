@@ -2,6 +2,11 @@ id: 149
 model_folder: encrypted05清道夫
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=164571/%E6%B8%85%E9%81%93%E5%A4%AB)
 drop: {}
 official_db:
   name: 清道夫
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

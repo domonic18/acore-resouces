@@ -2,6 +2,11 @@ id: 158
 model_folder: falcosauros雪羽猎龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.1，小盗龙养成任务线）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=137578/%E9%9B%AA%E7%BE%BD%E7%8C%8E%E9%BE%99)
 drop: {}
 official_db:
   name: 雪羽猎龙
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 猎龙
+

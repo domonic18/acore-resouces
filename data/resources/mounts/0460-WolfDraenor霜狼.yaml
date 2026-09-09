@@ -2,6 +2,11 @@ id: 460
 model_folder: WolfDraenor霜狼
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116781/%E8%A3%85%E7%94%B2%E9%9C%9C%E7%8B%BC)
 drop: {}
 official_db:
   name: 装甲霜狼
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 狼
+

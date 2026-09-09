@@ -2,6 +2,12 @@ id: 205
 model_folder: goblintrike地精三轮摩托
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.x）
+  - **获取**：商人出售（卡尔·万金，奥格瑞玛）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=62462/%E5%9C%B0%E7%B2%BE%E4%B8%89%E8%BD%AE%E6%91%A9%E6%89%98%E6%B6%A1%E8%BD%AE%E5%A2%9E%E5%8E%8B%E5%9E%8B)
 drop: {}
 official_db:
   name: 地精三轮摩托涡轮增压型
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

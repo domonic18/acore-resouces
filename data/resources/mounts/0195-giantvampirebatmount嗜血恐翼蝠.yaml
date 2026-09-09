@@ -2,6 +2,11 @@ id: 195
 model_folder: giantvampirebatmount嗜血恐翼蝠
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.x）
+  - **获取**：掉落（屠戮者尼玛尔，阿拉希高地）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=163706/%E6%9E%AF%E6%9C%A8%E6%81%90%E7%BF%BC%E8%9D%A0)
 drop: {}
 official_db:
   name: 枯木恐翼蝠
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 蝙蝠
+

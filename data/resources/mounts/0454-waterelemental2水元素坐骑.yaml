@@ -2,6 +2,11 @@ id: 454
 model_folder: waterelemental2水元素坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.1.5，达萨罗之战）
+  - **获取**：掉落（吉安娜·普罗德摩尔（史诗），达萨罗之战）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=166705/%E5%86%B0%E5%B7%9D%E7%8B%82%E6%BD%AE)
 drop: {}
 official_db:
   name: 冰川狂潮
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 元素
+

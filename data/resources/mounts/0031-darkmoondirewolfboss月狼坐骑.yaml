@@ -2,6 +2,10 @@ id: 31
 model_folder: darkmoondirewolfboss月狼坐骑
 debug_passed: true
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
 drop: {}
 official_db:
   name: 月狼
@@ -115,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 狼
+

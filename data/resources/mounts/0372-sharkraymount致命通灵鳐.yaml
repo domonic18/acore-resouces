@@ -2,6 +2,12 @@ id: 372
 model_folder: sharkraymount致命通灵鳐
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：商人出售（工匠奥卡塔，需 波涛之刃剑鱼人 崇拜）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=167167/%E5%89%91%E9%B1%BC%E4%BA%BA%E6%B5%B7%E6%B3%A2%E9%B3%90)
 drop: {}
 official_db:
   name: 剑鱼人海波鳐
@@ -117,3 +123,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 鳐
+

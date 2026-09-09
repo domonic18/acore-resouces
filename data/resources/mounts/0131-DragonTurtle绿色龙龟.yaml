@@ -2,6 +2,11 @@ id: 131
 model_folder: DragonTurtle绿色龙龟
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.0，熊猫人种族坐骑）
+  - **获取**：商人出售（奥格瑞玛）
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=82765/%E7%BB%BF%E8%89%B2%E9%BE%99%E9%BE%9F%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 绿色龙龟
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 水上坐骑
 star_rating: 二星
 subtype: 乌龟
+

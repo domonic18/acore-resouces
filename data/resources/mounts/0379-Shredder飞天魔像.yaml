@@ -2,6 +2,12 @@ id: 379
 model_folder: Shredder飞天魔像
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.4，工程学制造）
+  - **获取**：待查
+  - **特殊功能**：骑乘时可以采集草药
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=95416/%E9%A3%9E%E5%A4%A9%E9%AD%94%E5%83%8F)
 drop: {}
 official_db:
   name: 飞天魔像
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 机械
+

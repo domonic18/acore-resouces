@@ -2,6 +2,12 @@ id: 431
 model_folder: viciousgoblintrike勇猛的战车
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（PvP 邪恶鞍具）
+  - **获取**：商人出售（亡灵卫兵奈萨里安，奥格瑞玛）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=140354/%E5%8B%87%E7%8C%9B%E7%9A%84%E6%88%98%E8%BD%A6)
 drop: {}
 official_db:
   name: 勇猛的战车
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

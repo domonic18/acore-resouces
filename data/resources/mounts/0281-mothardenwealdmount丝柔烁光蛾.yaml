@@ -2,6 +2,12 @@ id: 281
 model_folder: mothardenwealdmount丝柔烁光蛾
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：商人出售（文书大师萨洛恩，炽蓝仙野）
+  - **售价**：5,000 金
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=180748/%E4%B8%9D%E6%9F%94%E7%83%81%E5%85%89%E8%9B%BE)
 drop: {}
 official_db:
   name: 丝柔烁光蛾
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 蛾
+

@@ -2,6 +2,12 @@ id: 334
 model_folder: pterrordax2沃顿奈破沙者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.x）
+  - **获取**：商人出售（供给官莱佳，纳兹米尔，需 塔兰吉远征队 崇拜）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=161666/%E6%8D%95%E8%8E%B7%E7%9A%84%E6%B2%BC%E6%B3%BD%E8%BF%BD%E7%8C%8E%E8%80%85%E7%9A%84%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 捕获的沼泽追猎者
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙
+

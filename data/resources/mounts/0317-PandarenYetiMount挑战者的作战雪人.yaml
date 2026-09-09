@@ -2,6 +2,11 @@ id: 317
 model_folder: PandarenYetiMount挑战者的作战雪人
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.x，搏击俱乐部）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116791/%E6%8C%91%E6%88%98%E8%80%85%E7%9A%84%E4%BD%9C%E6%88%98%E9%9B%AA%E4%BA%BA)
 drop: {}
 official_db:
   name: 挑战者的作战雪人
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 雪人
+

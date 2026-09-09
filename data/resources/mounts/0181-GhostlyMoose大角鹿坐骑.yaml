@@ -2,6 +2,11 @@ id: 181
 model_folder: GhostlyMoose大角鹿坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.1.5，考古学）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=131734/%E8%89%BE%E7%89%B9%E6%B4%9B%E4%B9%8B%E9%AD%82)
 drop: {}
 official_db:
   name: 艾特洛之魂
@@ -118,3 +123,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 鹿
+

@@ -2,6 +2,12 @@ id: 187
 model_folder: GiantBoar霜原野猪
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.x）
+  - **获取**：商人出售（暗影猎手德恩加，塔纳安丛林，需 沃金之锋 崇拜）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=128526/%E6%AD%BB%E7%89%99%E9%AD%94%E8%83%BD%E9%87%8E%E7%8C%AA)
 drop: {}
 official_db:
   name: 死牙魔能野猪
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 猪
+

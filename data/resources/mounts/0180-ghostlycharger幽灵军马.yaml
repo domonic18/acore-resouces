@@ -2,6 +2,11 @@ id: 180
 model_folder: ghostlycharger幽灵军马
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=93671/%E5%B9%BD%E7%81%B5%E5%86%9B%E9%A9%AC%E7%9A%84%E9%A2%85%E9%AA%A8)
 drop: {}
 official_db:
   name: 幽灵军马
@@ -118,3 +123,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 马
+

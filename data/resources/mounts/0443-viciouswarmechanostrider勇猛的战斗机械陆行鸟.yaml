@@ -2,6 +2,12 @@ id: 443
 model_folder: viciouswarmechanostrider勇猛的战斗机械陆行鸟
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（PvP 邪恶鞍具）
+  - **获取**：商人出售（通灵领主赛普，暴风城）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=124089/%E5%8B%87%E7%8C%9B%E7%9A%84%E6%88%98%E6%96%97%E6%9C%BA%E6%A2%B0%E9%99%86%E8%A1%8C%E9%B8%9F)
 drop: {}
 official_db:
   name: 勇猛的战斗机械陆行鸟
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 陆行鸟
+

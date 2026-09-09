@@ -2,6 +2,11 @@ id: 327
 model_folder: protodrakegladiatormount始祖幼龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：巫妖王之怒（3.0，神谕者神秘蛋）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/wotlk/cn/item=44707/%E7%BB%BF%E8%89%B2%E5%A7%8B%E7%A5%96%E5%B9%BC%E9%BE%99%E7%9A%84%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 绿色始祖幼龙
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 龙
+

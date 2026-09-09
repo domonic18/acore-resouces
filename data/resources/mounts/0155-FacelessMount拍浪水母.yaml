@@ -2,6 +2,11 @@ id: 155
 model_folder: FacelessMount拍浪水母
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=152912/%E6%B1%A0%E5%A1%98%E6%B0%B4%E6%AF%8D)
 drop: {}
 official_db:
   name: 池塘水母
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 水上坐骑
 star_rating: 二星
 subtype: 水母
+

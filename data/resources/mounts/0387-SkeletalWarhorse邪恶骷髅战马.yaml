@@ -2,6 +2,11 @@ id: 387
 model_folder: SkeletalWarhorse邪恶骷髅战马
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：商人出售（奥格瑞玛）
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=102533/%E9%82%AA%E6%81%B6%E9%AA%B7%E9%AB%85%E6%88%98%E9%A9%AC%E7%9A%84%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 邪恶骷髅战马
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 马
+

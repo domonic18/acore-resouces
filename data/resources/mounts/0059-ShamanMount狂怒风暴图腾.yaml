@@ -2,6 +2,11 @@ id: 59
 model_folder: ShamanMount狂怒风暴图腾
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=143489/%E7%8B%82%E6%80%92%E9%A3%8E%E6%9A%B4%E5%9B%BE%E8%85%BE)
 drop: {}
 official_db:
   name: 先知的狂怒风暴
@@ -119,3 +124,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 元素
+

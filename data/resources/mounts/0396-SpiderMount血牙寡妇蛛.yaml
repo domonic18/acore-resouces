@@ -2,6 +2,12 @@ id: 396
 model_folder: SpiderMount血牙寡妇蛛
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：商人出售（疯狂的商人）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=137570/%E8%A1%80%E7%89%99%E8%9B%9B%E8%8C%A7)
 drop: {}
 official_db:
   name: 血牙寡妇蛛
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 蜘蛛
+

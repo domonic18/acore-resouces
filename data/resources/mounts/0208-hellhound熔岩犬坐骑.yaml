@@ -2,6 +2,12 @@ id: 208
 model_folder: hellhound熔岩犬坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3）
+  - **获取**：商人出售（穆勒尔）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=169202/%E8%B5%A4%E7%BA%A2%E6%B5%AA%E9%AA%81)
 drop: {}
 official_db:
   name: 赤红浪骁
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 水上坐骑
 star_rating: 三星
 subtype: 海马
+

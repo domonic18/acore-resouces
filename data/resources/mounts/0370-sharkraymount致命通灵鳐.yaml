@@ -2,6 +2,11 @@ id: 370
 model_folder: sharkraymount致命通灵鳐
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：掉落（渗出粘液的通灵鳐之卵）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=184160/%E6%B5%91%E5%9C%86%E9%80%9A%E7%81%B5%E9%B3%90)
 drop: {}
 official_db:
   name: 浑圆通灵鳐
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 鳐
+

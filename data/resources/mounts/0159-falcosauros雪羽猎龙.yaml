@@ -2,6 +2,11 @@ id: 159
 model_folder: falcosauros雪羽猎龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.1，小盗龙养成任务线）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=137580/%E7%BF%A0%E7%BB%BF%E5%88%A9%E7%88%AA%E9%BE%99)
 drop: {}
 official_db:
   name: 翠绿利爪龙
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 猎龙
+

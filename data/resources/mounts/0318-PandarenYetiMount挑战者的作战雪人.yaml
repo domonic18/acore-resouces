@@ -2,6 +2,11 @@ id: 318
 model_folder: PandarenYetiMount挑战者的作战雪人
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.0，冬幕节赠礼）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=128671/%E6%A0%BC%E5%99%9C%E6%99%AE%E6%96%AF%E7%9A%84%E7%88%AA%E7%89%99)
 drop: {}
 official_db:
   name: 格噜普斯的爪牙
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 雪人
+

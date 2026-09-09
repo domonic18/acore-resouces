@@ -2,6 +2,11 @@ id: 23
 model_folder: bloodtickmount跃泽吮血蛛
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2）
+  - **获取**：地图掉落（纳兹米尔）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=163575/%E9%A9%AF%E6%9C%8D%E7%9A%84%E5%90%B8%E8%A1%80%E8%9B%9B%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 跃泽巨蛛
@@ -118,3 +123,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 一星
 subtype: 蜘蛛
+

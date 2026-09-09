@@ -2,6 +2,11 @@ id: 228
 model_folder: Horse2纯心骏马
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=183741/%E6%99%8B%E5%8D%87%E5%A4%A9%E9%AC%83%E9%A9%AC)
 drop: {}
 official_db:
   name: 晋升天鬃马
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 马
+

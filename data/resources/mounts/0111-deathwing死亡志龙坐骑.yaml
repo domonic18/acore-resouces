@@ -2,6 +2,11 @@ id: 111
 model_folder: deathwing死亡志龙坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2.5，15周年纪念）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=172012/%E9%BB%91%E6%9B%9C%E7%9F%B3%E7%81%AD%E4%B8%96%E8%80%85)
 drop: {}
 official_db:
   name: 黑曜石灭世者
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙
+

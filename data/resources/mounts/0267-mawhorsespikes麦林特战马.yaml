@@ -2,6 +2,11 @@ id: 267
 model_folder: mawhorsespikes麦林特战马
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.1）
+  - **获取**：掉落（威·娜莉的神秘礼物，噬渊）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=186657/%E7%81%B5%E9%AD%82%E7%BE%81%E7%BB%8A%E9%98%B4%E9%83%81%E5%86%9B%E9%A9%AC%E7%9A%84%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 灵魂羁绊阴郁军马
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 马
+

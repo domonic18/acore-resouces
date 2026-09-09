@@ -2,6 +2,12 @@ id: 233
 model_folder: hunterkillership锈栓抵抗者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2，麦卡贡）
+  - **获取**：商人出售（失窃的御用贩卖机，需 锈栓抵抗军 崇拜）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=168829/%E9%94%88%E6%A0%93%E6%8A%B5%E6%8A%97%E8%80%85)
 drop: {}
 official_db:
   name: 锈栓抵抗者
@@ -119,3 +125,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 机械
+

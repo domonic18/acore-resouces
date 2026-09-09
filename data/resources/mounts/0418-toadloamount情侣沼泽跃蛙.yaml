@@ -2,6 +2,12 @@ id: 418
 model_folder: toadloamount情侣沼泽跃蛙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：商人出售（戈多姆，纳兹米尔）
+  - **售价**：333,333 金
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=166442/%E9%9D%9B%E8%93%9D%E6%B2%BC%E6%B3%BD%E8%B7%83%E8%9B%99)
 drop: {}
 official_db:
   name: 靛蓝沼泽跃蛙
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 蟾蜍
+

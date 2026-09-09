@@ -2,6 +2,12 @@ id: 265
 model_folder: mawexpansionflier扩张飞龙坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.1）
+  - **获取**：商人出售（档案员罗-遂尔，刻希亚）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=186648/%E7%BF%94%E5%A4%A9%E5%88%80%E7%BF%BC%E5%85%BD)
 drop: {}
 official_db:
   name: 翔天刀翼兽
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 飞龙
+

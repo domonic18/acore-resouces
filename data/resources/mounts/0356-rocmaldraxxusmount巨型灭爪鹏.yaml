@@ -2,6 +2,11 @@ id: 356
 model_folder: rocmaldraxxusmount巨型灭爪鹏
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.x）
+  - **获取**：掉落（吉格）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=182080/%E6%8E%A0%E9%A3%9F%E7%9A%84%E5%87%8B%E9%9B%B6%E5%A4%A7%E9%B9%8F)
 drop: {}
 official_db:
   name: 掠食的凋零大鹏
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 鹏
+

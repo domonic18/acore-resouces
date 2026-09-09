@@ -2,6 +2,11 @@ id: 272
 model_folder: mechagonspidertank麦卡贡维和者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2，麦卡贡）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=168827/%E5%BA%9F%E9%93%81%E6%9C%BA%E7%94%B2%E8%9B%9B)
 drop: {}
 official_db:
   name: 废铁机甲蛛
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

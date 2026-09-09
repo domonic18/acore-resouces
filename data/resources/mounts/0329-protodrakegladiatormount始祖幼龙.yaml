@@ -2,6 +2,11 @@ id: 329
 model_folder: protodrakegladiatormount始祖幼龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：巫妖王之怒（3.1，25人奥杜尔成就）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/wotlk/cn/item=45801/%E9%93%81%E7%AE%8D%E5%A7%8B%E7%A5%96%E5%B9%BC%E9%BE%99%E7%9A%84%E7%BC%B0%E7%BB%B3)
 drop: {}
 official_db:
   name: 铁箍始祖幼龙
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 龙
+

@@ -2,6 +2,11 @@ id: 113
 model_folder: devourersmallmount末日迷沼飞虫
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：掉落（无穷者法穆，雷文德斯）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=180582/%E6%9C%AB%E6%97%A5%E8%BF%B7%E6%B2%BC%E9%A3%9E%E8%99%AB%E7%B3%BB%E9%93%BE)
 drop: {}
 official_db:
   name: 末日迷沼飞虫
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 蜘蛛
+

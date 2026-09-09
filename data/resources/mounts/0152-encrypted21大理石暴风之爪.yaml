@@ -2,6 +2,11 @@ id: 152
 model_folder: encrypted21大理石暴风之爪
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：巨龙时代（10.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=207964/%E5%A4%A7%E7%90%86%E7%9F%B3%E6%9A%B4%E9%A3%8E%E4%B9%8B%E7%88%AA)
 drop: {}
 official_db:
   name: 大理石暴风之爪
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 鹰
+

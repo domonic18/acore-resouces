@@ -2,6 +2,10 @@ id: 417
 model_folder: toadloamount情侣沼泽跃蛙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
 drop: {}
 official_db:
   name: 情侣沼泽跃蛙
@@ -116,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 蟾蜍
+

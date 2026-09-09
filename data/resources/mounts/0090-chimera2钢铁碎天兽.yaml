@@ -2,6 +2,11 @@ id: 90
 model_folder: chimera2钢铁碎天兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.4）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=107951/%E9%92%A2%E9%93%81%E7%A2%8E%E5%A4%A9%E5%85%BD)
 drop: {}
 official_db:
   name: 钢铁碎天兽
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 龙
+

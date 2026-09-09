@@ -2,6 +2,11 @@ id: 140
 model_folder: DRAKEMOUNT邪能幼龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.3，巨龙之魂）
+  - **获取**：掉落（守护巨龙的小型宝箱，巨龙之魂）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=78919/%E5%AE%9E%E9%AA%8C%E4%BD%9312-b)
 drop: {}
 official_db:
   name: 实验体12-B
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙
+

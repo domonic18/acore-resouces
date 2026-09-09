@@ -2,6 +2,11 @@ id: 337
 model_folder: pyrogryph浴火角鹰兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.2，火焰之地）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=69213/%E6%B5%B4%E7%81%AB%E8%A7%92%E9%B9%B0%E5%85%BD)
 drop: {}
 official_db:
   name: 浴火角鹰兽
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 角鹰兽
+

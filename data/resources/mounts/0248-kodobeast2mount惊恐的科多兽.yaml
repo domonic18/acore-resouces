@@ -2,6 +2,11 @@ id: 248
 model_folder: kodobeast2mount惊恐的科多兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.1，黑海岸）
+  - **获取**：掉落（惊恐的科多兽，黑海岸）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=166433/%E6%83%8A%E6%81%90%E7%9A%84%E7%A7%91%E5%A4%9A%E5%85%BD)
 drop: {}
 official_db:
   name: 惊恐的科多兽
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 一星
 subtype: 科多
+

@@ -2,6 +2,10 @@ id: 457
 model_folder: whaleshark鲸鲨坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
 drop: {}
 official_db:
   name: 翡翠鲸鲨
@@ -112,3 +116,4 @@ db:
     VerifiedBuild: 12340
 resource_type: mount
 mount_type: 水上坐骑
+

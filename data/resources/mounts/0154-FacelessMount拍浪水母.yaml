@@ -2,6 +2,11 @@ id: 154
 model_folder: FacelessMount拍浪水母
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2，纳沙塔尔）
+  - **获取**：掉落（海岛探险）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=163585/%E6%8B%8D%E6%B5%AA%E6%B0%B4%E6%AF%8D)
 drop: {}
 official_db:
   name: 拍浪水母
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 水上坐骑
 star_rating: 二星
 subtype: 水母
+

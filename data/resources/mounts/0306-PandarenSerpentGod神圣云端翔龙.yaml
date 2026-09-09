@@ -2,6 +2,12 @@ id: 306
 model_folder: PandarenSerpentGod神圣云端翔龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.x）
+  - **获取**：商人出售（织雾者夏儿，永恒岛）
+  - **售价**：5,000 金
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=87775/%E7%8E%89%E8%95%BE-%E9%9D%92%E9%BE%99%E4%B9%8B%E5%A5%B3)
 drop: {}
 official_db:
   name: 玉蕾，青龙之女
@@ -117,3 +123,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 翔龙
+

@@ -2,6 +2,11 @@ id: 244
 model_folder: infernalmount炎狱地狱火
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=152413/%E9%82%AA%E7%84%B0%E5%9C%B0%E7%8B%B1%E7%81%AB%E8%82%A9%E5%9E%AB)
 drop: {}
 official_db:
   name: 邪焰地狱火
@@ -116,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

@@ -2,6 +2,12 @@ id: 444
 model_folder: viciouswarram勇猛战羊
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（PvP 邪恶鞍具）
+  - **获取**：商人出售（通灵领主赛普，暴风城）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116777/%E5%8B%87%E7%8C%9B%E6%88%98%E7%BE%8A)
 drop: {}
 official_db:
   name: 勇猛战羊
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 羊
+

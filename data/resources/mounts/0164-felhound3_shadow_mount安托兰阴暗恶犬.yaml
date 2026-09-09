@@ -2,6 +2,11 @@ id: 164
 model_folder: felhound3_shadow_mount安托兰阴暗恶犬
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.3，阿古斯）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=152815/%E5%AE%89%E6%89%98%E5%85%B0%E9%98%B4%E6%9A%97%E6%81%B6%E7%8A%AC)
 drop: {}
 official_db:
   name: 安托兰阴暗恶犬
@@ -117,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 怪物
+

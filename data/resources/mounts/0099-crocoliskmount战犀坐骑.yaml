@@ -2,6 +2,11 @@ id: 99
 model_folder: crocoliskmount战犀坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.0，海岛探险）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=166724/%E5%B8%83%E9%B2%81%E6%96%AF)
 drop: {}
 official_db:
   name: 布鲁斯
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 鳄鱼
+

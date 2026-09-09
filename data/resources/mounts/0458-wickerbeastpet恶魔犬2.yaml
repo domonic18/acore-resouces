@@ -2,6 +2,11 @@ id: 458
 model_folder: wickerbeastpet恶魔犬2
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 法术页](https://www.wowhead.com/cn/spell=279213)
 drop: {}
 official_db:
   name: 柳魔幼兽
@@ -112,3 +117,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 怪物
+

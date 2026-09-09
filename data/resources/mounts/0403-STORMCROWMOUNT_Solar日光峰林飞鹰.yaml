@@ -2,6 +2,11 @@ id: 403
 model_folder: STORMCROWMOUNT_Solar日光峰林飞鹰
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.0，世界首领鲁克玛）
+  - **获取**：掉落（鲁克玛）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116771/%E6%97%A5%E5%85%89%E5%B3%B0%E6%9E%97%E9%A3%9E%E9%B9%B0)
 drop: {}
 official_db:
   name: 日光峰林飞鹰
@@ -114,3 +119,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 凤凰
+
