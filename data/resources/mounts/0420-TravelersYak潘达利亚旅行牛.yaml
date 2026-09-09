@@ -2,6 +2,8 @@ id: 420
 model_folder: TravelersYak潘达利亚旅行牛
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（原版即多人坐骑（MoP 雄壮远足牦牛，三人+商贩），挂点位置可信）
 drop:
   entry: 15690
   instance: 卡拉赞

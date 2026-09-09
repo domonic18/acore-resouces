@@ -7,6 +7,7 @@ notes: |-
   - **版本**：争霸艾泽拉斯（8.2，麦卡贡）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=168329/%E6%9C%BA%E8%BD%AE%E8%BD%A6w%E5%9E%8B%E7%9A%84%E9%92%A5%E5%8C%99)
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 机轮车W型

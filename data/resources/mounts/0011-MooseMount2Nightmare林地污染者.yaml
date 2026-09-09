@@ -2,6 +2,8 @@ id: 11
 model_folder: MooseMount2Nightmare林地污染者
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 639
   instance: 死亡矿井

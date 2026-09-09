@@ -7,6 +7,7 @@ notes: |-
   - **版本**：熊猫人之谜（5.0）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=94228/%E5%86%B0%E8%93%9D%E5%8E%9F%E5%A7%8B%E6%81%90%E8%A7%92%E9%BE%99%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 冰蓝原始恐角龙

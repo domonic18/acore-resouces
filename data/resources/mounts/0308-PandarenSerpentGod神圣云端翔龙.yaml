@@ -2,6 +2,8 @@ id: 308
 model_folder: PandarenSerpentGod神圣云端翔龙
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 25038
   instance: 太阳之井高地

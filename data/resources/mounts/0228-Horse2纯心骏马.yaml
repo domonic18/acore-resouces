@@ -7,6 +7,7 @@ notes: |-
   - **版本**：暗影国度（9.x）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=183741/%E6%99%8B%E5%8D%87%E5%A4%A9%E9%AC%83%E9%A9%AC)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 晋升天鬃马

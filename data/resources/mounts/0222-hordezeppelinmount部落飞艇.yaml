@@ -7,6 +7,7 @@ notes: |-
   - **版本**：军团再临（7.3.5，BlizzCon 2018 赠品）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=151617/%E5%A5%A5%E6%A0%BC%E7%91%9E%E7%8E%9B%E6%8B%A6%E6%88%AA%E9%A3%9E%E8%89%87)
+  - **多人骑乘挂点**：15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 奥格瑞玛拦截飞艇

@@ -8,6 +8,7 @@ notes: |-
   - **获取**：待查
   - **特殊功能**：骑乘时可以采集草药
   - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=95416/%E9%A3%9E%E5%A4%A9%E9%AD%94%E5%83%8F)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 飞天魔像

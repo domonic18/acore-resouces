@@ -2,6 +2,8 @@ id: 7
 model_folder: FoxMount洛希恩徘徊者
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 9568
   instance: 黑石塔下

@@ -7,6 +7,7 @@ notes: |-
   - **版本**：德拉诺之王（6.x）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=127140/%E5%9C%B0%E7%81%AB%E6%81%90%E7%8B%BC)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 地火恐狼

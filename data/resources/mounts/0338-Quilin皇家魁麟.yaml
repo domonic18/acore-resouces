@@ -2,6 +2,8 @@ id: 338
 model_folder: Quilin皇家魁麟
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 20657
   instance: 暗影迷宫(英雄模式)

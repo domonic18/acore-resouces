@@ -7,6 +7,7 @@ notes: |-
   - **版本**：军团再临（7.1，小盗龙养成任务线）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=137578/%E9%9B%AA%E7%BE%BD%E7%8C%8E%E9%BE%99)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 雪羽猎龙

@@ -8,6 +8,7 @@ notes: |-
   - **获取**：商人出售（纳塔哈卡塔，需 赞达拉帝国 崇拜）
   - **售价**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=161664/%E5%B9%BD%E7%81%B5%E9%A3%9E%E7%BF%BC%E9%BE%99%E7%9A%84%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 幽灵飞翼龙

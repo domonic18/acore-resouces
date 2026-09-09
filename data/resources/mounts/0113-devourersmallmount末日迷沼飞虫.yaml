@@ -7,6 +7,7 @@ notes: |-
   - **版本**：暗影国度（9.0）
   - **获取**：掉落（无穷者法穆，雷文德斯）
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=180582/%E6%9C%AB%E6%97%A5%E8%BF%B7%E6%B2%BC%E9%A3%9E%E8%99%AB%E7%B3%BB%E9%93%BE)
+  - **多人骑乘挂点**：1/2/15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 末日迷沼飞虫

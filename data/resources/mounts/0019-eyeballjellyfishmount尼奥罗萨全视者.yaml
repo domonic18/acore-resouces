@@ -2,6 +2,8 @@ id: 19
 model_folder: eyeballjellyfishmount尼奥罗萨全视者
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 15727
   instance: 安琪拉神殿

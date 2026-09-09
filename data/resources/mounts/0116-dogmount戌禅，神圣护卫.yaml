@@ -7,6 +7,7 @@ notes: |-
   - **版本**：争霸艾泽拉斯（8.x）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=156564/%E6%88%8C%E7%A6%85-%E7%A5%9E%E5%9C%A3%E6%8A%A4%E5%8D%AB)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 戌禅，神圣护卫

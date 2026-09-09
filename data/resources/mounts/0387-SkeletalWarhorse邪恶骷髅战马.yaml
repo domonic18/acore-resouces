@@ -7,6 +7,7 @@ notes: |-
   - **版本**：待查
   - **获取**：商人出售（奥格瑞玛）
   - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=102533/%E9%82%AA%E6%81%B6%E9%AA%B7%E9%AB%85%E6%88%98%E9%A9%AC%E7%9A%84%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 邪恶骷髅战马

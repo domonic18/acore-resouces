@@ -2,6 +2,8 @@ id: 300
 model_folder: PandarenKiteMount熊猫人风筝
 debug_passed: false
 added: true
+notes: |-
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 熊猫人风筝

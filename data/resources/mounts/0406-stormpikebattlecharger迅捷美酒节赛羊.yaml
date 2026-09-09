@@ -7,6 +7,7 @@ notes: |-
   - **版本**：燃烧远征（2.2，美酒节）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/wotlk/cn/item=33977/%E8%BF%85%E6%8D%B7%E7%BE%8E%E9%85%92%E8%8A%82%E8%B5%9B%E7%BE%8A)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 迅捷美酒节赛羊

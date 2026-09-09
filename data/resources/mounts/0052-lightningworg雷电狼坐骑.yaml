@@ -2,6 +2,8 @@ id: 52
 model_folder: lightningworg雷电狼坐骑
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 9019
   instance: 黑石深渊

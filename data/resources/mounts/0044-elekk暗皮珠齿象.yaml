@@ -2,6 +2,8 @@ id: 44
 model_folder: elekk暗皮珠齿象
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/3/4/5/9/10/13/14/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 10184
   instance: 奥妮克希亚的巢穴

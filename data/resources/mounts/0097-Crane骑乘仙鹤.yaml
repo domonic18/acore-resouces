@@ -7,6 +7,7 @@ notes: |-
   - **版本**：熊猫人之谜（5.0）
   - **获取**：商人出售（锦绣谷）
   - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=87782/%E9%87%91%E9%BB%84%E9%AA%91%E4%B9%98%E4%BB%99%E9%B9%A4%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 金黄骑乘仙鹤

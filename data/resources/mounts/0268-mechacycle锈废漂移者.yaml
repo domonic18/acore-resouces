@@ -2,6 +2,8 @@ id: 268
 model_folder: mechacycle锈废漂移者
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 18728
   instance: 地狱火半岛

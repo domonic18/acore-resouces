@@ -7,6 +7,7 @@ notes: |-
   - **版本**：巨龙时代（10.x）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=207964/%E5%A4%A7%E7%90%86%E7%9F%B3%E6%9A%B4%E9%A3%8E%E4%B9%8B%E7%88%AA)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 大理石暴风之爪

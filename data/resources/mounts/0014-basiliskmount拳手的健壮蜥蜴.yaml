@@ -2,6 +2,8 @@ id: 14
 model_folder: basiliskmount拳手的健壮蜥蜴
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 7273
   instance: 祖尔法拉克

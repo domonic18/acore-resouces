@@ -2,6 +2,8 @@ id: 344
 model_folder: RatMount骑乘巨鼠
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 4842
   instance: 剃刀沼泽

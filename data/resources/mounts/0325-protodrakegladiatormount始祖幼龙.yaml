@@ -7,6 +7,7 @@ notes: |-
   - **版本**：巫妖王之怒（3.0，五人本成就）
   - **获取**：待查
   - [Wowhead 物品页](https://www.wowhead.com/wotlk/cn/item=44160/%E7%BA%A2%E8%89%B2%E5%A7%8B%E7%A5%96%E5%B9%BC%E9%BE%99%E7%9A%84%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 红色始祖幼龙
