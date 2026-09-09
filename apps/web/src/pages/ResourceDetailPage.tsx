@@ -11,6 +11,7 @@ import { BasicInfoSection } from "@/features/resources/components/resource-detai
 import { ItemInfoSection } from "@/features/resources/components/resource-detail/ItemInfoSection";
 import { SpellInfoSection } from "@/features/resources/components/resource-detail/SpellInfoSection";
 import { DropSection } from "@/features/resources/components/resource-detail/DropSection";
+import { NotesSection } from "@/features/resources/components/resource-detail/NotesSection";
 import { RawDataSection } from "@/features/resources/components/resource-detail/RawDataSection";
 import { RelationshipCheckSection } from "@/features/resources/components/resource-detail/RelationshipCheckSection";
 import { CreatureDisplayInfoSection } from "@/features/resources/components/resource-detail/CreatureDisplayInfoSection";
@@ -29,6 +30,7 @@ const DETAIL_NAV_ITEMS = [
   { id: "section-item", label: "物品信息" },
   { id: "section-spell", label: "技能信息" },
   { id: "section-drop", label: "掉落信息" },
+  { id: "section-notes", label: "备注" },
   { id: "section-relationships", label: "关联校验" },
   { id: "section-rawdata", label: "明细数据" },
 ];
@@ -337,6 +339,14 @@ export function ResourceDetailPage() {
 
           <div id="section-drop" className="scroll-mt-20">
             <DropSection
+              form={formState.form}
+              updateField={formState.updateField}
+              compact
+            />
+          </div>
+
+          <div id="section-notes" className="scroll-mt-20">
+            <NotesSection
               form={formState.form}
               updateField={formState.updateField}
               compact

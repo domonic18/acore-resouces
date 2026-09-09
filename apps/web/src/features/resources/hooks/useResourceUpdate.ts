@@ -60,6 +60,7 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
     if (form.subtype !== baseline.subtype)
       update.subtype = form.subtype || null;
     if (form.rarity !== baseline.rarity) update.rarity = form.rarity || null;
+    if (form.notes !== baseline.notes) update.notes = form.notes || null;
     if (
       form.debug_passed !== baseline.debug_passed ||
       form.added !== baseline.added

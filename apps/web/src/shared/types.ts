@@ -36,6 +36,7 @@ export interface Resource {
   added: boolean;
   created_at: string | null;
   updated_at: string | null;
+  notes?: string | null;
   drop: DropInfo;
   official_db: OfficialDbInfo;
   dbc: DbcInfo;
@@ -54,6 +55,7 @@ export interface ResourceUpdate {
   spell_icon_name?: string | null;
   spell_wowhead_url?: string | null;
   item_wowhead_url?: string | null;
+  notes?: string | null;
   mount_type?: string | null;
   star_rating?: string | null;
   subtype?: string | null;

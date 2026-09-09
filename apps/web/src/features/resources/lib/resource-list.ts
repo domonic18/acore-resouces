@@ -419,6 +419,7 @@ export function matchesResourceSearch(
   if ((resource.name ?? "").toLowerCase().includes(search)) return true;
   if ((resource.official_db.name ?? "").toLowerCase().includes(search))
     return true;
+  if ((resource.notes ?? "").toLowerCase().includes(search)) return true;
   if (String(resource.id).includes(search)) return true;
   const modelName = resource.dbc.creature_model_data?.model_name;
   if (typeof modelName === "string" && modelName.toLowerCase().includes(search))
