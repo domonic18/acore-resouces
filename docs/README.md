@@ -21,7 +21,14 @@ docs/
 ├── references/                     # 参考资料
 │   └── 06资源DBC与SQL实现参考.md
 ├── workflows/                      # 操作流程手册
-│   └── mount-patch-runbook.md
+│   ├── 01坐骑补丁端到端流程手册.md
+│   ├── 02多人骑乘坐骑制作流程.md
+│   ├── 03水面行走坐骑制作流程.md
+│   ├── 04水下骑乘坐骑制作流程.md
+│   ├── 05骑乘采集坐骑制作流程.md
+│   ├── 06变色涂装坐骑制作流程.md
+│   ├── 07自带拍卖行坐骑制作流程.md
+│   └── 08自带商人修理坐骑制作流程.md
 └── README.md                       # 本文件
 ```
 
@@ -37,7 +44,9 @@ docs/
 | 测试分层、fixtures、CI 流程 | [`arch/05测试策略.md`](./arch/05测试策略.md) |
 | DBC 维护职责划分、补丁生成与部署同步 | [`arch/07DBC维护与同步方案.md`](./arch/07DBC维护与同步方案.md) |
 | 坐骑/宠物/NPC 所需的 DBC 文件、字段与 SQL 实现清单 | [`references/06资源DBC与SQL实现参考.md`](./references/06资源DBC与SQL实现参考.md) |
-| 从编辑坐骑到发布 MPQ 的端到端操作手册 | [`workflows/mount-patch-runbook.md`](./workflows/mount-patch-runbook.md) |
+| 从编辑坐骑到发布 MPQ 的端到端操作手册 | [`workflows/01坐骑补丁端到端流程手册.md`](./workflows/01坐骑补丁端到端流程手册.md) |
+| 双人/三人乘客坐骑制作 | [`workflows/02多人骑乘坐骑制作流程.md`](./workflows/02多人骑乘坐骑制作流程.md) |
+| 特殊功能坐骑制作（水面行走/水下骑乘/骑乘采集/变色涂装/拍卖行/商人修理） | [`workflows/`](./workflows) 03–08 各篇 |
 | 开发阶段划分与验收标准 | [`plan/开发计划.md`](./plan/开发计划.md) |
 
 ## 相关项目
