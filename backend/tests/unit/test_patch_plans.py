@@ -402,6 +402,295 @@ def test_build_dbc_plan_swim_speed_override() -> None:
     assert fields["EffectBasePoints_2"] == 119
 
 
+# ---------------------------------------------------------------------------
+# 特性第三效果：水面行走 / 水下骑乘（工作流 03/04）
+# ---------------------------------------------------------------------------
+
+
+def test_build_dbc_plan_water_walk_ground_mount() -> None:
+    """水面行走陆地坐骑：槽 3 追加 WATER_WALK(104)，槽 1/2 模板不变。"""
+    mount = Mount(
+        id=9,
+        model_folder="water_walk_test",
+        official_db={"name": "踏水测试"},
+        dbc={
+            "creature_model_data": {"id": 4005, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140005, "model_id": 4005},
+            "spell": {"id": 80005, "name": "踏水测试"},
+            "item": {"id": 91005, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140009}},
+        mount_type="陆地坐骑",
+        special_features=["水面行走"],
+    )
+    fields = (
+        next(p for p in build_dbc_plan(mount).plans if p.dbc_file == "Spell.dbc")
+        .operations[0]
+        .fields
+    )
+    assert fields["EffectAura_1"] == 78
+    assert fields["EffectAura_2"] == 32
+    assert fields["EffectBasePoints_2"] == 99
+    assert fields["Effect_3"] == 6
+    assert fields["ImplicitTargetA_3"] == 1
+    assert fields["EffectAura_3"] == 104
+    assert fields["EffectBasePoints_3"] == -1
+
+
+def test_build_dbc_plan_underwater_ground_mount_overrides_swim_speed() -> None:
+    """水下骑乘陆地坐骑 swim_speed=100：槽 3 追加游泳光环且覆盖为 99。"""
+    mount = Mount(
+        id=10,
+        model_folder="underwater_test",
+        official_db={"name": "潜游测试"},
+        dbc={
+            "creature_model_data": {"id": 4006, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140006, "model_id": 4006},
+            "spell": {"id": 80006, "name": "潜游测试", "swim_speed": 100},
+            "item": {"id": 91006, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140010}},
+        mount_type="陆地坐骑",
+        special_features=["水下骑乘"],
+    )
+    fields = (
+        next(p for p in build_dbc_plan(mount).plans if p.dbc_file == "Spell.dbc")
+        .operations[0]
+        .fields
+    )
+    assert fields["Effect_3"] == 6
+    assert fields["EffectAura_3"] == 58
+    assert fields["EffectBasePoints_3"] == 99
+
+
+def test_build_dbc_plan_underwater_ground_mount_default_swim_speed() -> None:
+    """水下骑乘陆地坐骑未配 swim_speed：槽 3 默认 +60%（BasePoints 59）。"""
+    mount = Mount(
+        id=11,
+        model_folder="underwater_default_test",
+        official_db={"name": "潜游默认测试"},
+        dbc={
+            "creature_model_data": {"id": 4007, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140007, "model_id": 4007},
+            "spell": {"id": 80007, "name": "潜游默认测试"},
+            "item": {"id": 91007, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140011}},
+        mount_type="陆地坐骑",
+        special_features=["水下骑乘"],
+    )
+    fields = (
+        next(p for p in build_dbc_plan(mount).plans if p.dbc_file == "Spell.dbc")
+        .operations[0]
+        .fields
+    )
+    assert fields["EffectAura_3"] == 58
+    assert fields["EffectBasePoints_3"] == 59
+
+
+def test_build_dbc_plan_underwater_water_mount_no_slot3_append() -> None:
+    """水下骑乘水上坐骑：模板槽 2 已带游泳光环，不追加槽 3，覆盖写槽 2。"""
+    mount = Mount(
+        id=12,
+        model_folder="underwater_water_test",
+        official_db={"name": "水上潜游测试"},
+        dbc={
+            "creature_model_data": {"id": 4008, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140008, "model_id": 4008},
+            "spell": {"id": 80008, "name": "水上潜游测试", "swim_speed": 60},
+            "item": {"id": 91008, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140012}},
+        mount_type="水上坐骑",
+        special_features=["水下骑乘"],
+    )
+    fields = (
+        next(p for p in build_dbc_plan(mount).plans if p.dbc_file == "Spell.dbc")
+        .operations[0]
+        .fields
+    )
+    assert fields["EffectAura_2"] == 58
+    assert fields["EffectBasePoints_2"] == 59
+    assert "Effect_3" not in fields
+    assert fields["EffectBasePoints_3"] == -1
+
+
+def test_build_dbc_plan_dual_feature_slot3_conflict_raises() -> None:
+    """地面坐骑同时标注水面行走与水下骑乘：第三效果槽位冲突报错。"""
+    mount = Mount(
+        id=13,
+        model_folder="dual_feature_test",
+        official_db={"name": "双特性测试"},
+        dbc={
+            "creature_model_data": {"id": 4009, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140009, "model_id": 4009},
+            "spell": {"id": 80009, "name": "双特性测试"},
+            "item": {"id": 91009, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140013}},
+        mount_type="陆地坐骑",
+        special_features=["水面行走", "水下骑乘"],
+    )
+    with pytest.raises(ValueError, match="第三效果槽位冲突"):
+        build_dbc_plan(mount)
+
+
+def test_build_dbc_plan_water_mount_untagged_regression() -> None:
+    """无特性标签回归：水上坐骑模板不注入 Effect_3=6。"""
+    mount = Mount(
+        id=14,
+        model_folder="untagged_water_test",
+        official_db={"name": "无标签水上测试"},
+        dbc={
+            "creature_model_data": {"id": 4010, "model_name": "test.m2"},
+            "creature_display_info": {"id": 140010, "model_id": 4010},
+            "spell": {"id": 80010, "name": "无标签水上测试"},
+            "item": {"id": 91010, "class": 15, "subclass": 5},
+        },
+        db={"creature_template": {"entry": 9140014}},
+        mount_type="水上坐骑",
+    )
+    fields = (
+        next(p for p in build_dbc_plan(mount).plans if p.dbc_file == "Spell.dbc")
+        .operations[0]
+        .fields
+    )
+    assert fields.get("Effect_3") != 6
+    assert fields["EffectAura_2"] == 58
+    assert fields.get("EffectAura_3") != 104
+
+
+def _patch_spell_record(
+    monkeypatch: pytest.MonkeyPatch,
+    spell_id: int,
+    record: dict[str, Any] | None,
+    extra: dict[tuple[str, int], dict[str, Any]] | None = None,
+) -> None:
+    """把 mount_patch_builder 的 DBC 记录查询指向给定桩记录（其余返回 None）。"""
+    stubs: dict[tuple[str, int], dict[str, Any]] = {("Spell.dbc", spell_id): record}
+    stubs.update(extra or {})
+
+    def _fake(dbc_path: Path, record_id: int | None) -> dict[str, Any] | None:
+        return stubs.get((dbc_path.name, record_id or 0))
+
+    monkeypatch.setattr(mpb, "_record_by_id", _fake)
+
+
+@_requires_dbc_source
+def test_validate_job_feature_effects_pass(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """标签与构建后法术记录一致时，水面/水下校验通过（双标签走水上模板）。"""
+    sample_mount.mount_type = "水上坐骑"
+    sample_mount.special_features = ["水面行走", "水下骑乘"]
+    sample_mount.dbc.spell.swim_speed = 100
+    _patch_spell_record(
+        monkeypatch,
+        80000,
+        {
+            "EffectAura_2": 58,
+            "EffectBasePoints_2": 99,
+            "Effect_3": 6,
+            "EffectAura_3": 104,
+            "EffectBasePoints_3": -1,
+        },
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["spell_water_walk_effect_matches_special_features"].passed is True
+    assert by_name["spell_swim_effect_matches_special_features"].passed is True
+
+
+@_requires_dbc_source
+def test_validate_job_feature_effects_tagged_missing_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """标签存在但构建后法术记录缺对应光环：error 级失败（双标签走水上模板）。"""
+    sample_mount.mount_type = "水上坐骑"
+    sample_mount.special_features = ["水面行走", "水下骑乘"]
+    _patch_spell_record(monkeypatch, 80000, {"Effect_3": 6, "EffectAura_3": 32})
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["spell_water_walk_effect_matches_special_features"].passed is False
+    assert by_name["spell_water_walk_effect_matches_special_features"].severity == "error"
+    assert by_name["spell_swim_effect_matches_special_features"].passed is False
+    assert by_name["spell_swim_effect_matches_special_features"].severity == "error"
+
+
+@_requires_dbc_source
+def test_validate_job_feature_effects_swim_base_points_mismatch_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """游泳光环存在但 EffectBasePoints 与 swim_speed 不符：校验失败。"""
+    sample_mount.special_features = ["水下骑乘"]
+    sample_mount.dbc.spell.swim_speed = 100
+    _patch_spell_record(
+        monkeypatch,
+        80000,
+        {"Effect_3": 6, "EffectAura_3": 58, "EffectBasePoints_3": 59},
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["spell_swim_effect_matches_special_features"].passed is False
+
+
+@_requires_dbc_source
+def test_validate_job_feature_effects_untagged_present_warns(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """未标注却出现对应光环：降级 warning，不阻断整体通过。"""
+    _patch_spell_record(
+        monkeypatch,
+        80000,
+        {
+            "EffectAura_2": 58,
+            "EffectBasePoints_2": 59,
+            "Effect_3": 6,
+            "EffectAura_3": 104,
+            "EffectBasePoints_3": -1,
+        },
+        extra={
+            ("CreatureModelData.dbc", 4000): {
+                "ModelName": r"creature\ardenwealdstag\ardenwealdstagmount.m2",
+            },
+            ("CreatureDisplayInfo.dbc", 140000): {"ModelID": 4000},
+        },
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [Path("creature/ardenwealdstag/ardenwealdstagmount.m2")])
+    by_name = {c.name: c for c in result.checks}
+    ww = by_name["spell_water_walk_effect_matches_special_features"]
+    sw = by_name["spell_swim_effect_matches_special_features"]
+    assert ww.passed is False
+    assert ww.severity == "warning"
+    assert sw.passed is False
+    assert sw.severity == "warning"
+    assert result.passed is True
+
+
 def test_build_sql_plan_structure(sample_mount: Mount) -> None:
     """验证 sql-plan 结构。"""
     plan = build_sql_plan(sample_mount)

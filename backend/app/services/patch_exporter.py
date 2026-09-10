@@ -125,6 +125,22 @@ SPELL_SPEED_AURA_FIELDS: dict[str, int] = {
     "swim_speed": 58,  # SPELL_AURA_MOD_INCREASE_SWIM_SPEED 游泳速度
 }
 
+# 特性第三效果组（工作流 03/04）：special_features 触发，追加到模板效果槽位 3。
+# 水面行走取官方 546 实测写法，光环无数值故 BasePoints 恒 -1，DieSides 等保持 0；
+# 水下骑乘默认 +60%，swim_speed 覆盖机制随后按光环定位写入实际值。
+WATER_WALK_EFFECT_FIELDS: dict[str, Any] = {
+    "Effect_3": 6,
+    "ImplicitTargetA_3": 1,
+    "EffectAura_3": 104,  # SPELL_AURA_WATER_WALK
+    "EffectBasePoints_3": -1,
+}
+SWIM_SPEED_EFFECT_FIELDS: dict[str, Any] = {
+    "Effect_3": 6,
+    "ImplicitTargetA_3": 1,
+    "EffectAura_3": 58,  # SPELL_AURA_MOD_INCREASE_SWIM_SPEED
+    "EffectBasePoints_3": 59,
+}
+
 # 多人骑乘：自建 Vehicle.dbc 记录的字段默认值取官方 312（三人货车）实测；
 # 未列出的字段由 wow_dbc_tool.add 补零；SeatID_1..N 由 seat_ids 逐个填入。
 CUSTOM_VEHICLE_FIELD_DEFAULTS: dict[str, Any] = {
@@ -278,6 +294,19 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
     spell = resource.dbc.spell.model_dump(exclude_none=True)
     ct_entry = resource.db.creature_template.entry
     if spell and spell.get("id") and ct_entry:
+        # 特性第三效果组注入（水面行走/水下骑乘）。水上模板槽 2 已带游泳光环时
+        # 无需追加（swim_speed 覆盖写槽 2）；地面双标签会争抢槽 3，显式报错。
+        features = resource.special_features
+        has_swim_aura = 58 in (
+            spell_template.get("EffectAura_2"),
+            spell_template.get("EffectAura_3"),
+        )
+        if "水面行走" in features and "水下骑乘" in features and not has_swim_aura:
+            raise ValueError(f"坐骑 {resource.id} 同时标注水面行走与水下骑乘，第三效果槽位冲突")
+        if "水面行走" in features:
+            spell_template.update(WATER_WALK_EFFECT_FIELDS)
+        if "水下骑乘" in features and not has_swim_aura:
+            spell_template.update(SWIM_SPEED_EFFECT_FIELDS)
         aura_desc_text, aura_desc_mask = SPELL_AURA_DESCRIPTIONS.get(
             mount_type, SPELL_AURA_DESCRIPTIONS["陆地坐骑"]
         )
