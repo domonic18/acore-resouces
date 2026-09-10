@@ -1,5 +1,9 @@
 import { apiGetJson } from "@/shared/api";
-import type { DbcFilesPage, DbcRecordDetail, DbcRecordsPage } from "@/shared/types";
+import type {
+  DbcFilesPage,
+  DbcRecordDetail,
+  DbcRecordsPage,
+} from "@/shared/types";
 
 export interface DbcRecordQuery {
   page?: number;
@@ -36,5 +40,20 @@ export function fetchDbcRecord(
 ): Promise<DbcRecordDetail> {
   return apiGetJson<DbcRecordDetail>(
     `/api/dbc/${encodeURIComponent(file)}/records/${recordId}`,
+  );
+}
+
+export interface NextFreeIdResult {
+  file: string;
+  start: number;
+  next_free_id: number;
+}
+
+export function fetchNextFreeId(
+  file: string,
+  start = 90000,
+): Promise<NextFreeIdResult> {
+  return apiGetJson<NextFreeIdResult>(
+    `/api/dbc/${encodeURIComponent(file)}/next-free-id?start=${start}`,
   );
 }

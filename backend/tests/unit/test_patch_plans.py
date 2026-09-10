@@ -8,14 +8,18 @@ from typing import Any
 
 import pytest
 import yaml
+from pydantic import ValidationError
 
 from app.schemas.resource import DropInfo, Mount
+from app.schemas.vehicle import VehicleAccessory, VehicleConfig
+from app.services import dbc_query
 from app.services import mount_patch_builder as mpb
 from app.services.patch_exporter import build_assets_json, build_dbc_plan, build_sql_plan
 
 _real_cmd = mpb.WOW_DBC_DIR / "CreatureModelData.dbc"
+_real_vehicle = mpb.WOW_DBC_DIR / "Vehicle.dbc"
 _requires_dbc_source = pytest.mark.skipif(
-    not _real_cmd.exists(),
+    not (_real_cmd.exists() and _real_vehicle.exists()),
     reason="缺少本地 wow-dbc DBC 源文件",
 )
 
@@ -1007,3 +1011,269 @@ def test_validate_job_checks_creature_template_model_link(
     )
     assert check.passed is True
     assert check.expected == {"CreatureID": 9140000, "CreatureDisplayID": 140000}
+
+
+# ---------------------------------------------------------------------------
+# 多人骑乘：vehicle 配置块 → DBC/SQL 计划与校验
+# ---------------------------------------------------------------------------
+
+
+def _make_vehicle_mount(sample_mount: Mount, **vehicle_kwargs: Any) -> Mount:
+    """给样本坐骑挂载 vehicle 配置（默认双人自建载具）。"""
+    sample_mount.vehicle = VehicleConfig(**vehicle_kwargs)
+    return sample_mount
+
+
+def test_vehicle_config_requires_seat_ids_for_custom_id() -> None:
+    """自建 Vehicle.dbc 记录必须声明乘客座位。"""
+    with pytest.raises(ValidationError, match="seat_ids"):
+        VehicleConfig(vehicle_id=90000)
+    with pytest.raises(ValidationError, match="seat_ids"):
+        VehicleConfig(vehicle_id=90000, seat_ids=list(range(9)))
+    # 复用官方多座载具时 seat_ids 可省略
+    config = VehicleConfig(vehicle_id=312)
+    assert config.seat_ids == []
+    # accessory seat_id 超界
+    with pytest.raises(ValidationError):
+        VehicleAccessory(accessory_entry=30000, seat_id=8)
+
+
+def test_build_dbc_plan_custom_vehicle(sample_mount: Mount) -> None:
+    """双人自建：生成 Vehicle.dbc add 计划，SeatID 槽位从 1 起枚举。"""
+    mount = _make_vehicle_mount(sample_mount, vehicle_id=90000, seat_ids=[2764])
+    plan = build_dbc_plan(mount)
+
+    vehicle_files = [p for p in plan.plans if p.dbc_file == "Vehicle.dbc"]
+    assert len(vehicle_files) == 1
+    op = vehicle_files[0].operations[0]
+    assert op.action == "add"
+    assert op.record_id == 90000
+    assert op.fields["ID"] == 90000
+    assert op.fields["SeatID_1"] == 2764
+    assert "SeatID_2" not in op.fields
+    assert op.fields["Flags"] == 1073741824
+    assert op.fields["VehicleUIIndicatorID"] == 225
+
+
+def test_build_dbc_plan_official_vehicle_no_dbc_change(sample_mount: Mount) -> None:
+    """三人复用官方 312：零 DBC 改动。"""
+    mount = _make_vehicle_mount(sample_mount, vehicle_id=312)
+    plan = build_dbc_plan(mount)
+    assert all(p.dbc_file != "Vehicle.dbc" for p in plan.plans)
+
+
+def test_build_dbc_plan_no_vehicle_regression(sample_mount: Mount) -> None:
+    """无 vehicle 配置时不生成 Vehicle.dbc 计划（回归）。"""
+    plan = build_dbc_plan(sample_mount)
+    assert all(p.dbc_file != "Vehicle.dbc" for p in plan.plans)
+    sql_plan = build_sql_plan(sample_mount)
+    table_names = [t.name for t in sql_plan.tables]
+    assert "npc_spellclick_spells" not in table_names
+    assert "vehicle_template_accessory" not in table_names
+
+
+def test_build_sql_plan_vehicle_tables(sample_mount: Mount) -> None:
+    """vehicle 配置生成三表内容：VehicleId 注入 + spellclick + accessory，顺序正确。"""
+    mount = _make_vehicle_mount(
+        sample_mount,
+        vehicle_id=90000,
+        seat_ids=[2764],
+        accessories=[
+            VehicleAccessory(accessory_entry=30001, seat_id=0),
+            VehicleAccessory(accessory_entry=30002, seat_id=1, minion=1),
+        ],
+    )
+    sql_plan = build_sql_plan(mount)
+    tables = {t.name: t for t in sql_plan.tables}
+
+    ct_record = tables["creature_template"].records[0]
+    assert ct_record["VehicleId"] == 90000
+
+    sc_record = tables["npc_spellclick_spells"].records[0]
+    assert sc_record == {
+        "npc_entry": 9140000,
+        "spell_id": 46598,
+        "cast_flags": 1,
+        "user_type": 0,
+    }
+
+    acc_records = tables["vehicle_template_accessory"].records
+    assert len(acc_records) == 2
+    assert acc_records[0]["entry"] == 9140000
+    assert acc_records[0]["accessory_entry"] == 30001
+    assert acc_records[0]["seat_id"] == 0
+    assert acc_records[0]["summontype"] == 6
+    assert acc_records[1]["minion"] == 1
+
+    # 服务端先加载 npc_spellclick_spells 再加载 vehicle_template_accessory
+    names = [t.name for t in sql_plan.tables]
+    assert names.index("npc_spellclick_spells") < names.index("vehicle_template_accessory")
+
+
+def test_build_sql_plan_official_vehicle_injects_vehicle_id(sample_mount: Mount) -> None:
+    """复用官方 312 时仅注入 VehicleId 与 spellclick，无 accessory 表。"""
+    mount = _make_vehicle_mount(sample_mount, vehicle_id=312)
+    sql_plan = build_sql_plan(mount)
+    tables = {t.name: t for t in sql_plan.tables}
+    assert tables["creature_template"].records[0]["VehicleId"] == 312
+    assert "npc_spellclick_spells" in tables
+    assert "vehicle_template_accessory" not in tables
+
+
+def test_delete_where_clause_vehicle_tables() -> None:
+    """vehicle 两表 DELETE 使用复合主键，避免重复 INSERT。"""
+    sc_clause = mpb._build_delete_where_clause(
+        "npc_spellclick_spells", {"npc_entry": 9140000, "spell_id": 46598}
+    )
+    assert sc_clause == "`npc_entry` = 9140000 AND `spell_id` = 46598"
+
+    # AC 主键为 (entry, seat_id)
+    acc_clause = mpb._build_delete_where_clause(
+        "vehicle_template_accessory",
+        {"entry": 9140000, "accessory_entry": 30001, "seat_id": 0},
+    )
+    assert acc_clause == "`entry` = 9140000 AND `seat_id` = 0"
+
+    # 键缺失时返回 None（不生成 DELETE）
+    assert mpb._build_delete_where_clause("npc_spellclick_spells", {"npc_entry": 1}) is None
+
+
+def test_generate_sql_writes_vehicle_tables(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """端到端 SQL 文件包含 vehicle 三表及复合键 DELETE。"""
+    _, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+    _make_vehicle_mount(
+        sample_mount,
+        vehicle_id=90000,
+        seat_ids=[2764],
+        accessories=[VehicleAccessory(accessory_entry=30001, seat_id=0)],
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    written = mpb.generate_sql(ctx)
+    assert len(written) == 1
+    content = written[0].read_text(encoding="utf-8")
+    assert (
+        "DELETE FROM `npc_spellclick_spells` WHERE `npc_entry` = 9140000 AND `spell_id` = 46598;"
+        in content
+    )
+    assert "INSERT INTO `npc_spellclick_spells`" in content
+    assert (
+        "DELETE FROM `vehicle_template_accessory` WHERE `entry` = 9140000 AND `seat_id` = 0;"
+        in content
+    )
+    assert "INSERT INTO `vehicle_template_accessory`" in content
+    assert "`VehicleId`" in content
+
+
+@_requires_dbc_source
+def test_validate_job_vehicle_official_pass(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """复用官方 312 + 三人骑乘标签：vehicle 相关校验全部通过。"""
+    sample_mount.special_features = ["三人骑乘"]
+    _make_vehicle_mount(sample_mount, vehicle_id=312)
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    vehicle_checks = {
+        c.name: c for c in result.checks if "vehicle" in c.name or "spellclick" in c.name
+    }
+    assert vehicle_checks["vehicle_id_matches_creature_template_sql"].passed
+    assert vehicle_checks["vehicle_dbc_record_matches_plan"].passed
+    assert vehicle_checks["vehicle_seat_count_matches_special_features"].passed
+    assert vehicle_checks["spellclick_spell_exists"].passed
+    assert vehicle_checks["npc_spellclick_sql_present"].passed
+
+
+@_requires_dbc_source
+def test_validate_job_vehicle_custom_missing_dbc_record_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """自建载具记录尚未写入 DBC 时 vehicle_dbc_record_matches_plan 失败。"""
+    sample_mount.special_features = ["双人骑乘"]
+    _make_vehicle_mount(sample_mount, vehicle_id=90000, seat_ids=[2764])
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["vehicle_dbc_record_matches_plan"].passed is False
+    assert by_name["vehicle_id_matches_creature_template_sql"].passed is True
+
+
+@_requires_dbc_source
+def test_validate_job_vehicle_seat_count_mismatch_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """双人标签配 2 座自建载具时座位数校验失败；无标签时降级 warning。"""
+    sample_mount.special_features = ["双人骑乘"]
+    _make_vehicle_mount(sample_mount, vehicle_id=90000, seat_ids=[2764, 2765])
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    seat_check = by_name["vehicle_seat_count_matches_special_features"]
+    assert seat_check.passed is False
+    assert seat_check.severity == "error"
+
+    # 无标签：降级 warning，不影响整体通过
+    sample_mount.special_features = []
+    ctx2 = _make_job_context(job_dir, sample_mount, monkeypatch)
+    result2 = mpb.validate_job(ctx2, [])
+    by_name2 = {c.name: c for c in result2.checks}
+    assert by_name2["vehicle_seat_count_matches_special_features"].severity == "warning"
+
+
+@_requires_dbc_source
+def test_validate_job_vehicle_accessory_seat_out_of_range_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """挂件座位指向 Vehicle.dbc 零值槽位时校验失败。"""
+    sample_mount.special_features = ["三人骑乘"]
+    # 官方 312 乘客槽位在 SeatID_2/3（0 起 1/2），seat_id=0 指向 SeatID_1=0
+    _make_vehicle_mount(
+        sample_mount,
+        vehicle_id=312,
+        accessories=[VehicleAccessory(accessory_entry=30001, seat_id=0)],
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["vehicle_accessory_seat_in_range_30001"].passed is False
+
+
+@_requires_dbc_source
+def test_next_free_id_vehicle() -> None:
+    """next_free_id 跳过 DBC 已占用 ID 与 YAML 预留 ID。"""
+    # 312 被官方占用，结果必须大于 312
+    free = dbc_query.next_free_id("Vehicle", 312)
+    assert free > 312
+    # 明显空闲的起点直接返回
+    assert dbc_query.next_free_id("Vehicle", 999999) == 999999
+    # reserved 合并占用
+    assert dbc_query.next_free_id("Vehicle", 999999, reserved={999999, 1000000}) == 1000001
+    # 缺文件报错
+    with pytest.raises(FileNotFoundError):
+        dbc_query.next_free_id("NoSuchFile", 1)

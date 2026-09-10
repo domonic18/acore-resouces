@@ -7,7 +7,10 @@ interface MountMultiSelectProps {
   onChange: (ids: number[]) => void;
 }
 
-export function MountMultiSelect({ selected, onChange }: MountMultiSelectProps) {
+export function MountMultiSelect({
+  selected,
+  onChange,
+}: MountMultiSelectProps) {
   const { allItems: mounts, isLoading } = useResourceListData("mount");
   const [search, setSearch] = useState("");
 
@@ -24,6 +27,12 @@ export function MountMultiSelect({ selected, onChange }: MountMultiSelectProps) 
   }, [mounts, search]);
 
   const selectedSet = useMemo(() => new Set(selected), [selected]);
+
+  const vehicleMountCount = useMemo(() => {
+    if (!mounts) return 0;
+    const mountById = new Map(mounts.map((m) => [m.id, m]));
+    return selected.filter((id) => mountById.get(id)?.vehicle != null).length;
+  }, [mounts, selected]);
 
   const toggle = (id: number) => {
     const next = new Set(selectedSet);
@@ -65,7 +74,11 @@ export function MountMultiSelect({ selected, onChange }: MountMultiSelectProps) 
           清空
         </button>
         <span className="text-xs text-text-secondary">
-          已选 <span className="font-semibold text-text-primary">{selected.length}</span> 个
+          已选{" "}
+          <span className="font-semibold text-text-primary">
+            {selected.length}
+          </span>{" "}
+          个
         </span>
       </div>
 
@@ -94,15 +107,32 @@ export function MountMultiSelect({ selected, onChange }: MountMultiSelectProps) 
             <span className="font-mono text-xs text-text-tertiary">
               #{String(m.id).padStart(4, "0")}
             </span>
-            <span className="flex-1 truncate">
-              {m.name || m.model_folder}
-            </span>
+            <span className="flex-1 truncate">{m.name || m.model_folder}</span>
+            {m.vehicle && (
+              <span
+                className="rounded bg-blue-500/15 px-1.5 py-0.5 text-[10px] font-medium text-blue-500"
+                title="已配置载具：导出时将生成 Vehicle.dbc / npc_spellclick_spells 产物"
+              >
+                载具
+              </span>
+            )}
             <span className="text-xs text-text-tertiary">
               {m.mount_type || "—"}
             </span>
           </label>
         ))}
       </div>
+
+      {vehicleMountCount > 0 && (
+        <p className="mt-2 text-xs text-text-secondary">
+          批次内{" "}
+          <span className="font-semibold text-blue-500">
+            {vehicleMountCount}
+          </span>{" "}
+          只载具坐骑，构建时将额外生成 Vehicle.dbc（自建时）/
+          npc_spellclick_spells / vehicle_template_accessory 产物并打包进 MPQ。
+        </p>
+      )}
     </div>
   );
 }

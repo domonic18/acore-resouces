@@ -90,6 +90,7 @@ class CreatureTemplate(SQLRecord):
     ArmorModifier: float | None = Field(default=1.0)
     ExperienceModifier: float | None = Field(default=1.0)
     RegenHealth: int | None = Field(default=1)
+    VehicleId: int | None = Field(default=0)
     flags_extra: int | None = Field(default=2)
     # batch1 显式写 0，但 DB DEFAULT 为 1，需显式写出以保持一致
     BaseVariance: float | None = Field(default=0.0)

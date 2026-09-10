@@ -26,6 +26,21 @@ export interface DbInfo {
   item_template: Record<string, unknown>;
 }
 
+export interface VehicleAccessory {
+  accessory_entry: number;
+  seat_id: number;
+  minion: number;
+  summontype: number;
+  summontimer: number;
+}
+
+export interface VehicleConfig {
+  vehicle_id: number;
+  seat_ids: number[];
+  spellclick_spell_id: number;
+  accessories: VehicleAccessory[];
+}
+
 export interface Resource {
   id: number;
   resource_type: "mount" | "pet" | "npc";
@@ -46,6 +61,7 @@ export interface Resource {
   subtype?: string | null;
   rarity?: string | null;
   special_features?: string[];
+  vehicle?: VehicleConfig | null;
   tags?: string[];
   duplicate_issues?: DuplicateIssue[];
 }
@@ -61,6 +77,7 @@ export interface ResourceUpdate {
   star_rating?: string | null;
   subtype?: string | null;
   special_features?: string[];
+  vehicle?: VehicleConfig | null;
   rarity?: string | null;
   drop?: Partial<DropInfo>;
   dbc_item?: Record<string, unknown>;

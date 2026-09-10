@@ -16,6 +16,8 @@ import { RawDataSection } from "@/features/resources/components/resource-detail/
 import { RelationshipCheckSection } from "@/features/resources/components/resource-detail/RelationshipCheckSection";
 import { CreatureDisplayInfoSection } from "@/features/resources/components/resource-detail/CreatureDisplayInfoSection";
 import { CreatureModelDataSection } from "@/features/resources/components/resource-detail/CreatureModelDataSection";
+import { VehicleSection } from "@/features/resources/components/resource-detail/VehicleSection";
+import { buildVehicleDraft } from "@/features/resources/lib/vehicle";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
 import { DisplayInfoPickerDialog } from "@/features/resources/components/resource-detail/DisplayInfoPickerDialog";
@@ -25,6 +27,7 @@ import type { AssetFile } from "@/shared/types";
 
 const DETAIL_NAV_ITEMS = [
   { id: "section-basic", label: "基础信息" },
+  { id: "section-vehicle", label: "载具配置" },
   { id: "section-model", label: "模型数据" },
   { id: "section-display", label: "显示信息" },
   { id: "section-item", label: "物品信息" },
@@ -89,6 +92,30 @@ export function ResourceDetailPage() {
     resourceId,
   );
 
+  // 勾选双人/三人骑乘时预填载具配置草稿；两标签全取消时提示清除
+  const updateFieldWithVehiclePrefill = <
+    K extends keyof ReturnType<typeof useResourceForm>["form"],
+  >(
+    key: K,
+    value: ReturnType<typeof useResourceForm>["form"][K],
+  ) => {
+    if (key === "special_features") {
+      const features = value as string[];
+      const hasDouble = features.includes("双人骑乘");
+      const hasTriple = features.includes("三人骑乘");
+      if ((hasDouble || hasTriple) && !formState.vehicle) {
+        formState.setVehicle(
+          buildVehicleDraft(hasTriple ? "triple" : "double"),
+        );
+      } else if (!hasDouble && !hasTriple && formState.vehicle) {
+        if (window.confirm("已取消双人/三人骑乘标签，是否同时清除载具配置？")) {
+          formState.setVehicle(null);
+        }
+      }
+    }
+    formState.updateField(key, value);
+  };
+
   const liveScale = useMemo(() => {
     if (!resource) return 1;
     const value =
@@ -146,7 +173,9 @@ export function ResourceDetailPage() {
   const liveSpellId = useMemo(() => {
     if (!resource) return null;
     const raw =
-      "id" in formState.spellDbc ? formState.spellDbc.id : resource.dbc.spell.id;
+      "id" in formState.spellDbc
+        ? formState.spellDbc.id
+        : resource.dbc.spell.id;
     const n = Number(raw);
     return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
       ? n
@@ -266,11 +295,25 @@ export function ResourceDetailPage() {
             <BasicInfoSection
               resource={resource}
               form={formState.form}
-              updateField={formState.updateField}
+              updateField={updateFieldWithVehiclePrefill}
               isMount={isMount}
               compact
             />
           </div>
+
+          {isMount &&
+            (formState.form.special_features.includes("双人骑乘") ||
+              formState.form.special_features.includes("三人骑乘") ||
+              formState.vehicle) && (
+              <div id="section-vehicle" className="scroll-mt-20">
+                <VehicleSection
+                  vehicle={formState.vehicle}
+                  setVehicle={formState.setVehicle}
+                  specialFeatures={formState.form.special_features}
+                  compact
+                />
+              </div>
+            )}
 
           {isMount && (
             <div id="section-model" className="scroll-mt-20">
@@ -292,7 +335,9 @@ export function ResourceDetailPage() {
                 setCreatureDisplayInfoDbc={formState.setCreatureDisplayInfoDbc}
                 assets={assets}
                 linkedModelDataId={liveModelDataId}
-                onNavigateToLinkedSection={() => scrollToSection("section-model")}
+                onNavigateToLinkedSection={() =>
+                  scrollToSection("section-model")
+                }
                 compact
               />
             </div>

@@ -31,6 +31,7 @@ from wow_dbc_tool.schema.registry import SchemaRegistry
 from app.core.config import settings
 from app.schemas.patch import DBCPlan, SQLPlan
 from app.schemas.resource import Mount
+from app.schemas.vehicle import OFFICIAL_MULTI_SEAT_VEHICLE_IDS
 
 WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
 MPQCLI = settings.project_root / "tools" / "wow-mpq-cli" / "build" / "bin" / "mpqcli"
@@ -594,6 +595,21 @@ def _build_delete_where_clause(table_name: str, record: dict[str, Any]) -> str |
             return None
         return f"`CreatureID` = {_sql_value(creature_id)} AND `Idx` = {_sql_value(idx)}"
 
+    if table_name == "npc_spellclick_spells":
+        npc_entry = record.get("npc_entry")
+        spell_id = record.get("spell_id")
+        if npc_entry is None or spell_id is None:
+            return None
+        return f"`npc_entry` = {_sql_value(npc_entry)} AND `spell_id` = {_sql_value(spell_id)}"
+
+    # AC 主键为 (entry, seat_id)
+    if table_name == "vehicle_template_accessory":
+        entry = record.get("entry")
+        seat_id = record.get("seat_id")
+        if entry is None or seat_id is None:
+            return None
+        return f"`entry` = {_sql_value(entry)} AND `seat_id` = {_sql_value(seat_id)}"
+
     pk_column = _primary_key_column(table_name)
     pk_value = record.get(pk_column)
     if pk_value is None:
@@ -721,7 +737,14 @@ def build_mpq(
 
     dbc_staging = staging / "DBFilesClient"
     dbc_staging.mkdir(parents=True, exist_ok=True)
-    for dbc_name in REQUIRED_DBC_FILES:
+    # Vehicle.dbc 不属必需集：仅当批次内存在自建载具记录的计划时才打包，
+    # 避免每个 MPQ 无条件携带 412 条官方载具记录。
+    dbc_files = list(REQUIRED_DBC_FILES)
+    if any(
+        plan_file.dbc_file == "Vehicle.dbc" for ctx in contexts for plan_file in ctx.dbc_plan.plans
+    ):
+        dbc_files.append("Vehicle.dbc")
+    for dbc_name in dbc_files:
         src = WOW_DBC_DIR / dbc_name
         if src.exists():
             shutil.copy2(src, dbc_staging / dbc_name)
@@ -958,6 +981,126 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
         )
     )
 
+    vehicle = resource.vehicle
+    if vehicle is not None:
+        ct_sql_record = _find_sql_record(sql_plan, "creature_template") or {}
+        checks.append(
+            ValidationResult(
+                name="vehicle_id_matches_creature_template_sql",
+                passed=ct_sql_record.get("VehicleId") == vehicle.vehicle_id,
+                expected=vehicle.vehicle_id,
+                actual=ct_sql_record.get("VehicleId"),
+                message="creature_template.VehicleId 必须与 vehicle.vehicle_id 一致",
+            )
+        )
+
+        vehicle_record = _record_by_id(WOW_DBC_DIR / "Vehicle.dbc", vehicle.vehicle_id)
+        if vehicle.vehicle_id in OFFICIAL_MULTI_SEAT_VEHICLE_IDS:
+            checks.append(
+                ValidationResult(
+                    name="vehicle_dbc_record_matches_plan",
+                    passed=vehicle_record is not None,
+                    expected="官方多座载具记录存在",
+                    actual="存在" if vehicle_record is not None else "缺失",
+                    message="复用的官方 Vehicle.dbc 记录必须存在",
+                )
+            )
+            official_seat_count = 2
+        else:
+            seat_plan = {
+                f"SeatID_{index + 1}": seat_id for index, seat_id in enumerate(vehicle.seat_ids)
+            }
+            actual_seats = (
+                {key: vehicle_record.get(key) for key in seat_plan}
+                if vehicle_record is not None
+                else None
+            )
+            checks.append(
+                ValidationResult(
+                    name="vehicle_dbc_record_matches_plan",
+                    passed=vehicle_record is not None and actual_seats == seat_plan,
+                    expected=seat_plan,
+                    actual=actual_seats,
+                    message="自建 Vehicle.dbc 记录必须存在且 SeatID 槽位与计划一致",
+                )
+            )
+            official_seat_count = 0
+
+        expected_seats: int | None = None
+        if "双人骑乘" in resource.special_features:
+            expected_seats = 1
+        if "三人骑乘" in resource.special_features:
+            expected_seats = 2
+        actual_seat_count = (
+            official_seat_count
+            if vehicle.vehicle_id in OFFICIAL_MULTI_SEAT_VEHICLE_IDS
+            else len(vehicle.seat_ids)
+        )
+        if expected_seats is None:
+            checks.append(
+                ValidationResult(
+                    name="vehicle_seat_count_matches_special_features",
+                    passed=False,
+                    expected="special_features 标注 双人骑乘/三人骑乘",
+                    actual=resource.special_features,
+                    message="配置了 vehicle 但 special_features 未标注双人/三人骑乘",
+                    severity="warning",
+                )
+            )
+        else:
+            checks.append(
+                ValidationResult(
+                    name="vehicle_seat_count_matches_special_features",
+                    passed=actual_seat_count == expected_seats,
+                    expected=expected_seats,
+                    actual=actual_seat_count,
+                    message="载具乘客座位数必须与 special_features 标注一致（双人=1，三人=2）",
+                )
+            )
+
+        # 挂件座位须指向 Vehicle.dbc 记录中非零的 SeatID 槽位
+        # （官方 312 乘客槽位在 SeatID_2/3，315 在 SeatID_1/2）
+        for accessory in vehicle.accessories:
+            seat_field = f"SeatID_{accessory.seat_id + 1}"
+            seat_value = vehicle_record.get(seat_field) if vehicle_record else None
+            checks.append(
+                ValidationResult(
+                    name=f"vehicle_accessory_seat_in_range_{accessory.accessory_entry}",
+                    passed=bool(seat_value),
+                    expected=f"{seat_field} 非零",
+                    actual=seat_value,
+                    message=(
+                        f"挂件 accessory_entry={accessory.accessory_entry} 的座位槽位 "
+                        f"{seat_field} 必须在 Vehicle.dbc 记录中非零"
+                    ),
+                )
+            )
+
+        spellclick_record = _record_by_id(WOW_DBC_DIR / "Spell.dbc", vehicle.spellclick_spell_id)
+        checks.append(
+            ValidationResult(
+                name="spellclick_spell_exists",
+                passed=spellclick_record is not None,
+                expected=vehicle.spellclick_spell_id,
+                actual="存在" if spellclick_record is not None else "缺失",
+                message="登载法术（npc_spellclick_spells.spell_id）必须存在于 Spell.dbc",
+            )
+        )
+
+        sc_record = _find_sql_record(sql_plan, "npc_spellclick_spells") or {}
+        checks.append(
+            ValidationResult(
+                name="npc_spellclick_sql_present",
+                passed=(
+                    sc_record.get("npc_entry") == ct_entry
+                    and sc_record.get("spell_id") == vehicle.spellclick_spell_id
+                ),
+                expected={"npc_entry": ct_entry, "spell_id": vehicle.spellclick_spell_id},
+                actual=sc_record or None,
+                message="SQL 计划必须包含与 creature_template.entry 一致的 npc_spellclick_spells 记录",
+            )
+        )
+
     passed = all(c.passed or c.severity == "warning" for c in checks)
     return JobValidation(
         job_id=ctx.job_id,
@@ -1158,7 +1301,9 @@ def _build_mount_patches_impl(
         _log("生成变更日志（changelog.md）...")
         from app.services import changelog_writer
 
-        changelog_ctx = changelog_writer.build_context(contexts, sql_files, mpq_manifest, report_path)
+        changelog_ctx = changelog_writer.build_context(
+            contexts, sql_files, mpq_manifest, report_path
+        )
         changelog_source = changelog_writer.write_changelog(mpq_path.parent, changelog_ctx)
         _log(f"  {changelog_path}（{'AI 起草' if changelog_source == 'ai' else '模板生成'}）\n")
 

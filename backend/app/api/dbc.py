@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.schemas.dbc import ItemDisplayInfoEntry, ItemDisplayInfoPage
 from app.services import dbc_annotation, dbc_query, dbc_reader
+from app.services.resource_store import list_resources
 
 router = APIRouter(prefix="/api/dbc", tags=["dbc"])
 
@@ -42,6 +43,28 @@ def list_dbc_files_endpoint() -> dict:
         return dbc_reader.list_dbc_files()
     except OSError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.get("/{file}/next-free-id")
+def next_free_id_endpoint(
+    file: str,
+    start: int = Query(90000, ge=1, description="起始 ID（含）"),
+) -> dict:
+    """探测指定 DBC 文件从 start 起的第一个空闲 ID。
+
+    除 DBC 已占用 ID 外，还合并所有坐骑 YAML 已声明的自建 vehicle_id，
+    避免并发选号时与尚未写回 DBC 的占用撞号。
+    """
+    reserved: set[int] = set()
+    if file.removesuffix(".dbc") == "Vehicle":
+        for mount in list_resources("mount"):
+            if mount.resource_type == "mount" and mount.vehicle is not None:
+                reserved.add(mount.vehicle.vehicle_id)
+    try:
+        free_id = dbc_query.next_free_id(file, start, reserved=reserved)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return {"file": file, "start": start, "next_free_id": free_id}
 
 
 @router.get("/{file}/records")

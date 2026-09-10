@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Resource } from "@/shared/types";
+import type { Resource, VehicleConfig } from "@/shared/types";
 
 export interface FormState {
   name: string;
@@ -67,6 +67,11 @@ export function useResourceForm(resource?: Resource) {
   const [creatureModelDataDbc, setCreatureModelDataDbc] = useState<
     Record<string, unknown>
   >(resource?.dbc.creature_model_data ?? {});
+  // vehicle_id = 0 表示草稿状态（勾选双人骑乘预填后尚未分配 ID），
+  // 保存时仅当 vehicle_id > 0 才会写入。
+  const [vehicle, setVehicle] = useState<VehicleConfig | null>(
+    resource?.vehicle ?? null,
+  );
 
   useEffect(() => {
     if (!resource) return;
@@ -81,6 +86,7 @@ export function useResourceForm(resource?: Resource) {
     setSpellDb(resource.db.creature_template ?? {});
     setCreatureDisplayInfoDbc(resource.dbc.creature_display_info ?? {});
     setCreatureModelDataDbc(resource.dbc.creature_model_data ?? {});
+    setVehicle(resource.vehicle ?? null);
   }, [resource]);
 
   const updateField = <K extends keyof FormState>(
@@ -123,6 +129,8 @@ export function useResourceForm(resource?: Resource) {
       JSON.stringify(resource.dbc.creature_model_data ?? {})
     )
       return true;
+    if (JSON.stringify(vehicle) !== JSON.stringify(resource.vehicle ?? null))
+      return true;
     return false;
   }, [
     form,
@@ -137,6 +145,7 @@ export function useResourceForm(resource?: Resource) {
     spellDb,
     creatureDisplayInfoDbc,
     creatureModelDataDbc,
+    vehicle,
   ]);
 
   const liveDbc = useMemo(
@@ -189,6 +198,8 @@ export function useResourceForm(resource?: Resource) {
     setCreatureDisplayInfoDbc,
     creatureModelDataDbc,
     setCreatureModelDataDbc,
+    vehicle,
+    setVehicle,
     hasChanges,
     liveDbc,
     liveDb,
