@@ -1,15 +1,25 @@
 id: 62
 model_folder: alliancechopper勇士的践踏之刃
+preview_image: null
 debug_passed: false
 added: false
-notes: |-
-  ## 官方信息
+notes: '## 官方信息
+
   - **版本**：德拉诺之王（6.0，Azeroth Choppers 活动）
+
   - **获取**：商人出售（保利，暴风城，旧城区）
+
   - **售价**：100,000 金
+
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=116789/%E5%8B%87%E5%A3%AB%E7%9A%84%E8%B7%B5%E8%B8%8F%E4%B9%8B%E5%88%83)
-  - **多人骑乘挂点**：19/20（原版即双人坐骑（Cata 侧斗摩托），挂点位置可信）
-drop: {}
+
+  - **多人骑乘挂点**：19/20（原版即双人坐骑（Cata 侧斗摩托），挂点位置可信）'
+drop:
+  source: creature
+  entry: null
+  instance: null
+  boss: null
+  rate: null
 official_db:
   name: 勇士的践踏之刃
   spell_icon_name: inv_chopper_alliance
@@ -21,6 +31,10 @@ dbc:
     id: 104057
     flags: 2
     model_name: creature\alliancechopper\alliancechopper.m2
+    model_scale: null
+    collision_width: 0.6111
+    collision_height: 2.031
+    mount_height: 0.0
   creature_display_info:
     id: 140057
     model_id: 104057
@@ -29,16 +43,30 @@ dbc:
     scale: 1.0
     opacity: 255
     texture_variation_1: alliance_chopper_body
+    texture_variation_2: null
+    texture_variation_3: null
+    portrait_texture_name: null
+    size_class: 1
+    blood_id: null
+    npc_sound_id: 47
+    particle_color_id: null
+    creature_geoset_data: null
+    object_effect_package_id: null
   spell:
     id: 80057
     visual_id: 9140057
+    spell_visual_id: null
+    icon_id: null
     name: 勇士的践踏之刃
     description: 召唤或解散你的勇士的践踏之刃。
     speed: 100
+    flight_speed: null
+    swim_speed: null
   item:
     id: 116789
-    class: 15
+    class_: 15
     subclass: 5
+    material: 4
     display_id: 0
     inventory_type: 0
     sheath: 0
@@ -68,17 +96,23 @@ db:
     ArmorModifier: 1.0
     ExperienceModifier: 1.0
     RegenHealth: 1
+    VehicleId: 0
     flags_extra: 2
     BaseVariance: 0.0
     RangeVariance: 0.0
     VerifiedBuild: 0
   creature_model_info:
     display_id: 140057
+    bounding_radius: null
+    combat_reach: null
+    gender: null
+    display_id_other_gender: null
   item_template:
     entry: 116789
     name: 勇士的践踏之刃
-    class: 15
+    class_: 15
     subclass: 5
+    displayid: null
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1
@@ -117,9 +151,14 @@ db:
     shadow_res: 0
     arcane_res: 0
     VerifiedBuild: 12340
-resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
-special_features: [双人骑乘]
-
+special_features:
+- 双人骑乘
+vehicle:
+  vehicle_id: 90000
+  seat_ids:
+  - 2764
+  spellclick_spell_id: 46598
+  accessories: []
