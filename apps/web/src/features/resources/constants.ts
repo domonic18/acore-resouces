@@ -9,14 +9,22 @@ export const DBC_TABS = [
 ];
 
 export const QUALITY_OPTIONS = [
-  { value: 0, label: "Poor 劣质" },
-  { value: 1, label: "Common 普通" },
-  { value: 2, label: "Uncommon 优秀" },
-  { value: 3, label: "Rare 精良" },
-  { value: 4, label: "Epic 史诗" },
-  { value: 5, label: "Legendary 传说" },
-  { value: 6, label: "Artifact 神器" },
-  { value: 7, label: "Heirloom 传家宝" },
+  { value: 0, label: "0 灰色 粗糙（Poor）" },
+  { value: 1, label: "1 白色 普通（Common）" },
+  { value: 2, label: "2 绿色 优秀（Uncommon）" },
+  { value: 3, label: "3 蓝色 精良（Rare）" },
+  { value: 4, label: "4 紫色 史诗（Epic）" },
+  { value: 5, label: "5 橙色 传说（Legendary）" },
+  { value: 6, label: "6 橙红 神器（Artifact）" },
+  { value: 7, label: "7 金色 传家宝（Heirloom）" },
+];
+
+// 来源：ItemTemplate.h enum ItemBondingType / azerothcore wiki item_template#bonding
+export const BONDING_OPTIONS = [
+  { value: 0, label: "0 不绑定" },
+  { value: 1, label: "1 拾取绑定（BoP）" },
+  { value: 2, label: "2 装备绑定（BoE）" },
+  { value: 3, label: "3 使用绑定（BoU）" },
 ];
 
 export const CLASS_FLAGS = [

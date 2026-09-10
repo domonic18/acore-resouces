@@ -20,6 +20,7 @@ import {
   ITEM_SUBCLASS_OPTIONS,
   MATERIAL_OPTIONS,
   QUALITY_OPTIONS,
+  BONDING_OPTIONS,
   CLASS_FLAGS,
   RACE_FLAGS,
   INVENTORY_TYPE_OPTIONS,
@@ -401,10 +402,10 @@ export function ItemInfoSection({
                 />
               </FormGroup>
               <FormGroup
-                label="Quality"
+                label="Quality 品质"
                 compact={compact}
                 hint={
-                  <FieldHint description="品质等级：0 普通 1 优秀 2 精良 3 稀有 4 史诗 5 传说" />
+                  <FieldHint description="品质颜色：0 灰 1 白 2 绿 3 蓝 4 紫 5 橙，坐骑默认 4（紫色）" />
                 }
               >
                 <OptionSelect
@@ -412,6 +413,22 @@ export function ItemInfoSection({
                   value={itemDb.Quality}
                   onChange={(v) =>
                     setItemDb((prev) => ({ ...prev, Quality: v }))
+                  }
+                  compact={compact}
+                />
+              </FormGroup>
+              <FormGroup
+                label="bonding 绑定"
+                compact={compact}
+                hint={
+                  <FieldHint description="绑定类型：不绑定 / 拾取绑定（BoP）/ 装备绑定（BoE）/ 使用绑定（BoU），坐骑默认 1（拾取绑定）" />
+                }
+              >
+                <OptionSelect
+                  options={BONDING_OPTIONS}
+                  value={itemDb.bonding}
+                  onChange={(v) =>
+                    setItemDb((prev) => ({ ...prev, bonding: v }))
                   }
                   compact={compact}
                 />
@@ -446,6 +463,120 @@ export function ItemInfoSection({
               </FormGroup>
             </div>
           </div>
+        </div>
+
+        <div className="rounded-md border border-border bg-bg-surface/50 p-3">
+          <h4 className="mb-2 text-xs font-semibold text-text-secondary">
+            等级 / 堆叠 / 价格
+          </h4>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <FormGroup
+              label="ItemLevel"
+              compact={compact}
+              hint={
+                <FieldHint description="物品等级，影响物品颜色框与参考属性，坐骑默认 40" />
+              }
+            >
+              <NumberInput
+                value={itemDb.ItemLevel}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, ItemLevel: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="RequiredLevel"
+              compact={compact}
+              hint={
+                <FieldHint description="使用所需角色等级，坐骑默认 40（配合骑术 150 需求）" />
+              }
+            >
+              <NumberInput
+                value={itemDb.RequiredLevel}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, RequiredLevel: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="stackable"
+              compact={compact}
+              hint={
+                <FieldHint description="最大堆叠数量，1 为不可堆叠" />
+              }
+            >
+              <NumberInput
+                value={itemDb.stackable}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, stackable: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="BuyCount"
+              compact={compact}
+              hint={
+                <FieldHint description="商人出售时一次购买的个数，默认 1" />
+              }
+            >
+              <NumberInput
+                value={itemDb.BuyCount}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, BuyCount: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="BuyPrice"
+              compact={compact}
+              hint={
+                <FieldHint description="购买价格，单位铜（1金=10000铜，1银=100铜），坐骑默认 100 金" />
+              }
+            >
+              <NumberInput
+                value={itemDb.BuyPrice}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, BuyPrice: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="SellPrice"
+              compact={compact}
+              hint={
+                <FieldHint description="卖给商人价格，单位铜（1金=10000铜，1银=100铜），坐骑默认 25 金" />
+              }
+            >
+              <NumberInput
+                value={itemDb.SellPrice}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, SellPrice: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+          </div>
+          <FormGroup
+            label="description"
+            compact={compact}
+            hint={
+              <FieldHint description="物品鼠标悬停描述文本，坐骑默认「教你学会召唤这种坐骑…」" />
+            }
+          >
+            <input
+              type="text"
+              className={cn(compact ? "form-input-compact" : "form-input")}
+              value={String(itemDb.description ?? "")}
+              onChange={(e) =>
+                setItemDb((prev) => ({ ...prev, description: e.target.value }))
+              }
+            />
+          </FormGroup>
         </div>
 
         <div className="grid gap-3 lg:grid-cols-2">
