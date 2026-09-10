@@ -126,4 +126,19 @@ mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 雷龙
 special_features: [三人骑乘, 自带商人, 自带拍卖行]
+# 挂件：联盟杂货商 Hakmud(32638) 占乘客座 1，中立拍卖师(8661) 占乘客座 2
+vehicle:
+  vehicle_id: 312
+  spellclick_spell_id: 46598
+  accessories:
+  - accessory_entry: 32638
+    seat_id: 1
+    minion: 0
+    summontype: 6
+    summontimer: 30000
+  - accessory_entry: 8661
+    seat_id: 2
+    minion: 0
+    summontype: 6
+    summontimer: 30000
 
