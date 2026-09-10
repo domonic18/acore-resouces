@@ -18,7 +18,6 @@ services:
       - ./sources:/app/sources
       - ./data:/app/data
       - ./workspace:/app/workspace
-      - ./imports:/app/imports
       - ./backend/app:/app/app
       - ./apps/web/dist:/app/app/static
       # data/sql/azerothcore-updates 是指向 AzerothCore updates 的绝对路径软链接，
@@ -52,7 +51,6 @@ services:
   #     - ./sources:/app/sources
   #     - ./data:/app/data
   #     - ./workspace:/app/workspace
-  #     - ./imports:/app/imports
   #     - ./backend/app:/app/app
   #     - ./apps/web/dist:/app/app/static
   #   networks:
