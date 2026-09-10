@@ -28,6 +28,7 @@ from app.schemas.patch import (
     SQLPlanTable,
 )
 from app.schemas.resource import Mount, Resource
+from app.schemas.vehicle import OFFICIAL_MULTI_SEAT_VEHICLE_IDS
 from app.services.build_runner import BuildAlreadyRunningError, get_build_status
 from app.services.resource_store import load_resource
 
@@ -122,6 +123,17 @@ SPELL_SPEED_AURA_FIELDS: dict[str, int] = {
     "speed": 32,  # SPELL_AURA_MOD_INCREASE_SPEED 移动速度
     "flight_speed": 207,  # SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED 飞行速度
     "swim_speed": 58,  # SPELL_AURA_MOD_INCREASE_SWIM_SPEED 游泳速度
+}
+
+# 多人骑乘：自建 Vehicle.dbc 记录的字段默认值取官方 312（三人货车）实测；
+# 未列出的字段由 wow_dbc_tool.add 补零；SeatID_1..N 由 seat_ids 逐个填入。
+CUSTOM_VEHICLE_FIELD_DEFAULTS: dict[str, Any] = {
+    "Flags": 1073741824,
+    "TurnSpeed": 3.1419999599,
+    "PitchSpeed": 3.1419999599,
+    "CameraFadeDistScalarMin": 1.0,
+    "CameraFadeDistScalarMax": 1.5,
+    "VehicleUIIndicatorID": 225,
 }
 
 
@@ -343,6 +355,30 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
             )
         )
 
+    # Vehicle.dbc：仅自建载具记录（vehicle_id 非官方 312/315）时生成；
+    # 复用官方多座载具时零 DBC 改动。
+    vehicle = resource.vehicle
+    if vehicle and vehicle.vehicle_id not in OFFICIAL_MULTI_SEAT_VEHICLE_IDS:
+        vehicle_fields: dict[str, Any] = {
+            "ID": int(vehicle.vehicle_id),
+            **CUSTOM_VEHICLE_FIELD_DEFAULTS,
+        }
+        for index, seat_id in enumerate(vehicle.seat_ids):
+            vehicle_fields[f"SeatID_{index + 1}"] = int(seat_id)
+        plans.append(
+            DBCPlanFile(
+                dbc_file="Vehicle.dbc",
+                operations=[
+                    DBCPlanOperation(
+                        action="add",
+                        record_id=int(vehicle.vehicle_id),
+                        reason="新增多人骑乘载具记录",
+                        fields=vehicle_fields,
+                    )
+                ],
+            )
+        )
+
     return DBCPlan(
         source_dbc_dir=str(settings.project_root / "data" / "wow-dbc" / "src" / "dbc"),
         output_dbc_dir="output/dbc",
@@ -379,6 +415,7 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
 
     # creature_template
     ct = resource.db.creature_template.model_dump(exclude_none=True)
+    vehicle = resource.vehicle
     if ct and ct.get("entry"):
         # 保持 entry 在首位，便于阅读；其余字段顺序由 YAML 决定。
         ct_record: dict[str, Any] = {"entry": int(ct["entry"])}
@@ -386,6 +423,9 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
             if key == "entry":
                 continue
             ct_record[key] = value
+        # 多人骑乘：vehicle 块是载具配置的显式真相源，覆盖 creature_template 的 VehicleId
+        if vehicle:
+            ct_record["VehicleId"] = int(vehicle.vehicle_id)
         tables.append(
             SQLPlanTable(
                 name="creature_template",
@@ -437,6 +477,45 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
                 ],
             )
         )
+
+    # 多人骑乘：npc_spellclick_spells 提供乘客登载入口（aura 236 CONTROL_VEHICLE），
+    # vehicle_template_accessory 提供可选挂件。服务端先加载 npc_spellclick_spells
+    # 再加载 vehicle_template_accessory 并做挂件校验，故两表须按此顺序输出。
+    if vehicle and ct and ct.get("entry"):
+        npc_entry = int(ct["entry"])
+        tables.append(
+            SQLPlanTable(
+                name="npc_spellclick_spells",
+                operation="insert",
+                records=[
+                    {
+                        "npc_entry": npc_entry,
+                        "spell_id": int(vehicle.spellclick_spell_id),
+                        "cast_flags": 1,
+                        "user_type": 0,
+                    }
+                ],
+            )
+        )
+        if vehicle.accessories:
+            tables.append(
+                SQLPlanTable(
+                    name="vehicle_template_accessory",
+                    operation="insert",
+                    records=[
+                        {
+                            "entry": npc_entry,
+                            "accessory_entry": int(acc.accessory_entry),
+                            "seat_id": int(acc.seat_id),
+                            "minion": int(acc.minion),
+                            "description": "",
+                            "summontype": int(acc.summontype),
+                            "summontimer": int(acc.summontimer),
+                        }
+                        for acc in vehicle.accessories
+                    ],
+                )
+            )
 
     # creature_loot_template / gameobject_loot_template（仅当 DropInfo 提供掉落来源 entry 时生成）
     # DropInfo.rate 为小数表示（0.01 = 1%），而 *_loot_template.Chance

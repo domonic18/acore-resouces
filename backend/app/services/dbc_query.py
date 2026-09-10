@@ -1,12 +1,14 @@
 """DBC 只读查询服务。
 
 提供 ItemDisplayInfo.dbc 记录的搜索与单条查询，供前端 Display ID
-选择器展示「显示 ID → InventoryIcon 图标名」映射。只读，不写回 DBC。
+选择器展示「显示 ID → InventoryIcon 图标名」映射；以及任意 DBC 文件的
+空闲 ID 探测（供自建 Vehicle.dbc 记录选号）。只读，不写回 DBC。
 """
 
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 from wow_dbc_tool import DBCFile, FieldDef
 
@@ -124,3 +126,42 @@ def get_item_display_info(record_id: int) -> ItemDisplayInfoEntry | None:
     if record_id not in index:
         return None
     return ItemDisplayInfoEntry(id=record_id, icon_name=index[record_id])
+
+
+def _load_id_set(path: Path) -> set[int]:
+    """仅加载 DBC 文件的 ID 列，返回全部记录 ID 集合。"""
+    dbc = DBCFile(path, [FieldDef("ID", "uint32", 0)]).load()
+    return {int(record.get("ID")) for record in dbc.all()}
+
+
+def next_free_id(
+    file: str,
+    start: int,
+    *,
+    reserved: set[int] | None = None,
+) -> int:
+    """从 start 起探测指定 DBC 文件中第一个未被占用的 ID。
+
+    DBC 已占用 ID 与 reserved（如其他资源 YAML 已声明的自建 ID）合并后取最小空闲值。
+
+    Args:
+        file: DBC 文件名，如 ``Vehicle.dbc``（也可省略 .dbc 后缀）。
+        start: 起始 ID（含）。
+        reserved: DBC 之外额外占用的 ID 集合。
+
+    Returns:
+        最小空闲 ID。
+
+    Raises:
+        FileNotFoundError: DBC 文件缺失。
+    """
+    filename = file if file.endswith(".dbc") else f"{file}.dbc"
+    path = WOW_DBC_DIR / filename
+    if not path.exists():
+        raise FileNotFoundError(f"未找到 DBC 文件：{path}")
+
+    used = _load_id_set(path) | (reserved or set())
+    candidate = start
+    while candidate in used:
+        candidate += 1
+    return candidate

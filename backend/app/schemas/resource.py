@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
 from app.schemas.sql import CreatureModelInfo, CreatureTemplate, ItemTemplate
+from app.schemas.vehicle import VehicleConfig
 
 
 def _normalize_optional_field(value: Any, hint: Any | None) -> Any:
@@ -110,6 +111,7 @@ class Mount(ResourceBase):
     star_rating: str | None = None
     subtype: str | None = None
     special_features: list[str] = Field(default_factory=list)
+    vehicle: VehicleConfig | None = None
 
     @field_validator("special_features")
     @classmethod
