@@ -132,6 +132,22 @@ export function MountMultiSelect({
                 水下
               </span>
             )}
+            {m.special_features?.includes("自带商人") && (
+              <span
+                className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400"
+                title="自带商人：载具挂件将挂载官方商贩 NPC（标注修理时含材料/修理商）"
+              >
+                商人
+              </span>
+            )}
+            {m.special_features?.includes("自带拍卖行") && (
+              <span
+                className="rounded bg-violet-500/15 px-1.5 py-0.5 text-[10px] font-medium text-violet-600 dark:text-violet-400"
+                title="自带拍卖行：载具挂件将挂载拍卖师 NPC，点击直接打开拍卖行"
+              >
+                拍卖行
+              </span>
+            )}
             <span className="text-xs text-text-tertiary">
               {m.mount_type || "—"}
             </span>
