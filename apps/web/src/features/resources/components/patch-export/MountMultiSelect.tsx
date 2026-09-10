@@ -116,6 +116,22 @@ export function MountMultiSelect({
                 载具
               </span>
             )}
+            {m.special_features?.includes("水面行走") && (
+              <span
+                className="rounded bg-cyan-500/15 px-1.5 py-0.5 text-[10px] font-medium text-cyan-600 dark:text-cyan-400"
+                title="水面行走：导出时召唤法术将追加 WATER_WALK(104) 光环"
+              >
+                水面
+              </span>
+            )}
+            {m.special_features?.includes("水下骑乘") && (
+              <span
+                className="rounded bg-teal-500/15 px-1.5 py-0.5 text-[10px] font-medium text-teal-600 dark:text-teal-400"
+                title="水下骑乘：召唤法术将带游泳速度光环（按 swim_speed 取值）"
+              >
+                水下
+              </span>
+            )}
             <span className="text-xs text-text-tertiary">
               {m.mount_type || "—"}
             </span>
