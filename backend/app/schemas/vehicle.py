@@ -13,6 +13,12 @@ OFFICIAL_MULTI_SEAT_VEHICLE_IDS = (312, 315)
 
 DEFAULT_SPELLCLICK_SPELL_ID = 46598
 
+# 官方挂件 NPC（docs/workflows/07 §3.1 / 08 §1 实测，本地 acore_world 核对）。
+# 杂货商卖弹药/食物，材料/修理商含 REPAIR；拍卖师 faction 决定连接的拍卖行。
+OFFICIAL_VENDOR_NPCS = frozenset({32638, 32642})  # Hakmud of Argus（联盟）/ Mojodishu（部落）
+OFFICIAL_REPAIR_NPCS = frozenset({32639, 32641})  # Gnimo（联盟）/ Drix Blackwrench（部落）
+OFFICIAL_AUCTIONEER_NPCS = frozenset({8670, 8673, 8661})  # 联盟 / 部落 / 中立（藏宝海湾系）
+
 
 class VehicleAccessory(BaseModel):
     """载具挂件 NPC（vehicle_template_accessory 行）。

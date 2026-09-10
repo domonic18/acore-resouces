@@ -1554,6 +1554,148 @@ def test_validate_job_vehicle_accessory_seat_out_of_range_fails(
 
 
 @_requires_dbc_source
+def test_validate_job_accessory_vendor_auctioneer_pass(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """雷龙式配置：商人+拍卖行标签配官方商贩/中立拍卖师挂件，校验通过。"""
+    sample_mount.special_features = ["三人骑乘", "自带商人", "自带拍卖行"]
+    _make_vehicle_mount(
+        sample_mount,
+        vehicle_id=312,
+        accessories=[
+            VehicleAccessory(accessory_entry=32638, seat_id=1),
+            VehicleAccessory(accessory_entry=8661, seat_id=2),
+        ],
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["accessory_vendor_matches_special_features"].passed is True
+    assert by_name["accessory_auctioneer_matches_special_features"].passed is True
+    # 未标注修理且未挂修理商：修理校验通过
+    assert by_name["accessory_repair_matches_special_features"].passed is True
+
+
+@_requires_dbc_source
+def test_validate_job_accessory_repair_pass(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """旅行牛式配置：修理标签配材料/修理商挂件（32639），校验通过。"""
+    sample_mount.special_features = ["三人骑乘", "自带商人", "修理"]
+    _make_vehicle_mount(
+        sample_mount,
+        vehicle_id=312,
+        accessories=[
+            VehicleAccessory(accessory_entry=32638, seat_id=1),
+            VehicleAccessory(accessory_entry=32639, seat_id=2),
+        ],
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["accessory_vendor_matches_special_features"].passed is True
+    assert by_name["accessory_repair_matches_special_features"].passed is True
+
+
+@_requires_dbc_source
+def test_validate_job_accessory_tagged_missing_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """标签存在但未挂对应挂件：error 级失败（含完全未挂与挂错能力两种）。"""
+    sample_mount.special_features = ["自带商人", "自带拍卖行", "修理"]
+    _make_vehicle_mount(sample_mount, vehicle_id=312)
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    for name in (
+        "accessory_vendor_matches_special_features",
+        "accessory_repair_matches_special_features",
+        "accessory_auctioneer_matches_special_features",
+    ):
+        assert by_name[name].passed is False
+        assert by_name[name].severity == "error"
+
+
+@_requires_dbc_source
+def test_validate_job_accessory_tagged_no_vehicle_fails(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """标签存在但无任何载具配置：挂件校验 error 级失败。"""
+    sample_mount.special_features = ["自带商人", "自带拍卖行"]
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(ctx, [])
+    by_name = {c.name: c for c in result.checks}
+    assert by_name["accessory_vendor_matches_special_features"].passed is False
+    assert by_name["accessory_vendor_matches_special_features"].severity == "error"
+    assert by_name["accessory_auctioneer_matches_special_features"].passed is False
+
+
+@_requires_dbc_source
+def test_validate_job_accessory_untagged_warns(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """未标注商人/拍卖行却挂官方挂件：降级 warning，不阻断整体通过。"""
+    _make_vehicle_mount(
+        sample_mount,
+        vehicle_id=312,
+        accessories=[
+            VehicleAccessory(accessory_entry=32638, seat_id=1),
+            VehicleAccessory(accessory_entry=32639, seat_id=2),
+        ],
+    )
+    _patch_spell_record(
+        monkeypatch,
+        80000,
+        None,
+        extra={
+            ("CreatureModelData.dbc", 4000): {
+                "ModelName": r"creature\ardenwealdstag\ardenwealdstagmount.m2",
+            },
+            ("CreatureDisplayInfo.dbc", 140000): {"ModelID": 4000},
+            ("Vehicle.dbc", 312): {"SeatID_2": 2764, "SeatID_3": 2765},
+            ("Spell.dbc", 46598): {"ID": 46598},
+        },
+    )
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    result = mpb.validate_job(
+        ctx, [Path("creature/ardenwealdstag/ardenwealdstagmount.m2")]
+    )
+    by_name = {c.name: c for c in result.checks}
+    vendor = by_name["accessory_vendor_matches_special_features"]
+    repair = by_name["accessory_repair_matches_special_features"]
+    assert vendor.passed is False
+    assert vendor.severity == "warning"
+    assert repair.passed is False
+    assert repair.severity == "warning"
+    assert result.passed is True
+
+
+@_requires_dbc_source
 def test_next_free_id_vehicle() -> None:
     """next_free_id 跳过 DBC 已占用 ID 与 YAML 预留 ID。"""
     # 312 被官方占用，结果必须大于 312

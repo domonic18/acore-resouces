@@ -31,7 +31,12 @@ from wow_dbc_tool.schema.registry import SchemaRegistry
 from app.core.config import settings
 from app.schemas.patch import DBCPlan, SQLPlan
 from app.schemas.resource import Mount
-from app.schemas.vehicle import OFFICIAL_MULTI_SEAT_VEHICLE_IDS
+from app.schemas.vehicle import (
+    OFFICIAL_AUCTIONEER_NPCS,
+    OFFICIAL_MULTI_SEAT_VEHICLE_IDS,
+    OFFICIAL_REPAIR_NPCS,
+    OFFICIAL_VENDOR_NPCS,
+)
 
 WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
 MPQCLI = settings.project_root / "tools" / "wow-mpq-cli" / "build" / "bin" / "mpqcli"
@@ -1098,6 +1103,50 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
                 expected={"npc_entry": ct_entry, "spell_id": vehicle.spellclick_spell_id},
                 actual=sc_record or None,
                 message="SQL 计划必须包含与 creature_template.entry 一致的 npc_spellclick_spells 记录",
+            )
+        )
+
+    # 挂件能力与特性标签一致性（工作流 07/08）：商人/修理/拍卖行标签须有
+    # 对应官方挂件（需先配置 vehicle）；未标注却挂官方商贩/拍卖师降级 warning。
+    accessory_entries = [a.accessory_entry for a in vehicle.accessories] if vehicle else []
+    accessory_specs = [
+        (
+            "accessory_vendor_matches_special_features",
+            "自带商人",
+            OFFICIAL_VENDOR_NPCS | OFFICIAL_REPAIR_NPCS,
+            "官方商贩挂件（杂货 32638/32642、材料/修理 32639/32641）",
+            "商贩挂件",
+        ),
+        (
+            "accessory_repair_matches_special_features",
+            "修理",
+            OFFICIAL_REPAIR_NPCS,
+            "修理商挂件（材料/修理 32639/32641）",
+            "修理商挂件",
+        ),
+        (
+            "accessory_auctioneer_matches_special_features",
+            "自带拍卖行",
+            OFFICIAL_AUCTIONEER_NPCS,
+            "拍卖师挂件（联盟 8670、部落 8673、中立 8661）",
+            "拍卖师挂件",
+        ),
+    ]
+    for check_name, tag, npc_pool, expected_text, label in accessory_specs:
+        tagged = tag in resource.special_features
+        matched = sorted({e for e in accessory_entries if e in npc_pool})
+        checks.append(
+            ValidationResult(
+                name=check_name,
+                passed=bool(matched) if tagged else not matched,
+                expected=expected_text if tagged else f"无{label}",
+                actual=matched or "缺失",
+                message=(
+                    f"{tag}标签要求载具挂载对应{label}（需先配置 vehicle）"
+                    if tagged
+                    else f"未标注「{tag}」却挂载了{label}"
+                ),
+                severity="error" if tagged else "warning",
             )
         )
 
