@@ -2,6 +2,12 @@ id: 353
 model_folder: RocketMount4对地同步世界旋转器
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=87251/%E5%AF%B9%E5%9C%B0%E5%90%8C%E6%AD%A5%E4%B8%96%E7%95%8C%E6%97%8B%E8%BD%AC%E5%99%A8)
+  - **多人骑乘挂点**：19（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 对地同步世界旋转器
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 机械
+

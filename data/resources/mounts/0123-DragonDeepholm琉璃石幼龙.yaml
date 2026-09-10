@@ -2,6 +2,8 @@ id: 123
 model_folder: DragonDeepholm琉璃石幼龙
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 25315
   instance: 太阳之井高地

@@ -2,6 +2,8 @@ id: 16
 model_folder: fandralfirescorpion烈焰蝎子坐骑
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：2/15/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 12264
   instance: 熔火之心

@@ -8,6 +8,7 @@ export function usePatchJobDelete() {
     mutationFn: (jobId: string) => deletePatchJob(jobId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patch-jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["patch-batches"] });
     },
   });
 }

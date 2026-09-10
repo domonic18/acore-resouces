@@ -2,6 +2,8 @@ id: 95
 model_folder: Cloudmount筋斗云
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 21537
   instance: 能源舰(英雄模式)

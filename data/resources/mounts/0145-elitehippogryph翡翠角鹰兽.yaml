@@ -2,6 +2,13 @@ id: 145
 model_folder: elitehippogryph翡翠角鹰兽
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
+drop:
+  entry: 23577
+  instance: 祖阿曼
+  boss: 祖尔金
+  rate: 0.03
 official_db:
   name: 翡翠角鹰兽
   spell_icon_name: inv_misc_elitehippogryph

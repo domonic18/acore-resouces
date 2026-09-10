@@ -2,6 +2,8 @@ id: 88
 model_folder: Camel骑乘骆驼
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 7358
   instance: 剃刀高地

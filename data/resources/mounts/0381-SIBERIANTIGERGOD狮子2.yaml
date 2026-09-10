@@ -2,6 +2,12 @@ id: 381
 model_folder: SIBERIANTIGERGOD狮子2
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：经典旧世（TCG 卡牌兑换）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/wotlk/cn/item=33224/%E5%B9%BD%E7%81%B5%E8%99%8E%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 幽灵虎
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 狮子
+

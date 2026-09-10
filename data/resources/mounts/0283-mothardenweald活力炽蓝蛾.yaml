@@ -2,6 +2,12 @@ id: 283
 model_folder: mothardenweald活力炽蓝蛾
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：掉落（荒猎团补给品，炽蓝仙野）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=183800/%E7%90%A5%E7%8F%80%E7%82%BD%E8%93%9D%E8%9B%BE)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 琥珀炽蓝蛾
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 蛾
+

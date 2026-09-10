@@ -2,6 +2,11 @@ id: 10
 model_folder: aqirprophet先知小妖
 debug_passed: true
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 official_db:
   name: 先知小妖
   spell_icon_name: ability_hunter_pet_windserpent
@@ -113,3 +118,4 @@ db:
 resource_type: mount
 mount_type: 陆地坐骑
 subtype: 怪物
+

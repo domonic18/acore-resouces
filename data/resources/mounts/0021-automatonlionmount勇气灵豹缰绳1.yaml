@@ -2,6 +2,8 @@ id: 21
 model_folder: automatonlionmount勇气灵豹缰绳1
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 4275
   instance: 影牙城堡

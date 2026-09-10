@@ -2,6 +2,12 @@ id: 339
 model_folder: Quilin秦薛的永恒魁麟
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.0，海岛探险）
+  - **获取**：掉落（海岛探险）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=163582/%E7%A7%A6%E8%96%9B%E7%9A%84%E6%B0%B8%E6%81%92%E9%AD%81%E9%BA%9F)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 秦薛的永恒魁麟
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 狮子
+

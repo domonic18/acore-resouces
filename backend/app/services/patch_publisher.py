@@ -12,15 +12,35 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
+import re
 import shutil
 from pathlib import Path
 from typing import Any
 
 from app.core.config import settings
+from app.services.patch_distro_client import (
+    DistroPushError,
+    is_distro_configured,
+    push_batch,
+)
 
 MPQ_DIR = settings.project_root / "workspace" / "mpq"
 DIST_DIR = settings.project_root / "workspace" / "dist"
 DEFAULT_START_NUMBER = 5
+_HASH_CHUNK = 1024 * 1024
+
+
+def _digest_file(path: Path) -> tuple[str, str]:
+    """一次遍历同时计算 (sha256, md5)。"""
+    sha = hashlib.sha256()
+    md5 = hashlib.md5()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(_HASH_CHUNK), b""):
+            sha.update(chunk)
+            md5.update(chunk)
+    return sha.hexdigest(), md5.hexdigest()
 
 
 class PatchPublisherError(Exception):
@@ -83,7 +103,26 @@ def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
 
     mpq_source = mpq_sources[0]
     mpq_target = target_dir / f"patch-zhCN-{number}.mpq"
+    patch_sha256, patch_md5 = _digest_file(mpq_source)
     shutil.move(str(mpq_source), str(mpq_target))
+
+    # 回写发布信息到 dist 侧 manifest：序号/文件名/大小/校验和，
+    # 供 MPQ 查看器与分发端推送（distro-push）直接消费
+    target_manifest = target_dir / "manifest.json"
+    if target_manifest.is_file():
+        try:
+            data = json.loads(target_manifest.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                data["patch_number"] = number
+                data["patch_file"] = mpq_target.name
+                data["patch_size_bytes"] = mpq_target.stat().st_size
+                data["patch_sha256"] = patch_sha256
+                data["patch_md5"] = patch_md5
+                target_manifest.write_text(
+                    json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+                )
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"[警告] 批次 {batch_dir.name} manifest 回写发布信息失败：{e}")
 
     try:
         shutil.rmtree(batch_dir)
@@ -93,6 +132,18 @@ def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
     return mpq_target
 
 
+def _max_published_number(dist_dir: Path) -> int:
+    """扫描 dist 现有 patch-zhCN-N.mpq 的最大序号（无则 0）。"""
+    best = 0
+    if not dist_dir.exists():
+        return best
+    for mpq in dist_dir.glob("*/patch-zhCN-*.mpq"):
+        m = re.search(r"patch-zhCN-(\d+)\.mpq$", mpq.name)
+        if m:
+            best = max(best, int(m.group(1)))
+    return best
+
+
 def publish_patches(
     start_number: int = DEFAULT_START_NUMBER,
     dry_run: bool = False,
@@ -100,12 +151,14 @@ def publish_patches(
     """发布 MPQ 补丁到分发目录。
 
     Args:
-        start_number: 补丁编号起始值，默认固定为 5。
+        start_number: 补丁编号起始值下限；实际从 max(start_number,
+            dist 现有最大序号 + 1) 起编，确保新补丁序号始终大于已发布补丁。
         dry_run: 为 True 时只预览，不执行发布。
 
     Returns:
         包含 published, skipped, next_number 的字典。
     """
+    start_number = max(start_number, _max_published_number(DIST_DIR) + 1)
     batches = collect_source_batches()
     if not batches:
         print("workspace/mpq/ 中没有可发布的批次。")
@@ -140,13 +193,27 @@ def publish_patches(
     if skipped:
         print(f"\n已跳过（已发布）: {', '.join(skipped)}")
 
+    pushed: list[str] = []
+    push_failed: list[str] = []
     if dry_run:
         print("\n干跑完成，未执行任何发布。")
     else:
         print(f"\n共发布 {len(published)} 个批次。")
+        if published and is_distro_configured():
+            print("\n推送到分发端（acore-patch-distro）...")
+            for name, mpq_path in published:
+                try:
+                    result = push_batch(mpq_path.parent)
+                    pushed.append(name)
+                    print(f"  已推送 {name}（补丁 #{result['patch_number']}）")
+                except DistroPushError as e:
+                    push_failed.append(name)
+                    print(f"  [警告] 推送 {name} 失败（不影响本地发布，可稍后 distro-push 重试）：{e}")
 
     return {
         "published": [{"batch": name, "path": str(path)} for name, path in published],
         "skipped": skipped,
         "next_number": next_number,
+        "distro_pushed": pushed,
+        "distro_push_failed": push_failed,
     }

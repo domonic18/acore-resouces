@@ -606,6 +606,23 @@ def test_build_sql_plan_loot_chance_percent_conversion(sample_mount: Mount) -> N
     assert repr(loot_table.records[0]["Chance"]) == "3.5"
 
 
+def test_build_sql_plan_gameobject_drop_uses_gameobject_loot_table(sample_mount: Mount) -> None:
+    """DropInfo.source=gameobject 时生成 gameobject_loot_template 而非 creature 表。"""
+    sample_mount.drop = DropInfo(
+        source="gameobject", entry=21764, instance="英雄地下城", boss="加固的邪铁宝箱", rate=0.02
+    )
+    plan = build_sql_plan(sample_mount)
+
+    assert next((t for t in plan.tables if t.name == "creature_loot_template"), None) is None
+    loot_table = next(t for t in plan.tables if t.name == "gameobject_loot_template")
+    record = loot_table.records[0]
+    assert record["Entry"] == 21764
+    assert record["Item"] == 91000
+    assert record["Chance"] == 2.0
+    assert record["MinCount"] == 1
+    assert record["MaxCount"] == 1
+
+
 # ---------------------------------------------------------------------------
 # generate_sql：单 job 子目录写入
 # ---------------------------------------------------------------------------
@@ -701,6 +718,30 @@ def test_generate_sql_writes_loot_when_drop_present(
     # add.sql 不应包含 loot 表
     add_content = add_file.read_text(encoding="utf-8")
     assert "creature_loot_template" not in add_content
+
+
+def test_generate_sql_routes_gameobject_loot_to_loot_file(
+    sample_mount: Mount,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """source=gameobject 的掉落写入 _mount_loot.sql，DELETE 子句使用 Entry+Item。"""
+    _, sql_mounts_dir = _patch_sql_dirs(tmp_path, monkeypatch)
+    sample_mount.drop = DropInfo(source="gameobject", entry=21764, rate=0.02)
+
+    job_dir = tmp_path / "patch-jobs" / "mount_0003"
+    ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
+
+    written = mpb.generate_sql(ctx)
+
+    assert len(written) == 2
+    add_file, loot_file = written
+    loot_content = loot_file.read_text(encoding="utf-8")
+    assert "INSERT INTO `gameobject_loot_template`" in loot_content
+    assert "`Entry` = 21764 AND `Item` = 91000" in loot_content
+
+    add_content = add_file.read_text(encoding="utf-8")
+    assert "gameobject_loot_template" not in add_content
 
 
 def test_generate_sql_skips_when_item_entry_exists(

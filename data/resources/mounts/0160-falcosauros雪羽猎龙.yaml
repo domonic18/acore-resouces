@@ -2,6 +2,12 @@ id: 160
 model_folder: falcosauros雪羽猎龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.1，小盗龙养成任务线）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=137579/%E7%81%AB%E7%BE%BD%E6%81%90%E5%98%B4%E9%BE%99)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 火羽恐嘴龙
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 猎龙
+

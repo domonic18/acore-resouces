@@ -2,6 +2,12 @@ id: 271
 model_folder: mechagonspidertank麦卡贡维和者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.2，麦卡贡）
+  - **获取**：掉落（HK-8型空中压制单位，麦卡贡行动（史诗））
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=168826/%E9%BA%A6%E5%8D%A1%E8%B4%A1%E7%BB%B4%E5%92%8C%E8%80%85)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 麦卡贡维和者
@@ -118,3 +124,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

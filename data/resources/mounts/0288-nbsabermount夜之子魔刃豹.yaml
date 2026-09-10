@@ -2,6 +2,12 @@ id: 288
 model_folder: nbsabermount夜之子魔刃豹
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x，苏拉玛）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=156487/%E5%A4%9C%E4%B9%8B%E5%AD%90%E9%AD%94%E5%88%83%E8%B1%B9)
+  - **多人骑乘挂点**：15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 夜之子魔刃豹
@@ -114,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 豹子
+

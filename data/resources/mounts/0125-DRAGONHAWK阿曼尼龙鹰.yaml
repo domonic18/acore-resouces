@@ -2,6 +2,12 @@ id: 125
 model_folder: DRAGONHAWK阿曼尼龙鹰
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.4）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=98104/%E7%BA%A2%E8%89%B2%E8%A3%85%E7%94%B2%E9%BE%99%E9%B9%B0)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 红色装甲龙鹰
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 四星
+

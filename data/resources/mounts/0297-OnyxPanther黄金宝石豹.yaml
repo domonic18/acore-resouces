@@ -2,6 +2,12 @@ id: 297
 model_folder: OnyxPanther黄金宝石豹
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.0，珠宝加工制造）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=83089/%E6%97%A5%E9%95%BF%E7%9F%B3%E7%8C%8E%E8%B1%B9)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 日长石猎豹
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 豹子
+

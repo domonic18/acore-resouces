@@ -37,9 +37,11 @@ class ResourceUpdateRequest(BaseModel):
     spell_icon_name: str | None = None
     spell_wowhead_url: str | None = None
     item_wowhead_url: str | None = None
+    notes: str | None = None
     mount_type: str | None = None
     star_rating: str | None = None
     subtype: str | None = None
+    special_features: list[str] | None = None
     rarity: str | None = None
     drop: DropUpdate | None = None
     dbc_item: Item | None = None
@@ -187,6 +189,7 @@ def list_resources_endpoint(
             for r in resources
             if search_lower in r.model_folder.lower()
             or (r.official_db.name and search_lower in r.official_db.name.lower())
+            or (r.notes and search_lower in r.notes.lower())
         ]
 
     if added is not None:
@@ -261,12 +264,19 @@ def update_resource_endpoint(
         resource.official_db.spell_wowhead_url = body.spell_wowhead_url
     if "item_wowhead_url" in body.model_fields_set:
         resource.official_db.item_wowhead_url = body.item_wowhead_url
+    if "notes" in body.model_fields_set:
+        resource.notes = body.notes or None
     if "mount_type" in body.model_fields_set and resource.resource_type == "mount":
         resource.mount_type = body.mount_type
     if "star_rating" in body.model_fields_set and resource.resource_type == "mount":
         resource.star_rating = body.star_rating
     if "subtype" in body.model_fields_set and resource.resource_type == "mount":
         resource.subtype = body.subtype
+    if (
+        "special_features" in body.model_fields_set
+        and resource.resource_type == "mount"
+    ):
+        resource.special_features = body.special_features or []
     if "rarity" in body.model_fields_set and resource.resource_type in ("pet", "npc"):
         resource.rarity = body.rarity
     if "drop" in body.model_fields_set and body.drop is not None:

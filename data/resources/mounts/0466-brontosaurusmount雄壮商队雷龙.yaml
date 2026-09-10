@@ -2,6 +2,11 @@ id: 466
 model_folder: brontosaurusmount雄壮商队雷龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
+  - **多人骑乘挂点**：15/16/19/20（原版即多人坐骑（BFA 雷龙，三人+拍卖行），挂点位置可信）
 drop: {}
 official_db:
   name: 幼年商队雷龙
@@ -114,3 +119,5 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 雷龙
+special_features: [三人骑乘, 自带商人, 自带拍卖行]
+

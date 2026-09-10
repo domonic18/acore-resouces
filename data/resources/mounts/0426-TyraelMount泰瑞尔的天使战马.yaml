@@ -2,6 +2,12 @@ id: 426
 model_folder: TyraelMount泰瑞尔的天使战马
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.3，年费通行证赠品）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=76755/%E6%B3%B0%E7%91%9E%E5%B0%94%E7%9A%84%E5%A4%A9%E4%BD%BF%E6%88%98%E9%A9%AC)
+  - **多人骑乘挂点**：1/15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 泰瑞尔的天使战马
@@ -114,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 马
+

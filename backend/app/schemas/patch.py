@@ -98,3 +98,44 @@ class PatchJobUpdateRequest(BaseModel):
     status: PatchJobStatus | None = None
     artifacts: dict[str, str] | None = None
     summary: str | None = None
+
+
+class PatchBatchJobAudit(BaseModel):
+    """批次内单个任务的审计摘要（文件/表级聚合，不含字段级 before/after）。"""
+
+    model_config = ConfigDict(extra="allow")
+
+    dbc_files: list[dict[str, Any]] = Field(default_factory=list)
+    sql_file: str | None = None
+    sql_tables: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class PatchBatchJob(BaseModel):
+    """批次内单个任务的精简条目。"""
+
+    model_config = ConfigDict(extra="allow")
+
+    job_id: str
+    resource_id: int
+    resource_name: str
+    status: PatchJobStatus
+    completed_at: str | None = None
+    summary: str | None = None
+    audit: PatchBatchJobAudit | None = None
+
+
+class PatchBatch(BaseModel):
+    """一次导出构建（MPQ 批次）的聚合视图。
+
+    batch_id 为 MPQ 目录时间戳（YYYYMMDD_HHMMSS）；
+    从未构建的任务归入 "pending" 伪批次。
+    """
+
+    model_config = ConfigDict(extra="allow")
+
+    batch_id: str
+    created_at: str | None = None
+    status: PatchJobStatus
+    job_count: int
+    output: dict[str, Any] = Field(default_factory=dict)
+    jobs: list[PatchBatchJob] = Field(default_factory=list)

@@ -2,6 +2,12 @@ id: 400
 model_folder: stingray2无尽之海鳐鱼
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.0）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=163131/%E6%97%A0%E5%B0%BD%E4%B9%8B%E6%B5%B7%E9%B3%90%E9%B1%BC)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 无尽之海鳐鱼
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 鳐鱼
+

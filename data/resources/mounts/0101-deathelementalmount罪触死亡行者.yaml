@@ -2,6 +2,12 @@ id: 101
 model_folder: deathelementalmount罪触死亡行者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=182717/%E7%BD%AA%E8%A7%A6%E6%AD%BB%E4%BA%A1%E8%A1%8C%E8%80%85)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 罪触死亡行者
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 怪物
+

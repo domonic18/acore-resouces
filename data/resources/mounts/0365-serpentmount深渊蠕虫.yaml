@@ -2,6 +2,12 @@ id: 365
 model_folder: serpentmount深渊蠕虫
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.2，萨格拉斯之墓）
+  - **获取**：掉落（主母萨丝琳，萨格拉斯之墓）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=143643/%E6%B7%B1%E6%B8%8A%E8%A0%95%E8%99%AB)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 深渊蠕虫
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 虫
+

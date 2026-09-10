@@ -2,6 +2,13 @@ id: 282
 model_folder: mothardenweald活力炽蓝蛾
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：商人出售（柯迪纳留斯，炽蓝仙野，需 玛拉斯缪斯 崇敬）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=183801/%E6%B4%BB%E5%8A%9B%E7%82%BD%E8%93%9D%E8%9B%BE)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 活力炽蓝蛾
@@ -115,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 蛾
+

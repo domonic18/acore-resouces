@@ -2,6 +2,13 @@ id: 188
 model_folder: GiantBoar霜原野猪
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.x）
+  - **获取**：商人出售（加兹瑞克斯·轮锁/米米·响泡，暴风之盾/战争之矛，需 热砂保护协会 崇拜）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116672/%E9%A9%AF%E5%85%BB%E7%9A%84%E5%88%80%E8%84%8A%E9%87%8E%E7%8C%AA)
+  - **多人骑乘挂点**：2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 驯养的刀脊野猪
@@ -115,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 猪
+

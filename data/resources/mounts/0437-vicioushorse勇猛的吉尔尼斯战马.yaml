@@ -2,6 +2,13 @@ id: 437
 model_folder: vicioushorse勇猛的吉尔尼斯战马
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（PvP 邪恶鞍具）
+  - **获取**：商人出售（通灵领主赛普，暴风城）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=140353/%E5%8B%87%E7%8C%9B%E7%9A%84%E5%90%89%E5%B0%94%E5%B0%BC%E6%96%AF%E6%88%98%E9%A9%AC)
+  - **多人骑乘挂点**：1/2/15/16/19/20（以主模型 vicioushorse.m2 为准；位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 勇猛的吉尔尼斯战马
@@ -113,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 马
+

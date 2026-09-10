@@ -36,6 +36,7 @@ export interface Resource {
   added: boolean;
   created_at: string | null;
   updated_at: string | null;
+  notes?: string | null;
   drop: DropInfo;
   official_db: OfficialDbInfo;
   dbc: DbcInfo;
@@ -44,6 +45,7 @@ export interface Resource {
   star_rating?: string | null;
   subtype?: string | null;
   rarity?: string | null;
+  special_features?: string[];
   tags?: string[];
   duplicate_issues?: DuplicateIssue[];
 }
@@ -54,9 +56,11 @@ export interface ResourceUpdate {
   spell_icon_name?: string | null;
   spell_wowhead_url?: string | null;
   item_wowhead_url?: string | null;
+  notes?: string | null;
   mount_type?: string | null;
   star_rating?: string | null;
   subtype?: string | null;
+  special_features?: string[];
   rarity?: string | null;
   drop?: Partial<DropInfo>;
   dbc_item?: Record<string, unknown>;
@@ -142,6 +146,43 @@ export interface PatchExportResponse {
   total: number;
 }
 
+export interface PatchBatchJobAudit {
+  /** 变更的 DBC 文件及记录数：[{ dbc_file, record_count }] */
+  dbc_files: { dbc_file: string; record_count: number }[];
+  sql_file: string | null;
+  /** SQL 写入的表及记录数：[{ name, record_count }] */
+  sql_tables: { name: string; record_count: number }[];
+}
+
+export interface PatchBatchJob {
+  job_id: string;
+  resource_id: number;
+  resource_name: string;
+  status: "requested" | "generated" | "applied" | "failed";
+  completed_at: string | null;
+  summary: string | null;
+  audit: PatchBatchJobAudit | null;
+}
+
+export interface PatchBatch {
+  /** MPQ 目录时间戳（YYYYMMDD_HHMMSS）；未构建任务为 "pending" */
+  batch_id: string;
+  created_at: string | null;
+  status: "requested" | "generated" | "applied" | "failed";
+  job_count: number;
+  output: Record<string, unknown> & {
+    mpq?: string;
+    manifest?: string;
+    changelog?: string;
+    readme?: string;
+    dbc_dir?: string;
+    sql_files?: string[];
+    validation_report?: string;
+    audit?: string;
+  };
+  jobs: PatchBatchJob[];
+}
+
 export interface PatchBuildResult {
   jobs: string[];
   sql_files: string[];
@@ -152,12 +193,25 @@ export interface PatchBuildResult {
   dry_run: boolean;
 }
 
+export interface BuildLogEntry {
+  ts: string;
+  message: string;
+}
+
+export interface BuildProgress {
+  current: number;
+  total: number;
+  current_job: string | null;
+}
+
 export interface BuildStatus {
   running: boolean;
   started_at: string | null;
   finished_at: string | null;
   result: PatchBuildResult | null;
   error: string | null;
+  log: BuildLogEntry[];
+  progress: BuildProgress;
 }
 
 export interface PublishResult {

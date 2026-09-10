@@ -2,6 +2,12 @@ id: 109
 model_folder: deathwargmount碎愿者加尔贡
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=180581/%E7%A2%8E%E6%84%BF%E8%80%85%E5%8A%A0%E5%B0%94%E8%B4%A1)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 碎愿者加尔贡
@@ -114,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 熊
+

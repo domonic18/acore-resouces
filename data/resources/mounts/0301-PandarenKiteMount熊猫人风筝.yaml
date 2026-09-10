@@ -2,6 +2,12 @@ id: 301
 model_folder: PandarenKiteMount熊猫人风筝
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=91802/%E7%BF%A0%E7%BB%BF%E7%86%8A%E7%8C%AB%E4%BA%BA%E9%A3%8E%E7%AD%9D%E7%BA%BF)
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 翠绿熊猫人风筝
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 风筝
+

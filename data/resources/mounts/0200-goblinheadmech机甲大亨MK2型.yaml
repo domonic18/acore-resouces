@@ -2,6 +2,8 @@ id: 200
 model_folder: goblinheadmech机甲大亨MK2型
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 19516
   instance: 风暴要塞

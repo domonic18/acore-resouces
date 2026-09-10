@@ -2,6 +2,8 @@ id: 132
 model_folder: DragonTurtle绿色龙龟
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 21214
   instance: 毒蛇神殿

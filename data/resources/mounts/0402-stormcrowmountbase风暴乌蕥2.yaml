@@ -2,6 +2,12 @@ id: 402
 model_folder: stormcrowmountbase风暴乌蕥2
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=232639/%E8%90%A8%E4%BC%8A%E5%B0%94-%E6%B5%B7%E5%A6%96%E4%B9%8B%E7%9B%AE)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 萨伊尔，海妖之目
@@ -114,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 凤凰
+

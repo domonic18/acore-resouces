@@ -2,6 +2,12 @@ id: 124
 model_folder: DRAGONHAWK阿曼尼龙鹰
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：巫妖王之怒（3.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/wotlk/cn/item=44842/%E7%BA%A2%E8%89%B2%E9%BE%99%E9%B9%B0%E5%9D%90%E9%AA%91)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 红色龙鹰
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙鹰
+

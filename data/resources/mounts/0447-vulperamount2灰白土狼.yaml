@@ -2,6 +2,13 @@ id: 447
 model_folder: vulperamount2灰白土狼
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3，狐人种族坐骑）
+  - **获取**：商人出售（囤积者杰娜，沃顿，需 沃顿奈 崇拜）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=161773/%E7%81%B0%E7%99%BD%E5%9C%9F%E7%8B%BC%E7%9A%84%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 灰白土狼
@@ -115,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 一星
 subtype: 狼
+

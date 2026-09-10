@@ -2,6 +2,12 @@ id: 266
 model_folder: mawguardhandmount巴赫麦特之手缰绳
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.1）
+  - **获取**：掉落（托加斯特的折磨者，噬渊）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=185973/%E8%8A%AD%E7%BE%8E%E5%85%B9%E6%8B%89%E4%B9%8B%E9%93%BE)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 芭美兹拉之手
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 怪物
+

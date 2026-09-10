@@ -2,6 +2,12 @@ id: 453
 model_folder: warriormount愤怒战马1
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 法术页](https://www.wowhead.com/cn/spell=232412)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 扭曲虚空之王的混沌愤怒战马
@@ -117,3 +123,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 马
+

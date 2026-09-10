@@ -2,6 +2,12 @@ id: 376
 model_folder: sharkraymount致命通灵鳐
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：掉落（邪斑鱼卵）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=152841/%E9%82%AA%E5%85%89%E6%B3%95%E5%8A%9B%E9%B3%90)
+  - **多人骑乘挂点**：15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 邪光法力鳐
@@ -117,3 +123,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 鳐
+

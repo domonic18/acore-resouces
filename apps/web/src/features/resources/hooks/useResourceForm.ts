@@ -6,6 +6,7 @@ export interface FormState {
   mount_type: string;
   star_rating: string;
   subtype: string;
+  special_features: string[];
   rarity: string;
   drop_entry: string | number;
   drop_instance: string;
@@ -13,6 +14,7 @@ export interface FormState {
   drop_rate: string | number;
   debug_passed: boolean;
   added: boolean;
+  notes: string;
 }
 
 export function buildForm(resource?: Resource): FormState {
@@ -21,6 +23,7 @@ export function buildForm(resource?: Resource): FormState {
     mount_type: resource?.mount_type || "",
     star_rating: resource?.star_rating || "",
     subtype: resource?.subtype || "",
+    special_features: resource?.special_features ?? [],
     rarity: resource?.rarity || "",
     drop_entry: resource?.drop.entry ?? "",
     drop_instance: resource?.drop.instance ?? "",
@@ -28,6 +31,7 @@ export function buildForm(resource?: Resource): FormState {
     drop_rate: resource?.drop.rate ?? "",
     debug_passed: resource?.debug_passed ?? false,
     added: resource?.added ?? false,
+    notes: resource?.notes || "",
   };
 }
 

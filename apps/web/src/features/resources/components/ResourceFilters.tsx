@@ -2,6 +2,7 @@ import { Filter } from "lucide-react";
 import {
   STATUS_TAG_OPTIONS,
   RESOURCE_TAG_OPTIONS,
+  SPECIAL_FEATURE_OPTIONS,
   getUnofficialLabel,
 } from "../lib/resource-list";
 import type { ResourceTagValue } from "../lib/resource-list";
@@ -14,7 +15,7 @@ interface ResourceFiltersProps {
   tierOptions: string[];
   tagOptions: ResourceTagValue[];
   updateParam: (key: string, value: string) => void;
-  toggleParamValue: (key: "status" | "tags", value: string) => void;
+  toggleParamValue: (key: "status" | "tags" | "features", value: string) => void;
 }
 
 function FilterTag({
@@ -54,6 +55,9 @@ export function ResourceFilters({
   );
   const selectedTags = new Set(
     (searchParams.get("tags") || "").split(",").filter(Boolean),
+  );
+  const selectedFeatures = new Set(
+    (searchParams.get("features") || "").split(",").filter(Boolean),
   );
 
   const handleDateChange = (start: string, end: string) => {
@@ -153,6 +157,18 @@ export function ResourceFilters({
                 }
                 active={selectedTags.has(opt.value)}
                 onClick={() => toggleParamValue("tags", opt.value)}
+              />
+            ))}
+          </div>
+        )}
+        {typeParam === "mount" && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {SPECIAL_FEATURE_OPTIONS.map((opt) => (
+              <FilterTag
+                key={opt.value}
+                label={opt.label}
+                active={selectedFeatures.has(opt.value)}
+                onClick={() => toggleParamValue("features", opt.value)}
               />
             ))}
           </div>

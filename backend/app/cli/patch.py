@@ -135,6 +135,67 @@ def publish_patch(
             console.print(f"  {item['batch']} -> {item['path']}")
     if result["skipped"]:
         console.print(f"[yellow]已跳过（已发布）: {', '.join(result['skipped'])}[/yellow]")
+    if result.get("distro_pushed"):
+        console.print(f"[green]已推送分发端: {', '.join(result['distro_pushed'])}[/green]")
+    if result.get("distro_push_failed"):
+        console.print(
+            f"[yellow]推送分发端失败（可稍后 patch distro-push 重试）: "
+            f"{', '.join(result['distro_push_failed'])}[/yellow]"
+        )
+
+
+@app.command("distro-push", help="推送已发布批次到分发端（acore-patch-distro）")
+def distro_push(
+    all_batches: bool = typer.Option(False, "--all", help="推送 dist 下全部批次（含存量迁移）"),
+    batch: str | None = typer.Option(None, "--batch", help="指定批次时间戳，如 20260908_055924"),
+    base_url: str | None = typer.Option(None, "--base-url", help="覆盖 DISTRO_BASE_URL"),
+    api_key: str | None = typer.Option(None, "--api-key", help="覆盖 DISTRO_API_KEY"),
+) -> None:
+    """把 workspace/dist/ 下已发布批次推送到分发端（两步协议，可重复执行重试）。
+
+    未配置 DISTRO_BASE_URL/DISTRO_API_KEY 时可用 --base-url/--api-key 临时指定。
+    """
+    if not all_batches and not batch:
+        console.print("[red]请指定 --all 或 --batch[/red]")
+        raise typer.Exit(1)
+
+    from app.core.config import settings as app_settings
+    from app.services.patch_distro_client import DistroPushError, is_distro_configured, push_batch
+
+    eff_base = base_url or app_settings.distro_base_url
+    eff_key = api_key or app_settings.distro_api_key
+    if not (eff_base and eff_key) and not is_distro_configured():
+        console.print("[red]未配置分发端（DISTRO_BASE_URL / DISTRO_API_KEY）[/red]")
+        raise typer.Exit(1)
+
+    dist_dir = app_settings.workspace_dir / "dist"
+    if batch:
+        dirs = [dist_dir / batch]
+    else:
+        dirs = [d for d in sorted(dist_dir.iterdir()) if d.is_dir()] if dist_dir.exists() else []
+
+    dirs = [d for d in dirs if list(d.glob("patch-zhCN-*.mpq"))]
+    if not dirs:
+        console.print("[yellow]dist 下没有可推送的批次[/yellow]")
+        raise typer.Exit(1)
+
+    ok, failed = 0, 0
+    for d in dirs:
+        try:
+            result = push_batch(d, base_url=eff_base or None, api_key=eff_key or None)
+        except DistroPushError as e:
+            failed += 1
+            console.print(f"[red]推送 {d.name} 失败: {e}[/red]")
+            continue
+        ok += 1
+        console.print(
+            f"[green]已推送 {d.name}（补丁 #{result['patch_number']}，"
+            f"{_format_size(result['size_bytes'])}）[/green]"
+        )
+
+    if failed:
+        raise typer.Exit(1)
+    console.print(f"共推送 {ok} 个批次。")
 
 
 @app.command("list", help="列出补丁任务")

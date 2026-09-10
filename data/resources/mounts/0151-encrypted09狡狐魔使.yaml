@@ -2,6 +2,8 @@ id: 151
 model_folder: encrypted09狡狐魔使
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 22930
   instance: 法力陵墓(英雄模式)

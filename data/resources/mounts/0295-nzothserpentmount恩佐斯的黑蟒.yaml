@@ -2,6 +2,12 @@ id: 295
 model_folder: nzothserpentmount恩佐斯的黑蟒
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3）
+  - **获取**：掉落（邮件吞噬者，惊魂幻象）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=174653/%E9%82%AE%E4%BB%B6%E5%90%9E%E5%99%AC%E8%80%85)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 邮件吞噬者
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 蟒
+

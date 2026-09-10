@@ -2,6 +2,11 @@ id: 110
 model_folder: deathwingdungeon死亡飞龙坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=142552/%E7%87%83%E7%83%AC%E5%B7%A8%E9%BE%99)
 drop: {}
 official_db:
   name: 燃烬巨龙
@@ -115,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙
+

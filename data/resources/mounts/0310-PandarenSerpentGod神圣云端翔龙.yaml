@@ -2,6 +2,12 @@ id: 310
 model_folder: PandarenSerpentGod神圣云端翔龙
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：熊猫人之谜（5.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=87773/%E7%A5%9E%E5%9C%A3%E7%8C%A9%E7%BA%A2%E4%BA%91%E7%AB%AF%E7%BF%94%E9%BE%99%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 神圣猩红云端翔龙
@@ -117,3 +123,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 翔龙
+

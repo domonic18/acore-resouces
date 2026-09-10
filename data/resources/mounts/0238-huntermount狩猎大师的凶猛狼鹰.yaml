@@ -2,6 +2,12 @@ id: 238
 model_folder: huntermount狩猎大师的凶猛狼鹰
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.2，职业坐骑）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=142227/%E5%BF%A0%E8%AF%9A%E7%8B%BC%E9%B9%B0%E7%9A%84%E4%BF%A1%E8%B5%96)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 狩猎大师的忠诚狼鹰
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 双足飞龙
+

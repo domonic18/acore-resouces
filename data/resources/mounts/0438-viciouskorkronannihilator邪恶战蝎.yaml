@@ -2,6 +2,13 @@ id: 438
 model_folder: viciouskorkronannihilator邪恶战蝎
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（PvP 邪恶鞍具）
+  - **获取**：商人出售（亡灵卫兵奈萨里安，奥格瑞玛）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=142437/%E9%82%AA%E6%81%B6%E6%88%98%E8%9D%8E)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（以主模型 viciouskorkronannihilator.m2 为准；位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 邪恶战蝎
@@ -113,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 蝎子
+

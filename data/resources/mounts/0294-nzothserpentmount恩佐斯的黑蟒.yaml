@@ -2,6 +2,12 @@ id: 294
 model_folder: nzothserpentmount恩佐斯的黑蟒
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=174654/%E6%81%A9%E4%BD%90%E6%96%AF%E7%9A%84%E9%BB%91%E8%9F%92)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 恩佐斯的黑蟒
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 蟒
+

@@ -2,6 +2,13 @@ id: 401
 model_folder: stingray2无尽之海鳐鱼
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：商人出售（格丽萨·日露，暗月岛）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=142398/%E6%9A%97%E6%B0%B4%E9%B3%90%E9%B1%BC)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 暗水鳐鱼
@@ -116,3 +123,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 二星
 subtype: 鳐鱼
+

@@ -18,6 +18,7 @@ import json
 import re
 import shutil
 import subprocess
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
@@ -44,6 +45,22 @@ REQUIRED_DBC_FILES = [
     "Spell.dbc",
     "Item.dbc",
 ]
+
+_active_log: Callable[[str], None] | None = None
+_active_progress: Callable[[int, int, str | None], None] | None = None
+
+
+def _log(msg: str = "") -> None:
+    """构建进度输出：CLI 保持 print 行为，同时转发给回调（如 web 构建日志）。"""
+    print(msg)
+    if _active_log is not None:
+        _active_log(msg)
+
+
+def _progress(current: int, total: int, job_id: str | None = None) -> None:
+    """上报构建进度（当前序号 / 总数 / 当前任务 ID）。"""
+    if _active_progress is not None:
+        _active_progress(current, total, job_id)
 
 
 def _load_wow_dbc_schemas() -> None:
@@ -192,7 +209,7 @@ def ensure_sql_symlink() -> None:
         raise FileNotFoundError(f"AzerothCore updates 目录不存在: {real_dir}")
 
     SQL_LINK_DIR.symlink_to(real_dir, target_is_directory=True)
-    print(f"创建软链接: {SQL_LINK_DIR} -> {real_dir}")
+    _log(f"创建软链接: {SQL_LINK_DIR} -> {real_dir}")
 
 
 def sanitize_model_folder(name: str) -> str:
@@ -272,7 +289,7 @@ def find_jobs(
         try:
             contexts.append(build_job_context(d))
         except MountPatchBuilderError as exc:
-            print(f"  警告：跳过任务 {d.name}: {exc}")
+            _log(f"  警告：跳过任务 {d.name}: {exc}")
 
     if not contexts:
         raise MountPatchBuilderError("没有可处理的任务。")
@@ -469,7 +486,7 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
     resource = ctx.resource
     mount_id = int(resource.id or 0)
     if mount_id <= 0:
-        print(f"  跳过：资源缺少合法 ID ({ctx.job_id})")
+        _log(f"  跳过：资源缺少合法 ID ({ctx.job_id})")
         return []
 
     slug = sanitize_model_folder(str(resource.model_folder or ctx.job_id))
@@ -478,14 +495,14 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
 
     item_entry = _job_item_entry(ctx)
     if item_entry is not None and item_entry in existing_entries:
-        print(f"  跳过已有 SQL 的坐骑: {mount_name} (item_template entry={item_entry})")
+        _log(f"  跳过已有 SQL 的坐骑: {mount_name} (item_template entry={item_entry})")
         return []
 
     add_tables: list[dict[str, Any]] = []
     loot_tables: list[dict[str, Any]] = []
     for table in ctx.sql_plan.tables:
         table_dict = table.model_dump()
-        if table.name == "creature_loot_template":
+        if table.name in ("creature_loot_template", "gameobject_loot_template"):
             loot_tables.append(table_dict)
         else:
             add_tables.append(table_dict)
@@ -563,7 +580,7 @@ def _build_sql_file_content(
 
 def _build_delete_where_clause(table_name: str, record: dict[str, Any]) -> str | None:
     """根据表名构造 DELETE WHERE 子句；不支持主键推断时返回 None。"""
-    if table_name == "creature_loot_template":
+    if table_name in ("creature_loot_template", "gameobject_loot_template"):
         entry = record.get("Entry")
         item = record.get("Item")
         if entry is None or item is None:
@@ -1038,6 +1055,8 @@ def build_mount_patches(
     job_ids: list[str] | None = None,
     dry_run: bool = False,
     force: bool = False,
+    log: Callable[[str], None] | None = None,
+    progress: Callable[[int, int, str | None], None] | None = None,
 ) -> dict[str, Any]:
     """批量构建坐骑补丁的入口函数。
 
@@ -1046,6 +1065,8 @@ def build_mount_patches(
         job_ids: 指定任务 ID 列表。
         dry_run: 为 True 时只做校验并把计划写入任务目录 plans/，不修改任何源文件。
         force: 为 True 时已存在的 DBC 记录按计划强制重写，SQL 跳过历史条目检查，用于全量重建。
+        log: 可选日志回调，接收构建进度文本（如 web 端构建日志缓冲）。
+        progress: 可选进度回调，签名 (current, total, job_id)。
 
     Returns:
         包含 jobs, sql_files, mpq_path, report_path 的字典。
@@ -1054,43 +1075,60 @@ def build_mount_patches(
         DBCConflictError: 检测到 DBC ID 冲突。
         MountPatchBuilderError: 其他构建错误。
     """
+    global _active_log, _active_progress
+    _active_log, _active_progress = log, progress
+    try:
+        return _build_mount_patches_impl(all_requested, job_ids, dry_run, force)
+    finally:
+        _active_log = None
+        _active_progress = None
+
+
+def _build_mount_patches_impl(
+    all_requested: bool,
+    job_ids: list[str] | None,
+    dry_run: bool,
+    force: bool,
+) -> dict[str, Any]:
     contexts, rebuild_jobs = find_jobs(settings.patch_jobs_dir, all_requested, job_ids)
 
-    print(f"将处理 {len(contexts)} 个任务：")
+    _log(f"将处理 {len(contexts)} 个任务：")
     for ctx in contexts:
         marker = "（重建）" if ctx.job_id in rebuild_jobs else ""
-        print(f"  - {ctx.job_id}{marker}")
-    print()
+        _log(f"  - {ctx.job_id}{marker}")
+    _log()
 
     grouped_ops = collect_dbc_operations(contexts)
 
-    print("检查 DBC ID 冲突...")
+    _log("检查 DBC ID 冲突...")
     conflicts = check_conflicts(grouped_ops, rebuild_jobs)
     if conflicts:
-        print("发现 ID 冲突：")
+        _log("发现 ID 冲突：")
         for job_id, items in conflicts.items():
             details = ", ".join(f"{dbc}#{rid}" for dbc, rid in items)
-            print(f"  {job_id}: {details}")
+            _log(f"  {job_id}: {details}")
         raise DBCConflictError("存在 DBC ID 冲突，停止构建。")
-    print("无冲突。\n")
+    _log("无冲突。\n")
 
     if dry_run:
         _dump_plans(contexts)
-        print(f"审查计划已写入各任务目录 plans/ 子目录（共 {len(contexts)} 个任务）。")
-        print("确认无误后，去掉 --dry-run 正式执行。\n")
+        _log(f"审查计划已写入各任务目录 plans/ 子目录（共 {len(contexts)} 个任务）。")
+        _log("确认无误后，去掉 --dry-run 正式执行。\n")
     else:
         _clear_plans(contexts)
 
-    print("应用 DBC 操作（直接编辑源 DBC）...")
+    _log("应用 DBC 操作（直接编辑源 DBC）...")
     dbc_audit_records = apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
 
-    print("生成坐骑 SQL（每只坐骑独立目录）...")
+    _log("生成坐骑 SQL（每只坐骑独立目录）...")
     sql_files: list[Path] = []
     sql_entries: list[dict[str, Any]] = []
-    for ctx in contexts:
+    _progress(0, len(contexts), None)
+    for index, ctx in enumerate(contexts, start=1):
+        _progress(index, len(contexts), ctx.job_id)
         written = generate_sql(ctx, dry_run=dry_run, force=force)
         for f in written:
-            print(f"  {f}")
+            _log(f"  {f}")
             sql_files.append(f)
         sql_entries.append(
             {
@@ -1101,46 +1139,46 @@ def build_mount_patches(
             }
         )
     if not sql_files:
-        print("  无新增 SQL（所有坐骑均已存在 SQL 文件）。")
-    print()
+        _log("  无新增 SQL（所有坐骑均已存在 SQL 文件）。")
+    _log()
 
-    print("构建 MPQ...")
+    _log("构建 MPQ...")
     mpq_path, job_assets, mpq_manifest = build_mpq(contexts, sql_files, dry_run=dry_run)
-    print(f"  {mpq_path}\n")
+    _log(f"  {mpq_path}\n")
 
     timestamp = mpq_path.parent.name
-    print("生成校验报告...")
+    _log("生成校验报告...")
     report_path = write_validation_report(contexts, job_assets, timestamp, dry_run=dry_run)
-    print(f"  {report_path}\n")
+    _log(f"  {report_path}\n")
 
     changelog_path = mpq_path.parent / "changelog.md"
     if dry_run:
-        print("干跑：跳过变更日志生成。\n")
+        _log("干跑：跳过变更日志生成。\n")
     else:
-        print("生成变更日志（changelog.md）...")
+        _log("生成变更日志（changelog.md）...")
         from app.services import changelog_writer
 
         changelog_ctx = changelog_writer.build_context(contexts, sql_files, mpq_manifest, report_path)
         changelog_source = changelog_writer.write_changelog(mpq_path.parent, changelog_ctx)
-        print(f"  {changelog_path}（{'AI 起草' if changelog_source == 'ai' else '模板生成'}）\n")
+        _log(f"  {changelog_path}（{'AI 起草' if changelog_source == 'ai' else '模板生成'}）\n")
 
-    print("生成审计报告...")
+    _log("生成审计报告...")
     from app.services.patch_audit import write_audit_report
 
     audit_path = write_audit_report(
         contexts, dbc_audit_records, sql_entries, mpq_manifest, timestamp, dry_run=dry_run
     )
-    print(f"  {audit_path}\n")
+    _log(f"  {audit_path}\n")
 
-    print("更新任务状态...")
+    _log("更新任务状态...")
     update_job_records(contexts, sql_files, mpq_path, report_path, audit_path, dry_run=dry_run)
 
     if dry_run:
-        print("干跑完成，未修改任何源文件。")
+        _log("干跑完成，未修改任何源文件。")
     else:
-        print("完成。请手动提交 data/wow-dbc 子模块的 DBC 改动。")
-        print(f"校验报告：{report_path}")
-        print(f"审计报告：{audit_path}")
+        _log("完成。请手动提交 data/wow-dbc 子模块的 DBC 改动。")
+        _log(f"校验报告：{report_path}")
+        _log(f"审计报告：{audit_path}")
 
     return {
         "jobs": [ctx.job_id for ctx in contexts],

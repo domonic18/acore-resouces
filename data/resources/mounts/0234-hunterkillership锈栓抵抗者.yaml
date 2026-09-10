@@ -2,6 +2,12 @@ id: 234
 model_folder: hunterkillership锈栓抵抗者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3）
+  - **获取**：掉落（麦卡贡国王）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=168830/r-21-x%E5%9E%8B%E7%A9%BA%E4%B8%AD%E5%8D%95%E4%BD%8D)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: R-21/X型空中单位
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 机械
+

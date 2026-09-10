@@ -2,6 +2,12 @@ id: 446
 model_folder: voidterror2双头狗坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 法术页](https://www.wowhead.com/cn/spell=205084)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 虚空恐魔
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 双头狗
+

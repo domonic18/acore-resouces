@@ -2,6 +2,11 @@ id: 201
 model_folder: goblinhotairballoonvehicle热气球坐骑
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
+  - **多人骑乘挂点**：19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 地精热气球
@@ -112,3 +117,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 五星
 subtype: 机械
+

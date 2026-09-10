@@ -2,6 +2,12 @@ id: 292
 model_folder: nightsaber2mount卡多雷夜刃豹
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.1，黑海岸）
+  - **获取**：掉落（克罗兹·血怒，黑海岸）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=166435/%E5%8D%A1%E5%A4%9A%E9%9B%B7%E5%A4%9C%E5%88%83%E8%B1%B9)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 卡多雷夜刃豹
@@ -114,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 豹子
+

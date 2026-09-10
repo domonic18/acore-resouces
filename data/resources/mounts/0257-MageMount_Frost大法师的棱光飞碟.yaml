@@ -2,6 +2,8 @@ id: 257
 model_folder: MageMount_Frost大法师的棱光飞碟
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 21212
   instance: 毒蛇神殿

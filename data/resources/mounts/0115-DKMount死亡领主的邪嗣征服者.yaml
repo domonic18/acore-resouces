@@ -2,6 +2,12 @@ id: 115
 model_folder: DKMount死亡领主的邪嗣征服者
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.2，职业坐骑）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=142231/%E9%82%AA%E5%97%A3%E5%BE%81%E6%9C%8D%E8%80%85%E7%9A%84%E8%85%90%E6%9C%BD%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 死亡领主的邪嗣征服者
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 三星
 subtype: 龙
+

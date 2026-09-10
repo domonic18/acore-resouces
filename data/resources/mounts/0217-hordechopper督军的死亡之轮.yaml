@@ -2,6 +2,12 @@ id: 217
 model_folder: hordechopper督军的死亡之轮
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.0，Azeroth Choppers 活动）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116788/%E7%9D%A3%E5%86%9B%E7%9A%84%E6%AD%BB%E4%BA%A1%E4%B9%8B%E8%BD%AE)
+  - **多人骑乘挂点**：19/20（原版即双人坐骑（Cata 侧斗摩托），挂点位置可信）
 drop: {}
 official_db:
   name: 督军的死亡之轮
@@ -116,3 +122,5 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+special_features: [双人骑乘]
+

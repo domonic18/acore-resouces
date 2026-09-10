@@ -2,6 +2,12 @@ id: 407
 model_folder: suramarmount奥术师的魔刃豹
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.1，苏拉玛起义任务线）
+  - **获取**：商人出售（需 堕夜精灵 崇拜 声望）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=142436/%E5%A5%A5%E6%9C%AF%E5%B8%88%E7%9A%84%E9%AD%94%E5%88%83%E8%B1%B9)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 奥术师的魔刃豹
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 豹子
+

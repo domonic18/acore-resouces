@@ -2,6 +2,14 @@ id: 450
 model_folder: WarlockMount愤怒战马
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/2/15/16/19/20（位置未实测，启用前需客户端验证乘客落座点）
+drop:
+  source: gameobject
+  entry: 21764
+  instance: 英雄地下城
+  boss: 加固的邪铁宝箱
+  rate: 0.02
 official_db:
   name: 虚空领主的硫磺愤怒战马
   spell_icon_name: inv_warlockmountfire

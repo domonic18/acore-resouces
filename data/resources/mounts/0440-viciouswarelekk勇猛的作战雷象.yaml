@@ -2,6 +2,13 @@ id: 440
 model_folder: viciouswarelekk勇猛的作战雷象
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（PvP 邪恶鞍具）
+  - **获取**：商人出售（通灵领主赛普，暴风城）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=140350/%E5%8B%87%E7%8C%9B%E7%9A%84%E4%BD%9C%E6%88%98%E9%9B%B7%E8%B1%A1)
+  - **多人骑乘挂点**：1/2/3/4/5/9/10/13/14/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 勇猛的作战雷象
@@ -113,3 +120,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 雷象
+

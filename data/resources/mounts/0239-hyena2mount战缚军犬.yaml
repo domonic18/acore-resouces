@@ -2,6 +2,12 @@ id: 239
 model_folder: hyena2mount战缚军犬
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：暗影国度（9.0）
+  - **获取**：掉落（伤逝剧场，玛卓克萨斯）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=184062/%E6%88%98%E7%BC%9A%E5%86%9B%E7%8A%AC%E7%9A%84%E5%92%AC%E7%97%95%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 战缚军犬
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 犬
+

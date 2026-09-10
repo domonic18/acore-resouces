@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Annotated, Any, Literal, get_type_hints
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
 from app.schemas.sql import CreatureModelInfo, CreatureTemplate, ItemTemplate
@@ -25,6 +25,7 @@ def _normalize_dict_values(data: dict[str, Any], cls: type[BaseModel]) -> dict[s
 
 
 class DropInfo(BaseModel):
+    source: Literal["creature", "gameobject"] = "creature"
     entry: int | None = None
     instance: str | None = None
     boss: str | None = None
@@ -78,10 +79,29 @@ class ResourceBase(BaseModel):
     added: bool = False
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    notes: str | None = None
     drop: DropInfo = Field(default_factory=DropInfo)
     official_db: OfficialDbInfo = Field(default_factory=OfficialDbInfo)
     dbc: DbcInfo = Field(default_factory=DbcInfo)
     db: DbInfo = Field(default_factory=DbInfo)
+
+    @field_validator("notes")
+    @classmethod
+    def _normalize_empty_notes(cls, value: str | None) -> str | None:
+        return value or None
+
+
+SPECIAL_FEATURES = [
+    "三人骑乘",
+    "双人骑乘",
+    "自带商人",
+    "自带拍卖行",
+    "修理",
+    "水面行走",
+    "水下骑乘",
+    "骑乘采集",
+    "变色涂装",
+]
 
 
 class Mount(ResourceBase):
@@ -89,6 +109,13 @@ class Mount(ResourceBase):
     mount_type: str | None = None
     star_rating: str | None = None
     subtype: str | None = None
+    special_features: list[str] = Field(default_factory=list)
+
+    @field_validator("special_features")
+    @classmethod
+    def _filter_unknown_features(cls, value: list[str]) -> list[str]:
+        """只保留受控词表内的值，防止手改 YAML 写入任意功能标签。"""
+        return [f for f in value if f in SPECIAL_FEATURES]
 
 
 class Pet(ResourceBase):

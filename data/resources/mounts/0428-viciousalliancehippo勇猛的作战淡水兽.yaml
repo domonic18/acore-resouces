@@ -2,6 +2,8 @@ id: 428
 model_folder: viciousalliancehippo勇猛的作战淡水兽
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 19894
   instance: 奴隶围栏(英雄模式)

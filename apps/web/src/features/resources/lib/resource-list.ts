@@ -357,6 +357,27 @@ export function matchesTagFilter(
   return selectedTags.some((t) => tags.includes(t));
 }
 
+export const SPECIAL_FEATURE_OPTIONS: { value: string; label: string }[] = [
+  { value: "三人骑乘", label: "三人骑乘" },
+  { value: "双人骑乘", label: "双人骑乘" },
+  { value: "自带商人", label: "自带商人" },
+  { value: "自带拍卖行", label: "自带拍卖行" },
+  { value: "修理", label: "修理" },
+  { value: "水面行走", label: "水面行走" },
+  { value: "水下骑乘", label: "水下骑乘" },
+  { value: "骑乘采集", label: "骑乘采集" },
+  { value: "变色涂装", label: "变色涂装" },
+];
+
+export function matchesFeatureFilter(
+  resource: Resource,
+  selectedFeatures: string[],
+): boolean {
+  if (selectedFeatures.length === 0) return true;
+  const features = resource.special_features ?? [];
+  return selectedFeatures.some((f) => features.includes(f));
+}
+
 export type DataOriginValue = "official" | "custom";
 
 export const dataOriginSchema = z.enum(["official", "custom"]);
@@ -419,6 +440,7 @@ export function matchesResourceSearch(
   if ((resource.name ?? "").toLowerCase().includes(search)) return true;
   if ((resource.official_db.name ?? "").toLowerCase().includes(search))
     return true;
+  if ((resource.notes ?? "").toLowerCase().includes(search)) return true;
   if (String(resource.id).includes(search)) return true;
   const modelName = resource.dbc.creature_model_data?.model_name;
   if (typeof modelName === "string" && modelName.toLowerCase().includes(search))

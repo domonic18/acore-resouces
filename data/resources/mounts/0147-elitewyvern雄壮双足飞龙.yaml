@@ -2,6 +2,8 @@ id: 147
 model_folder: elitewyvern雄壮双足飞龙
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 18607
   instance: 鲜血熔炉(英雄模式)

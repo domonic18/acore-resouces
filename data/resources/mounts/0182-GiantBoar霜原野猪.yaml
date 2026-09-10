@@ -2,6 +2,12 @@ id: 182
 model_folder: GiantBoar霜原野猪
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：德拉诺之王（6.x）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=116670/%E9%9C%9C%E5%8E%9F%E6%96%97%E7%8C%AA)
+  - **多人骑乘挂点**：2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 霜原斗猪
@@ -115,3 +121,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 猪
+

@@ -2,6 +2,8 @@ id: 175
 model_folder: flyingcarpetmount2织魔飞毯
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：19/20（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 18805
   instance: 风暴要塞

@@ -23,7 +23,6 @@ Desktop.ini
 
 # 原始资源目录（大文件，不入 Git）
 /sources/
-/imports/
 
 # 但保留图标索引文件（文本，可纳入 Git）
 !/sources/icons/interface/*.txt
@@ -65,3 +64,6 @@ venv/
 node_modules/
 dist/
 *.tsbuildinfo
+
+# 本地环境配置（含分发端推送密钥，不入 Git）
+backend/.env

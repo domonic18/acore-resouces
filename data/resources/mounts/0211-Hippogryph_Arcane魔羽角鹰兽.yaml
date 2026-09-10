@@ -2,6 +2,12 @@ id: 211
 model_folder: Hippogryph_Arcane魔羽角鹰兽
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.1）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=141217/%E9%AD%94%E7%BE%BD%E8%A7%92%E9%B9%B0%E5%85%BD%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 魔羽角鹰兽
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 角鹰兽
+

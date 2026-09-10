@@ -2,6 +2,13 @@ id: 77
 model_folder: bearmountalt暗月跳舞熊
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：大地的裂变（4.3）
+  - **获取**：商人出售（兰拉，暗月岛）
+  - **售价**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=73766/%E6%9A%97%E6%9C%88%E8%B7%B3%E8%88%9E%E7%86%8A)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 暗月跳舞熊
@@ -115,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 熊
+

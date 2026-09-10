@@ -2,6 +2,12 @@ id: 340
 model_folder: Quilin秦薛的永恒魁麟
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.3，锦绣谷）
+  - **获取**：掉落（犬师任衙，锦绣谷）
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=174841/%E4%BB%BB%E8%A1%99%E7%9A%84%E5%BF%A0%E7%8A%AC)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 任衙的忠犬
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 狮子
+

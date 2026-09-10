@@ -2,6 +2,12 @@ id: 346
 model_folder: RavenLord恐惧渡鸦
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=109013/%E6%81%90%E6%83%A7%E6%B8%A1%E9%B8%A6%E7%BC%B0%E7%BB%B3)
+  - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 恐惧渡鸦
@@ -113,3 +119,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 五星
 subtype: 乌鸦
+

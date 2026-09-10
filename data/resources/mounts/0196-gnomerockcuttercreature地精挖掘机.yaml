@@ -2,6 +2,11 @@ id: 196
 model_folder: gnomerockcuttercreature地精挖掘机
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 地精挖掘机
@@ -111,3 +116,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 四星
 subtype: 机械
+

@@ -2,6 +2,8 @@ id: 183
 model_folder: GiantBoar霜原野猪
 debug_passed: false
 added: true
+notes: |-
+  - **多人骑乘挂点**：2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 钢鬃地狱野猪

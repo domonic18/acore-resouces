@@ -2,6 +2,12 @@ id: 274
 model_folder: mechanicalparrotmount奇迹之翼2.0版
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：争霸艾泽拉斯（8.1）
+  - **获取**：待查
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=169162/%E5%A5%87%E8%BF%B9%E4%B9%8B%E7%BF%BC2-0%E7%89%88)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 奇迹之翼2.0版
@@ -114,3 +120,4 @@ resource_type: mount
 mount_type: 飞行坐骑
 star_rating: 四星
 subtype: 飞龙
+

@@ -2,6 +2,8 @@ id: 29
 model_folder: darkhoundmount_draka狼坐骑
 debug_passed: true
 added: true
+notes: |-
+  - **多人骑乘挂点**：1/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop:
   entry: 15276
   instance: 安其拉神殿

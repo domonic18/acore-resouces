@@ -2,6 +2,12 @@ id: 391
 model_folder: soulhoundmount带镣铐的乌祖尔
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - **版本**：军团再临（7.3.5，安托鲁斯）
+  - **获取**：掉落（寂灭者阿古斯（史诗难度））
+  - [Wowhead 物品页](https://www.wowhead.com/cn/item=152789/%E5%B8%A6%E9%95%A3%E9%93%90%E7%9A%84%E4%B9%8C%E7%A5%96%E5%B0%94)
+  - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
 drop: {}
 official_db:
   name: 带镣铐的乌祖尔
@@ -116,3 +122,4 @@ resource_type: mount
 mount_type: 陆地坐骑
 star_rating: 二星
 subtype: 怪物
+
