@@ -103,9 +103,9 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 70
+    RequiredLevel: 40
     RequiredSkill: 762
-    RequiredSkillRank: 300
+    RequiredSkillRank: 150
     bonding: 1
     Material: 4
     sheath: 0

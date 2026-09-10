@@ -100,7 +100,7 @@ db:
     SellPrice: 250000
     InventoryType: 0
     ItemLevel: 40
-    RequiredLevel: 40
+    RequiredLevel: 70
     RequiredSkill: 762
     RequiredSkillRank: 300
     bonding: 1
