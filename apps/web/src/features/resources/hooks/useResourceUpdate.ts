@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateResource } from "@/shared/resources";
 import { buildForm, type FormState } from "./useResourceForm";
 import { normalizeInt, normalizeFloat } from "../lib/detail-helpers";
-import type { Resource, ResourceUpdate } from "@/shared/types";
+import type { Resource, ResourceUpdate, VehicleConfig } from "@/shared/types";
 
 interface SaveableState {
   form: FormState;
@@ -16,6 +16,7 @@ interface SaveableState {
   spellDb: Record<string, unknown>;
   creatureDisplayInfoDbc: Record<string, unknown>;
   creatureModelDataDbc: Record<string, unknown>;
+  vehicle: VehicleConfig | null;
 }
 
 export function useResourceUpdate(resourceType: string, resourceId: number) {
@@ -45,6 +46,7 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
       spellDb,
       creatureDisplayInfoDbc,
       creatureModelDataDbc,
+      vehicle,
     } = state;
 
     const update: ResourceUpdate = {};
@@ -67,6 +69,13 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
     }
     if (form.rarity !== baseline.rarity) update.rarity = form.rarity || null;
     if (form.notes !== baseline.notes) update.notes = form.notes || null;
+
+    // 载具配置：vehicle_id = 0 的草稿（未分配 ID）不写入，由 VehicleSection 提示
+    if (JSON.stringify(vehicle) !== JSON.stringify(resource.vehicle ?? null)) {
+      if (vehicle === null || vehicle.vehicle_id > 0) {
+        update.vehicle = vehicle;
+      }
+    }
     if (
       form.debug_passed !== baseline.debug_passed ||
       form.added !== baseline.added
