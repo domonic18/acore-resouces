@@ -21,6 +21,8 @@ import {
   MATERIAL_OPTIONS,
   QUALITY_OPTIONS,
   BONDING_OPTIONS,
+  REQUIRED_SKILL_OPTIONS,
+  RIDING_SKILL_RANK_OPTIONS,
   CLASS_FLAGS,
   RACE_FLAGS,
   INVENTORY_TYPE_OPTIONS,
@@ -486,21 +488,6 @@ export function ItemInfoSection({
               />
             </FormGroup>
             <FormGroup
-              label="RequiredLevel"
-              compact={compact}
-              hint={
-                <FieldHint description="使用所需角色等级，坐骑默认 40（配合骑术 150 需求）" />
-              }
-            >
-              <NumberInput
-                value={itemDb.RequiredLevel}
-                onChange={(v) =>
-                  setItemDb((prev) => ({ ...prev, RequiredLevel: v }))
-                }
-                compact={compact}
-              />
-            </FormGroup>
-            <FormGroup
               label="stackable"
               compact={compact}
               hint={
@@ -577,6 +564,61 @@ export function ItemInfoSection({
               }
             />
           </FormGroup>
+        </div>
+
+        <div className="rounded-md border border-border bg-bg-surface/50 p-3">
+          <h4 className="mb-2 text-xs font-semibold text-text-secondary">
+            骑术学习需求
+          </h4>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <FormGroup
+              label="RequiredSkill"
+              compact={compact}
+              hint={
+                <FieldHint description="使用物品所需技能，坐骑固定 762（骑术），0 为无要求" />
+              }
+            >
+              <OptionSelect
+                options={REQUIRED_SKILL_OPTIONS}
+                value={itemDb.RequiredSkill}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, RequiredSkill: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="RequiredSkillRank"
+              compact={compact}
+              hint={
+                <FieldHint description="所需骑术等级：75/150 地面，225/300 飞行（WLK 上限 300）；100% 地面 150、280% 飞行 300" />
+              }
+            >
+              <OptionSelect
+                options={RIDING_SKILL_RANK_OPTIONS}
+                value={itemDb.RequiredSkillRank}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, RequiredSkillRank: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+            <FormGroup
+              label="RequiredLevel"
+              compact={compact}
+              hint={
+                <FieldHint description="使用物品所需角色等级：100% 地面 40、280% 飞行 70（WLK 惯例）" />
+              }
+            >
+              <NumberInput
+                value={itemDb.RequiredLevel}
+                onChange={(v) =>
+                  setItemDb((prev) => ({ ...prev, RequiredLevel: v }))
+                }
+                compact={compact}
+              />
+            </FormGroup>
+          </div>
         </div>
 
         <div className="grid gap-3 lg:grid-cols-2">

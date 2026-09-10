@@ -27,6 +27,20 @@ export const BONDING_OPTIONS = [
   { value: 3, label: "3 使用绑定（BoU）" },
 ];
 
+export const REQUIRED_SKILL_OPTIONS = [
+  { value: 0, label: "0 无要求" },
+  { value: 762, label: "762 骑术（Riding）" },
+];
+
+// WLK 骑术等级：75/150 地面，225/300 飞行；375 宗师为 CTM 内容
+export const RIDING_SKILL_RANK_OPTIONS = [
+  { value: 0, label: "0 无要求" },
+  { value: 75, label: "75 初级骑术（60% 地面）" },
+  { value: 150, label: "150 中级骑术（100% 地面）" },
+  { value: 225, label: "225 专家级骑术（150% 飞行）" },
+  { value: 300, label: "300 大师级骑术（280%+ 飞行）" },
+];
+
 export const CLASS_FLAGS = [
   { value: 1, label: "Warrior 战士" },
   { value: 2, label: "Paladin 圣骑士" },
