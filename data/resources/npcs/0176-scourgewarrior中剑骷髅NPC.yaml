@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 骷髅战士
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=48
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 48
+    name: 骷髅战士
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 骷髅
+notes: >-
+  自定义模型说明：文件夹英文段 scourgewarrior 即 Scourge Warrior（天灾武
+  士）；归入通用条目 npc=48（骷髅战士，Skeletal Warrior），预览角盔绿眼、
+  贯胸佩剑、颅骨扣的天灾骷髅武士变体（无图可核，置信中）；文件名"中剑骷
+  髅"为社区俗称。

@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 瓦莉拉·萨古纳尔
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=242381
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 242381
+    name: 瓦莉拉·萨古纳尔
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 血精灵
+notes: >-
+  自定义模型说明：文件夹英文段 valeera 即 Valeera Sanguinar（瓦莉拉·萨
+  古纳尔），与 0208 同模型同判定，归入同一条目 npc=242381（瓦莉拉·萨古
+  纳尔，og 完全一致）；本条目无独立预览文件夹，按同系列预览核对；文件
+  名"维拉"为社区俗称。

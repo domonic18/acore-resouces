@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 仲裁者
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=156246
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 156246
+    name: 仲裁者
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 泰坦造物
+notes: >-
+  自定义模型说明：文件夹英文段 Arbiter 即 The Arbiter（暗影国度裁决亡魂的泰坦造物）；
+  查询命中 npc=156246，中文站条目未译（[The Arbiter]），中文名按社区通用译名"仲裁者"回填；
+  文件名"仲裁人"为社区俗称。

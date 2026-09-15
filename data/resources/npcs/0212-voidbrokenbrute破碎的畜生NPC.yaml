@@ -21,4 +21,15 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 破碎者蛮兵
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 voidbrokenbrute 即 Void Broken Brute（虚空
+  破碎蛮兵）；查询词 void broken brute 未命中，krokul 仅命中 npc=211832
+  （Krokul Spellcaster）施法者形态不符，Umbral Brute 命中 npc=174577 但 og
+  为灰色风暴巨人形态不符，判定暂无官方对应数据；预览紫黑虚空腐蚀、金臂
+  铠、黑晶尖刺、绿光独眼的破碎者蛮兵形态；文件名"破碎的畜生"为社区俗
+  称。

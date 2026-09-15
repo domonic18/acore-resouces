@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 卓格巴尔
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=113206
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 113206
+    name: 卓格巴尔
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 卓格巴尔
+notes: >-
+  自定义模型说明：文件夹英文段 drogbarchieftain 即 Drogbar Chieftain（高岭
+  卓格巴尔多长子）；查询命中通用条目 npc=113206（卓格巴尔），与预览的长毛
+  壮躯、羽冠骨饰形态吻合；文件名"邪恶老妖"为社区俗称。

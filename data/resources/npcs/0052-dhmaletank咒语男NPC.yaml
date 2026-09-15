@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 恶魔
+subtype: 恶魔
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：红皮角魔，深色巨角、绿焰邪纹胸膛、尖刺护肩，恶魔猎手风格
+  （预览图"咒语男NPC.gif"）。查询词 dhmaletank/Demon Hunter/Fel Orc 均未获
+  可靠命中，判定为社区魔改模型，无官方对应数据。

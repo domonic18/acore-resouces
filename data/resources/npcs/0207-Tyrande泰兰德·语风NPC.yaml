@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 泰兰德
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=15633
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 15633
+    name: 泰兰德
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 暗夜精灵
+notes: >-
+  自定义模型说明：文件夹英文段 Tyrande 即 Tyrande Whisperwind（泰兰
+  德·语风，艾露恩姐妹会高阶女祭司）；查询词 泰兰德 命中 npc=15633（泰
+  兰德，达纳苏斯）；无预览文件夹可核对，og 图暗夜精灵白裙形象与角色一
+  致；文件名"泰兰德·语风"为社区俗称。

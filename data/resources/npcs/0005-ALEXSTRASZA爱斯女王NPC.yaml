@@ -9,16 +9,24 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 阿莱克丝塔萨
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=58207
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 58207
+    name: 阿莱克丝塔萨
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 龙类
+subtype: 红龙
+notes: >-
+  自定义模型说明：文件夹英文段 ALEXSTRASZA 即 Alexstrasza（阿莱克丝塔萨，红龙女王）；
+  查询命中 npc=58207，confidence high；文件名"爱斯女王"为社区俗称。

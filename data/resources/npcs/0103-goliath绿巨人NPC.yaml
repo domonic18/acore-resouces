@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 恶魔
+subtype: 恶魔
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：紫灰皮肤的黑甲恶魔，胸口邪能绿焰核心，肩后双绿色弯刃
+  项圈（预览图"绿巨人NPC.gif"）。查询词 Goliath 命中歌利亚 npc=66532（无图
+  可核，不采用），判定为社区魔改模型，无官方对应数据；文件名"绿巨人"为
+  社区俗称。

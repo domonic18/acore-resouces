@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 萨尔
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=80003
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 80003
+    name: 萨尔
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 兽人
+notes: >-
+  自定义模型说明：文件夹英文段 thralldoomplate 即 Thrall Doomplate（萨尔
+  末日板甲）；查询词 萨尔 命中大灾变时期条目 npc=80003（萨尔），og 图红
+  珠项链、棕金板甲、白色毛皮披挂与预览完全一致；文件名"末日兽人"为社区
+  俗称。

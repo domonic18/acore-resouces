@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 兽人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：邪兽人（邪能兽人）风格红皮壮汉。查询词 Fel Orc Brute/Fel Orc/
+  邪兽人仅命中场景装饰条目"邪兽人的尸体" npc=17062（不采用），判定为社区魔改
+  模型，无官方对应数据；文件名"红恶魔"为社区俗称。

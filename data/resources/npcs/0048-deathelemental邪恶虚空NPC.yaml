@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 元素
+subtype: 虚空
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：黑暗菱形面孔、绿雾缭绕、金球护手的虚空烟雾体（预览图
+  "邪恶虚空NPC.gif"）。查询词 Death Elemental 仅命中占位条目"控制器03：死亡元素"
+  npc=172632（不采用）；Void Elemental npc=158650 无渲染图可核对形态，按宁缺勿错
+  不采用，判定为社区魔改模型，无官方对应数据。

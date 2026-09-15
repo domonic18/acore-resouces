@@ -21,4 +21,14 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 元素
+subtype: 火元素
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：黑铁铠甲包裹的火焰元素，肩甲双角、面部护罩（预览图
+  "铠甲火元素NPC.gif"）。查询词 Fire Elemental/Molten Elemental/Felfire
+  Elemental 分别命中焰柱状 npc=189843、无图可核的 71129、邪能绿焰 94143，
+  均与形态不符，判定为社区魔改模型，无官方对应数据；文件名"铠甲火元素"为
+  社区俗称。

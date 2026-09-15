@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 海盗
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 pirate 命中女海盗 npc=113139、大财主里维加兹
+  npc=2496 为地精，造型均不符不采用，判定为社区魔改模型，无官方对应数据；
+  预览红大衣黑须、颅骨徽章戒指的阔气海盗男爵造型；文件名"红海盗"为社区
+  俗称。

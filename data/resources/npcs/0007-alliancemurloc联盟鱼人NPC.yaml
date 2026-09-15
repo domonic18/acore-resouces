@@ -21,4 +21,11 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 鱼人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：蓝金联盟制式板甲鱼人，持单手剑与纹章盾。查询词"联盟鱼人"/"Alliance
+  Murloc"均未命中 Wowhead NPC 条目，判定为社区配色的鱼人魔改模型，无官方对应数据。

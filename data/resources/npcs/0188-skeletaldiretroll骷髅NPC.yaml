@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 骷髅
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=45285
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 45285
+    name: 骷髅
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 骷髅巨魔
+notes: >-
+  自定义模型说明：文件夹英文段 skeletaldiretroll 即 Skeletal Dire Troll
+  （骷髅狂暴巨魔）；查询词 Skeletal Troll 未命中独立条目，归入通用骷髅
+  条目 npc=45285（骷髅，Skeleton），预览金甲紫裙、颅链锁扣的赞达拉风骷髅
+  巨魔变体（无图可核，置信中）；文件名"骷髅"为社区俗称。

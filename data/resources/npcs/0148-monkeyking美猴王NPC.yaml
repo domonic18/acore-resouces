@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 美猴王
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=114598
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 114598
+    name: 美猴王
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 猴王
+notes: >-
+  自定义模型说明：文件夹英文段 monkeyking 即 Monkey King；对应官方条目
+  npc=114598（美猴王，The Monkey King），预览白毛金冠、金镯绿裤、背负骷髅
+  的猿猴造型与其身份吻合（无图可核，置信中）；文件名"美猴王"即官方译名。

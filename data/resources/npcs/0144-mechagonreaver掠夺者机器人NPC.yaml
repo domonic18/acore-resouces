@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 掠夺者机器人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 Mechagon Reaver / Mechanical Reaver / reaver 搜索
+  均未命中机械条目，判定为社区魔改模型，无官方对应数据；预览铜金色双烟囱
+  肩、独眼带巨钳的机械掠夺者（Mechagon 风格）；文件名"掠夺者机器人"为社区
+  俗称。

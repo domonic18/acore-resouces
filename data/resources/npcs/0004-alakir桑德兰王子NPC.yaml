@@ -9,16 +9,24 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 奥拉基尔
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=46753
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 46753
+    name: 奥拉基尔
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 元素
+subtype: 风领主
+notes: >-
+  自定义模型说明：文件夹英文段 alakir 即 Al'Akir（奥拉基尔，风元素领主）；查询词"奥拉基尔"命中
+  npc=46753；文件名"桑德兰王子"为社区俗称。

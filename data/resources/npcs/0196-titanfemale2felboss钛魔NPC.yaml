@@ -21,4 +21,14 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 泰坦
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 titanfemale2felboss 即 Titan Female Fel
+  Boss（邪能泰坦女性）；查询词 Eonar 命中 npc=125562（艾欧娜尔的精华）
+  但 og 图为星座光影非女性泰坦躯体，予以拒绝，fel titan 未命中，判定暂
+  无官方对应数据；预览大理石白肤、金饰白袍、左臂与胸口邪能晶化的泰坦女
+  性形态；文件名"钛魔"为社区俗称。

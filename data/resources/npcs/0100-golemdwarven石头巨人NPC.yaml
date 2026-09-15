@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 石魔像
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：矮人比例的石魔像，六棱巨拳、砧面造型（预览图
+  "石头巨人NPC.gif"）。查询词 Stone Golem 命中 npc=137708，og 图核对为苔石
+  积木状（形态不符，不采用），判定为社区魔改模型，无官方对应数据；文件名
+  "石头巨人"为社区俗称。

@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 穆鲁
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=25741
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 25741
+    name: 穆鲁
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 元素
+subtype: 纳鲁
+notes: >-
+  自定义模型说明：文件夹英文段 darknaaru 即 Dark Naaru（黑暗纳鲁）；与预览的
+  紫黑虚空晶体形态吻合，对应太阳之井高地 Boss 穆鲁 npc=25741（被抽离圣光的
+  黑暗纳鲁，3.3.5 原生条目）；文件名"邪恶传送阵"为社区俗称。

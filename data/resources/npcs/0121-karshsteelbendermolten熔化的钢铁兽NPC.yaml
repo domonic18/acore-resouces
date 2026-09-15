@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 卡尔什·断钢
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=39698
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 39698
+    name: 卡尔什·断钢
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 龙类
+subtype: 龙人
+notes: >-
+  自定义模型说明：文件夹英文段 karshsteelbendermolten 即 Karsh Steelbender
+  熔火形态；对应官方条目 npc=39698（卡尔什·断钢，黑石洞穴 BOSS），og 图
+  为其熔火平台战斗场景，与预览白爪熔岩龙人造型吻合；文件名"熔化的钢铁兽"
+  为社区俗称。

@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 骷髅武士
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：黑骨刺甲、冠刺骷髅面的武士（预览图"玛哈德NPC.gif"）。
+  查询词 Mawsworn 命中渊誓传令官 npc=181408（og 图核对为翼形传令官，
+  造型不符，不采用），判定为社区魔改模型，无官方对应数据；文件名"玛哈德"
+  为社区俗称。

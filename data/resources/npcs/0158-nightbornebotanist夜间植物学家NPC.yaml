@@ -9,16 +9,27 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 高级植物学家特尔安
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=104528
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 104528
+    name: 高级植物学家特尔安
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 夜之子
+notes: >-
+  自定义模型说明：文件夹英文段 nightbornebotanist 即 Nightborne Botanist
+  （植物学家）；og 图核对 npc=104528（高级植物学家特尔安，夜之要塞 BOSS）
+  为体内滋生发光植物的夜之子（og 为腐化后期形态），与预览背生蓝光枝叶、
+  红甲素体造型相符（不同阶段形态，置信中）；文件名"夜间植物学家"为社区
+  俗称。

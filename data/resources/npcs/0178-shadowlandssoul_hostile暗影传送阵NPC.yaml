@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 灵魂体
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 shadowlandssoul_hostile 即 Shadowlands
+  Soul (hostile)（暗影界敌对灵魂）；查询词 Shadowlands Soul 未命中条目，
+  且无预览文件夹、无图可核，判定暂无官方对应数据；按命名推断为暗影界
+  灵魂体模型；"暗影传送阵"为社区俗称（与英文名语义不符）。

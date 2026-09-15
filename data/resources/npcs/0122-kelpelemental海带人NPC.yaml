@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 元素
+subtype: 海藻元素
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：海藻珊瑚覆盖的岩石巨人（预览图"海带人NPC.gif"）。查询词
+  Kelp 命中海藻 npc=225540（造型存疑，不采用），判定为社区魔改模型，无官方
+  对应数据；文件名"海带人"为社区俗称。

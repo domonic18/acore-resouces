@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 鱼人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：murloc2 社区魔改鱼人系列（与 0150/0152 同包），查询词
+  murloc 搜索未命中戴兜帽条目，判定无官方对应数据；预览戴鲨鳍形灰帽、红
+  爪的鱼人男性；文件名"鱼人男"为社区俗称。

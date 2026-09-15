@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 元素
+subtype: 星灵
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：半透明星界人体，关节如星座节点发光，周身星尘（预览图"骨骼NPC.gif"）。
+  查询词 celestialhuman/Algalon 命中观察者奥尔加隆 npc=32871（confidence medium），
+  但其护甲形态与预览的裸形星座体不符，按宁缺勿错不采用，判定为社区魔改模型，
+  无官方对应数据。

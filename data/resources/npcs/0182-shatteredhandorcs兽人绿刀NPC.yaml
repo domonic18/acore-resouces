@@ -21,4 +21,14 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 兽人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 shatteredhandorcs 即 Shattered Hand Orcs
+  （碎手兽人）；查询词 Shattered Hand 命中碎手斩杀者 npc=17301（og 为兜帽
+  皮甲造型不符）、卡加斯·刃拳 npc=78714（og 为裸胸独辫造型不符）均不采用，
+  判定为社区魔改模型，无官方对应数据；预览黑红刺甲、颅骨护心、红光刃臂的
+  碎手武士；文件名"兽人绿刀"为社区俗称（实为红刃）。

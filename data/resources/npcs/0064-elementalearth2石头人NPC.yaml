@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 土元素
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=202594
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 202594
+    name: 土元素
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 元素
+subtype: 土元素
+notes: >-
+  自定义模型说明：文件夹英文段 elementalearth2 即 Earth Elemental；查询命中
+  npc=202594（官方类型元素，中文站条目未译，中文名按社区通用译名"土元素"回填），
+  与预览的岩石躯体形态吻合；文件名"石头人"为社区俗称。
