@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 3715
     name: 小鹿
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小鹿。
   item:
     id: 44841
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小鹿。
-    flavor_text: Wrath of the Lich King
 db:
   creature_template:
     name: 小鹿
@@ -32,3 +32,5 @@ db:
     entry: 44841
     name: 幼鹿的盐块
 rarity: 二星
+pet_type: 走兽
+subtype: 幼鹿

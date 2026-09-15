@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 214
     name: 跳跳虫
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的跳跳虫。
   item:
     id: 13582
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的跳跳虫。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 跳跳虫
@@ -32,3 +32,5 @@ db:
     entry: 13582
     name: 跳虫绳索
 rarity: 二星
+pet_type: 异怪
+subtype: 跳虫

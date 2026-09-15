@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28595
     name: 草地践踏者幼崽
     description: 教你学会召唤这种小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 114834
     name: 草地践踏者幼崽
 rarity: 三星
+pet_type: 走兽
+subtype: 草地践踏者幼崽

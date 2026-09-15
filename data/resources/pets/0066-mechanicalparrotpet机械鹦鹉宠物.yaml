@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 24518
     name: 乱羽
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散乱羽。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 165845
     name: 乱羽
 rarity: 三星
+pet_type: 机械
+subtype: 机械鹦鹉

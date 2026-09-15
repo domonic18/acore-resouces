@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 354
     name: 奥特兰克负酒犬
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散奥特兰克负酒犬。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 106240
     name: 奥特兰克白兰地
 rarity: 四星
+pet_type: 走兽
+subtype: 负酒犬

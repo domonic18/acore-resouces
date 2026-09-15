@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 14847
     name: 小托
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散小托。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 153541
     name: 小托
 rarity: 三星
+pet_type: 人形
+subtype: 龟灵人幼童

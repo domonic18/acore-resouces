@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 26681
     name: 小泰蕾苟萨
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散小泰蕾苟萨。
   item:
     id: 71033
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散小泰蕾苟萨。
-    flavor_text: Rage of the Firelands
 db:
   creature_template:
     name: 小泰蕾苟萨
@@ -32,3 +32,5 @@ db:
     entry: 71033
     name: 小泰蕾苟萨
 rarity: 四星
+pet_type: 龙类
+subtype: 小泰蕾苟萨

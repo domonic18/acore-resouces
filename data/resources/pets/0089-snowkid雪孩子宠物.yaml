@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 31134
     name: 翁帕尔
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散翁帕尔。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 160587
     name: 翁帕尔
 rarity: 二星
+pet_type: 元素
+subtype: 雪孩子

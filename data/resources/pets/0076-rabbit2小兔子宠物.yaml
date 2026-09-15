@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 3132
     name: 暗月兔子
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的暗月小兔。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 80008
     name: 暗月兔子
 rarity: 二星
+pet_type: 小动物
+subtype: 暗月兔

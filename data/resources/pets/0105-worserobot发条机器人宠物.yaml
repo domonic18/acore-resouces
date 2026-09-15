@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1696
     name: 炸弹宠物
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的炸弹。
   item:
     id: 11825
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的炸弹。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 炸弹宠物
@@ -32,3 +32,5 @@ db:
     entry: 11825
     name: 炸弹宠物
 rarity: 三星
+pet_type: 机械
+subtype: 炸弹

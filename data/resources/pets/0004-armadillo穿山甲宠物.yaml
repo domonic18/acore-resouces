@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 24726
     name: 犰狳幼崽
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的犰狳幼崽。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 63398
     name: 犰狳幼崽
 rarity: 一星
+pet_type: 小动物
+subtype: 犰狳

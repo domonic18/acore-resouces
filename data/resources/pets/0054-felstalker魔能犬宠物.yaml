@@ -3,6 +3,10 @@ model_folder: felstalker魔能犬宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Felstalker / 魔能犬）
+  - 外观：红色邪能犬形生物，骨白面甲、黑橙相间棘刺
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 恶魔
+subtype: 魔能犬
 tags:
 - no_official_data

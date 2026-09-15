@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1580
     name: 沙滩蟹
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的沙滩蟹。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 44983
     name: 沙滩蟹
 rarity: 三星
+pet_type: 水生
+subtype: 沙滩蟹

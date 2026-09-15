@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 49
     name: 棕色猫头鹰
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的猫头鹰。
   item:
     id: 8500
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的猫头鹰。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 棕色猫头鹰
@@ -32,3 +32,5 @@ db:
     entry: 8500
     name: 棕色猫头鹰
 rarity: 二星
+pet_type: 飞禽
+subtype: 猫头鹰

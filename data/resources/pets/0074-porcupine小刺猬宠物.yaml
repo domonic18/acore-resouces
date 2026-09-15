@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28694
     name: 豪猪仔
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散一头小箭猪。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 89587
     name: 豪猪仔
 rarity: 二星
+pet_type: 走兽
+subtype: 豪猪

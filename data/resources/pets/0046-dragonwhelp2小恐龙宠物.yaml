@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1700
     name: 蓝龙宝宝
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的龙宝宝。
   item:
     id: 34535
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的龙宝宝。
-    flavor_text: The Gods of Zul'Aman
 db:
   creature_template:
     name: 蓝龙宝宝
@@ -32,3 +32,5 @@ db:
     entry: 34535
     name: 蓝龙宝宝
 rarity: 三星
+pet_type: 龙类
+subtype: 蓝龙宝宝

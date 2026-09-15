@@ -3,6 +3,10 @@ model_folder: ferret小猫宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 雪貂 / Ferret）
+  - 外观：棕灰白相间雪貂（文件名"小猫"与实际物种不符）
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 二星
+pet_type: 小动物
+subtype: 雪貂
 tags:
 - no_official_data

@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28661
     name: 小布
     description: 教你学会召唤和解散这个小伙伴。 右键点击以召唤或解散小布。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 103670
     name: 小布
 rarity: 三星
+pet_type: 机械
+subtype: 布林顿机器人

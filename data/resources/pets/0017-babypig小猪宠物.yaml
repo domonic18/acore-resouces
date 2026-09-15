@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 3070
     name: 扭扭先生
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散扭扭先生。
   item:
     id: 23007
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散扭扭先生。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 扭扭先生
@@ -32,3 +32,5 @@ db:
     entry: 23007
     name: 小猪项圈
 rarity: 二星
+pet_type: 小动物
+subtype: 小猪

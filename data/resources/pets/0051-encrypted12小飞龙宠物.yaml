@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1700
     name: 艾米苟萨
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散艾米苟萨。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 129178
     name: 艾米苟萨
 rarity: 四星
+pet_type: 龙类
+subtype: 艾米苟萨

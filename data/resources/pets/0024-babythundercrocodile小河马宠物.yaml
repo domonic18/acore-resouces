@@ -3,6 +3,11 @@ model_folder: babythundercrocodile小河马宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型（babythundercrocodile），文件名"小河马"与实际物种不符
+  - Wowhead 无对应宠物条目（已查询 Thunder Crocodile）
+  - 外观：紫色雷暴鳄形生物，蓝色能量棘刺
 drop:
   entry: null
   instance: null
@@ -22,5 +27,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 二星
+pet_type: 走兽
+subtype: 雷暴蜥蜴
 tags:
 - no_official_data

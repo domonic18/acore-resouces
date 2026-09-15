@@ -3,6 +3,10 @@ model_folder: spectralsaberworg2闪电狼宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Spectral Worg / 幽灵军狼）
+  - 外观：黑蓝色幽灵军狼，口部与胸口泛青光，白色爪尖
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 亡灵
+subtype: 幽灵军狼
 tags:
 - no_official_data

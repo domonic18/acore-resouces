@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 33058
     name: 赞达拉撕踝者
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的赞达拉雏龙。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 95422
     name: 赞达拉撕踝者
 rarity: 三星
+pet_type: 走兽
+subtype: 赞达拉迅猛龙

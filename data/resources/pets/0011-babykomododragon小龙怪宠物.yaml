@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1180
     name: 暴掠幼龙
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小龙。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 48122
     name: 暴掠幼龙
 rarity: 四星
+pet_type: 走兽
+subtype: 暴掠幼龙

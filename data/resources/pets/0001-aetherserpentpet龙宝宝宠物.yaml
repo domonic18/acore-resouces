@@ -3,6 +3,10 @@ model_folder: aetherserpentpet龙宝宝宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Aetherserpent / 以太蛇）
+  - 外观：金色托维尔风格构造体蛇形宠物，带蓝色能量光效
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 异怪
+subtype: 构造体蛇
 tags:
 - no_official_data

@@ -3,6 +3,10 @@ model_folder: valkiergoldpet飞宝宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Val'kyr / 瓦尔基拉）
+  - 外观：金翼瓦尔基拉天使悬浮，金色烟雾环绕
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 二星
+pet_type: 亡灵
+subtype: 瓦尔基拉
 tags:
 - no_official_data

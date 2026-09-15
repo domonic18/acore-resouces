@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 10551
     name: 诱惑魔女
     description: 教你学会召唤诱惑魔女。 右键点击以召唤或解散你的诱惑魔女。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 122110
     name: 热辣魔典
 rarity: 四星
+pet_type: 恶魔
+subtype: 魅魔

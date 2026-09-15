@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 18758
     name: 矮脚幼犬
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 136925
     name: 矮脚幼犬
 rarity: 三星
+pet_type: 小动物
+subtype: 柯基犬

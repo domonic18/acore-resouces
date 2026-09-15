@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 33054
     name: 淘气机器人
     description: 教你学会召唤和解散这个小伙伴。 右键点击以召唤或解散你的淘气机器人。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 100905
     name: 淘气机器人
 rarity: 四星
+pet_type: 机械
+subtype: 发条犬

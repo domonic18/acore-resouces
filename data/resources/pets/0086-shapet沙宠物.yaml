@@ -3,6 +3,10 @@ model_folder: shapet沙宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Shapet）
+  - 外观：墨绿色蟹状生物，白色大理石纹巨角尖刺，白眼橙腹
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 异怪
+subtype: 巨角蟹
 tags:
 - no_official_data

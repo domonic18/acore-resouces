@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1181
     name: 夜刃豹幼崽
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的夜刃豹幼崽。
   item:
     id: 68841
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的夜刃豹幼崽。
-    flavor_text: Rise of the Zandalari
 db:
   creature_template:
     name: 夜刃豹幼崽
@@ -32,3 +32,5 @@ db:
     entry: 68841
     name: 夜刃豹幼崽
 rarity: 三星
+pet_type: 走兽
+subtype: 夜刃豹

@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 15659
     name: 吸血蛛幼虫
     description: 教你学会召唤这种小伙伴。 右键点击召唤或解散吸血蛛幼虫。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 163500
     name: 吸血蛛幼虫
 rarity: 一星
+pet_type: 异怪
+subtype: 吸血蛛幼虫

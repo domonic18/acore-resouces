@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 14848
     name: 小小恐角龙
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散小小恐角龙。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 163498
     name: 小小恐角龙
 rarity: 二星
+pet_type: 走兽
+subtype: 幼恐角龙

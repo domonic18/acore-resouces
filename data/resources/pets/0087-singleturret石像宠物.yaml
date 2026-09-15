@@ -3,6 +3,11 @@ model_folder: singleturret石像宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Stone Golem / 石像巨人）
+  - 外观：绿岩躯干石构造体，臂部生长秋叶枝条
+  - 模型文件夹名 singleturret（单炮塔）与实际外观不符，以图片为准
 drop:
   entry: null
   instance: null
@@ -22,5 +27,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 一星
+pet_type: 元素
+subtype: 石叶构造体
 tags:
 - no_official_data

@@ -3,6 +3,11 @@ model_folder: thunderbeaver紫耗子宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Thunder Beaver / 闪电海狸）
+  - 外观：风暴海狸，背部蓝色雷电棘刺与闪电尾，蓝眼光焰
+  - 文件名"紫耗子"与实际物种不符，以图片为准
 drop:
   entry: null
   instance: null
@@ -22,5 +27,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 元素
+subtype: 闪电海狸
 tags:
 - no_official_data

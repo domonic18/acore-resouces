@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28739
     name: 守护者宝宝
     description: 教你学会召唤这种小伙伴。24小时后解除绑定。 右键点击以召唤或解散你的守护者宝宝。
   item:
     id: 69847
     description: 教你学会召唤这种小伙伴。24小时后解除绑定。 右键点击以召唤或解散你的守护者宝宝。
-    flavor_text: Rise of the Zandalari
 db:
   creature_template:
     name: 守护者宝宝
@@ -32,3 +32,5 @@ db:
     entry: 69847
     name: 守护者宝宝
 rarity: 三星
+pet_type: 走兽
+subtype: 翼狮

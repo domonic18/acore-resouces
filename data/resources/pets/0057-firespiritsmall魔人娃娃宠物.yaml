@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28683
     name: 熊猫人火灵
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的熊猫人火灵。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 92798
     name: 熊猫人火灵
 rarity: 五星
+pet_type: 元素
+subtype: 熊猫人火灵

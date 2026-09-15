@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 32324
     name: 班福，班禄的幼崽
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散可爱型斑禄。
   item:
     id: 147542
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散可爱型斑禄。
-    flavor_text: The Tomb of Sargeras
 db:
   creature_template:
     name: 班福，班禄的幼崽
@@ -32,3 +32,5 @@ db:
     entry: 147542
     name: 班福，班禄的幼崽
 rarity: 四星
+pet_type: 走兽
+subtype: 神虎幼崽

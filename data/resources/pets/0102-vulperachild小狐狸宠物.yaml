@@ -3,6 +3,10 @@ model_folder: vulperachild小狐狸宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Vulpera / 狐人，仅命中战旗玩具，非宠物）
+  - 外观：狐人幼童站姿，大耳紫眼，穿背心与短裤
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 一星
+pet_type: 人形
+subtype: 狐人幼童
 tags:
 - no_official_data

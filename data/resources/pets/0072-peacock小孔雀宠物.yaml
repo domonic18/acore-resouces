@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28688
     name: 永茂小孔雀
     description: 教你学会召唤这种小伙伴。 右键点击召唤或解散你的永茂小孔雀。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 118921
     name: 永茂小孔雀
 rarity: 四星
+pet_type: 飞禽
+subtype: 孔雀

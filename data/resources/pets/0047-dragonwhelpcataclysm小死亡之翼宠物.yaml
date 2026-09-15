@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 18936
     name: 超小版死亡之翼
     description: 教你学会召唤超小版死亡之翼。 右键点击以召唤或解散超小版死亡之翼。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 62540
     name: 超小版死亡之翼
 rarity: 四星
+pet_type: 龙类
+subtype: 黑龙幼龙

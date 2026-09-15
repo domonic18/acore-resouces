@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 2339
     name: 飞毛腿
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散飞毛腿。
   item:
     id: 23002
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散飞毛腿。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 飞毛腿
@@ -32,3 +32,5 @@ db:
     entry: 23002
     name: 乌龟盒
 rarity: 二星
+pet_type: 小动物
+subtype: 乌龟

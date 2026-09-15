@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 370
     name: 莫叽姆斯的小矛
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散角斗士莫叽姆斯。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 46892
     name: 莫叽姆斯的小矛
 rarity: 三星
+pet_type: 人形
+subtype: 鱼人

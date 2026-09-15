@@ -3,6 +3,10 @@ model_folder: sandpiper小鸟宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Sandpiper / 滨鹬，仅命中食物物品，非宠物）
+  - 外观：棕褐色滨鹬雏鸟，橙色喙与长腿
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 飞禽
+subtype: 滨鹬
 tags:
 - no_official_data
