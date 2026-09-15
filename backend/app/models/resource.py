@@ -13,6 +13,7 @@ class ResourceMixin:
     preview_image = Column(String, nullable=True)
     debug_passed = Column(Boolean, default=False)
     added = Column(Boolean, default=False)
+    tags = Column(Text, nullable=True)
     raw_yaml = Column(Text, nullable=False)
 
     @declared_attr.directive
@@ -28,6 +29,8 @@ class Mount(Base, ResourceMixin):
 
 class Pet(Base, ResourceMixin):
     rarity = Column(String, nullable=True)
+    pet_type = Column(String, nullable=True)
+    subtype = Column(String, nullable=True)
 
 
 class Npc(Base, ResourceMixin):
