@@ -8,6 +8,21 @@ export const DBC_TABS = [
   { key: "item_template", label: "ItemTemplate", source: "sql" },
 ];
 
+// 宠物分类受控词表，与后端 backend/app/schemas/resource.py 的 PET_TYPES 保持同步
+export const PET_TYPES = [
+  "龙类",
+  "走兽",
+  "飞禽",
+  "水生",
+  "机械",
+  "元素",
+  "人形",
+  "亡灵",
+  "小动物",
+  "异怪",
+  "恶魔",
+];
+
 export const QUALITY_OPTIONS = [
   { value: 0, label: "0 灰色 粗糙（Poor）" },
   { value: 1, label: "1 白色 普通（Common）" },

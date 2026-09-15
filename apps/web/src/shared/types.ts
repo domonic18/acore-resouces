@@ -60,6 +60,7 @@ export interface Resource {
   star_rating?: string | null;
   subtype?: string | null;
   rarity?: string | null;
+  pet_type?: string | null;
   special_features?: string[];
   vehicle?: VehicleConfig | null;
   tags?: string[];
@@ -79,6 +80,8 @@ export interface ResourceUpdate {
   special_features?: string[];
   vehicle?: VehicleConfig | null;
   rarity?: string | null;
+  pet_type?: string | null;
+  tags?: string[];
   drop?: Partial<DropInfo>;
   dbc_item?: Record<string, unknown>;
   dbc_spell?: Record<string, unknown>;
