@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1577
     name: 吸血蝙蝠宝宝
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的吸血蝙蝠宝宝。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 38658
     name: 吸血蝙蝠宝宝
 rarity: 二星
+pet_type: 走兽
+subtype: 吸血蝙蝠

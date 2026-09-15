@@ -8,15 +8,52 @@ export const DBC_TABS = [
   { key: "item_template", label: "ItemTemplate", source: "sql" },
 ];
 
+// 宠物分类受控词表，与后端 backend/app/schemas/resource.py 的 PET_TYPES 保持同步
+export const PET_TYPES = [
+  "龙类",
+  "走兽",
+  "飞禽",
+  "水生",
+  "机械",
+  "元素",
+  "人形",
+  "亡灵",
+  "小动物",
+  "异怪",
+  "恶魔",
+];
+
 export const QUALITY_OPTIONS = [
-  { value: 0, label: "Poor 劣质" },
-  { value: 1, label: "Common 普通" },
-  { value: 2, label: "Uncommon 优秀" },
-  { value: 3, label: "Rare 精良" },
-  { value: 4, label: "Epic 史诗" },
-  { value: 5, label: "Legendary 传说" },
-  { value: 6, label: "Artifact 神器" },
-  { value: 7, label: "Heirloom 传家宝" },
+  { value: 0, label: "0 灰色 粗糙（Poor）" },
+  { value: 1, label: "1 白色 普通（Common）" },
+  { value: 2, label: "2 绿色 优秀（Uncommon）" },
+  { value: 3, label: "3 蓝色 精良（Rare）" },
+  { value: 4, label: "4 紫色 史诗（Epic）" },
+  { value: 5, label: "5 橙色 传说（Legendary）" },
+  { value: 6, label: "6 橙红 神器（Artifact）" },
+  { value: 7, label: "7 金色 传家宝（Heirloom）" },
+];
+
+// 来源：ItemTemplate.h enum ItemBondingType / azerothcore wiki item_template#bonding
+export const BONDING_OPTIONS = [
+  { value: 0, label: "0 不绑定" },
+  { value: 1, label: "1 拾取绑定（BoP）" },
+  { value: 2, label: "2 装备绑定（BoE）" },
+  { value: 3, label: "3 使用绑定（BoU）" },
+];
+
+export const REQUIRED_SKILL_OPTIONS = [
+  { value: 0, label: "0 无要求" },
+  { value: 762, label: "762 骑术（Riding）" },
+];
+
+// WLK 骑术等级：75/150 地面，225/300 飞行；375 宗师为 CTM 内容
+export const RIDING_SKILL_RANK_OPTIONS = [
+  { value: 0, label: "0 无要求" },
+  { value: 75, label: "75 初级骑术（60% 地面）" },
+  { value: 150, label: "150 中级骑术（100% 地面）" },
+  { value: 225, label: "225 专家级骑术（150% 飞行）" },
+  { value: 300, label: "300 大师级骑术（280%+ 飞行）" },
 ];
 
 export const CLASS_FLAGS = [

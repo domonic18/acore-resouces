@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28631
     name: 守护巨龙之魂
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散守护巨龙之魂。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 78916
     name: 守护巨龙之魂
 rarity: 四星
+pet_type: 龙类
+subtype: 多彩幼龙

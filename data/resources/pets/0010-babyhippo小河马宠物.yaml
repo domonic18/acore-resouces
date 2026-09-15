@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28628
     name: 天界河马幼崽
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 136923
     name: 天界河马幼崽
 rarity: 三星
+pet_type: 走兽
+subtype: 天界河马幼崽

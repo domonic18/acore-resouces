@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28594
     name: 小温斯顿
     description: 教你学会召唤这种小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 134047
     name: 小温斯顿
 rarity: 四星
+pet_type: 走兽
+subtype: 猩猩幼崽

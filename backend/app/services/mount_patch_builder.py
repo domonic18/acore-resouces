@@ -31,7 +31,12 @@ from wow_dbc_tool.schema.registry import SchemaRegistry
 from app.core.config import settings
 from app.schemas.patch import DBCPlan, SQLPlan
 from app.schemas.resource import Mount
-from app.schemas.vehicle import OFFICIAL_MULTI_SEAT_VEHICLE_IDS
+from app.schemas.vehicle import (
+    OFFICIAL_AUCTIONEER_NPCS,
+    OFFICIAL_MULTI_SEAT_VEHICLE_IDS,
+    OFFICIAL_REPAIR_NPCS,
+    OFFICIAL_VENDOR_NPCS,
+)
 
 WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
 MPQCLI = settings.project_root / "tools" / "wow-mpq-cli" / "build" / "bin" / "mpqcli"
@@ -1100,6 +1105,96 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
                 message="SQL 计划必须包含与 creature_template.entry 一致的 npc_spellclick_spells 记录",
             )
         )
+
+    # 挂件能力与特性标签一致性（工作流 07/08）：商人/修理/拍卖行标签须有
+    # 对应官方挂件（需先配置 vehicle）；未标注却挂官方商贩/拍卖师降级 warning。
+    accessory_entries = [a.accessory_entry for a in vehicle.accessories] if vehicle else []
+    accessory_specs = [
+        (
+            "accessory_vendor_matches_special_features",
+            "自带商人",
+            OFFICIAL_VENDOR_NPCS | OFFICIAL_REPAIR_NPCS,
+            "官方商贩挂件（杂货 32638/32642、材料/修理 32639/32641）",
+            "商贩挂件",
+        ),
+        (
+            "accessory_repair_matches_special_features",
+            "修理",
+            OFFICIAL_REPAIR_NPCS,
+            "修理商挂件（材料/修理 32639/32641）",
+            "修理商挂件",
+        ),
+        (
+            "accessory_auctioneer_matches_special_features",
+            "自带拍卖行",
+            OFFICIAL_AUCTIONEER_NPCS,
+            "拍卖师挂件（联盟 8670、部落 8673、中立 8661）",
+            "拍卖师挂件",
+        ),
+    ]
+    for check_name, tag, npc_pool, expected_text, label in accessory_specs:
+        tagged = tag in resource.special_features
+        matched = sorted({e for e in accessory_entries if e in npc_pool})
+        checks.append(
+            ValidationResult(
+                name=check_name,
+                passed=bool(matched) if tagged else not matched,
+                expected=expected_text if tagged else f"无{label}",
+                actual=matched or "缺失",
+                message=(
+                    f"{tag}标签要求载具挂载对应{label}（需先配置 vehicle）"
+                    if tagged
+                    else f"未标注「{tag}」却挂载了{label}"
+                ),
+                severity="error" if tagged else "warning",
+            )
+        )
+
+    # 特性第三效果校验（工作流 03/04）：水面行走/水下骑乘标签必须体现在构建
+    # 后的召唤法术记录上；未标注却出现对应光环降级为 warning 提示。
+    summon_record = _record_by_id(WOW_DBC_DIR / "Spell.dbc", spell_id) if spell_id else None
+    features = resource.special_features
+    water_walk_tagged = "水面行走" in features
+    water_walk_present = bool(
+        summon_record
+        and summon_record.get("Effect_3") == 6
+        and summon_record.get("EffectAura_3") == 104
+    )
+    checks.append(
+        ValidationResult(
+            name="spell_water_walk_effect_matches_special_features",
+            passed=water_walk_present if water_walk_tagged else not water_walk_present,
+            expected=("Effect_3=6, EffectAura_3=104" if water_walk_tagged else "无水面行走光环"),
+            actual="存在" if water_walk_present else "缺失",
+            message="水面行走标签要求召唤法术第三效果为 WATER_WALK(104)",
+            severity="error" if water_walk_tagged else "warning",
+        )
+    )
+
+    swim_tagged = "水下骑乘" in features
+    expected_swim_base_points = (resource.dbc.spell.swim_speed or 60) - 1
+    swim_base_points = [
+        summon_record.get(f"EffectBasePoints_{slot}")
+        for slot in (1, 2, 3)
+        if summon_record and summon_record.get(f"EffectAura_{slot}") == 58
+    ]
+    swim_ok = bool(swim_base_points) and all(
+        bp == expected_swim_base_points for bp in swim_base_points
+    )
+    checks.append(
+        ValidationResult(
+            name="spell_swim_effect_matches_special_features",
+            passed=swim_ok if swim_tagged else not swim_base_points,
+            expected=(
+                f"游泳光环(58) EffectBasePoints={expected_swim_base_points}"
+                if swim_tagged
+                else "无游泳速度光环"
+            ),
+            actual=swim_base_points or "缺失",
+            message="水下骑乘标签要求召唤法术带游泳速度光环且数值与 swim_speed 一致",
+            severity="error" if swim_tagged else "warning",
+        )
+    )
 
     passed = all(c.passed or c.severity == "warning" for c in checks)
     return JobValidation(

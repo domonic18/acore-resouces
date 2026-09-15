@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 10321
     name: 便携式火炮
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散便携式火炮。
   item:
     id: 150739
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散便携式火炮。
-    flavor_text: The Tomb of Sargeras
 db:
   creature_template:
     name: 便携式火炮
@@ -32,3 +32,5 @@ db:
     entry: 150739
     name: 便携式火炮
 rarity: 四星
+pet_type: 机械
+subtype: 便携火炮

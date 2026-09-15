@@ -92,3 +92,39 @@ def test_search_pagination_total_stable() -> None:
     # total 不随 offset 变化
     _, total_again = dbc_query.search_item_display_info("inv_misc", limit=5, offset=5)
     assert total_again == total_all
+
+
+_requires_spell_icon = pytest.mark.skipif(
+    not dbc_query.SPELL_ICON_PATH.exists(),
+    reason="本地 SpellIcon.dbc 不存在",
+)
+
+
+@_requires_spell_icon
+def test_spell_icon_lookup_exact() -> None:
+    # 大小写与路径前缀不影响命中
+    assert dbc_query.lookup_spell_icon_ids("inv_brontosaurusmount") == [17130]
+    assert dbc_query.lookup_spell_icon_ids("INTERFACE\\ICONS\\INV_BrontosaurusMount") == [17130]
+
+
+@_requires_spell_icon
+def test_spell_icon_lookup_missing_returns_empty() -> None:
+    assert dbc_query.lookup_spell_icon_ids("no_such_icon_xyz") == []
+    assert dbc_query.lookup_spell_icon_ids("  ") == []
+
+
+@_requires_spell_icon
+def test_spell_icon_candidates_exact_first() -> None:
+    candidates = dbc_query.search_spell_icon_candidates("inv_misc_foxkit")
+    assert candidates
+    ids = [record_id for record_id, _ in candidates]
+    assert 25909 in ids
+    # 精确命中排在首位
+    assert candidates[0][0] == 25909
+
+
+@_requires_spell_icon
+def test_spell_icon_index_sorted_and_normalized() -> None:
+    index = dbc_query._load_spell_icon_index()
+    assert all(ids == sorted(ids) for ids in index.values())
+    assert all("\\" not in key and key == key.lower() for key in index)

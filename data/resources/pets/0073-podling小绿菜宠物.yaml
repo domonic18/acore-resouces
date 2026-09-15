@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 26242
     name: 被捕获的森林幼苗
     description: 教你学会召唤这种小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 119149
     name: 被捕获的森林幼苗
 rarity: 二星
+pet_type: 元素
+subtype: 森林幼苗

@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 25328
     name: 滑震幼鳗
     description: 教你学会召唤这种小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 122534
     name: 滑震幼鳗
 rarity: 二星
+pet_type: 水生
+subtype: 幼鳗

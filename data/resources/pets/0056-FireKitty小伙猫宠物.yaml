@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 25310
     name: 燃烬猫仔
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的燃烬猫仔。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 92707
     name: 燃烬猫仔
 rarity: 五星
+pet_type: 元素
+subtype: 燃烬猫仔

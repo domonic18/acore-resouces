@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 29620
     name: 咸饼干船长
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散咸饼干船长。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 160588
     name: 咸饼干船长
 rarity: 四星
+pet_type: 飞禽
+subtype: 鹦鹉

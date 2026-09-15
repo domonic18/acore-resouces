@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28728
     name: 雪福，雪怒的幼崽
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散迷你版雪怒。 [
   item:
@@ -31,3 +32,5 @@ db:
     entry: 101771
     name: 雪福，雪怒的幼崽
 rarity: 五星
+pet_type: 走兽
+subtype: 神虎幼崽

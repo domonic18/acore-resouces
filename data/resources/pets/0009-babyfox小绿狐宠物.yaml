@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 25909
     name: 幼狐
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的幼狐。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 64403
     name: 幼狐
 rarity: 三星
+pet_type: 小动物
+subtype: 幼狐

@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28674
     name: 亮爪
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散亮爪。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 128424
     name: 亮爪
 rarity: 四星
+pet_type: 异怪
+subtype: 魔能猫

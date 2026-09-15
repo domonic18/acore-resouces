@@ -81,6 +81,7 @@ class ResourceBase(BaseModel):
     created_at: datetime | None = None
     updated_at: datetime | None = None
     notes: str | None = None
+    tags: list[str] = Field(default_factory=list)
     drop: DropInfo = Field(default_factory=DropInfo)
     official_db: OfficialDbInfo = Field(default_factory=OfficialDbInfo)
     dbc: DbcInfo = Field(default_factory=DbcInfo)
@@ -120,9 +121,34 @@ class Mount(ResourceBase):
         return [f for f in value if f in SPECIAL_FEATURES]
 
 
+PET_TYPES = [
+    "龙类",
+    "走兽",
+    "飞禽",
+    "水生",
+    "机械",
+    "元素",
+    "人形",
+    "亡灵",
+    "小动物",
+    "异怪",
+    "恶魔",
+]
+
+
 class Pet(ResourceBase):
     resource_type: Literal["pet"] = "pet"
     rarity: str | None = None
+    pet_type: str | None = None
+    subtype: str | None = None
+
+    @field_validator("pet_type")
+    @classmethod
+    def _validate_pet_type(cls, value: str | None) -> str | None:
+        """pet_type 为单值受控字段，词表外值直接报错以暴露手误。"""
+        if value is None or value in PET_TYPES:
+            return value
+        raise ValueError(f"未知 pet_type: {value}，可选：{', '.join(PET_TYPES)}")
 
 
 class Npc(ResourceBase):

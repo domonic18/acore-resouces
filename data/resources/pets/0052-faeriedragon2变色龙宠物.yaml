@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1514
     name: 精龙宝宝
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的精龙宝宝。
   item:
     id: 11474
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的精龙宝宝。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 精龙宝宝
@@ -32,3 +32,5 @@ db:
     entry: 11474
     name: 精龙的蛋
 rarity: 四星
+pet_type: 龙类
+subtype: 精怪幼龙

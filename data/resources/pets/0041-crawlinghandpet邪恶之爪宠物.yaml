@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 27641
     name: 蠕行之爪
     description: Teaches you how to summon this companion. Right Click to summon and dismiss your crawling claw.
   item:
@@ -31,3 +32,5 @@ db:
     entry: 60847
     name: 蠕行之爪
 rarity: 二星
+pet_type: 亡灵
+subtype: 蠕行之爪

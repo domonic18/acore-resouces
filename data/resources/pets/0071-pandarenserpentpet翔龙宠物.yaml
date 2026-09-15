@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 3252
     name: 机械熊猫人幼龙
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的龙宝宝。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 87526
     name: 机械熊猫人幼龙
 rarity: 四星
+pet_type: 机械
+subtype: 机械幼龙

@@ -72,7 +72,7 @@ export function ResourceFilters({
           <Filter className="h-3.5 w-3.5" />
           筛选
         </span>
-        {typeParam !== "pet" && typeParam !== "npc" && (
+        {typeParam !== "npc" && (
           <select
             className="filter-select"
             value={searchParams.get("category") || ""}

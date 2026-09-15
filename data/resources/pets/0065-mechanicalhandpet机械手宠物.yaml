@@ -3,6 +3,10 @@ model_folder: mechanicalhandpet机械手宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Mechanical Hand / 机械手）
+  - 外观：橙铜色机械护手，舷窗式独眼，悬浮移动并喷出尾烟
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 机械
+subtype: 机械护手
 tags:
 - no_official_data

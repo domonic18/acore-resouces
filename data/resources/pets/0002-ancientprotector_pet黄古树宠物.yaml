@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28569
     name: 繁花古树
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的繁花古树。该宠物会随着四季变换而改变。 [Gather info with the Wowhead Client]
   item:
@@ -31,3 +32,5 @@ db:
     entry: 98550
     name: 繁花古树
 rarity: 二星
+pet_type: 元素
+subtype: 古树

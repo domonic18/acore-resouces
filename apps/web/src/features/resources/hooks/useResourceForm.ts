@@ -8,6 +8,7 @@ export interface FormState {
   subtype: string;
   special_features: string[];
   rarity: string;
+  pet_type: string;
   drop_entry: string | number;
   drop_instance: string;
   drop_boss: string;
@@ -25,6 +26,7 @@ export function buildForm(resource?: Resource): FormState {
     subtype: resource?.subtype || "",
     special_features: resource?.special_features ?? [],
     rarity: resource?.rarity || "",
+    pet_type: resource?.pet_type || "",
     drop_entry: resource?.drop.entry ?? "",
     drop_instance: resource?.drop.instance ?? "",
     drop_boss: resource?.drop.boss ?? "",

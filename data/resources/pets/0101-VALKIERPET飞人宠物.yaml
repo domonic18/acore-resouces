@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 32570
     name: Unborn Val'kyr
     description: Teaches you how to summon this companion. Right click to summon and dismiss your Unborn Val'kyr.
   item:
@@ -31,3 +32,5 @@ db:
     entry: 274423
     name: Unborn Val'kyr
 rarity: 二星
+pet_type: 亡灵
+subtype: 未生瓦尔基拉

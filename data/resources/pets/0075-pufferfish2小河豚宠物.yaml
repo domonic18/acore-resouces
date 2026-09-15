@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 32377
     name: 绿色小金鱼
     description: 教你学会召唤和解散这个小伙伴。 点击右键来召唤或解散泡泡。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 94934
     name: 绿色小金鱼
 rarity: 二星
+pet_type: 水生
+subtype: 金鱼

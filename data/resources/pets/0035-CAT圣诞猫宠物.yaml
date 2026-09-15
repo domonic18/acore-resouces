@@ -18,12 +18,12 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1522
     name: 猫笼（灰猫）
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小猫。
   item:
     id: 8485
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的小猫。
-    flavor_text: Shadow of the Necropolis
 db:
   creature_template:
     name: 猫笼（灰猫）
@@ -32,3 +32,5 @@ db:
     entry: 8485
     name: 猫笼（灰猫）
 rarity: 二星
+pet_type: 小动物
+subtype: 灰猫

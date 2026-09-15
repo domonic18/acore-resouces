@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28649
     name: 淘气包
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散淘气包。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 141893
     name: 淘气包
 rarity: 四星
+pet_type: 恶魔
+subtype: 邪能猫崽

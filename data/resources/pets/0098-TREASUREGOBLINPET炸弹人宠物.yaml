@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 10261
     name: 财宝地精
     description: 教你学会召唤财宝地精。 右键点击以召唤或解散你的财宝地精。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 106256
     name: 财宝地精的包裹
 rarity: 二星
+pet_type: 人形
+subtype: 财宝地精

@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 28704
     name: 红色小熊猫
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的红色小熊猫。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 94025
     name: 红色小熊猫
 rarity: 三星
+pet_type: 走兽
+subtype: 小熊猫

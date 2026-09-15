@@ -3,6 +3,10 @@ model_folder: babynaga小娜迦宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Baby Naga）
+  - 外观：绿色娜迦孩童，橙色背鳍冠
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 人形
+subtype: 娜迦孩童
 tags:
 - no_official_data

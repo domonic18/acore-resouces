@@ -3,6 +3,10 @@ model_folder: archonpet执政小妖宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 执政小妖 / Archon，Archon 命中护甲非宠物）
+  - 外观：悬浮的黑甲骷髅面容风暴构造体，环绕蓝色闪电
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 五星
+pet_type: 元素
+subtype: 风暴构造体
 tags:
 - no_official_data

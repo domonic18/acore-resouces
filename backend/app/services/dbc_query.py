@@ -1,8 +1,9 @@
 """DBC 只读查询服务。
 
-提供 ItemDisplayInfo.dbc 记录的搜索与单条查询，供前端 Display ID
-选择器展示「显示 ID → InventoryIcon 图标名」映射；以及任意 DBC 文件的
-空闲 ID 探测（供自建 Vehicle.dbc 记录选号）。只读，不写回 DBC。
+提供 ItemDisplayInfo.dbc / SpellIcon.dbc 记录的搜索与查询，供前端 Display ID
+选择器展示「显示 ID → InventoryIcon 图标名」映射、资源补全时按图标名反查
+SpellIcon ID；以及任意 DBC 文件的空闲 ID 探测（供自建 Vehicle.dbc 记录选号）。
+只读，不写回 DBC。
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
 ITEM_DISPLAY_INFO_PATH = WOW_DBC_DIR / "ItemDisplayInfo.dbc"
+SPELL_ICON_PATH = WOW_DBC_DIR / "SpellIcon.dbc"
 
 # 仅读取选择器需要的两个字段：ID（col0）、InventoryIcon（col5，字符串）
 _ITEM_DISPLAY_INFO_FIELDS = [
@@ -26,8 +28,15 @@ _ITEM_DISPLAY_INFO_FIELDS = [
     FieldDef("InventoryIcon", "string", 20),
 ]
 
+# SpellIcon.dbc 的注册 schema 是空壳，按物理布局内联：ID（col0）、Name（col1，字符串）
+_SPELL_ICON_FIELDS = [
+    FieldDef("ID", "uint32", 0),
+    FieldDef("Name", "string", 4),
+]
+
 # 进程内缓存：key 为文件 (mtime_ns, size)，wow-dbc submodule 更新后自动重载
 _cache: dict[tuple[int, int], dict[int, str | None]] = {}
+_spell_icon_cache: dict[tuple[int, int], dict[str, list[int]]] = {}
 
 
 def _load_index() -> dict[int, str | None]:
@@ -165,3 +174,88 @@ def next_free_id(
     while candidate in used:
         candidate += 1
     return candidate
+
+
+def _normalize_icon_name(name: str) -> str:
+    """归一化图标名：去路径前缀（INTERFACE\\ICONS\\ 等）、转小写。"""
+    normalized = name.replace("/", "\\").split("\\")[-1]
+    return normalized.lower()
+
+
+def _load_spell_icon_index() -> dict[str, list[int]]:
+    """惰性加载 SpellIcon.dbc 为 {归一化图标名: [记录 ID 列表（升序）]}。
+
+    Returns:
+        归一化图标名 → 记录 ID 列表 的索引字典。
+
+    Raises:
+        FileNotFoundError: DBC 文件缺失。
+    """
+    try:
+        stat = SPELL_ICON_PATH.stat()
+    except OSError as exc:
+        raise FileNotFoundError(f"未找到 DBC 文件：{SPELL_ICON_PATH}") from exc
+
+    cache_key = (stat.st_mtime_ns, stat.st_size)
+    cached = _spell_icon_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    dbc = DBCFile(SPELL_ICON_PATH, _SPELL_ICON_FIELDS).load()
+    index: dict[str, list[int]] = {}
+    for record in dbc.all():
+        name = record.get("Name")
+        record_id = record.get("ID")
+        if not name or record_id is None:
+            continue
+        index.setdefault(_normalize_icon_name(str(name)), []).append(int(record_id))
+
+    for ids in index.values():
+        ids.sort()
+
+    _spell_icon_cache.clear()
+    _spell_icon_cache[cache_key] = index
+    logger.info("SpellIcon.dbc 已加载：%d 个图标名", len(index))
+    return index
+
+
+def lookup_spell_icon_ids(icon_name: str) -> list[int]:
+    """按图标名精确查询 SpellIcon.dbc 记录 ID。
+
+    Args:
+        icon_name: 图标名（如 ``inv_misc_foxkit``，可含路径前缀、大小写任意）。
+
+    Returns:
+        命中的记录 ID 列表（升序，通常只有一个）；未命中返回空列表。
+    """
+    keyword = _normalize_icon_name(icon_name.strip())
+    if not keyword:
+        return []
+    return _load_spell_icon_index().get(keyword, [])
+
+
+def search_spell_icon_candidates(icon_name: str, *, limit: int = 10) -> list[tuple[int, str]]:
+    """按图标名子串模糊搜索 SpellIcon.dbc 候选记录（精确命中置顶）。
+
+    Args:
+        icon_name: 图标名关键词。
+        limit: 返回条数上限。
+
+    Returns:
+        (记录 ID, 原始 Name) 列表，ID 升序，精确命中置顶。
+    """
+    keyword = _normalize_icon_name(icon_name.strip())
+    index = _load_spell_icon_index()
+    if not keyword:
+        return []
+
+    exact_ids = index.get(keyword, [])
+    candidates: list[tuple[int, str]] = [(record_id, keyword) for record_id in exact_ids]
+    seen = set(exact_ids)
+    for normalized, record_ids in sorted(index.items()):
+        if keyword in normalized:
+            for record_id in record_ids:
+                if record_id not in seen:
+                    candidates.append((record_id, normalized))
+                    seen.add(record_id)
+    return candidates[:limit]

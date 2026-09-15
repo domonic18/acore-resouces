@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 26682
     name: 枭兽宝宝
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的枭兽宝宝。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 108438
     name: 枭兽宝宝
 rarity: 四星
+pet_type: 异怪
+subtype: 枭兽宝宝

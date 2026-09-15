@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 1699
     name: 奥妮克希亚龙宝宝
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散你的奥妮克希亚龙宝宝。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 49362
     name: 奥妮克希亚龙宝宝
 rarity: 五星
+pet_type: 龙类
+subtype: 黑龙幼龙

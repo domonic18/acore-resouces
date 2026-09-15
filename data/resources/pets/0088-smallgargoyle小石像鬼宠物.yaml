@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 9212
     name: 怪诞魔
     description: 教你学会召唤怪诞魔。 右键点击以召唤或解散你的怪诞魔。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 122105
     name: 怪诞魔雕像
 rarity: 一星
+pet_type: 亡灵
+subtype: 石像鬼

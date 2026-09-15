@@ -3,6 +3,10 @@ model_folder: hearthstoneelemental小石头人宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Hearthstone Elemental）
+  - 外观：小型岩石元素，胸前蓝色炉石漩涡纹
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 四星
+pet_type: 元素
+subtype: 炉石元素
 tags:
 - no_official_data

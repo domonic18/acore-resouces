@@ -124,3 +124,18 @@ mount_type: 陆地坐骑
 star_rating: 三星
 subtype: 牛
 special_features: [三人骑乘, 自带商人, 修理]
+# 挂件：官方猛犸象模式——杂货商 Hakmud(32638) 座 1，材料/修理商 Gnimo(32639) 座 2
+vehicle:
+  vehicle_id: 312
+  spellclick_spell_id: 46598
+  accessories:
+  - accessory_entry: 32638
+    seat_id: 1
+    minion: 0
+    summontype: 6
+    summontimer: 30000
+  - accessory_entry: 32639
+    seat_id: 2
+    minion: 0
+    summontype: 6
+    summontimer: 30000

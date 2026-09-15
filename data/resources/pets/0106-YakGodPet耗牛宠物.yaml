@@ -3,6 +3,10 @@ model_folder: YakGodPet耗牛宠物
 preview_image: null
 debug_passed: false
 added: false
+notes: |-
+  ## 官方信息
+  - 自定义模型，Wowhead 无对应宠物条目（已查询 Yak / 牦牛，仅命中坐骑缰绳，非宠物）
+  - 外观：白毛发光牦牛犊，黑色巨角，蓝眼光焰
 drop:
   entry: null
   instance: null
@@ -22,5 +26,7 @@ db:
   creature_model_info: {}
   item_template: {}
 rarity: 三星
+pet_type: 走兽
+subtype: 神牦牛犊
 tags:
 - no_official_data

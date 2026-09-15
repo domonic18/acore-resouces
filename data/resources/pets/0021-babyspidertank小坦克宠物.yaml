@@ -18,6 +18,7 @@ dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell:
+    icon_id: 2546
     name: 迷你蜘蛛坦克
     description: 教你学会召唤这种小伙伴。 右键点击以召唤或解散这个小伙伴。
   item:
@@ -31,3 +32,5 @@ db:
     entry: 165894
     name: 迷你蜘蛛坦克
 rarity: 四星
+pet_type: 机械
+subtype: 蜘蛛坦克
