@@ -195,21 +195,34 @@ def _extract_item_description_en(body_text: str) -> str | None:
     return None
 
 
+_PATCH_BANNER_PATTERN = re.compile(r"增加于|Added in patch")
+
+
 def _extract_flavor_text(body_text: str) -> str | None:
-    """从页面文本中提取引号包裹的风味文本（含中文）。"""
-    for match in re.finditer(r'"([^"]{10,})"', body_text):
-        text = match.group(1)
-        if re.search(r"[一-鿿]", text):
-            return text.strip()
+    """从页面文本中提取引号包裹的风味文本（含中文）。
+
+    跳过补丁横幅行（如 `增加于 4.2 "[Rage of the Firelands]"`），此类引文
+    是页面侧栏信息而非物品风味文本。
+    """
+    for line in body_text.splitlines():
+        if _PATCH_BANNER_PATTERN.search(line):
+            continue
+        for match in re.finditer(r'"([^"]{10,})"', line):
+            text = match.group(1)
+            if re.search(r"[一-鿿]", text):
+                return text.strip()
     return None
 
 
 def _extract_flavor_text_en(body_text: str) -> str | None:
     """从页面文本中提取引号包裹的风味文本（英文）。"""
-    for match in re.finditer(r'"([^"]{20,})"', body_text):
-        text = match.group(1)
-        if re.search(r"[a-zA-Z]", text):
-            return text.strip()
+    for line in body_text.splitlines():
+        if _PATCH_BANNER_PATTERN.search(line):
+            continue
+        for match in re.finditer(r'"([^"]{20,})"', line):
+            text = match.group(1)
+            if re.search(r"[a-zA-Z]", text):
+                return text.strip()
     return None
 
 
@@ -744,6 +757,7 @@ def _parse_pet_item_page(
         "item_description": item_description,
         "flavor_text": flavor_text,
         "spell_id": spell_id,
+        "spell_wowhead_url": _spell_wowhead_url(spell_id, expansion, locale),
         "npc_id": npc_id,
     }
 
@@ -771,6 +785,7 @@ def _search_pet_single(query: str, expansion: str, locale: str) -> dict:
         "name_en": None,
         "icon_name": None,
         "spell_id": None,
+        "spell_wowhead_url": None,
         "npc_id": None,
         "item_id": None,
         "item_wowhead_url": None,
@@ -844,6 +859,7 @@ def _fetch_pet_item_cn(item_id: int) -> dict[str, object]:
         "source": None,
         "url": None,
         "item_wowhead_url": None,
+        "spell_wowhead_url": None,
         "error": None,
     }
 
@@ -906,6 +922,9 @@ def search_pet(query: str) -> dict:
                 result["url"] = cn_data.get("url") or result.get("url")
                 result["item_wowhead_url"] = cn_data.get("item_wowhead_url") or result.get(
                     "item_wowhead_url"
+                )
+                result["spell_wowhead_url"] = cn_data.get("spell_wowhead_url") or result.get(
+                    "spell_wowhead_url"
                 )
                 result["source"] = cn_data.get("source") or result.get("source")
         return result
