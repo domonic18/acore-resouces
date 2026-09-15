@@ -26,6 +26,7 @@ class _ExpansionConfig(TypedDict):
     base_url: str
     spell_prefixes: list[str]
     item_prefixes: list[str]
+    npc_prefixes: list[str]
 
 
 EXPANSIONS: dict[str, _ExpansionConfig] = {
@@ -33,11 +34,13 @@ EXPANSIONS: dict[str, _ExpansionConfig] = {
         "base_url": "https://www.wowhead.com/wotlk",
         "spell_prefixes": ["/wotlk/cn/spell=", "/wotlk/spell="],
         "item_prefixes": ["/wotlk/cn/item=", "/wotlk/item="],
+        "npc_prefixes": ["/wotlk/cn/npc=", "/wotlk/npc="],
     },
     "retail": {
         "base_url": "https://www.wowhead.com",
         "spell_prefixes": ["/cn/spell=", "/spell="],
         "item_prefixes": ["/cn/item=", "/item="],
+        "npc_prefixes": ["/cn/npc=", "/npc="],
     },
 }
 
@@ -68,6 +71,20 @@ def _item_wowhead_url(item_id: int | None, expansion: str, locale: str) -> str |
     if not item_id:
         return None
     return f"https://www.wowhead.com{_item_path(expansion, locale)}{item_id}"
+
+
+def _npc_path(expansion: str, locale: str) -> str:
+    """根据版本与语言构造 NPC 页路径前缀。"""
+    if expansion == "wotlk":
+        return "/wotlk/cn/npc=" if locale == "zh" else "/wotlk/npc="
+    return "/cn/npc=" if locale == "zh" else "/npc="
+
+
+def _npc_wowhead_url(npc_id: int | None, expansion: str, locale: str) -> str | None:
+    """构造 NPC 页 Wowhead URL。"""
+    if not npc_id:
+        return None
+    return f"https://www.wowhead.com{_npc_path(expansion, locale)}{npc_id}"
 
 
 def _build_search_url(query: str, expansion: str, locale: str) -> str:
@@ -226,6 +243,56 @@ def _extract_flavor_text_en(body_text: str) -> str | None:
     return None
 
 
+_NPC_TYPE_CN_PATTERN = re.compile(
+    r"(?:类型|种类)[:：]\s*(野兽|龙类|恶魔|元素|巨人|亡灵|人形生物|人形|小动物|机械|未指定)"
+)
+_NPC_TYPE_INTRO_PATTERN = re.compile(
+    r"是[^。\n]{0,16}?(野兽|龙类|恶魔|元素|巨人|亡灵|人形生物|小动物|机械|未指定)"
+)
+_NPC_TYPE_EN_TO_CN = {
+    "Humanoid": "人形生物",
+    "Beast": "野兽",
+    "Dragonkin": "龙类",
+    "Demon": "恶魔",
+    "Elemental": "元素",
+    "Giant": "巨人",
+    "Undead": "亡灵",
+    "Critter": "小动物",
+    "Mechanical": "机械",
+    "Not specified": "未指定",
+}
+
+
+def _normalize_creature_type_cn(value: str) -> str:
+    """页面措辞 '人形' 归一为词表值 '人形生物'。"""
+    return "人形生物" if value == "人形" else value
+
+
+def _extract_creature_type(body_text: str) -> str | None:
+    """从中文 NPC 页面文本提取生物类型（映射到 NPC_TYPES 词表值）。"""
+    match = _NPC_TYPE_CN_PATTERN.search(body_text)
+    if match:
+        return _normalize_creature_type_cn(match.group(1))
+
+    match = _NPC_TYPE_INTRO_PATTERN.search(body_text)
+    if match:
+        return _normalize_creature_type_cn(match.group(1))
+    return None
+
+
+def _extract_creature_type_en(body_text: str) -> str | None:
+    """从英文 NPC 页面文本提取生物类型，返回中文词表值。"""
+    types = "|".join(_NPC_TYPE_EN_TO_CN)
+    match = re.search(rf"Type[:：]\s*({types})", body_text, re.IGNORECASE)
+    if match:
+        return _NPC_TYPE_EN_TO_CN.get(match.group(1).title())
+
+    match = re.search(rf"is a level[^.\n]{{0,40}}?({types})", body_text, re.IGNORECASE)
+    if match:
+        return _NPC_TYPE_EN_TO_CN.get(match.group(1).title())
+    return None
+
+
 def _safe_inner_text(locator: Locator) -> str | None:
     """安全地获取 locator 的 inner_text，不存在时返回 None。"""
     try:
@@ -320,7 +387,13 @@ def _goto_with_retry(page: Page, url: str, retries: int = 2) -> None:
             page.goto(url, wait_until="domcontentloaded", timeout=REQUEST_TIMEOUT)
             page.wait_for_load_state("domcontentloaded", timeout=REQUEST_TIMEOUT)
             time.sleep(WAIT_AFTER_GOTO)
-            return
+            title = page.title() or ""
+            if "Static CDN Error" not in title:
+                return
+            # Wowhead 限流时返回可正常加载的 CDN 错误页，需等待后重试
+            last_error = RuntimeError(f"Wowhead CDN 限流页: {url}")
+            logger.warning("命中 Wowhead CDN 限流页，第 %d 次重试: %s", attempt + 1, url)
+            time.sleep(10 * (attempt + 1))
         except Exception as exc:  # noqa: BLE001
             last_error = exc
             logger.warning("页面加载失败，第 %d 次重试: %s", attempt + 1, exc)
@@ -697,14 +770,15 @@ def _find_pet_npc_link(
         href = link.get_attribute("href")
         if not href:
             continue
-        if any(href.startswith(prefix) for prefix in prefixes):
+        # 搜索结果可能返回绝对/相对两种 URL，用子串匹配前缀
+        if any(prefix in href for prefix in prefixes):
             text = (link.inner_text() or "").strip()
             if query_lower in text.lower():
                 return href
 
     for link in links:
         href = link.get_attribute("href")
-        if href and any(href.startswith(prefix) for prefix in prefixes):
+        if href and any(prefix in href for prefix in prefixes):
             return href
 
     return None
@@ -798,7 +872,7 @@ def _search_pet_single(query: str, expansion: str, locale: str) -> dict:
 
     config = EXPANSIONS[expansion]
     item_prefixes = config["item_prefixes"] if locale == "zh" else [config["item_prefixes"][-1]]
-    npc_prefixes = config["item_prefixes"] if locale == "zh" else [config["item_prefixes"][-1]]
+    npc_prefixes = config["npc_prefixes"] if locale == "zh" else [config["npc_prefixes"][-1]]
 
     try:
         page = _new_browser_page()
@@ -942,3 +1016,178 @@ def search_pet_json(query: str) -> str:
         JSON 字符串，便于 CLI 直接打印。
     """
     return json.dumps(search_pet(query), ensure_ascii=False, indent=2)
+
+
+def _clean_npc_display_name(raw: str) -> str:
+    """清洗 NPC h1 装饰：去掉头衔 `<...>` 与未翻译方括号标记。"""
+    text = re.sub(r"<[^>]*>", "", raw)
+    return text.replace("[", "").replace("]", "").strip()
+
+
+def _parse_npc_page(page: Page, query: str, expansion: str, locale: str) -> dict[str, object]:
+    """解析 NPC 详情页，提取名称、ID 与生物类型。"""
+    body_text = page.inner_text("body")
+    name = _clean_npc_display_name(_safe_inner_text(page.locator("h1").first) or query)
+    npc_id = _extract_id_from_href(page.url, "npc")
+
+    name_en = _extract_english_name(body_text)
+    creature_type = _extract_creature_type(body_text)
+    if locale == "en":
+        name_en = name_en or name
+        creature_type = _extract_creature_type_en(body_text) or creature_type
+
+    # 中文页 h1 无 CJK 时视为未翻译（Wowhead 方括号标记），名称归入英文
+    name_zh = None
+    if locale == "zh" and re.search(r"[一-鿿]", name):
+        name_zh = name
+
+    return {
+        "name_zh": name_zh,
+        "name_en": name_en,
+        "npc_id": npc_id,
+        "npc_wowhead_url": _npc_wowhead_url(npc_id, expansion, locale),
+        "creature_type": creature_type,
+    }
+
+
+def _search_npc_single(query: str, expansion: str, locale: str) -> dict:
+    """单次 NPC 查询：指定版本与语言。"""
+    result: dict[str, object] = {
+        "query": query,
+        "expansion": expansion,
+        "locale": locale,
+        "url": None,
+        "name_zh": None,
+        "name_en": None,
+        "npc_id": None,
+        "npc_wowhead_url": None,
+        "creature_type": None,
+        "confidence": "low",
+        "error": None,
+    }
+
+    config = EXPANSIONS[expansion]
+    npc_prefixes = config["npc_prefixes"] if locale == "zh" else [config["npc_prefixes"][-1]]
+
+    try:
+        page = _new_browser_page()
+        try:
+            search_url = _build_search_url(query, expansion, locale)
+            _goto_with_retry(page, search_url)
+
+            # 大结果集的 listview 渲染可能超出固定等待，显式等锚点出现
+            try:
+                page.wait_for_selector("a[href*='/npc=']", timeout=10000)
+            except Exception:  # noqa: BLE001
+                pass
+
+            npc_href = _find_pet_npc_link(page, query, npc_prefixes)
+            if not npc_href:
+                result["error"] = f"未在 {expansion} {locale} 搜索结果中找到 NPC 链接"
+                return result
+
+            npc_href = _make_absolute_url(npc_href, locale)
+            _goto_with_retry(page, npc_href)
+            result["url"] = page.url
+
+            parsed = _parse_npc_page(page, query, expansion, locale)
+            result.update(parsed)
+
+            confidence = "low"
+            if (result["name_zh"] or result["name_en"]) and result["creature_type"]:
+                confidence = "high"
+            elif result["name_zh"] or result["name_en"]:
+                confidence = "medium"
+            result["confidence"] = confidence
+
+        finally:
+            _close_browser_page(page)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("查询 Wowhead NPC 时发生错误")
+        result["error"] = f"查询异常: {exc}"
+
+    return result
+
+
+def _fetch_npc_cn(npc_id: int) -> dict[str, object]:
+    """根据 npc_id 获取零售版中文 NPC 页数据，用于补全中文名称。"""
+    result: dict[str, object] = {
+        "name_zh": None,
+        "creature_type": None,
+        "url": None,
+        "npc_wowhead_url": None,
+        "error": None,
+    }
+
+    try:
+        page = _new_browser_page()
+        try:
+            url = f"https://www.wowhead.com/cn/npc={npc_id}?locale=zh"
+            _goto_with_retry(page, url)
+            parsed = _parse_npc_page(page, "", "retail", "zh")
+            result.update(parsed)
+            result["url"] = page.url
+            result["npc_wowhead_url"] = _npc_wowhead_url(npc_id, "retail", "zh")
+        finally:
+            _close_browser_page(page)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("获取 NPC 中文页面失败: %s", exc)
+        result["error"] = f"查询异常: {exc}"
+
+    return result
+
+
+def search_npc(query: str) -> dict:
+    """查询 Wowhead 获取 NPC 官方数据，自动回退版本与语言。
+
+    回退顺序：
+    1. WotLK 简体中文；
+    2. 零售版简体中文；
+    3. 零售版英文，若成功再用 npc_id 取回零售版中文页面核对中文名称。
+
+    Args:
+        query: NPC 中文或英文名称。
+
+    Returns:
+        包含查询结果的字典；失败时包含 `error` 字段。
+    """
+    # 1. WotLK 中文（未拿到中文名时继续回退，说明该 NPC 中文未翻译）
+    result = _search_npc_single(query, "wotlk", "zh")
+    if not result.get("error") and result.get("name_zh"):
+        return result
+
+    # 2. 零售版中文
+    result = _search_npc_single(query, "retail", "zh")
+    if not result.get("error") and result.get("name_zh"):
+        return result
+
+    # 3. 零售版英文
+    result = _search_npc_single(query, "retail", "en")
+    if not result.get("error"):
+        npc_id = result.get("npc_id")
+        if npc_id:
+            cn_data = _fetch_npc_cn(int(npc_id))
+            if not cn_data.get("error"):
+                result["name_zh"] = cn_data.get("name_zh") or result.get("name_zh")
+                result["creature_type"] = cn_data.get("creature_type") or result.get(
+                    "creature_type"
+                )
+                result["url"] = cn_data.get("url") or result.get("url")
+                result["npc_wowhead_url"] = cn_data.get("npc_wowhead_url") or result.get(
+                    "npc_wowhead_url"
+                )
+        return result
+
+    return result
+
+
+def search_npc_json(query: str) -> str:
+    """查询 Wowhead NPC 并以 JSON 字符串返回结果。
+
+    Args:
+        query: NPC 中文或英文名称。
+
+    Returns:
+        JSON 字符串，便于 CLI 直接打印。
+    """
+    return json.dumps(search_npc(query), ensure_ascii=False, indent=2)
