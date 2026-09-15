@@ -10,9 +10,9 @@ from rich.console import Console
 from rich.markup import escape
 from rich.table import Table
 
-from app.services import dbc_annotation, dbc_reader
+from app.services import dbc_annotation, dbc_query, dbc_reader
 
-app = typer.Typer(help="DBC 只读查询（文件列表 / 分页查询 / 记录详情）")
+app = typer.Typer(help="DBC 只读查询（文件列表 / 分页查询 / 记录详情 / 图标 ID 反查）")
 console = Console()
 
 
@@ -160,3 +160,48 @@ def get(
             f"{r['type']}-{r['id']:04d} {r['name'] or r['model_folder']}" for r in resources
         )
         console.print(f"\n[magenta]来源资源：[/magenta]{escape(names)}")
+
+
+@app.command("icon-id", help="按图标名反查 SpellIcon.dbc 记录 ID")
+def icon_id(
+    name: str = typer.Argument(..., help="图标名，如 inv_misc_foxkit（前缀/大小写不限）"),
+    json_output: bool = typer.Option(False, "--json", help="以 JSON 输出"),
+) -> None:
+    """输出图标名精确命中的 SpellIcon ID 与子串近似候选。"""
+    try:
+        exact = dbc_query.lookup_spell_icon_ids(name)
+        candidates = dbc_query.search_spell_icon_candidates(name)
+    except FileNotFoundError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    if json_output:
+        console.print_json(
+            json.dumps(
+                {
+                    "icon_name": name,
+                    "exact_ids": exact,
+                    "candidates": [
+                        {"id": record_id, "name": normalized} for record_id, normalized in candidates
+                    ],
+                },
+                ensure_ascii=False,
+            )
+        )
+        return
+
+    if exact:
+        console.print(f"[green]精确命中：[/green]{', '.join(str(i) for i in exact)}")
+    else:
+        console.print("[yellow]无精确命中[/yellow]")
+
+    if candidates:
+        table = Table(title=f"SpellIcon.dbc 候选（{len(candidates)} 条）")
+        table.add_column("ID", style="cyan", justify="right")
+        table.add_column("图标名")
+        for record_id, normalized in candidates:
+            marker = "[green]✓[/green] " if record_id in exact else ""
+            table.add_row(str(record_id), f"{marker}{escape(normalized)}")
+        console.print(table)
+    elif not exact:
+        console.print("[dim]也无近似候选[/dim]")
