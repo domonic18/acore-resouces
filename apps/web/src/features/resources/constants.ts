@@ -23,6 +23,21 @@ export const PET_TYPES = [
   "恶魔",
 ];
 
+// NPC 生物类型受控词表，与后端 backend/app/schemas/resource.py 的 NPC_TYPES 保持同步
+// 顺序对应 3.3.5 creature_template.type：野兽=1 … 机械=9，未指定=0
+export const NPC_TYPES = [
+  "野兽",
+  "龙类",
+  "恶魔",
+  "元素",
+  "巨人",
+  "亡灵",
+  "人形生物",
+  "小动物",
+  "机械",
+  "未指定",
+];
+
 export const QUALITY_OPTIONS = [
   { value: 0, label: "0 灰色 粗糙（Poor）" },
   { value: 1, label: "1 白色 普通（Common）" },

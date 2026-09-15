@@ -4,7 +4,7 @@ import { cn } from "@/shared/utils";
 import { ExternalLink } from "lucide-react";
 import type { Resource } from "@/shared/types";
 import { SPECIAL_FEATURE_OPTIONS } from "../../lib/resource-list";
-import { PET_TYPES } from "../../constants";
+import { PET_TYPES, NPC_TYPES } from "../../constants";
 import type { FormState } from "../../hooks/useResourceForm";
 
 interface BasicInfoSectionProps {
@@ -72,6 +72,16 @@ export function BasicInfoSection({
                   className="inline-flex items-center gap-1 text-[11px] text-accent hover:text-accent-hover"
                 >
                   <ExternalLink className="h-3 w-3" /> Wowhead 物品页
+                </a>
+              )}
+              {resource.official_db.npc_wowhead_url && (
+                <a
+                  href={resource.official_db.npc_wowhead_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] text-accent hover:text-accent-hover"
+                >
+                  <ExternalLink className="h-3 w-3" /> Wowhead NPC 页
                 </a>
               )}
             </div>
@@ -154,6 +164,32 @@ export function BasicInfoSection({
                   >
                     <option value="">未设置</option>
                     {PET_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </FormGroup>
+                <FormGroup label="细分" compact={compact}>
+                  <input
+                    type="text"
+                    className={inputCls}
+                    value={form.subtype}
+                    onChange={(e) => updateField("subtype", e.target.value)}
+                  />
+                </FormGroup>
+              </>
+            )}
+            {resource.resource_type === "npc" && (
+              <>
+                <FormGroup label="生物类型" compact={compact}>
+                  <select
+                    className={selectCls}
+                    value={form.npc_type}
+                    onChange={(e) => updateField("npc_type", e.target.value)}
+                  >
+                    <option value="">未设置</option>
+                    {NPC_TYPES.map((t) => (
                       <option key={t} value={t}>
                         {t}
                       </option>

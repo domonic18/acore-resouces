@@ -72,22 +72,20 @@ export function ResourceFilters({
           <Filter className="h-3.5 w-3.5" />
           筛选
         </span>
-        {typeParam !== "npc" && (
-          <select
-            className="filter-select"
-            value={searchParams.get("category") || ""}
-            onChange={(e) => updateParam("category", e.target.value)}
-          >
-            <option value="">
-              所有{typeParam === "mount" ? "类型" : "分类"}
+        <select
+          className="filter-select"
+          value={searchParams.get("category") || ""}
+          onChange={(e) => updateParam("category", e.target.value)}
+        >
+          <option value="">
+            所有{typeParam === "mount" ? "类型" : "分类"}
+          </option>
+          {categoryOptions.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
             </option>
-            {categoryOptions.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        )}
+          ))}
+        </select>
         <select
           className="filter-select"
           value={searchParams.get("tier") || ""}

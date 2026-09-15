@@ -71,6 +71,9 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
     if (form.pet_type !== baseline.pet_type) {
       update.pet_type = form.pet_type || null;
     }
+    if (form.npc_type !== baseline.npc_type) {
+      update.npc_type = form.npc_type || null;
+    }
     if (form.notes !== baseline.notes) update.notes = form.notes || null;
 
     // 载具配置：vehicle_id = 0 的草稿（未分配 ID）不写入，由 VehicleSection 提示
