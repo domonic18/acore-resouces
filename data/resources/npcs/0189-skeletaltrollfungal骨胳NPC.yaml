@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 骷髅
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=45285
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 45285
+    name: 骷髅
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 亡灵
+subtype: 骷髅
+notes: >-
+  自定义模型说明：文件夹英文段 skeletaltrollfungal 即 Skeletal Troll
+  Fungal（真菌骷髅巨魔）；归入 0188 同款通用条目 npc=45285（骷髅），预览
+  头肩生菌、蓝光缠绕的裸骨巨魔骷髅变体（无图可核，置信中）；文件名"骨胳"
+  为社区俗称。

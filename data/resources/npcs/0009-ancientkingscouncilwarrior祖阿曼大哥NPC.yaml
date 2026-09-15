@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 巨魔
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：蓝灰皮肤巨魔重甲战士，金色双角高冠头饰、金色爪形护手、紫金纹胸甲，
+  腰带挂骷髅、肩部红羽饰，祖阿曼风格。查询词 ancientkingscouncilwarrior（英文段直译
+  "Ancient Kings Council Warrior"）未命中 Wowhead NPC 条目；候选"妖术领主玛拉卡斯"
+  npc=24239 经截图比对（绿皮、绿紫长袍）确认不符而弃用，判定为社区魔改模型，无官方对应数据。

@@ -9,16 +9,27 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 先知萨隆亚
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=26632
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 26632
+    name: 先知萨隆亚
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 巨魔巫妖
+notes: >-
+  自定义模型说明：文件夹英文段 trolllich 即 Troll Lich（巨魔巫妖）；查询词
+  Tharon'Ja 未命中，按达克萨隆要塞最终首领 id 直查命中 npc=26632（先知
+  萨隆亚），og 图为其骨虫巫妖形态，预览蓝皮金冠、金肩垂轴的德拉卡尼
+  巨魔人形形态与该首领人形阶段特征一致，置信中；文件名"特洛利希"为社区
+  俗称。

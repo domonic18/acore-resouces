@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 牛头人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：牛头人鼓手坐于木桶架子鼓前，配号角骷髅与锣鼓道具的乐队场景模型。
+  查询词 bandtaurenmale2/Tauren Drummer/牛头人鼓手均未命中 Wowhead NPC 条目，
+  判定为社区自制乐队模型，无官方对应数据。

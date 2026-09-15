@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 海巨人
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=148350
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 148350
+    name: 海巨人
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 海巨人
+notes: >-
+  自定义模型说明：文件夹英文段 felseagiant2 即 Fel Sea Giant（邪能海巨人）；
+  og 图核对 npc=148350（海巨人通用条目，绿须海巨人）与预览同模型，本资源为
+  邪能绿焰缠身的贴图变体；文件名"恶棍"为社区俗称。

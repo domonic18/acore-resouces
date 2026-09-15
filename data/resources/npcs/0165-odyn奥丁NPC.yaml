@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 奥丁
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=114263
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 114263
+    name: 奥丁
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 泰坦守护者
+notes: >-
+  自定义模型说明：文件夹英文段 Odyn 即 Odyn；og 图核对 npc=114263（奥丁，
+  英灵殿守护者）为金甲火焰胡须的泰坦造物，与预览蓝灰肤、翼形金冠、熔岩
+  胡须造型吻合（甲胄配色为变体，置信中）；文件名"奥丁"即官方译名。

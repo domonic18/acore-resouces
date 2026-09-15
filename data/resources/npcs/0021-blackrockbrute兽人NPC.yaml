@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 兽人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：黑石部族风格重甲兽人，尖刺金属胸甲、肩扛火焰战器、胸口火纹烙印
+  （预览图"兽人NPC.gif"）。查询词 Blackrock Brute/Blackrock Orc/黑石兽人仅命中
+  被刺穿的黑石兽人 npc=43150（场景尸体装饰，不符），判定为社区魔改模型，无官方对应数据。

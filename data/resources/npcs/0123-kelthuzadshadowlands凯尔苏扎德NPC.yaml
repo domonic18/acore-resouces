@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 克尔苏加德
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=15990
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 15990
+    name: 克尔苏加德
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 亡灵
+subtype: 巫妖
+notes: >-
+  自定义模型说明：文件夹英文段 kelthuzadshadowlands 即 Kel'Thuzad；对应
+  官方条目 npc=15990（克尔苏加德，3.3.5 原生纳克萨玛斯 BOSS），预览蓝金
+  长袍、冠冕浮游的经典巫妖形象与其吻合；文件名"凯尔苏扎德"为社区俗称。

@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 猪头人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：灰蓝皮肤猪首兽人，缝线疤痕、持屠夫剁刀（预览图"猪头怪NPC.gif"），
+  德鲁斯特瓦屠宰场风格。查询词 Drustvar Beastman/猪头怪均未命中 Wowhead NPC
+  条目，判定为社区魔改模型，无官方对应数据。

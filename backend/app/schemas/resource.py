@@ -46,6 +46,7 @@ class OfficialDbInfo(BaseModel):
     icon_name: str | None = None
     spell_wowhead_url: str | None = None
     item_wowhead_url: str | None = None
+    npc_wowhead_url: str | None = None
 
     @model_validator(mode="before")
     @classmethod
@@ -151,9 +152,33 @@ class Pet(ResourceBase):
         raise ValueError(f"未知 pet_type: {value}，可选：{', '.join(PET_TYPES)}")
 
 
+NPC_TYPES = [
+    "野兽",
+    "龙类",
+    "恶魔",
+    "元素",
+    "巨人",
+    "亡灵",
+    "人形生物",
+    "小动物",
+    "机械",
+    "未指定",
+]
+
+
 class Npc(ResourceBase):
     resource_type: Literal["npc"] = "npc"
     rarity: str | None = None
+    npc_type: str | None = None
+    subtype: str | None = None
+
+    @field_validator("npc_type")
+    @classmethod
+    def _validate_npc_type(cls, value: str | None) -> str | None:
+        """npc_type 为单值受控字段，词表外值直接报错以暴露手误。"""
+        if value is None or value in NPC_TYPES:
+            return value
+        raise ValueError(f"未知 npc_type: {value}，可选：{', '.join(NPC_TYPES)}")
 
 
 Resource = Annotated[Mount | Pet | Npc, Field(discriminator="resource_type")]

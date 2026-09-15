@@ -21,4 +21,14 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 元素
+subtype: 魔像
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 sinstonegolem 即 Sinstone Golem（罪石魔像，
+  雷文德斯）；查询词 Sinstone Golem / 罪石魔像 / cathedral / stoneborn 均
+  仅命中击杀记分或石裔人形，未找到携带教堂尖塔建筑的巨型魔像条目，判定暂
+  无官方对应数据；预览背负教堂尖塔、红晶裂光的巨型罪石魔像；文件名"红石
+  像"为社区俗称。

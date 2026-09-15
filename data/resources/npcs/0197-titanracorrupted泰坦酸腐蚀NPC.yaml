@@ -21,4 +21,15 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 泰坦造物
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 titanracorrupted 即 Titan R@ Corrupted
+  （腐化泰坦造物）；查询词 corrupted titan 命中 npc=136494（腐化的泰坦
+  模块，机械）形态不符予以拒绝，Faceless One 命中 npc=223119（无面者）
+  但 og 为触须脸无面者与预览长袍兜帽晶臂形态不符，判定暂无官方对应数
+  据；预览紫灰兜帽长袍巨躯、紫晶锯齿臂、蓝晶护肩的腐蚀泰坦造物形态；
+  文件名"泰坦酸腐蚀"为社区俗称。

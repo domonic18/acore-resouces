@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 吟游诗人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 Minstrel 命中死亡咏唱者 npc=177797 但无图可核，
+  且预览红金铠甲、骷髅面甲、背负锣鼓冰柱乐器的部落配色造型更像社区魔改，
+  判定无官方对应数据（0146 为同模联盟蓝金变体）；文件名"吟游诗人部落"为
+  社区俗称。

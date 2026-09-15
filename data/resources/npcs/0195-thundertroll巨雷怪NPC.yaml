@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 击碎者金罗克
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=69465
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 69465
+    name: 击碎者金罗克
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 雷霆巨魔
+notes: >-
+  自定义模型说明：文件夹英文段 thundertroll 即 Thunder Troll（雷霆巨魔）；
+  查询词 Jin'rokh the Breaker 命中 npc=69465（击碎者金罗克，雷电王座首
+  领），青绿皮肤、蓝光纹身、金饰石臂铠与缠绕闪电和预览一致（og 为尸体
+  俯拍图）；文件名"巨雷怪"为社区俗称。

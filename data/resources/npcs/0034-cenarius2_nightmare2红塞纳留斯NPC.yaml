@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 塞纳留斯
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=104636
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 104636
+    name: 塞纳留斯
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 半神
+notes: >-
+  自定义模型说明：文件夹英文段 cenarius2_nightmare2 即 Cenarius 梦魇侵蚀形态；对应
+  翡翠梦魇团本条目 npc=104636（塞纳留斯，红色梦魇形态），文件名"红塞纳留斯"即
+  指此形态；正常形态另见 0036（npc=209318）。

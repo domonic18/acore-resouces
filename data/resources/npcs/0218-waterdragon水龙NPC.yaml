@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: Drakonid
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=198453
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 198453
+    name: Drakonid
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 龙人
+notes: >-
+  自定义模型说明：文件夹英文段 waterdragon 即 Water Dragon（水龙）但预
+  览为熔火裂纹的龙人，按预览判定归入同族通用条目 npc=198453（Drakonid，
+  页面未汉化保留英文名，无图可核，置信中），龙首人形、脊背尖刺、熔岩纹
+  身与龙人特征一致；文件名"水龙"为社区俗称。

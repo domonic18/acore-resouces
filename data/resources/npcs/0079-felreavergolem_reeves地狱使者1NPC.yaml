@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 构造体
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：蓝灰装甲的迷你机甲魔像，橙色目镜核心、重锤与巨爪（预览图
+  "地狱使者1NPC.gif"），魔能机甲的玩具化风格。查询词 Tiny Fel Engine 等未命中
+  Wowhead NPC 条目，判定为社区魔改模型，无官方对应数据；0080 为同命名序列的
+  正统魔能机甲；文件名"地狱使者1"为社区俗称。

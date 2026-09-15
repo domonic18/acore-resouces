@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 元素
+subtype: 晶体怪
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：无预览图核对（sources 下无对应文件夹）。查询词 Crystalline
+  Monster 未命中 Wowhead NPC 条目，判定为社区魔改模型，无官方对应数据；
+  0043-0046 为同模型不同贴图变体序列，按晶体怪惯例归入元素。

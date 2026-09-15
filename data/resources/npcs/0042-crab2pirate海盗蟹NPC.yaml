@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 野兽
+subtype: 蟹
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：海盗蟹变体，戴骷髅海盗帽、蓝羽饰、藏宝图裹身（预览图
+  "海盗蟹NPC.gif"），与 0040/0041 同模型族。查询词未获可靠命中，判定为
+  社区魔改模型，无官方对应数据。

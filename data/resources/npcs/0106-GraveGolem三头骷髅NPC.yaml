@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 墓穴魔像
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 GraveGolem 即墓穴魔像（三头骷髅缝合体）。
+  查询词 Grave Golem 未命中 NPC 条目；无 sources 预览文件夹，仅按英文段
+  名称判定为社区魔改模型，无官方对应数据；文件名"三头骷髅"为社区俗称。

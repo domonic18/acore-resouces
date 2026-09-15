@@ -35,3 +35,5 @@ class Pet(Base, ResourceMixin):
 
 class Npc(Base, ResourceMixin):
     rarity = Column(String, nullable=True)
+    npc_type = Column(String, nullable=True)
+    subtype = Column(String, nullable=True)

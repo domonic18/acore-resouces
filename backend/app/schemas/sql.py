@@ -115,7 +115,7 @@ class ItemTemplate(SQLRecord):
     spellid_1: int | None = Field(default=55884)
     spelltrigger_1: int | None = Field(default=0)
     spellcharges_1: int | None = Field(default=-1)
-    spellppmRate_1: int | None = Field(default=0)
+    spellppmRate_1: int | None = Field(default=0)  # noqa: N815 - 沿用 item_template 列名
     spellcooldown_1: int | None = Field(default=-1)
     spellcategory_1: int | None = Field(default=330)
     spellcategorycooldown_1: int | None = Field(default=3000)
@@ -123,7 +123,7 @@ class ItemTemplate(SQLRecord):
     spellid_2: int | None = Field(default=None)
     spelltrigger_2: int | None = Field(default=6)
     spellcharges_2: int | None = Field(default=0)
-    spellppmRate_2: int | None = Field(default=0)
+    spellppmRate_2: int | None = Field(default=0)  # noqa: N815 - 沿用 item_template 列名
     spellcooldown_2: int | None = Field(default=-1)
     spellcategory_2: int | None = Field(default=0)
     spellcategorycooldown_2: int | None = Field(default=-1)

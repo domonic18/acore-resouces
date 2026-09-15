@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 无面者
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=223119
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 223119
+    name: 无面者
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 无面者
+notes: >-
+  自定义模型说明：文件夹英文段 facelessonecaster2 即 Faceless One Caster 变体；
+  归入通用条目 npc=223119（无面者），为施法者风格变体（0071 同族，0073 为
+  梦魇红肤变体）；文件名"金象人"为社区俗称。

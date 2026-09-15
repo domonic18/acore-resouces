@@ -53,7 +53,15 @@ def _ensure_dirs() -> None:
     settings.schemas_dir.mkdir(parents=True, exist_ok=True)
 
 
-SQLITE_EXTRA_COLUMNS = ("mount_type", "star_rating", "subtype", "rarity", "pet_type", "tags")
+SQLITE_EXTRA_COLUMNS = (
+    "mount_type",
+    "star_rating",
+    "subtype",
+    "rarity",
+    "pet_type",
+    "npc_type",
+    "tags",
+)
 
 
 def _sqlite_extra_value(attr: str, value: Any) -> Any:

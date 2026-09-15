@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 希尔瓦娜斯·风行者
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=175732
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 175732
+    name: 希尔瓦娜斯·风行者
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 黑暗游侠
+notes: >-
+  自定义模型说明：文件夹英文段 sylvanas 即 Sylvanas（希尔瓦娜斯）；查询
+  词 Sylvanas 命中 npc=175732（希尔瓦娜斯·风行者），og 图为金黑板甲形态
+  （9.x 新模型），预览蓝肤红兜帽、挎箭袋的皮甲游侠变体，同角色接受；文
+  件名"希瓦娜女王8"为社区俗称（8.x 版本造型）。

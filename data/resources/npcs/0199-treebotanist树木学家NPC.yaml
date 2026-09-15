@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 博塔尼
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=77275
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 77275
+    name: 博塔尼
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 元素
+subtype: 博塔尼
+notes: >-
+  自定义模型说明：文件夹英文段 treebotanist 即 Tree Botanist（树型植物学
+  家）；查询词 Botani 命中同族通用条目 npc=77275（博塔尼，塔拉多/阿兰卡
+  峰林植物系），无图可核置信中，预览绿皮树人、紫晶簇生、背展晶翼的变体
+  与博塔尼特征一致；文件名"树木学家"为社区俗称。

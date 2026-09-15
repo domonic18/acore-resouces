@@ -11,6 +11,7 @@ export interface OfficialDbInfo {
   icon_name: string | null;
   spell_wowhead_url: string | null;
   item_wowhead_url: string | null;
+  npc_wowhead_url: string | null;
 }
 
 export interface DbcInfo {
@@ -61,6 +62,7 @@ export interface Resource {
   subtype?: string | null;
   rarity?: string | null;
   pet_type?: string | null;
+  npc_type?: string | null;
   special_features?: string[];
   vehicle?: VehicleConfig | null;
   tags?: string[];
@@ -81,6 +83,7 @@ export interface ResourceUpdate {
   vehicle?: VehicleConfig | null;
   rarity?: string | null;
   pet_type?: string | null;
+  npc_type?: string | null;
   tags?: string[];
   drop?: Partial<DropInfo>;
   dbc_item?: Record<string, unknown>;

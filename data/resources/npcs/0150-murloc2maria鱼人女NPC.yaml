@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 鱼人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 murloc/maria/lady/wig 搜索均未命中对应条目，
+  Spare Murloc Suit npc=256974 等候选无图可核，判定为社区魔改模型，无官方
+  对应数据；预览戴棕色假发、粉裙的拟人鱼人（社区名 Maria）；文件名"鱼人
+  女"为社区俗称。

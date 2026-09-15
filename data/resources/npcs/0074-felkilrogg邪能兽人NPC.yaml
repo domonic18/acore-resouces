@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 基尔罗格·死眼
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=90378
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 90378
+    name: 基尔罗格·死眼
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 兽人
+notes: >-
+  自定义模型说明：文件夹英文段 felkilrogg 即 Fel Kilrogg（邪能化的基尔罗格·死眼）；
+  查询命中 npc=90378（德拉诺之王形态），与预览的邪能爪甲、颅骨项链兽人形态
+  对应；文件名"邪能兽人"为社区俗称。

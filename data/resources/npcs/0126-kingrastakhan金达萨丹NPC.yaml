@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 拉斯塔哈大王
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=145616
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 145616
+    name: 拉斯塔哈大王
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 赞达拉
+notes: >-
+  自定义模型说明：文件夹英文段 kingrastakhan 即 King Rastakhan；归入官方
+  条目 npc=145616（拉斯塔哈大王），与 0125 同角色序列，本资源为贴图变体；
+  无 sources 预览文件夹；文件名"金达萨丹"为社区俗称。

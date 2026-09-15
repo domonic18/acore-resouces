@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 天使
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：白色羽翼天使，金色冠冕光环、白袍金甲、身下紫光。查询词
+  archon/The Archon/执政官/Ascended 均误中无关条目（阿肯 npc=82014、执政官塞弗伦
+  npc=1499、奥尔露娜 npc=171959 等），无法确认对应御灵执政官或升灵类条目，判定为
+  社区魔改模型，无官方对应数据。

@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 野兽
+subtype: 牛
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：蓝银金属皮毛的牛形生物，巨蓝发光眼、足踏云朵（预览图
+  "地球小精灵NPC.gif"）。查询词 Earth Spirit 命中 mop-classic 大地之灵 npc=69792，
+  但形态与预览的牛形云兽不符，按宁缺勿错不采用，判定为社区魔改模型，无官方对应数据。

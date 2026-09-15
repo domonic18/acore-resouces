@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 猪妖
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 Butcher / Rotgut 等肥硕屠夫系条目 og 核对均不符
+  （腐肠 npc=173263 为细长憎恶），判定为社区魔改模型，无官方对应数据；预览
+  猪面獠牙、大腹绿褂、腰挂颅骨飞虫环绕的"猪八戒"造型（西游记角色演绎）；
+  文件名"猪八戒"为社区俗称。

@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 巨人
+subtype: 石巨人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：四肢着地的岩石巨人，灰岩皮肤带紫色符文纹路（预览图
+  "泰山NPC.gif"）。查询词 Fomor 命中 12.0 野兽条目 npc=244150（不采用），
+  Ancient Rune Giant 32873 为直立长须风暴巨人（og 图核对形态不符），判定为
+  社区魔改模型，无官方对应数据；文件名"泰山"为社区俗称。

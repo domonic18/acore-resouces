@@ -21,4 +21,14 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 变异体
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 trollmutant 即 Troll Mutant（巨魔变异
+  体）；查询词 Sethraliss 命中 npc=272532（塞塔里斯）但无 og 图可核，且
+  该洛阿为蛇躯无虫腿，与预览形态不符拒绝，判定暂无官方对应数据；预览
+  金色眼镜蛇冠、蓝脸獠牙、绿鳞长尾、黑色虫足的巨魔变异体；文件名"变异
+  体"为社区俗称。

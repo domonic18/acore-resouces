@@ -9,16 +9,27 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 麦琳瑟拉
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=187590
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 187590
+    name: 麦琳瑟拉
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 龙类
+subtype: 绿龙
+notes: >-
+  自定义模型说明：文件夹英文段 ysera 即 Ysera（伊瑟拉）；查询词
+  Merithra 命中 npc=187590（麦琳瑟拉，伊瑟拉之女、绿龙军团女王），og 图
+  紫肤暗夜精灵、黑角绿冠与预览为同一角色，预览为绿色披风、宝石胸甲的
+  裤装变体（服装有别，置信中）；文件名"伊瑟拉"为社区俗称，实际形象按
+  麦琳瑟拉人形伪装收录。

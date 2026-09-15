@@ -21,4 +21,11 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 地精
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：绿色地精小孩，红色部落制式罩衫、背斧挂灯（预览图"部落小哥NPC.gif"）。
+  查询词 Boastful Gruntling 未命中 Wowhead NPC 条目，判定为社区魔改模型，无官方对应数据。

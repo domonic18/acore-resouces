@@ -19,3 +19,9 @@ def lookup_pet(query: str = typer.Argument(..., help="宠物中文或英文名�
 def lookup_mount(query: str = typer.Argument(..., help="坐骑中文或英文名称")) -> None:
     """以 JSON 格式输出 Wowhead 查询结果。"""
     print(wowhead.search_mount_json(query))
+
+
+@app.command("lookup-npc", help="查询 Wowhead NPC 官方数据（自动回退 WotLK/零售版与中英文）")
+def lookup_npc(query: str = typer.Argument(..., help="NPC 中文或英文名称")) -> None:
+    """以 JSON 格式输出 Wowhead NPC 查询结果。"""
+    print(wowhead.search_npc_json(query))

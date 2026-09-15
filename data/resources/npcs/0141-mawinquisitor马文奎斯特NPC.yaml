@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 渊誓审判官
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=181403
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 181403
+    name: 渊誓审判官
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 审判官
+notes: >-
+  自定义模型说明：文件夹英文段 mawinquisitor 即 Mawsworn Inquisitor（渊誓
+  审判官）；对应官方条目 npc=181403（渊誓审判官，暗影界渊誓施法者），og 图
+  为长袍黑雾缠身、胸口蓝光造型，与预览蓝袍独角施法者吻合（图较暗，置信中）；
+  文件名"马文奎斯特"为社区俗称。

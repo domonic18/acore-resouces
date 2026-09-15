@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 古尔丹
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=17008
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 17008
+    name: 古尔丹
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 兽人
+notes: >-
+  自定义模型说明：文件夹英文段 HulkedGuldan 即古尔丹魁伟化重度魔改形态
+  （与 0093 加尔鲁什魁伟化同手法）；归入官方条目 npc=17008（古尔丹，
+  3.3.5 原生条目）；0111/0112 为同命名序列资源；无 sources 预览文件夹；
+  文件名"愤怒古尔丹"为社区俗称。

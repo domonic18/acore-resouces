@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 构造体
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：白晶装甲、红晶圆芯的德莱尼风格水晶构造体（预览图"红怪NPC.gif"）。
+  查询词 Draenei Construct/水晶傀儡均未命中 Wowhead NPC 条目，判定为社区魔改
+  模型，无官方对应数据。

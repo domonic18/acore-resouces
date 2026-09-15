@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 野兽
+subtype: 蟹
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：武装蟹士兵部落变体，头戴赤红獠牙盔、持战斧与图腾盾（预览图
+  "部落武装蟹NPC.gif"），与 0040 联盟武装蟹同模型族。查询词未获可靠命中，
+  判定为社区魔改模型，无官方对应数据。

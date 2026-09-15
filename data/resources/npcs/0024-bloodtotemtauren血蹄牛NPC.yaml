@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 牛头人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：无预览图核对。英文段 bloodtotemtauren 查询仅命中图加·鲜血图腾
+  npc=117230（恶魔类型的高岭部落特定 NPC，与文件名"血蹄牛"线索不符）；按宁缺勿错
+  不采用该命中，判定无可靠官方对应数据；按图腾牛头人外观惯例归入牛头人。
