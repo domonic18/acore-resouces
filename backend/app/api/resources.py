@@ -46,6 +46,7 @@ class ResourceUpdateRequest(BaseModel):
     vehicle: VehicleConfig | None = None
     rarity: str | None = None
     pet_type: str | None = None
+    npc_type: str | None = None
     tags: list[str] | None = None
     drop: DropUpdate | None = None
     dbc_item: Item | None = None
@@ -274,7 +275,7 @@ def update_resource_endpoint(
         resource.mount_type = body.mount_type
     if "star_rating" in body.model_fields_set and resource.resource_type == "mount":
         resource.star_rating = body.star_rating
-    if "subtype" in body.model_fields_set and resource.resource_type in ("mount", "pet"):
+    if "subtype" in body.model_fields_set and resource.resource_type in ("mount", "pet", "npc"):
         resource.subtype = body.subtype
     if "special_features" in body.model_fields_set and resource.resource_type == "mount":
         resource.special_features = body.special_features or []
@@ -284,6 +285,8 @@ def update_resource_endpoint(
         resource.rarity = body.rarity
     if "pet_type" in body.model_fields_set and resource.resource_type == "pet":
         resource.pet_type = body.pet_type
+    if "npc_type" in body.model_fields_set and resource.resource_type == "npc":
+        resource.npc_type = body.npc_type
     if "tags" in body.model_fields_set:
         resource.tags = body.tags or []
     if "drop" in body.model_fields_set and body.drop is not None:
