@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 阿曼苏尔
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=125885
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 125885
+    name: 阿曼苏尔
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 巨人
+subtype: 泰坦
+notes: >-
+  自定义模型说明：文件夹英文段 amanthul 即 Aman'Thul（阿曼苏尔，万神殿最高泰坦）；
+  查询命中 npc=125885（官方条目未标注生物类型，按泰坦形体归入巨人），另有 IGC 过场条目
+  npc=127843（阿曼苏尔之魂）未采用；文件名"宙斯老头"为社区俗称。

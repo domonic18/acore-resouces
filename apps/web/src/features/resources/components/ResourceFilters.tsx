@@ -2,6 +2,7 @@ import { Filter } from "lucide-react";
 import {
   STATUS_TAG_OPTIONS,
   RESOURCE_TAG_OPTIONS,
+  SPECIAL_FEATURE_OPTIONS,
   getUnofficialLabel,
 } from "../lib/resource-list";
 import type { ResourceTagValue } from "../lib/resource-list";
@@ -14,7 +15,7 @@ interface ResourceFiltersProps {
   tierOptions: string[];
   tagOptions: ResourceTagValue[];
   updateParam: (key: string, value: string) => void;
-  toggleParamValue: (key: "status" | "tags", value: string) => void;
+  toggleParamValue: (key: "status" | "tags" | "features", value: string) => void;
 }
 
 function FilterTag({
@@ -55,6 +56,9 @@ export function ResourceFilters({
   const selectedTags = new Set(
     (searchParams.get("tags") || "").split(",").filter(Boolean),
   );
+  const selectedFeatures = new Set(
+    (searchParams.get("features") || "").split(",").filter(Boolean),
+  );
 
   const handleDateChange = (start: string, end: string) => {
     updateParam("updated_start", start);
@@ -68,22 +72,20 @@ export function ResourceFilters({
           <Filter className="h-3.5 w-3.5" />
           筛选
         </span>
-        {typeParam !== "pet" && typeParam !== "npc" && (
-          <select
-            className="filter-select"
-            value={searchParams.get("category") || ""}
-            onChange={(e) => updateParam("category", e.target.value)}
-          >
-            <option value="">
-              所有{typeParam === "mount" ? "类型" : "分类"}
+        <select
+          className="filter-select"
+          value={searchParams.get("category") || ""}
+          onChange={(e) => updateParam("category", e.target.value)}
+        >
+          <option value="">
+            所有{typeParam === "mount" ? "类型" : "分类"}
+          </option>
+          {categoryOptions.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
             </option>
-            {categoryOptions.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        )}
+          ))}
+        </select>
         <select
           className="filter-select"
           value={searchParams.get("tier") || ""}
@@ -99,11 +101,35 @@ export function ResourceFilters({
           ))}
         </select>
 
+        <select
+          className="filter-select"
+          value={searchParams.get("origin") || ""}
+          onChange={(e) => updateParam("origin", e.target.value)}
+          title="按物品 ID 是否与 wowhead 官方链接一致判定（与编辑页徽章口径一致）"
+        >
+          <option value="">所有数据来源</option>
+          <option value="official">官方数据</option>
+          <option value="custom">自定义数据</option>
+        </select>
+
         <DateRangeFilter
           start={searchParams.get("updated_start") || ""}
           end={searchParams.get("updated_end") || ""}
           onChange={handleDateChange}
         />
+
+        {typeParam !== "pet" && typeParam !== "npc" && (
+          <FilterTag
+            label="必填缺失"
+            active={searchParams.get("required") === "missing"}
+            onClick={() =>
+              updateParam(
+                "required",
+                searchParams.get("required") === "missing" ? "" : "missing",
+              )
+            }
+          />
+        )}
 
         <div className="flex flex-wrap items-center gap-1.5">
           {STATUS_TAG_OPTIONS.map((opt) => (
@@ -129,6 +155,18 @@ export function ResourceFilters({
                 }
                 active={selectedTags.has(opt.value)}
                 onClick={() => toggleParamValue("tags", opt.value)}
+              />
+            ))}
+          </div>
+        )}
+        {typeParam === "mount" && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {SPECIAL_FEATURE_OPTIONS.map((opt) => (
+              <FilterTag
+                key={opt.value}
+                label={opt.label}
+                active={selectedFeatures.has(opt.value)}
+                onClick={() => toggleParamValue("features", opt.value)}
               />
             ))}
           </div>

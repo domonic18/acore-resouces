@@ -12,6 +12,7 @@ import { MODEL_ROOT_ROTATION_X } from "./constants";
 interface M2SceneProps {
   parsed: ParsedM2;
   textureUrls: Record<number, string>;
+  scale?: number;
   wireframe?: boolean;
   animationClip?: THREE.AnimationClip | null;
   isPlaying?: boolean;
@@ -21,6 +22,7 @@ interface M2SceneProps {
 export function M2Scene({
   parsed,
   textureUrls,
+  scale = 1,
   wireframe = false,
   animationClip = null,
   isPlaying = true,
@@ -67,7 +69,10 @@ export function M2Scene({
   }, [submeshGeometries]);
 
   return (
-    <group rotation={[MODEL_ROOT_ROTATION_X, 0, 0]}>
+    <group
+      rotation={[MODEL_ROOT_ROTATION_X, 0, 0]}
+      scale={[scale, scale, scale]}
+    >
       {rootBone && <primitive object={rootBone} />}
       {skin.submeshes.map((submesh, index) => {
         const item = submeshGeometries[index];

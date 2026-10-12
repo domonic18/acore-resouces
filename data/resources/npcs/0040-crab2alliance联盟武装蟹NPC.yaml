@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 野兽
+subtype: 蟹
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：武装蟹士兵，头戴蓝羽银盔、持单手剑与联盟纹章盾（预览图
+  "联盟武装蟹NPC.gif"）。查询词 crab2alliance/Alliance Crab/联盟武装蟹均未命中
+  Wowhead NPC 条目，判定为社区魔改模型，无官方对应数据。

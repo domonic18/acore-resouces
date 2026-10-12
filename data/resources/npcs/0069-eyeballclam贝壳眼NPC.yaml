@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 野兽
+subtype: 贝
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：绿壳巨贝怪物，壳缘生齿、壳心独眼（预览图"贝壳眼NPC.gif"）。
+  查询词 eyeballclam/Giant Clam/食人贝均未命中 Wowhead NPC 条目（Giant Clam
+  误中藏宝湾渔味商人凯尔希·杨斯 npc=2664，已弃用），判定为社区魔改模型，
+  无官方对应数据。

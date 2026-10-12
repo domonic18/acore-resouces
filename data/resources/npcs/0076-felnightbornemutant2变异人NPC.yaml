@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 法多雷掠夺者
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=108034
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 108034
+    name: 法多雷掠夺者
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 法多雷
+notes: >-
+  自定义模型说明：文件夹英文段 felnightbornemutant2 即 Fel Nightborne Mutant
+  （邪能变异夜裔）；与预览的蜘蛛多足精灵体、绿焰晶饰形态吻合，对应苏拉玛
+  变异精灵条目 npc=108034（法多雷掠夺者）；文件名"变异人"为社区俗称。

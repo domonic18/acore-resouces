@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 无面者
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=223119
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 223119
+    name: 无面者
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 无面者
+notes: >-
+  自定义模型说明：文件夹英文段 facelessone2 即 Faceless One；查询命中 npc=223119
+  （无面者），与预览的紫肤触须面甲、重甲护肩形态吻合；0072/0073 为同族变体；
+  文件名"海象人"为社区俗称。

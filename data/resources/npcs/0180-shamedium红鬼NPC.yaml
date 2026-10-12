@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 怒之煞
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=60491
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 60491
+    name: 怒之煞
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 元素
+subtype: 煞魔
+notes: >-
+  自定义模型说明：文件夹英文段 shamedium 即 Sha Medium（中型煞魔）；og 图
+  核对 npc=60491（怒之煞，潘达利亚世界 BOSS）为弓身兽形、背生晶煞的煞魔，
+  与预览造型吻合（预览为红色晶刺变体贴图，置信中）；文件名"红鬼"为社区
+  俗称。

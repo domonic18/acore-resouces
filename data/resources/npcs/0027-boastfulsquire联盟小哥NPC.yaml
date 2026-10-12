@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 人类
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：人类小孩侍从，蓝金联盟制式罩衫、背枪挂囊（预览图"联盟小哥NPC.gif"），
+  与 0026 部落小哥成对。查询词 Boastful Squire 未命中 Wowhead NPC 条目，判定为
+  社区魔改模型，无官方对应数据。

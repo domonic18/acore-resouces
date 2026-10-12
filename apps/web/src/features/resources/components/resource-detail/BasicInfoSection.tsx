@@ -3,6 +3,8 @@ import { FormGroup } from "@/components/form/FormGroup";
 import { cn } from "@/shared/utils";
 import { ExternalLink } from "lucide-react";
 import type { Resource } from "@/shared/types";
+import { SPECIAL_FEATURE_OPTIONS } from "../../lib/resource-list";
+import { PET_TYPES, NPC_TYPES } from "../../constants";
 import type { FormState } from "../../hooks/useResourceForm";
 
 interface BasicInfoSectionProps {
@@ -72,6 +74,16 @@ export function BasicInfoSection({
                   <ExternalLink className="h-3 w-3" /> Wowhead 物品页
                 </a>
               )}
+              {resource.official_db.npc_wowhead_url && (
+                <a
+                  href={resource.official_db.npc_wowhead_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] text-accent hover:text-accent-hover"
+                >
+                  <ExternalLink className="h-3 w-3" /> Wowhead NPC 页
+                </a>
+              )}
             </div>
           )}
         </FormGroup>
@@ -111,17 +123,98 @@ export function BasicInfoSection({
                 onChange={(e) => updateField("subtype", e.target.value)}
               />
             </FormGroup>
+            <FormGroup label="特殊功能" compact={compact}>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1">
+                {SPECIAL_FEATURE_OPTIONS.map((opt) => (
+                  <label
+                    key={opt.value}
+                    className="flex items-center gap-1.5 text-xs text-text-secondary"
+                  >
+                    <input
+                      type="checkbox"
+                      className="h-3.5 w-3.5 accent-blue-500"
+                      checked={form.special_features.includes(opt.value)}
+                      onChange={(e) =>
+                        updateField(
+                          "special_features",
+                          e.target.checked
+                            ? [...form.special_features, opt.value]
+                            : form.special_features.filter(
+                                (f) => f !== opt.value,
+                              ),
+                        )
+                      }
+                    />
+                    {opt.label}
+                  </label>
+                ))}
+              </div>
+            </FormGroup>
           </>
         )}
         {!isMount && (
-          <FormGroup label="稀有度" compact={compact}>
-            <input
-              type="text"
-              className={inputCls}
-              value={form.rarity}
-              onChange={(e) => updateField("rarity", e.target.value)}
-            />
-          </FormGroup>
+          <>
+            {resource.resource_type === "pet" && (
+              <>
+                <FormGroup label="宠物分类" compact={compact}>
+                  <select
+                    className={selectCls}
+                    value={form.pet_type}
+                    onChange={(e) => updateField("pet_type", e.target.value)}
+                  >
+                    <option value="">未设置</option>
+                    {PET_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </FormGroup>
+                <FormGroup label="细分" compact={compact}>
+                  <input
+                    type="text"
+                    className={inputCls}
+                    value={form.subtype}
+                    onChange={(e) => updateField("subtype", e.target.value)}
+                  />
+                </FormGroup>
+              </>
+            )}
+            {resource.resource_type === "npc" && (
+              <>
+                <FormGroup label="生物类型" compact={compact}>
+                  <select
+                    className={selectCls}
+                    value={form.npc_type}
+                    onChange={(e) => updateField("npc_type", e.target.value)}
+                  >
+                    <option value="">未设置</option>
+                    {NPC_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </FormGroup>
+                <FormGroup label="细分" compact={compact}>
+                  <input
+                    type="text"
+                    className={inputCls}
+                    value={form.subtype}
+                    onChange={(e) => updateField("subtype", e.target.value)}
+                  />
+                </FormGroup>
+              </>
+            )}
+            <FormGroup label="稀有度" compact={compact}>
+              <input
+                type="text"
+                className={inputCls}
+                value={form.rarity}
+                onChange={(e) => updateField("rarity", e.target.value)}
+              />
+            </FormGroup>
+          </>
         )}
         <FormGroup label="状态" compact={compact}>
           <div className="flex h-[34px] items-center gap-4">

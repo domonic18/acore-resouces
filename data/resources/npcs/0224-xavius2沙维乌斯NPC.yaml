@@ -9,16 +9,27 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 萨维斯
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=102206
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 102206
+    name: 萨维斯
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 恶魔
+subtype: 梦魇之王
+notes: >-
+  自定义模型说明：文件夹英文段 xavius2 即 Xavius（萨维斯，翡翠梦魇最终
+  首领）；查询词 Xavius 命中多条萨维斯条目，本条取 npc=102206（萨维斯
+  <梦魇之王>），og 图黑躯巨角、红爪肩铠与预览站立形态一致（og 偏暗，
+  置信中）；0225 为其弓身形态另一条目 103769，0161 亦核 103769；文件名
+  "沙维乌斯"为社区俗称。

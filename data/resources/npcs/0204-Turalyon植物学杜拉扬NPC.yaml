@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 图拉扬
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=177708
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 177708
+    name: 图拉扬
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 圣骑士
+notes: >-
+  自定义模型说明：文件夹英文段 Turalyon 即 Turalyon（图拉扬，联盟统帅，
+  洛萨之锤继承者）；查询词 Turalyon 命中 npc=177708（图拉扬）；无预览文
+  件夹且条目无 og 图，按知名角色名字高信接受，置信中；文件名"植物学杜
+  拉扬"为社区俗称。

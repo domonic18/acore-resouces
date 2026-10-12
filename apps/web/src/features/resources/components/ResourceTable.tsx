@@ -7,6 +7,8 @@ import {
   Search,
   Sparkles,
   Package,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { ResourceThumb } from "@/components/ResourceThumb";
@@ -15,6 +17,7 @@ import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
 import { ResourceTagBadge } from "@/components/badges/ResourceTagBadge";
 import { SortHeader } from "@/components/table/SortHeader";
 import { formatDrop, formatDateTime } from "../lib/resource-list";
+import { getMissingRequiredFields } from "../requiredFields";
 import type { Resource } from "@/shared/types";
 import type { SortKey, SortOrder } from "../lib/resource-list";
 
@@ -47,6 +50,19 @@ function CopyResourceButton({ resource }: { resource: Resource }) {
   );
 }
 
+function MissingRequiredBadge({ resource }: { resource: Resource }) {
+  const labels = getMissingRequiredFields(resource);
+  if (labels.length === 0) return null;
+  return (
+    <span
+      className="ml-1 inline-flex items-center rounded bg-danger/10 px-1.5 py-0.5 text-xs font-medium text-danger"
+      title={`缺失：${labels.join("、")}`}
+    >
+      必填缺失 {labels.length}
+    </span>
+  );
+}
+
 interface ResourceTableProps {
   currentItems: Resource[];
   sortKey: SortKey;
@@ -54,6 +70,34 @@ interface ResourceTableProps {
   setSort: (key: SortKey) => void;
   isLoading: boolean;
   error: Error | null;
+  selectedIds?: number[];
+  onSelect?: (id: number, selected: boolean) => void;
+  onSelectAll?: (selected: boolean) => void;
+  showFeatures?: boolean;
+}
+
+function SpecialFeatureBadges({ resource }: { resource: Resource }) {
+  const features = resource.special_features ?? [];
+  if (features.length === 0) return <span className="text-text-secondary">—</span>;
+  const visible = features.slice(0, 2);
+  const rest = features.length - visible.length;
+  return (
+    <div className="flex flex-wrap items-center gap-1">
+      {visible.map((f) => (
+        <span key={f} className="badge badge-purple" title={f}>
+          {f}
+        </span>
+      ))}
+      {rest > 0 && (
+        <span
+          className="badge badge-gray"
+          title={features.slice(2).join("、")}
+        >
+          +{rest}
+        </span>
+      )}
+    </div>
+  );
 }
 
 export function ResourceTable({
@@ -63,8 +107,13 @@ export function ResourceTable({
   setSort,
   isLoading,
   error,
+  selectedIds = [],
+  onSelect,
+  onSelectAll,
+  showFeatures = false,
 }: ResourceTableProps) {
   const location = useLocation();
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const saveScrollAndNavigate = () => {
     sessionStorage.setItem("resourceListScrollY", String(window.scrollY));
@@ -85,13 +134,30 @@ export function ResourceTable({
     );
   }
 
+  const allSelected =
+    currentItems.length > 0 &&
+    currentItems.every((r) => selectedIds.includes(r.id));
+  const someSelected =
+    currentItems.some((r) => selectedIds.includes(r.id)) && !allSelected;
+
+  const handleSelectAll = () => {
+    onSelectAll?.(!allSelected);
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="data-table w-full">
         <thead>
           <tr>
             <th style={{ width: 40 }}>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={allSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = someSelected;
+                }}
+                onChange={handleSelectAll}
+              />
             </th>
             <SortHeader
               label="资源"
@@ -125,6 +191,8 @@ export function ResourceTable({
             />
             <th>状态</th>
             <th>标签</th>
+            {showFeatures && <th>功能</th>}
+            <th>冲突</th>
             <SortHeader
               label="添加时间"
               active={sortKey === "created_at"}
@@ -142,106 +210,190 @@ export function ResourceTable({
         </thead>
         <tbody>
           {currentItems.map((resource) => (
-            <tr key={`${resource.resource_type}-${resource.id}`}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>
-                <div className="flex items-center gap-2">
-                  <Link
-                    to={`/resources/${resource.resource_type}/${resource.id}`}
-                    state={listState}
-                    onClick={saveScrollAndNavigate}
-                    className="name-cell min-w-0 flex-1"
-                    title={resource.name || resource.model_folder}
-                  >
-                    <ResourceThumb resource={resource} />
-                    <div className="min-w-0">
-                      <div className="resource-name truncate">
-                        {resource.name || resource.model_folder}
-                      </div>
-                      <div className="resource-meta truncate">
-                        id: {String(resource.id).padStart(4, "0")} ·{" "}
-                        {resource.model_folder}
-                      </div>
-                    </div>
-                  </Link>
-                  <CopyResourceButton resource={resource} />
-                </div>
-              </td>
-              <td>{String(resource.id).padStart(4, "0")}</td>
-              <td>
-                <ResourceTypeBadge resource={resource} />
-              </td>
-              <td>{resource.star_rating || resource.rarity || "—"}</td>
-              <td>{formatDrop(resource.drop)}</td>
-              <td>
-                <ResourceStatusBadge resource={resource} />
-              </td>
-              <td>
-                <ResourceTagBadge resource={resource} />
-              </td>
-              <td className="text-text-secondary">
-                {formatDateTime(resource.created_at)}
-              </td>
-              <td className="text-text-secondary">
-                {formatDateTime(resource.updated_at)}
-              </td>
-              <td className="text-right">
-                <div className="inline-flex items-center justify-end gap-1.5">
-                  <Link
-                    to={`/resources/${resource.resource_type}/${resource.id}`}
-                    state={listState}
-                    onClick={saveScrollAndNavigate}
-                    className="btn btn-icon btn-sm"
-                    title="编辑资源"
-                    aria-label="编辑资源"
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </Link>
-                  <Link
-                    to={`/preview/${resource.resource_type}/${resource.id}`}
-                    state={listState}
-                    onClick={saveScrollAndNavigate}
-                    className="btn btn-icon btn-sm btn-primary"
-                    title="预览模型"
-                    aria-label="预览模型"
-                  >
-                    <Eye className="h-3.5 w-3.5" />
-                  </Link>
-                  {resource.official_db.spell_wowhead_url && (
-                    <a
-                      href={resource.official_db.spell_wowhead_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
-                      title="查看 Wowhead 法术页"
-                      aria-label="查看 Wowhead 法术页"
-                      onClick={(e) => e.stopPropagation()}
+            <>
+              <tr key={`${resource.resource_type}-${resource.id}`}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(resource.id)}
+                    onChange={(e) => onSelect?.(resource.id, e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      to={`/resources/${resource.resource_type}/${resource.id}`}
+                      state={listState}
+                      onClick={saveScrollAndNavigate}
+                      className="name-cell min-w-0 flex-1"
+                      title={resource.name || resource.model_folder}
                     >
-                      <Sparkles className="h-3.5 w-3.5" />
-                    </a>
-                  )}
-                  {resource.official_db.item_wowhead_url && (
-                    <a
-                      href={resource.official_db.item_wowhead_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
-                      title="查看 Wowhead 物品页"
-                      aria-label="查看 Wowhead 物品页"
-                      onClick={(e) => e.stopPropagation()}
+                      <ResourceThumb resource={resource} />
+                      <div className="min-w-0">
+                        <div className="resource-name truncate">
+                          {resource.name || resource.model_folder}
+                        </div>
+                        <div className="resource-meta truncate">
+                          id: {String(resource.id).padStart(4, "0")} ·{" "}
+                          {resource.model_folder}
+                        </div>
+                      </div>
+                    </Link>
+                    <CopyResourceButton resource={resource} />
+                  </div>
+                </td>
+                <td>{String(resource.id).padStart(4, "0")}</td>
+                <td>
+                  <ResourceTypeBadge resource={resource} />
+                </td>
+                <td>{resource.star_rating || resource.rarity || "—"}</td>
+                <td>{formatDrop(resource.drop)}</td>
+                <td>
+                  <ResourceStatusBadge resource={resource} />
+                  <MissingRequiredBadge resource={resource} />
+                </td>
+                <td>
+                  <ResourceTagBadge resource={resource} />
+                </td>
+                {showFeatures && (
+                  <td>
+                    <SpecialFeatureBadges resource={resource} />
+                  </td>
+                )}
+                <td>
+                  {resource.duplicate_issues &&
+                  resource.duplicate_issues.length > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedId(
+                          expandedId === resource.id ? null : resource.id,
+                        )
+                      }
+                      className="inline-flex items-center gap-1 rounded bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger hover:bg-danger/20"
+                      title="点击查看重复 ID 冲突详情"
                     >
-                      <Package className="h-3.5 w-3.5" />
-                    </a>
+                      <AlertTriangle className="h-3.5 w-3.5" />
+                      {resource.duplicate_issues.length}
+                    </button>
+                  ) : (
+                    <span className="text-text-secondary">—</span>
                   )}
-                </div>
-              </td>
-            </tr>
+                </td>
+                <td className="text-text-secondary">
+                  {formatDateTime(resource.created_at)}
+                </td>
+                <td className="text-text-secondary">
+                  {formatDateTime(resource.updated_at)}
+                </td>
+                <td className="text-right">
+                  <div className="inline-flex items-center justify-end gap-1.5">
+                    <Link
+                      to={`/resources/${resource.resource_type}/${resource.id}`}
+                      state={listState}
+                      onClick={saveScrollAndNavigate}
+                      className="btn btn-icon btn-sm"
+                      title="编辑资源"
+                      aria-label="编辑资源"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Link>
+                    <Link
+                      to={`/preview/${resource.resource_type}/${resource.id}`}
+                      state={listState}
+                      onClick={saveScrollAndNavigate}
+                      className="btn btn-icon btn-sm btn-primary"
+                      title="预览模型"
+                      aria-label="预览模型"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                    </Link>
+                    {resource.official_db.spell_wowhead_url && (
+                      <a
+                        href={resource.official_db.spell_wowhead_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
+                        title="查看 Wowhead 法术页"
+                        aria-label="查看 Wowhead 法术页"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Sparkles className="h-3.5 w-3.5" />
+                      </a>
+                    )}
+                    {resource.official_db.item_wowhead_url && (
+                      <a
+                        href={resource.official_db.item_wowhead_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-icon btn-sm btn-ghost text-text-tertiary hover:text-accent"
+                        title="查看 Wowhead 物品页"
+                        aria-label="查看 Wowhead 物品页"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Package className="h-3.5 w-3.5" />
+                      </a>
+                    )}
+                  </div>
+                </td>
+              </tr>
+              {expandedId === resource.id &&
+                resource.duplicate_issues &&
+                resource.duplicate_issues.length > 0 && (
+                  <tr
+                    key={`${resource.resource_type}-${resource.id}-conflicts`}
+                  >
+                    <td colSpan={showFeatures ? 13 : 12}>
+                      <div className="bg-danger/5 px-4 py-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-semibold text-danger">
+                            重复 ID 冲突详情
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedId(null)}
+                            className="btn btn-icon btn-xs btn-ghost text-text-tertiary hover:text-text-primary"
+                            title="收起"
+                            aria-label="收起"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <ul className="mt-2 space-y-2">
+                          {resource.duplicate_issues.map((issue, idx) => (
+                            <li key={idx} className="text-sm">
+                              <div className="font-medium text-text-primary">
+                                {issue.field} = {issue.value}
+                              </div>
+                              <div className="text-text-secondary">
+                                冲突资源：
+                                {issue.resources.map((conflict, cidx) => (
+                                  <span key={conflict.id}>
+                                    {cidx > 0 && "、"}
+                                    <Link
+                                      to={`/resources/${conflict.resource_type}/${conflict.id}`}
+                                      state={listState}
+                                      onClick={saveScrollAndNavigate}
+                                      className="text-accent hover:underline"
+                                    >
+                                      {String(conflict.id).padStart(4, "0")}-
+                                      {conflict.name || conflict.model_folder}
+                                    </Link>
+                                  </span>
+                                ))}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+            </>
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan={11}>
+              <td colSpan={showFeatures ? 13 : 12}>
                 <div className="empty-state">
                   <Search className="mb-3 h-12 w-12 text-text-tertiary" />
                   <h3>暂无资源</h3>

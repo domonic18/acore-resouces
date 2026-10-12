@@ -1,22 +1,26 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
-  DEFAULT_SORT,
   DEFAULT_ORDER,
   sortResources,
   pageButtons,
   computeResourceTags,
+  matchesResourceSearch,
   matchesStatusFilter,
   matchesTagFilter,
+  matchesFeatureFilter,
   matchesUpdatedAtFilter,
+  matchesOriginFilter,
+  hasMissingRequired,
+  parseSortKey,
+  parseSortOrder,
+  parseStatusTagList,
+  parseResourceTagList,
+  parseDataOrigin,
 } from "../lib/resource-list";
 import type { Resource } from "@/shared/types";
-import type {
-  SortKey,
-  SortOrder,
-  StatusTagValue,
-  ResourceTagValue,
-} from "../lib/resource-list";
+import type { SortKey, ResourceTagValue } from "../lib/resource-list";
+import { useDebouncedValue } from "./useItemDisplayInfo";
 
 function parseParamList(value: string | null): string[] {
   if (!value) return [];
@@ -40,8 +44,8 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     searchParams.get("search") || "",
   );
 
-  const sortKey = (searchParams.get("sort") as SortKey) || DEFAULT_SORT;
-  const sortOrder = (searchParams.get("order") as SortOrder) || DEFAULT_ORDER;
+  const sortKey = parseSortKey(searchParams.get("sort"));
+  const sortOrder = parseSortOrder(searchParams.get("order"));
 
   const filtered = useMemo(() => {
     if (!allItems) return [];
@@ -49,18 +53,16 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
 
     const search = (searchParams.get("search") || "").trim().toLowerCase();
     if (search) {
-      items = items.filter(
-        (r) =>
-          r.model_folder.toLowerCase().includes(search) ||
-          (r.official_db.name?.toLowerCase().includes(search) ?? false) ||
-          String(r.id).includes(search),
-      );
+      items = items.filter((r) => matchesResourceSearch(r, search));
     }
 
     const category = searchParams.get("category") || "";
     if (category) {
       items = items.filter(
-        (r) => r.resource_type === "mount" && r.mount_type === category,
+        (r) =>
+          (r.resource_type === "mount" && r.mount_type === category) ||
+          (r.resource_type === "pet" && r.pet_type === category) ||
+          (r.resource_type === "npc" && r.npc_type === category),
       );
     }
 
@@ -72,16 +74,28 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
       });
     }
 
-    const statuses = parseParamList(
-      searchParams.get("status"),
-    ) as StatusTagValue[];
+    const statuses = parseStatusTagList(searchParams.get("status"));
     if (statuses.length > 0) {
       items = items.filter((r) => matchesStatusFilter(r, statuses));
     }
 
-    const tags = parseParamList(searchParams.get("tags")) as ResourceTagValue[];
+    const tags = parseResourceTagList(searchParams.get("tags"));
     if (tags.length > 0) {
       items = items.filter((r) => matchesTagFilter(r, tags));
+    }
+
+    const features = parseParamList(searchParams.get("features"));
+    if (features.length > 0) {
+      items = items.filter((r) => matchesFeatureFilter(r, features));
+    }
+
+    const origin = parseDataOrigin(searchParams.get("origin"));
+    if (origin) {
+      items = items.filter((r) => matchesOriginFilter(r, origin));
+    }
+
+    if (searchParams.get("required") === "missing") {
+      items = items.filter((r) => hasMissingRequired(r));
     }
 
     const updatedStart = searchParams.get("updated_start");
@@ -116,7 +130,7 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     setSearchParams(next);
   };
 
-  const toggleParamValue = (key: "status" | "tags", value: string) => {
+  const toggleParamValue = (key: "status" | "tags" | "features", value: string) => {
     const current = parseParamList(searchParams.get(key));
     const nextValues = current.includes(value)
       ? current.filter((v) => v !== value)
@@ -125,6 +139,23 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
   };
 
   const applySearch = () => updateParam("search", searchInput);
+
+  // 输入停顿 400ms 后自动应用搜索（无需回车），清空后自动恢复列表
+  const debouncedSearch = useDebouncedValue(searchInput, 400);
+  useEffect(() => {
+    const current = (searchParams.get("search") || "").trim();
+    const next = debouncedSearch.trim();
+    if (next !== current) {
+      updateParam("search", next);
+    }
+    // 仅响应防抖后的输入变化；searchParams 变化时值相等会直接跳过
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch]);
+
+  const clearSearch = () => {
+    setSearchInput("");
+    updateParam("search", "");
+  };
 
   const setSort = (key: SortKey) => {
     const next = new URLSearchParams(searchParams);
@@ -143,6 +174,8 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     const set = new Set<string>();
     allItems.forEach((r) => {
       if (r.resource_type === "mount" && r.mount_type) set.add(r.mount_type);
+      if (r.resource_type === "pet" && r.pet_type) set.add(r.pet_type);
+      if (r.resource_type === "npc" && r.npc_type) set.add(r.npc_type);
     });
     return Array.from(set).sort();
   }, [allItems]);
@@ -171,6 +204,7 @@ export function useResourceListFilters(allItems: Resource[] | undefined) {
     searchInput,
     setSearchInput,
     applySearch,
+    clearSearch,
     sortKey,
     sortOrder,
     setSort,

@@ -120,3 +120,36 @@ def refresh_icon_index() -> dict[str, Path]:
     index = get_icon_index()
     index.refresh()
     return index.all_icons()
+
+
+def append_icon_name(icon_name: str) -> None:
+    """将新图标名称追加到 txt 索引文件（若不存在）。
+
+    索引文件是 `icon_inv.txt`（纯文件名）和 `icon_spell.txt`（`INTERFACE\\ICONS\\name`）。
+    即使 txt 文件已过时，目录扫描回退也能发现新文件；追加是为了保持索引一致性。
+    """
+    if not icon_name:
+        return
+
+    def _exists(path: Path) -> bool:
+        if not path.exists():
+            return False
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore")
+            return icon_name in {line.strip() for line in text.splitlines()}
+        except OSError:
+            return False
+
+    if ICON_INV_FILE.exists() and not _exists(ICON_INV_FILE):
+        try:
+            with ICON_INV_FILE.open("a", encoding="utf-8") as f:
+                f.write(f"\n{icon_name}")
+        except OSError:
+            pass
+
+    if ICON_SPELL_FILE.exists() and not _exists(ICON_SPELL_FILE):
+        try:
+            with ICON_SPELL_FILE.open("a", encoding="utf-8") as f:
+                f.write(f"\nINTERFACE\\ICONS\\{icon_name}")
+        except OSError:
+            pass

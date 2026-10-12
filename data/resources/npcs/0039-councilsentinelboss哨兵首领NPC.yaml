@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 暗夜精灵
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：暗夜精灵女哨兵首领，紫金制式华丽板甲、月纹高冠配金色双角、
+  肩羽饰（预览图"哨兵首领NPC.gif"）。查询词 Council Sentinel/哨兵首领均未命中
+  Wowhead NPC 条目，判定为社区魔改模型，无官方对应数据。

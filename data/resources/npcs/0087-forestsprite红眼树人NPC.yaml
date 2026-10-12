@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: Enraged Forest Sprite
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=55150
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 55150
+    name: Enraged Forest Sprite
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 元素
+subtype: 树人
+notes: >-
+  自定义模型说明：文件夹英文段 forestsprite 即 Forest Sprite（林间树人），
+  归入 MoP 条目 npc=55150（Enraged Forest Sprite）；与 0086 同文件夹同模型，
+  为贴图变体 2；文件名"红眼树人"为社区俗称。

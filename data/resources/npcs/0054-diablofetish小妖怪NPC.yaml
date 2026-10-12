@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 迷你破坏神
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=11326
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 11326
+    name: 迷你破坏神
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 小动物
+subtype: 恶魔
+notes: >-
+  自定义模型说明：文件夹英文段 diablofetish 即 Diablo（暗黑破坏神联动宠物）；
+  查询命中 npc=11326（迷你破坏神，典藏版赠送的非战斗迷你 Diablo 宠物，与预览的
+  小红魔形态吻合；官方页面未标注生物类型，按跟随宠物惯例归入小动物）；
+  文件名"小妖怪"为社区俗称。

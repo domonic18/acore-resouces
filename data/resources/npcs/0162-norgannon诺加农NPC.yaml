@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 诺甘农
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=126266
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 126266
+    name: 诺甘农
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 泰坦
+notes: >-
+  自定义模型说明：文件夹英文段 Norgannon 即 Norgannon；og 图核对
+  npc=126266（诺甘农，泰坦）为蓝灰肤、兜帽白须、胸口奥术蓝光的泰坦巨人，
+  与预览完全吻合；文件名"诺加农"为社区音译俗称。

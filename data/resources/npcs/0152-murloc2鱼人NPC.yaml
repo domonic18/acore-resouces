@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 鱼人
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=154065
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 154065
+    name: 鱼人
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 鱼人
+notes: >-
+  自定义模型说明：murloc2 社区魔改鱼人系列（与 0150/0151 同包）；归入通用
+  条目 npc=154065（鱼人，Murloc），预览蓝紫肤色、金色鳍冠的鱼人素体（无图
+  可核，置信中）；文件名"鱼人"为社区俗称。

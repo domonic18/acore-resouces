@@ -29,9 +29,11 @@ dependencies = [
     "pydantic-settings>=2.2.0",
     "typer>=0.12.0",
     "pyyaml>=6.0.1",
-    "openpyxl>=3.1.0",
     "pillow>=10.0.0",
     "playwright>=1.61.0",
+    "httpx>=0.28.1",
+    "wow-dbc-tool",
+    "cryptography>=50.0.1",
 ]
 
 [project.optional-dependencies]
@@ -60,7 +62,7 @@ disallow_untyped_defs = true
 disallow_any_generics = false
 
 [[tool.mypy.overrides]]
-module = ["yaml", "openpyxl"]
+module = ["yaml", "wow_dbc_tool", "wow_dbc_tool.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
@@ -88,6 +90,9 @@ exclude_lines = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["app*"]
+
+[tool.uv.sources]
+wow-dbc-tool = { path = "../tools/wow-dbc-tool", editable = true }
 
 [dependency-groups]
 dev = [

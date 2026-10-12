@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 掮客
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=179946
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 179946
+    name: 掮客
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 掮客
+notes: >-
+  自定义模型说明：文件夹英文段 broker 即 Broker（暗影国度噬渊/奥利波斯掮客族）；
+  查询命中 npc=179946，中文站条目未译（[Broker]），中文名按社区通用译名"掮客"回填，
+  与预览的金甲蓝晶浮游形态吻合；文件名"经纪人"为社区俗称。

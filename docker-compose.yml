@@ -12,15 +12,17 @@ services:
       - "8080:8000"
     environment:
       - PROJECT_ROOT=/app
+      # 宿主侧项目根：前端展示的文件路径由 /app 映射回宿主真实路径（复制后可直接前往）
+      - HOST_PROJECT_ROOT=${PWD}
     volumes:
       - ./sources:/app/sources
       - ./data:/app/data
-      - ./assets:/app/assets
       - ./workspace:/app/workspace
-      - ./imports:/app/imports
-      - ./patches:/app/patches
       - ./backend/app:/app/app
       - ./apps/web/dist:/app/app/static
+      # data/sql/azerothcore-updates 是指向 AzerothCore updates 的绝对路径软链接，
+      # 容器内需按原路径挂载目标目录，否则链接悬空导致 SQL 写入报 EEXIST
+      - /Users/deadwalk/Code/azerothcore-wotlk/modules/mod-custom-content/data/sql/db-world/updates:/Users/deadwalk/Code/azerothcore-wotlk/modules/mod-custom-content/data/sql/db-world/updates
     networks:
       - acore-resources-network
     restart: unless-stopped
@@ -48,10 +50,9 @@ services:
   #   volumes:
   #     - ./sources:/app/sources
   #     - ./data:/app/data
-  #     - ./assets:/app/assets
   #     - ./workspace:/app/workspace
-  #     - ./imports:/app/imports
-  #     - ./patches:/app/patches
+  #     - ./backend/app:/app/app
+  #     - ./apps/web/dist:/app/app/static
   #   networks:
   #     - acore-resources-network
   #   restart: unless-stopped

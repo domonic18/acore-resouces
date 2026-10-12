@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 塞纳留斯
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=209318
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 209318
+    name: 塞纳留斯
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 半神
+notes: >-
+  自定义模型说明：文件夹英文段 cenarius2 即 Cenarius（半神塞纳留斯）；查询命中
+  npc=209318（深风峡谷/海加尔战线形态），官方渲染图与预览的暗色皮肤、绿角、
+  幽蓝灵气形态吻合；梦魇红色形态另见 0034/0035（npc=104636）。

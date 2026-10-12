@@ -1,5 +1,7 @@
 import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
+  ItemDisplayInfoEntry,
+  ItemDisplayInfoPage,
   PaginatedResources,
   Resource,
   ResourceAssets,
@@ -19,6 +21,8 @@ export function listResources(
     debug_passed?: boolean;
     page?: number;
     page_size?: number;
+    sort_by?: string;
+    sort_order?: "asc" | "desc";
   },
 ): Promise<PaginatedResources> {
   const query = new URLSearchParams();
@@ -28,6 +32,8 @@ export function listResources(
     query.set("debug_passed", String(params.debug_passed));
   if (params.page) query.set("page", String(params.page));
   if (params.page_size) query.set("page_size", String(params.page_size));
+  if (params.sort_by) query.set("sort_by", params.sort_by);
+  if (params.sort_order) query.set("sort_order", params.sort_order);
   return apiGetJson(`/api/resources/${resourceType}?${query.toString()}`);
 }
 
@@ -73,6 +79,10 @@ export function getIconPreviewUrl(iconName: string, size?: number): string {
   return buildPreviewUrl(`/api/preview/icon/${encodeURIComponent(iconName)}`);
 }
 
+export function getIconWowheadUrl(iconName: string): string {
+  return `https://wow.zamimg.com/images/wow/icons/medium/${encodeURIComponent(iconName)}.jpg`;
+}
+
 export function getFilePreviewUrl(path: string): string {
   return buildPreviewUrl(`/api/preview/file/${encodeURIComponent(path)}`);
 }
@@ -101,6 +111,7 @@ export function getResourceCount(resourceType: string): Promise<number> {
 
 export async function fetchAllResources(
   resourceType: "all" | "mount" | "pet" | "npc",
+  opts?: { added?: boolean },
 ): Promise<Resource[]> {
   const types =
     resourceType === "all" ? ["mount", "pet", "npc"] : [resourceType];
@@ -111,7 +122,11 @@ export async function fetchAllResources(
       let page = 1;
       let hasMore = true;
       while (hasMore) {
-        const res = await listResources(type, { page, page_size: 100 });
+        const res = await listResources(type, {
+          page,
+          page_size: 100,
+          added: opts?.added,
+        });
         items.push(...res.items);
         if (res.items.length < res.page_size || page >= 100) {
           hasMore = false;
@@ -127,6 +142,24 @@ export async function fetchAllResources(
 
 export async function getAllIcons(): Promise<string[]> {
   return apiGetJson("/api/preview/icons");
+}
+
+export async function searchItemDisplayInfo(params: {
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<ItemDisplayInfoPage> {
+  const query = new URLSearchParams();
+  if (params.search) query.set("search", params.search);
+  if (params.limit) query.set("limit", String(params.limit));
+  if (params.offset) query.set("offset", String(params.offset));
+  return apiGetJson(`/api/dbc/item-display-info?${query.toString()}`);
+}
+
+export async function getItemDisplayInfo(
+  id: number,
+): Promise<ItemDisplayInfoEntry> {
+  return apiGetJson(`/api/dbc/item-display-info/${id}`);
 }
 
 export async function updateResourceIcon(

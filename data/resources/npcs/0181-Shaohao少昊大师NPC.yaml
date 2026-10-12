@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: Emperor Shaohao
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=73303
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 73303
+    name: Emperor Shaohao
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 五星
+npc_type: 人形生物
+subtype: 熊猫人
+notes: >-
+  自定义模型说明：文件夹英文段 Shaohao 即 Emperor Shaohao（少昊大帝）；
+  og 图核对 npc=73303（永恒岛少昊大帝英灵，wowhead 页未汉化，以英文名记）
+  为白金长袍、金环玉带的熊猫人帝王，与预览完全吻合；文件名"少昊大师"为
+  社区俗称。

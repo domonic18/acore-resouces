@@ -9,16 +9,24 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 德鲁斯瓦魔女
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=131935
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 131935
+    name: 德鲁斯瓦魔女
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 四星
+npc_type: 人形生物
+subtype: 魔女
+notes: >-
+  自定义模型说明：文件夹英文段 drustvarhag 即 Drustvar Hag；查询命中 npc=131935
+  （德鲁斯瓦魔女），与老巫婆主题吻合；文件名"老巫婆"为社区俗称。

@@ -15,9 +15,16 @@ interface ModelViewerProps {
   preview: ModelPreview;
   resourceType: string;
   selectedTexture?: string | null;
+  selectedVariations?: [string | null, string | null, string | null];
+  scale?: number;
 }
 
-export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
+export function ModelViewer({
+  preview,
+  selectedTexture,
+  selectedVariations,
+  scale = 1,
+}: ModelViewerProps) {
   const [wireframe, setWireframe] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [animationState, setAnimationState] = useState<AnimationState>("stand");
@@ -28,7 +35,12 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
 
   const { parsed, error, loading, m2BufferRef, canRender } =
     useM2Loader(preview);
-  const textureUrls = useM2Textures(parsed, preview, selectedTexture);
+  const textureUrls = useM2Textures(
+    parsed,
+    preview,
+    selectedTexture,
+    selectedVariations,
+  );
   const animationClip = useM2Animation(
     parsed,
     preview.anim_files,
@@ -79,6 +91,7 @@ export function ModelViewer({ preview, selectedTexture }: ModelViewerProps) {
             initialCamera={initialCamera}
             parsed={parsed}
             textureUrls={textureUrls}
+            scale={scale}
             wireframe={wireframe}
             animationClip={animationClip}
             isPlaying={isPlaying}

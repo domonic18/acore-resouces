@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: Tortollan
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=236489
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 236489
+    name: Tortollan
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 龟人
+notes: >-
+  自定义模型说明：文件夹英文段 tortollan 即 Tortollan（龟人，库尔提拉
+  斯）；查询词 Tortollan 命中同族通用条目 npc=236489（Tortollan，页面未
+  汉化保留英文名，无图可核，置信中），预览背负巨壳行囊、红晶绳饰的红瞳
+  龟人；文件名"龟人"为社区俗称。

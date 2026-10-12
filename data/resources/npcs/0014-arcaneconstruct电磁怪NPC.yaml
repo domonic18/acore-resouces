@@ -9,16 +9,25 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 奥术构造体
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=250256
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 250256
+    name: 奥术构造体
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 奥术构造体
+notes: >-
+  自定义模型说明：文件夹英文段 arcaneconstruct 即 Arcane Construct；查询命中
+  npc=250256（奥术构造体，官方类型机械），与预览图"电磁怪NPC.gif"的紫色奥术
+  浮游构造体形态吻合；0013 为同模型火焰贴图变体另记；文件名"电磁怪"为社区俗称。

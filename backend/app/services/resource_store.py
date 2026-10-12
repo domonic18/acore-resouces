@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
 
@@ -39,8 +39,8 @@ def _file_timestamps(path: Path) -> tuple[datetime | None, datetime | None]:
         stat = path.stat()
         created = getattr(stat, "st_birthtime", stat.st_ctime)
         return (
-            datetime.fromtimestamp(created, tz=timezone.utc),
-            datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc),
+            datetime.fromtimestamp(created, tz=UTC),
+            datetime.fromtimestamp(stat.st_mtime, tz=UTC),
         )
     except OSError:
         return None, None
@@ -51,7 +51,24 @@ def _ensure_dirs() -> None:
     for sub in ("mounts", "pets", "npcs"):
         (settings.resources_dir / sub).mkdir(parents=True, exist_ok=True)
     settings.schemas_dir.mkdir(parents=True, exist_ok=True)
-    settings.mapping_dir.mkdir(parents=True, exist_ok=True)
+
+
+SQLITE_EXTRA_COLUMNS = (
+    "mount_type",
+    "star_rating",
+    "subtype",
+    "rarity",
+    "pet_type",
+    "npc_type",
+    "tags",
+)
+
+
+def _sqlite_extra_value(attr: str, value: Any) -> Any:
+    """tags 为列表，落 SQLite Text 列时序列化为逗号拼接串。"""
+    if attr == "tags" and isinstance(value, list):
+        return ",".join(value)
+    return value
 
 
 def _yaml_path(resource_type: str, resource_id: int, model_folder: str) -> Path:
@@ -190,9 +207,9 @@ def _sync_to_sqlite(resource: Resource) -> None:
             existing.debug_passed = resource.debug_passed  # type: ignore[assignment]
             existing.added = resource.added  # type: ignore[assignment]
             existing.raw_yaml = yaml.safe_dump(data, allow_unicode=True, sort_keys=False)
-            for attr in ("mount_type", "star_rating", "subtype", "rarity"):
+            for attr in SQLITE_EXTRA_COLUMNS:
                 if hasattr(existing, attr) and attr in data:
-                    setattr(existing, attr, data[attr])
+                    setattr(existing, attr, _sqlite_extra_value(attr, data[attr]))
         else:
             kwargs: dict[str, Any] = {
                 "id": resource.id,
@@ -202,9 +219,9 @@ def _sync_to_sqlite(resource: Resource) -> None:
                 "added": resource.added,
                 "raw_yaml": yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
             }
-            for attr in ("mount_type", "star_rating", "subtype", "rarity"):
+            for attr in SQLITE_EXTRA_COLUMNS:
                 if hasattr(model_cls, attr) and attr in data:
-                    kwargs[attr] = data[attr]
+                    kwargs[attr] = _sqlite_extra_value(attr, data[attr])
             db.add(model_cls(**kwargs))
         db.commit()
     finally:
@@ -245,9 +262,9 @@ def sync_all_to_sqlite() -> None:
                     "added": obj.added,
                     "raw_yaml": yaml.safe_dump(data_dump, allow_unicode=True, sort_keys=False),
                 }
-                for attr in ("mount_type", "star_rating", "subtype", "rarity"):
+                for attr in SQLITE_EXTRA_COLUMNS:
                     if hasattr(model_cls, attr) and attr in data_dump:
-                        kwargs[attr] = data_dump[attr]
+                        kwargs[attr] = _sqlite_extra_value(attr, data_dump[attr])
                 db.add(model_cls(**kwargs))
         db.commit()
     finally:

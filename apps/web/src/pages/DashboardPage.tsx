@@ -1,45 +1,69 @@
-import { Link } from "react-router-dom";
-import { Upload, Download, Eye, Search } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {
+  Download,
+  Eye,
+  Search,
+  Compass,
+  PawPrint,
+  Users,
+  Bug,
+  ArrowRight,
+} from "lucide-react";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { StatCard } from "@/components/cards/StatCard";
+import { DistributionCard } from "@/components/cards/DistributionCard";
 import { QuickActionCard } from "@/components/cards/QuickActionCard";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
 import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
 import { useResourceStats } from "@/features/resources/hooks/useResourceStats";
 import { useRecentResources } from "@/features/resources/hooks/useRecentResources";
+import { useResourceListData } from "@/features/resources/hooks/useResourceListData";
+import { computeMountStats } from "@/features/resources/lib/dashboard-stats";
 
 export function DashboardPage() {
-  const { data: stats, isLoading } = useResourceStats();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data: stats, isLoading: statsLoading } = useResourceStats();
   const recent = useRecentResources();
+  const { allItems: mounts, isLoading: mountsLoading } =
+    useResourceListData("mount");
+  const mountStats = computeMountStats(mounts ?? []);
+
+  const handleSearch = () => {
+    const query = searchQuery.trim();
+    if (!query) return;
+    navigate(`/resources?search=${encodeURIComponent(query)}`);
+  };
 
   const statItems = [
     {
       label: "坐骑资源",
       value: stats.mount,
-      icon: "🐎",
+      to: "/resources?type=mount",
+      icon: <Compass className="h-5 w-5" />,
       colorClass: "bg-blue-500/15 text-blue-400",
-      change: "+来自合并单元格子行",
     },
     {
       label: "宠物资源",
       value: stats.pet,
-      icon: "🐾",
+      to: "/resources?type=pet",
+      icon: <PawPrint className="h-5 w-5" />,
       colorClass: "bg-purple-500/15 text-purple-400",
-      change: "已对齐 Excel",
     },
     {
       label: "NPC 资源",
       value: stats.npc,
-      icon: "🧙",
+      to: "/resources?type=npc",
+      icon: <Users className="h-5 w-5" />,
       colorClass: "bg-green-500/15 text-green-400",
-      change: "已对齐 Excel",
     },
     {
       label: "待调试资源",
       value: stats.pending,
-      icon: "⚡",
+      to: "/resources?status=pending",
+      icon: <Bug className="h-5 w-5" />,
       colorClass: "bg-orange-500/15 text-orange-400",
-      change: "debug_passed = false",
     },
   ];
 
@@ -49,12 +73,18 @@ export function DashboardPage() {
         <h1 className="page-title">仪表盘</h1>
         <div className="topbar-actions">
           <div className="search-box">
-            <input type="text" placeholder="搜索资源、ID、模型..." />
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              placeholder="搜索资源、ID、模型..."
+            />
+            <Search
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 cursor-pointer text-text-tertiary hover:text-text-secondary"
+              onClick={handleSearch}
+            />
           </div>
-          <Link to="/import" className="btn btn-primary">
-            <Upload className="h-4 w-4" /> 导入
-          </Link>
         </div>
       </header>
 
@@ -64,11 +94,69 @@ export function DashboardPage() {
             key={item.label}
             icon={item.icon}
             label={item.label}
-            value={isLoading ? "-" : item.value}
-            change={item.change}
+            value={statsLoading ? "-" : item.value}
+            to={item.to}
             colorClass={item.colorClass}
           />
         ))}
+      </div>
+
+      <div className="mt-6">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-text-secondary">
+            坐骑数据统计
+          </h2>
+          <Link
+            to="/resources?type=mount"
+            className="flex items-center gap-1 text-xs text-text-tertiary transition-colors hover:text-text-secondary"
+          >
+            查看全部坐骑 <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <DistributionCard
+            title="数据来源"
+            subtitle="官方与自定义数据占比"
+            rows={mountStats.byOrigin}
+            total={mounts?.length ?? 0}
+            isLoading={mountsLoading}
+          />
+          <DistributionCard
+            title="坐骑类型"
+            subtitle="按 mount_type 分布"
+            rows={mountStats.byMountType}
+            total={mounts?.length ?? 0}
+            isLoading={mountsLoading}
+          />
+          <DistributionCard
+            title="星级分布"
+            subtitle="按 star_rating 分布"
+            rows={mountStats.byStarRating}
+            total={mounts?.length ?? 0}
+            isLoading={mountsLoading}
+          />
+          <DistributionCard
+            title="添加状态"
+            subtitle="是否已导入游戏库"
+            rows={mountStats.byAdded}
+            total={mounts?.length ?? 0}
+            isLoading={mountsLoading}
+          />
+          <DistributionCard
+            title="调试状态"
+            subtitle="debug_passed 校验结果"
+            rows={mountStats.byDebug}
+            total={mounts?.length ?? 0}
+            isLoading={mountsLoading}
+          />
+          <DistributionCard
+            title="数据健康"
+            subtitle="导出阻塞项检查"
+            rows={mountStats.health}
+            total={mounts?.length ?? 0}
+            isLoading={mountsLoading}
+          />
+        </div>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
@@ -120,7 +208,11 @@ export function DashboardPage() {
                     <td>
                       <ResourceStatusBadge resource={resource} verbose />
                     </td>
-                    <td className="text-text-tertiary">—</td>
+                    <td className="text-text-tertiary">
+                      {resource.updated_at
+                        ? new Date(resource.updated_at).toLocaleString()
+                        : "—"}
+                    </td>
                   </tr>
                 ))}
                 {recent.length === 0 && (
@@ -147,13 +239,6 @@ export function DashboardPage() {
           </div>
           <div className="card-body">
             <div className="space-y-3">
-              <QuickActionCard
-                to="/import"
-                icon={<Upload className="h-5 w-5" />}
-                title="导入 Excel"
-                desc="从 xlsx 批量导入资源"
-                color="blue"
-              />
               <QuickActionCard
                 to="/export"
                 icon={<Download className="h-5 w-5" />}

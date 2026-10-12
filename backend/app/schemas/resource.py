@@ -1,44 +1,79 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Literal
+from typing import Annotated, Any, Literal, get_type_hints
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
+from app.schemas.sql import CreatureModelInfo, CreatureTemplate, ItemTemplate
+from app.schemas.vehicle import VehicleConfig
+
+
+def _normalize_optional_field(value: Any, hint: Any | None) -> Any:
+    """归一化可选字段的空值：空字符串或字符串字段的 0 转为 None。"""
+    if value == "":
+        return None
+    if hint == (str | None) and value == 0:
+        return None
+    return value
+
+
+def _normalize_dict_values(data: dict[str, Any], cls: type[BaseModel]) -> dict[str, Any]:
+    """根据模型字段类型归一化字典中的未设置值。"""
+    hints = get_type_hints(cls)
+    return {k: _normalize_optional_field(v, hints.get(k)) for k, v in data.items()}
 
 
 class DropInfo(BaseModel):
+    source: Literal["creature", "gameobject"] = "creature"
     entry: int | None = None
     instance: str | None = None
     boss: str | None = None
     rate: float | None = None
 
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_unset_values(cls, data: Any) -> Any:
+        return _normalize_dict_values(data, cls) if isinstance(data, dict) else data
+
 
 class OfficialDbInfo(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
     name: str | None = None
     spell_icon_name: str | None = None
     icon_name: str | None = None
     spell_wowhead_url: str | None = None
     item_wowhead_url: str | None = None
+    npc_wowhead_url: str | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_unset_values(cls, data: Any) -> Any:
+        return _normalize_dict_values(data, cls) if isinstance(data, dict) else data
 
 
 class DbcInfo(BaseModel):
-    model_config = ConfigDict(extra="allow")
-    creature_model_data: dict[str, Any] = Field(default_factory=dict)
-    creature_display_info: dict[str, Any] = Field(default_factory=dict)
-    spell: dict[str, Any] = Field(default_factory=dict)
-    item: dict[str, Any] = Field(default_factory=dict)
+    creature_model_data: CreatureModelData = Field(
+        default_factory=CreatureModelData,
+    )
+    creature_display_info: CreatureDisplayInfo = Field(
+        default_factory=CreatureDisplayInfo,
+    )
+    spell: Spell = Field(default_factory=Spell)
+    item: Item = Field(default_factory=Item)
 
 
 class DbInfo(BaseModel):
-    model_config = ConfigDict(extra="allow")
-    creature_template: dict[str, Any] = Field(default_factory=dict)
-    creature_model_info: dict[str, Any] = Field(default_factory=dict)
-    item_template: dict[str, Any] = Field(default_factory=dict)
+    creature_template: CreatureTemplate = Field(default_factory=CreatureTemplate)
+    creature_model_info: CreatureModelInfo = Field(
+        default_factory=CreatureModelInfo,
+    )
+    item_template: ItemTemplate = Field(default_factory=ItemTemplate)
 
 
 class ResourceBase(BaseModel):
-    model_config = ConfigDict(extra="allow")
-
     id: int
     model_folder: str
     preview_image: str | None = None
@@ -46,10 +81,30 @@ class ResourceBase(BaseModel):
     added: bool = False
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    notes: str | None = None
+    tags: list[str] = Field(default_factory=list)
     drop: DropInfo = Field(default_factory=DropInfo)
     official_db: OfficialDbInfo = Field(default_factory=OfficialDbInfo)
     dbc: DbcInfo = Field(default_factory=DbcInfo)
     db: DbInfo = Field(default_factory=DbInfo)
+
+    @field_validator("notes")
+    @classmethod
+    def _normalize_empty_notes(cls, value: str | None) -> str | None:
+        return value or None
+
+
+SPECIAL_FEATURES = [
+    "三人骑乘",
+    "双人骑乘",
+    "自带商人",
+    "自带拍卖行",
+    "修理",
+    "水面行走",
+    "水下骑乘",
+    "骑乘采集",
+    "变色涂装",
+]
 
 
 class Mount(ResourceBase):
@@ -57,16 +112,77 @@ class Mount(ResourceBase):
     mount_type: str | None = None
     star_rating: str | None = None
     subtype: str | None = None
+    special_features: list[str] = Field(default_factory=list)
+    vehicle: VehicleConfig | None = None
+
+    @field_validator("special_features")
+    @classmethod
+    def _filter_unknown_features(cls, value: list[str]) -> list[str]:
+        """只保留受控词表内的值，防止手改 YAML 写入任意功能标签。"""
+        return [f for f in value if f in SPECIAL_FEATURES]
+
+
+PET_TYPES = [
+    "龙类",
+    "走兽",
+    "飞禽",
+    "水生",
+    "机械",
+    "元素",
+    "人形",
+    "亡灵",
+    "小动物",
+    "异怪",
+    "恶魔",
+]
 
 
 class Pet(ResourceBase):
     resource_type: Literal["pet"] = "pet"
     rarity: str | None = None
+    pet_type: str | None = None
+    subtype: str | None = None
+
+    @field_validator("pet_type")
+    @classmethod
+    def _validate_pet_type(cls, value: str | None) -> str | None:
+        """pet_type 为单值受控字段，词表外值直接报错以暴露手误。"""
+        if value is None or value in PET_TYPES:
+            return value
+        raise ValueError(f"未知 pet_type: {value}，可选：{', '.join(PET_TYPES)}")
+
+
+NPC_TYPES = [
+    "野兽",
+    "龙类",
+    "恶魔",
+    "元素",
+    "巨人",
+    "亡灵",
+    "人形生物",
+    "小动物",
+    "机械",
+    "未指定",
+]
 
 
 class Npc(ResourceBase):
     resource_type: Literal["npc"] = "npc"
     rarity: str | None = None
+    npc_type: str | None = None
+    subtype: str | None = None
+
+    @field_validator("npc_type")
+    @classmethod
+    def _validate_npc_type(cls, value: str | None) -> str | None:
+        """npc_type 为单值受控字段，词表外值直接报错以暴露手误。"""
+        if value is None or value in NPC_TYPES:
+            return value
+        raise ValueError(f"未知 npc_type: {value}，可选：{', '.join(NPC_TYPES)}")
 
 
-Resource = Mount | Pet | Npc
+Resource = Annotated[Mount | Pet | Npc, Field(discriminator="resource_type")]
+
+
+# 兼容仍需要 plain union 的场景（如函数返回类型注解）
+ResourceUnion = Mount | Pet | Npc

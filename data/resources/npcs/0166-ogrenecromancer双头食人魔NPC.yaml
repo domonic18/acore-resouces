@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 双头食人魔
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 Ogre Necromancer / 双头食人魔 均未命中条目；古加尔
+  npc=43324 og 图核对为独须双头、紫色法袍，与预览双无须头、黑刺甲绿宝石造
+  型不符不采用，判定为社区魔改模型，无官方对应数据；文件名"双头食人魔"为
+  社区俗称。

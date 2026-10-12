@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { cn } from "@/shared/utils";
 
 interface StatCardProps {
@@ -6,6 +7,7 @@ interface StatCardProps {
   value: React.ReactNode;
   change?: string;
   colorClass: string;
+  to?: string;
 }
 
 export function StatCard({
@@ -14,9 +16,12 @@ export function StatCard({
   value,
   change,
   colorClass,
+  to,
 }: StatCardProps) {
-  return (
-    <div className="card border-border bg-bg-elevated p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover">
+  const classes =
+    "card border-border bg-bg-elevated p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover";
+  const content = (
+    <>
       <div
         className={cn(
           "mb-3.5 flex h-10 w-10 items-center justify-center rounded-md text-lg",
@@ -32,6 +37,15 @@ export function StatCard({
           {change}
         </div>
       )}
-    </div>
+    </>
   );
+
+  if (to) {
+    return (
+      <Link to={to} className={cn(classes, "block")}>
+        {content}
+      </Link>
+    );
+  }
+  return <div className={classes}>{content}</div>;
 }

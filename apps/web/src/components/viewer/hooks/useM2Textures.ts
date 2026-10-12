@@ -36,10 +36,43 @@ function resolveSkinTextures(
   return matching.length > 0 ? matching.sort() : [selectedPath];
 }
 
+function resolveVariationPath(
+  variation: string | null | undefined,
+  blpFiles: string[],
+): string | null {
+  if (!variation) return null;
+  const target = variation
+    .toLowerCase()
+    .replace(/\\/g, "/")
+    .replace(/\.blp$/, "");
+
+  const exactMatch = blpFiles.find((path) => {
+    const name = path
+      .replace(/\\/g, "/")
+      .split("/")
+      .pop()
+      ?.toLowerCase()
+      .replace(/\.blp$/, "");
+    return name === target;
+  });
+  if (exactMatch) return exactMatch;
+
+  const normalizedTarget = target.replace(/\//g, "\\");
+  const containsMatch = blpFiles.find((path) => {
+    const normalizedPath = path.toLowerCase().replace(/\\/g, "/");
+    return (
+      normalizedPath.includes(target) ||
+      path.toLowerCase().includes(normalizedTarget)
+    );
+  });
+  return containsMatch ?? null;
+}
+
 export function useM2Textures(
   parsed: ParsedM2 | null,
   preview: ModelPreview,
   selectedTexture?: string | null,
+  selectedVariations?: [string | null, string | null, string | null] | null,
 ): Record<number, string> {
   return useMemo(
     function () {
@@ -75,11 +108,6 @@ export function useM2Textures(
         }
       });
 
-      const skinTextures = resolveSkinTextures(
-        selectedTexture,
-        preview.blp_files,
-        preview.model_folder,
-      );
       const skinSlots = parsed.m2.textures
         .map(function (texture, index) {
           return { texture, index };
@@ -96,29 +124,37 @@ export function useM2Textures(
           return index;
         });
 
-      skinTextures.forEach(function (path, arrayIndex) {
-        const slot = skinSlots[arrayIndex];
-        if (slot !== undefined) {
-          urls[slot] = getBlpPreviewUrl(path);
-        }
-      });
-
-      console.log(
-        "[textureUrls] textures:",
-        parsed.m2.textures.map(function (t, i) {
-          return {
-            index: i,
-            type: t.type,
-            filename: t.filename,
-            resolved: urls[i] ?? null,
-          };
-        }),
-        "blp_files:",
-        preview.blp_files,
-      );
+      if (selectedVariations) {
+        selectedVariations.forEach(function (variation, arrayIndex) {
+          const slot = skinSlots[arrayIndex];
+          if (slot === undefined) return;
+          const path = resolveVariationPath(variation, preview.blp_files);
+          if (path) {
+            urls[slot] = getBlpPreviewUrl(path);
+          }
+        });
+      } else {
+        const skinTextures = resolveSkinTextures(
+          selectedTexture,
+          preview.blp_files,
+          preview.model_folder,
+        );
+        skinTextures.forEach(function (path, arrayIndex) {
+          const slot = skinSlots[arrayIndex];
+          if (slot !== undefined) {
+            urls[slot] = getBlpPreviewUrl(path);
+          }
+        });
+      }
 
       return urls;
     },
-    [parsed, preview.blp_files, preview.model_folder, selectedTexture],
+    [
+      parsed,
+      preview.blp_files,
+      preview.model_folder,
+      selectedTexture,
+      selectedVariations,
+    ],
   );
 }

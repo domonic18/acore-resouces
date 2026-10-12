@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { ArrowLeft, Save } from "lucide-react";
 import { useResourceDetail } from "@/features/resources/hooks/useResourceDetail";
@@ -6,23 +6,35 @@ import { useResourceAssets } from "@/features/resources/hooks/useResourceAssets"
 import { useResourceIcons } from "@/features/resources/hooks/useResourceIcons";
 import { useResourceForm } from "@/features/resources/hooks/useResourceForm";
 import { useResourceUpdate } from "@/features/resources/hooks/useResourceUpdate";
+import { normalizeFloat } from "@/features/resources/lib/detail-helpers";
 import { BasicInfoSection } from "@/features/resources/components/resource-detail/BasicInfoSection";
 import { ItemInfoSection } from "@/features/resources/components/resource-detail/ItemInfoSection";
 import { SpellInfoSection } from "@/features/resources/components/resource-detail/SpellInfoSection";
 import { DropSection } from "@/features/resources/components/resource-detail/DropSection";
+import { NotesSection } from "@/features/resources/components/resource-detail/NotesSection";
 import { RawDataSection } from "@/features/resources/components/resource-detail/RawDataSection";
 import { RelationshipCheckSection } from "@/features/resources/components/resource-detail/RelationshipCheckSection";
+import { CreatureDisplayInfoSection } from "@/features/resources/components/resource-detail/CreatureDisplayInfoSection";
+import { CreatureModelDataSection } from "@/features/resources/components/resource-detail/CreatureModelDataSection";
+import { VehicleSection } from "@/features/resources/components/resource-detail/VehicleSection";
+import { buildVehicleDraft } from "@/features/resources/lib/vehicle";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
+import { DisplayInfoPickerDialog } from "@/features/resources/components/resource-detail/DisplayInfoPickerDialog";
+import { PatchExportButton } from "@/features/resources/components/PatchExportButton";
 import { uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
 
 const DETAIL_NAV_ITEMS = [
   { id: "section-basic", label: "基础信息" },
-  { id: "section-relationships", label: "关联校验" },
+  { id: "section-vehicle", label: "载具配置" },
+  { id: "section-model", label: "模型数据" },
+  { id: "section-display", label: "显示信息" },
   { id: "section-item", label: "物品信息" },
   { id: "section-spell", label: "技能信息" },
   { id: "section-drop", label: "掉落信息" },
+  { id: "section-notes", label: "备注" },
+  { id: "section-relationships", label: "关联校验" },
   { id: "section-rawdata", label: "明细数据" },
 ];
 
@@ -49,9 +61,9 @@ export function ResourceDetailPage() {
 
   const [activeTab, setActiveTab] = useState("creature_display_info");
   const [selectedImage, setSelectedImage] = useState<AssetFile | null>(null);
-  const [pickerTarget, setPickerTarget] = useState<"item" | "spell" | null>(
-    null,
-  );
+  const [pickerTarget, setPickerTarget] = useState<
+    "item" | "spell" | "displayId" | null
+  >(null);
   const [pickerSearch, setPickerSearch] = useState("");
 
   const {
@@ -79,6 +91,108 @@ export function ResourceDetailPage() {
     resourceType,
     resourceId,
   );
+
+  // 勾选双人/三人骑乘时预填载具配置草稿；两标签全取消时提示清除
+  const updateFieldWithVehiclePrefill = <
+    K extends keyof ReturnType<typeof useResourceForm>["form"],
+  >(
+    key: K,
+    value: ReturnType<typeof useResourceForm>["form"][K],
+  ) => {
+    if (key === "special_features") {
+      const features = value as string[];
+      const hasDouble = features.includes("双人骑乘");
+      const hasTriple = features.includes("三人骑乘");
+      if ((hasDouble || hasTriple) && !formState.vehicle) {
+        formState.setVehicle(
+          buildVehicleDraft(hasTriple ? "triple" : "double"),
+        );
+      } else if (!hasDouble && !hasTriple && formState.vehicle) {
+        if (window.confirm("已取消双人/三人骑乘标签，是否同时清除载具配置？")) {
+          formState.setVehicle(null);
+        }
+      }
+    }
+    formState.updateField(key, value);
+  };
+
+  const liveScale = useMemo(() => {
+    if (!resource) return 1;
+    const value =
+      "scale" in formState.creatureDisplayInfoDbc
+        ? formState.creatureDisplayInfoDbc.scale
+        : resource.dbc.creature_display_info.scale;
+    return normalizeFloat(value) ?? 1;
+  }, [formState.creatureDisplayInfoDbc, resource]);
+
+  const liveVariations = useMemo(() => {
+    if (!resource)
+      return [null, null, null] as [
+        string | null,
+        string | null,
+        string | null,
+      ];
+    const getValue = (key: string) =>
+      key in formState.creatureDisplayInfoDbc
+        ? formState.creatureDisplayInfoDbc[key]
+        : resource.dbc.creature_display_info[key];
+    return [
+      getValue("texture_variation_1")
+        ? String(getValue("texture_variation_1"))
+        : null,
+      getValue("texture_variation_2")
+        ? String(getValue("texture_variation_2"))
+        : null,
+      getValue("texture_variation_3")
+        ? String(getValue("texture_variation_3"))
+        : null,
+    ] as [string | null, string | null, string | null];
+  }, [formState.creatureDisplayInfoDbc, resource]);
+
+  const liveModelName = useMemo(() => {
+    if (!resource) return null;
+    const value =
+      "model_name" in formState.creatureModelDataDbc
+        ? formState.creatureModelDataDbc.model_name
+        : resource.dbc.creature_model_data.model_name;
+    return value ? String(value) : null;
+  }, [formState.creatureModelDataDbc, resource]);
+
+  const liveModelDataId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "id" in formState.creatureModelDataDbc
+        ? formState.creatureModelDataDbc.id
+        : resource.dbc.creature_model_data.id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.creatureModelDataDbc, resource]);
+
+  const liveSpellId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "id" in formState.spellDbc
+        ? formState.spellDbc.id
+        : resource.dbc.spell.id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.spellDbc, resource]);
+
+  const liveItemDisplayId = useMemo(() => {
+    if (!resource) return null;
+    const raw =
+      "display_id" in formState.itemDbc
+        ? formState.itemDbc.display_id
+        : resource.dbc.item.display_id;
+    const n = Number(raw);
+    return raw !== null && raw !== undefined && raw !== "" && !Number.isNaN(n)
+      ? n
+      : null;
+  }, [formState.itemDbc, resource]);
 
   if (isLoading) {
     return (
@@ -128,6 +242,13 @@ export function ResourceDetailPage() {
           <h1 className="page-title">编辑资源</h1>
         </div>
         <div className="topbar-actions">
+          {isMount && (
+            <PatchExportButton
+              resourceType={resourceType}
+              resourceId={resourceId}
+              resourceName={resource.name || resource.model_folder}
+            />
+          )}
           <button className="btn btn-danger" disabled title="删除功能开发中">
             删除
           </button>
@@ -174,8 +295,105 @@ export function ResourceDetailPage() {
             <BasicInfoSection
               resource={resource}
               form={formState.form}
-              updateField={formState.updateField}
+              updateField={updateFieldWithVehiclePrefill}
               isMount={isMount}
+              compact
+            />
+          </div>
+
+          {isMount &&
+            (formState.form.special_features.includes("双人骑乘") ||
+              formState.form.special_features.includes("三人骑乘") ||
+              formState.vehicle) && (
+              <div id="section-vehicle" className="scroll-mt-20">
+                <VehicleSection
+                  vehicle={formState.vehicle}
+                  setVehicle={formState.setVehicle}
+                  specialFeatures={formState.form.special_features}
+                  compact
+                />
+              </div>
+            )}
+
+          {isMount && (
+            <div id="section-model" className="scroll-mt-20">
+              <CreatureModelDataSection
+                resource={resource}
+                creatureModelDataDbc={formState.creatureModelDataDbc}
+                setCreatureModelDataDbc={formState.setCreatureModelDataDbc}
+                assets={assets}
+                compact
+              />
+            </div>
+          )}
+
+          {isMount && (
+            <div id="section-display" className="scroll-mt-20">
+              <CreatureDisplayInfoSection
+                resource={resource}
+                creatureDisplayInfoDbc={formState.creatureDisplayInfoDbc}
+                setCreatureDisplayInfoDbc={formState.setCreatureDisplayInfoDbc}
+                assets={assets}
+                linkedModelDataId={liveModelDataId}
+                onNavigateToLinkedSection={() =>
+                  scrollToSection("section-model")
+                }
+                compact
+              />
+            </div>
+          )}
+
+          <div id="section-item" className="scroll-mt-20">
+            <ItemInfoSection
+              itemIcon={formState.itemIcon}
+              setItemIcon={formState.setItemIcon}
+              itemWowheadUrl={formState.itemWowheadUrl}
+              setItemWowheadUrl={formState.setItemWowheadUrl}
+              spellWowheadUrl={formState.spellWowheadUrl}
+              setPickerTarget={setPickerTarget}
+              iconNames={iconNames}
+              itemDbc={formState.itemDbc}
+              setItemDbc={formState.setItemDbc}
+              itemDb={formState.itemDb}
+              setItemDb={formState.setItemDb}
+              resourceType={resource.resource_type}
+              linkedSpellId={liveSpellId}
+              onNavigateToLinkedSection={() => scrollToSection("section-spell")}
+              onOpenDisplayPicker={() => setPickerTarget("displayId")}
+              compact
+            />
+          </div>
+
+          <div id="section-spell" className="scroll-mt-20">
+            <SpellInfoSection
+              spellIcon={formState.spellIcon}
+              setSpellIcon={formState.setSpellIcon}
+              spellWowheadUrl={formState.spellWowheadUrl}
+              setSpellWowheadUrl={formState.setSpellWowheadUrl}
+              setPickerTarget={setPickerTarget}
+              iconNames={iconNames}
+              spellDbc={formState.spellDbc}
+              setSpellDbc={formState.setSpellDbc}
+              spellDb={formState.spellDb}
+              setSpellDb={formState.setSpellDb}
+              resourceType={resource.resource_type}
+              mountType={formState.form.mount_type}
+              compact
+            />
+          </div>
+
+          <div id="section-drop" className="scroll-mt-20">
+            <DropSection
+              form={formState.form}
+              updateField={formState.updateField}
+              compact
+            />
+          </div>
+
+          <div id="section-notes" className="scroll-mt-20">
+            <NotesSection
+              form={formState.form}
+              updateField={formState.updateField}
               compact
             />
           </div>
@@ -186,42 +404,6 @@ export function ResourceDetailPage() {
               liveDb={formState.liveDb}
               compact
               onSelectTab={setActiveTab}
-            />
-          </div>
-
-          <div id="section-item" className="scroll-mt-20">
-            <ItemInfoSection
-              itemIcon={formState.itemIcon}
-              setItemIcon={formState.setItemIcon}
-              setPickerTarget={setPickerTarget}
-              iconNames={iconNames}
-              itemDbc={formState.itemDbc}
-              setItemDbc={formState.setItemDbc}
-              itemDb={formState.itemDb}
-              setItemDb={formState.setItemDb}
-              compact
-            />
-          </div>
-
-          <div id="section-spell" className="scroll-mt-20">
-            <SpellInfoSection
-              spellIcon={formState.spellIcon}
-              setSpellIcon={formState.setSpellIcon}
-              setPickerTarget={setPickerTarget}
-              iconNames={iconNames}
-              spellDbc={formState.spellDbc}
-              setSpellDbc={formState.setSpellDbc}
-              spellDb={formState.spellDb}
-              setSpellDb={formState.setSpellDb}
-              compact
-            />
-          </div>
-
-          <div id="section-drop" className="scroll-mt-20">
-            <DropSection
-              form={formState.form}
-              updateField={formState.updateField}
-              compact
             />
           </div>
 
@@ -243,10 +425,24 @@ export function ResourceDetailPage() {
           selectedImage={selectedImage}
           onSelectImage={setSelectedImage}
           allFiles={allFiles}
+          selectedVariations={liveVariations}
+          scale={liveScale}
+          modelName={liveModelName}
         />
       </div>
 
-      {pickerTarget && (
+      {pickerTarget === "displayId" && (
+        <DisplayInfoPickerDialog
+          selectedId={liveItemDisplayId}
+          onSelect={(id) => {
+            formState.setItemDbc((prev) => ({ ...prev, display_id: id ?? 0 }));
+            setPickerTarget(null);
+          }}
+          onClose={() => setPickerTarget(null)}
+        />
+      )}
+
+      {(pickerTarget === "item" || pickerTarget === "spell") && (
         <IconPickerDialog
           title={pickerTarget === "item" ? "选择 Item 图标" : "选择 Spell 图标"}
           selectedValue={

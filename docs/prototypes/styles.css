@@ -877,6 +877,164 @@ button {
   margin: 0 auto 20px;
 }
 
+/* Distribution Card（仪表盘统计） */
+.dist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.dist-row {
+  margin-bottom: 14px;
+}
+
+.dist-row:last-child {
+  margin-bottom: 0;
+}
+
+.dist-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.dist-head .dist-count {
+  font-weight: 700;
+}
+
+.dist-head .dist-pct {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-left: 6px;
+  font-weight: 400;
+}
+
+.dist-bar {
+  height: 6px;
+  border-radius: 100px;
+  background: var(--bg-surface);
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.dist-fill {
+  height: 100%;
+  border-radius: 100px;
+}
+
+.fill-blue { background: #3b82f6; }
+.fill-purple { background: #a855f7; }
+.fill-green { background: #22c55e; }
+.fill-orange { background: #f59e0b; }
+.fill-pink { background: #ec4899; }
+.fill-cyan { background: #06b6d4; }
+.fill-red { background: #ef4444; }
+.fill-amber { background: #f59e0b; }
+.fill-border { background: var(--border); }
+
+/* 提示框（构建/发布结果、错误） */
+.alert {
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+.alert ul {
+  margin: 4px 0 0 0;
+  padding-left: 18px;
+  color: var(--text-secondary);
+}
+
+.alert-success {
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--success);
+}
+
+.alert-danger {
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--danger);
+}
+
+.alert-title {
+  font-weight: 700;
+}
+
+/* 坐骑多选列表 */
+.select-list {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.select-list-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.select-list-label:hover {
+  background: var(--bg-hover);
+}
+
+.select-list-label:last-child {
+  border-bottom: none;
+}
+
+.select-list-label .resource-meta {
+  display: inline;
+  margin-left: 8px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.form-check input {
+  accent-color: var(--accent);
+}
+
+.form-check.danger {
+  color: var(--danger);
+}
+
+.form-check.danger input {
+  accent-color: var(--danger);
+}
+
+/* 表单校验错误态 */
+.form-input-error {
+  border-color: var(--danger) !important;
+}
+
+.form-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.form-error-text {
+  font-size: 11px;
+  color: var(--danger);
+  margin-top: 4px;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .stats-grid {

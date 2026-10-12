@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 哈尔哈达尔自动体
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=258907
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 258907
+    name: 哈尔哈达尔自动体
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 自动机
+notes: >-
+  自定义模型说明：文件夹英文段 largeautomaton 即大型自动机；查询词命中
+  npc=258907（哈尔哈达尔自动体，Automaton），白蓝装甲、胸口蓝晶核心的
+  人形机器人造型与"自动体"类别吻合（条目较新无图可核，置信中）；文件名
+  "自动机"为社区俗称。

@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 托维尔
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：托维尔风格石肤木乃伊，金饰面甲与蓝晶头冠（预览图
+  "金木乃伊NPC.gif"）。查询词 Tolvir 命中托维尔强盗 npc=44688、Amathet 命中
+  阿玛赛特学徒 npc=152196，均无图可核或形态存疑（不采用），判定为社区魔改
+  变体，无官方对应数据；文件名"金木乃伊"为社区俗称。

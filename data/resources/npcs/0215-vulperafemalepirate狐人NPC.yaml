@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: 狐人
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=127204
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 127204
+    name: 狐人
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 二星
+npc_type: 人形生物
+subtype: 狐人
+notes: >-
+  自定义模型说明：文件夹英文段 vulperafemalepirate 即 Vulpera Female
+  Pirate（狐人女海盗）；查询词 vulpera pirate 未命中，CN 查询 狐人 命中
+  同族通用条目 npc=127204（狐人），无图可核置信中，预览骷髅三角帽、绿羽
+  饰、眼罩皮甲的狐人女海盗变体；文件名"狐人"为社区俗称。

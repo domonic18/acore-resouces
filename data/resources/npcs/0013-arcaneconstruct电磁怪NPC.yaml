@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 机械
+subtype: 构造体
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：火焰配色构造体，橙红熔核、粉红能量双刃、雷电缠绕（预览图
+  "双刀电磁怪.gif"）。与 0014 同模型文件夹不同贴图变体；查询词 "Fire Construct"/
+  "火焰构造体" 仅命中对话占位条目 npc=254764（火焰构造体对话，不采用），判定为
+  社区魔改贴图变体，无可靠官方对应数据。

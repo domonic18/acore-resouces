@@ -23,7 +23,6 @@ Desktop.ini
 
 # 原始资源目录（大文件，不入 Git）
 /sources/
-/imports/
 
 # 但保留图标索引文件（文本，可纳入 Git）
 !/sources/icons/interface/*.txt
@@ -33,9 +32,14 @@ Desktop.ini
 
 # 运行时数据（SQLite、日志、运行时缓存）
 /workspace/
+# 显式忽略 MPQ 分发产物
+/workspace/dist/
 
 # 本地参考文档/下载资料
 /docs/references/
+
+# 本地开发环境软链接（AzerothCore updates 目录）
+/data/sql/azerothcore-updates
 
 # Python
 __pycache__/
@@ -60,3 +64,6 @@ venv/
 node_modules/
 dist/
 *.tsbuildinfo
+
+# 本地环境配置（含分发端推送密钥，不入 Git）
+backend/.env

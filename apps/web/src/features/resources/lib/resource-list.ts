@@ -1,4 +1,7 @@
 import type { Resource } from "@/shared/types";
+import { z } from "zod";
+import { extractWowheadId } from "./id-origin";
+import { getMissingRequiredFields } from "../requiredFields";
 
 export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
   [
@@ -8,25 +11,40 @@ export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
     { key: "npc", label: "NPC" },
   ];
 
-export type StatusTagValue = "passed" | "pending" | "added" | "not_added";
+export type StatusTagValue =
+  "passed" | "pending" | "added" | "not_added" | "conflict";
+
+export const statusTagValueSchema = z.enum([
+  "passed",
+  "pending",
+  "added",
+  "not_added",
+  "conflict",
+]);
 
 export const STATUS_TAG_OPTIONS: {
   value: StatusTagValue;
   label: string;
-  group: "debug" | "added";
+  group: "debug" | "added" | "conflict";
 }[] = [
   { value: "passed", label: "调试通过", group: "debug" },
   { value: "pending", label: "待调试", group: "debug" },
   { value: "added", label: "已添加", group: "added" },
   { value: "not_added", label: "未添加", group: "added" },
+  { value: "conflict", label: "冲突", group: "conflict" },
 ];
 
-export type ResourceTagValue = "unofficial";
+export type ResourceTagValue = "unofficial" | "no_official_data";
+
+export const resourceTagValueSchema = z.enum(["unofficial", "no_official_data"]);
 
 export const RESOURCE_TAG_OPTIONS: {
   value: ResourceTagValue;
   label: string;
-}[] = [{ value: "unofficial", label: "非官方" }];
+}[] = [
+  { value: "unofficial", label: "非官方" },
+  { value: "no_official_data", label: "无官方数据" },
+];
 
 export function getUnofficialLabel(
   type: "all" | "mount" | "pet" | "npc",
@@ -35,6 +53,11 @@ export function getUnofficialLabel(
   if (type === "pet") return "非官方宠物";
   if (type === "npc") return "非官方NPC";
   return "非官方";
+}
+
+export function getResourceTagLabel(tag: ResourceTagValue): string {
+  const option = RESOURCE_TAG_OPTIONS.find((o) => o.value === tag);
+  return option?.label ?? tag;
 }
 
 export type SortKey =
@@ -47,8 +70,59 @@ export type SortKey =
   | "updated_at";
 export type SortOrder = "asc" | "desc";
 
+export const sortKeySchema = z.enum([
+  "id",
+  "resource",
+  "resource_type",
+  "tier",
+  "drop",
+  "created_at",
+  "updated_at",
+]);
+
+export const sortOrderSchema = z.enum(["asc", "desc"]);
+
+export const resourceTypeSchema = z.enum(["all", "mount", "pet", "npc"]);
+
 export const DEFAULT_SORT: SortKey = "updated_at";
 export const DEFAULT_ORDER: SortOrder = "desc";
+
+export function parseResourceType(
+  value: string | null,
+): "all" | "mount" | "pet" | "npc" {
+  const result = resourceTypeSchema.safeParse(value);
+  return result.success ? result.data : "all";
+}
+
+export function parseSortKey(value: string | null): SortKey {
+  const result = sortKeySchema.safeParse(value);
+  return result.success ? result.data : DEFAULT_SORT;
+}
+
+export function parseSortOrder(value: string | null): SortOrder {
+  const result = sortOrderSchema.safeParse(value);
+  return result.success ? result.data : DEFAULT_ORDER;
+}
+
+export function parseStatusTagList(value: string | null): StatusTagValue[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v): v is StatusTagValue =>
+      statusTagValueSchema.safeParse(v).success,
+    );
+}
+
+export function parseResourceTagList(value: string | null): ResourceTagValue[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v): v is ResourceTagValue =>
+      resourceTagValueSchema.safeParse(v).success,
+    );
+}
 
 export function formatDrop(drop: Resource["drop"]): string {
   const parts: string[] = [];
@@ -231,8 +305,13 @@ export function pageButtons(
 
 export function computeResourceTags(resource: Resource): ResourceTagValue[] {
   const tags: ResourceTagValue[] = [];
-  if (!resource.official_db.name) {
-    tags.push("unofficial");
+  for (const tag of resource.tags ?? []) {
+    if (
+      (tag === "unofficial" || tag === "no_official_data") &&
+      !tags.includes("unofficial")
+    ) {
+      tags.push("unofficial");
+    }
   }
   return tags;
 }
@@ -249,6 +328,9 @@ export function matchesStatusFilter(
   const selectedAdded = selectedStatuses.filter((s) =>
     STATUS_TAG_OPTIONS.find((o) => o.value === s && o.group === "added"),
   );
+  const selectedConflict = selectedStatuses.filter((s) =>
+    STATUS_TAG_OPTIONS.find((o) => o.value === s && o.group === "conflict"),
+  );
 
   // Within a group, selecting both options is equivalent to no filter for that group.
   if (selectedDebug.length === 1) {
@@ -258,6 +340,10 @@ export function matchesStatusFilter(
   if (selectedAdded.length === 1) {
     const expected = selectedAdded[0] === "added";
     if (resource.added !== expected) return false;
+  }
+  if (selectedConflict.length > 0) {
+    const hasConflict = (resource.duplicate_issues?.length ?? 0) > 0;
+    if (!hasConflict) return false;
   }
   return true;
 }
@@ -269,4 +355,95 @@ export function matchesTagFilter(
   if (selectedTags.length === 0) return true;
   const tags = computeResourceTags(resource);
   return selectedTags.some((t) => tags.includes(t));
+}
+
+export const SPECIAL_FEATURE_OPTIONS: { value: string; label: string }[] = [
+  { value: "三人骑乘", label: "三人骑乘" },
+  { value: "双人骑乘", label: "双人骑乘" },
+  { value: "自带商人", label: "自带商人" },
+  { value: "自带拍卖行", label: "自带拍卖行" },
+  { value: "修理", label: "修理" },
+  { value: "水面行走", label: "水面行走" },
+  { value: "水下骑乘", label: "水下骑乘" },
+  { value: "骑乘采集", label: "骑乘采集" },
+  { value: "变色涂装", label: "变色涂装" },
+];
+
+export function matchesFeatureFilter(
+  resource: Resource,
+  selectedFeatures: string[],
+): boolean {
+  if (selectedFeatures.length === 0) return true;
+  const features = resource.special_features ?? [];
+  return selectedFeatures.some((f) => features.includes(f));
+}
+
+export type DataOriginValue = "official" | "custom";
+
+export const dataOriginSchema = z.enum(["official", "custom"]);
+
+export function parseDataOrigin(value: string | null): DataOriginValue | null {
+  const result = dataOriginSchema.safeParse(value);
+  return result.success ? result.data : null;
+}
+
+/**
+ * 物品数据是否官方：dbc.item.id 与 official_db.item_wowhead_url 中的 ID 一致。
+ * 与编辑页 IdOriginBadge 的物品徽章判定口径一致；法术 ID 按项目约定为
+ * 自定义段（80000+N），故以物品 ID 为准区分官方/自定义。
+ */
+export function hasOfficialItemData(resource: Resource): boolean {
+  const itemId = Number(resource.dbc.item?.id);
+  if (!itemId || Number.isNaN(itemId)) return false;
+  return (
+    extractWowheadId(resource.official_db?.item_wowhead_url, "item") === itemId
+  );
+}
+
+export function matchesOriginFilter(
+  resource: Resource,
+  origin: DataOriginValue,
+): boolean {
+  return origin === "official"
+    ? hasOfficialItemData(resource)
+    : !hasOfficialItemData(resource);
+}
+
+/** 必填字段（导出无默认值，空值会导致 SQL 记录跳过或列丢弃）是否存在空缺 */
+export function hasMissingRequired(resource: Resource): boolean {
+  return getMissingRequiredFields(resource).length > 0;
+}
+
+/** 可搜索的 DBC / DB 各类 ID（资源 ID 之外的补充检索字段） */
+function collectSearchableIds(resource: Resource): string[] {
+  const values: unknown[] = [
+    resource.dbc.creature_model_data?.id,
+    resource.dbc.creature_display_info?.id,
+    resource.dbc.spell?.id,
+    resource.dbc.spell?.visual_id,
+    resource.dbc.item?.id,
+    resource.dbc.item?.display_id,
+    resource.db.creature_template?.entry,
+    resource.db.item_template?.entry,
+  ];
+  return values
+    .filter((v) => v !== null && v !== undefined && v !== "")
+    .map((v) => String(v));
+}
+
+/** 搜索匹配：名称、模型文件夹、资源 ID、各类 DBC/DB ID、M2 模型文件路径 */
+export function matchesResourceSearch(
+  resource: Resource,
+  search: string,
+): boolean {
+  if (resource.model_folder.toLowerCase().includes(search)) return true;
+  if ((resource.name ?? "").toLowerCase().includes(search)) return true;
+  if ((resource.official_db.name ?? "").toLowerCase().includes(search))
+    return true;
+  if ((resource.notes ?? "").toLowerCase().includes(search)) return true;
+  if (String(resource.id).includes(search)) return true;
+  const modelName = resource.dbc.creature_model_data?.model_name;
+  if (typeof modelName === "string" && modelName.toLowerCase().includes(search))
+    return true;
+  return collectSearchableIds(resource).some((v) => v.includes(search));
 }

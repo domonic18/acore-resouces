@@ -9,16 +9,26 @@ drop:
   boss: null
   rate: null
 official_db:
-  name: null
+  name: Mawsworn Necromancer
   spell_icon_name: null
   icon_name: null
+  npc_wowhead_url: https://www.wowhead.com/cn/npc=175639
 dbc:
   creature_model_data: {}
   creature_display_info: {}
   spell: {}
   item: {}
 db:
-  creature_template: {}
+  creature_template:
+    entry: 175639
+    name: Mawsworn Necromancer
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 死灵法师
+notes: >-
+  自定义模型说明：文件夹英文段 mawnecromancer 即 Mawsworn Necromancer
+  （渊誓死灵法师）；对应官方条目 npc=175639（wowhead 页未汉化，以英文名
+  记），预览兜帽白须长袍、绿爪的死灵法师造型与其身份吻合（无图可核，置信
+  中）；文件名"大巫师"为社区俗称。

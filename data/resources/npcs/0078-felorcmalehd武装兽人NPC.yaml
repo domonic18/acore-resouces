@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 兽人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 felorcmalehd 即 Fel Orc Male（HD 高模版）邪兽人。
+  查询词同 0077 未获可靠命中（仅命中尸体装饰条目 npc=17062，不采用），判定为
+  社区魔改模型，无官方对应数据；文件名"武装兽人"为社区俗称。

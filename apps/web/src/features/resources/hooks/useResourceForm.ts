@@ -1,18 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Resource } from "@/shared/types";
+import type { Resource, VehicleConfig } from "@/shared/types";
 
 export interface FormState {
   name: string;
   mount_type: string;
   star_rating: string;
   subtype: string;
+  special_features: string[];
   rarity: string;
+  pet_type: string;
+  npc_type: string;
   drop_entry: string | number;
   drop_instance: string;
   drop_boss: string;
   drop_rate: string | number;
   debug_passed: boolean;
   added: boolean;
+  notes: string;
 }
 
 export function buildForm(resource?: Resource): FormState {
@@ -21,13 +25,17 @@ export function buildForm(resource?: Resource): FormState {
     mount_type: resource?.mount_type || "",
     star_rating: resource?.star_rating || "",
     subtype: resource?.subtype || "",
+    special_features: resource?.special_features ?? [],
     rarity: resource?.rarity || "",
+    pet_type: resource?.pet_type || "",
+    npc_type: resource?.npc_type || "",
     drop_entry: resource?.drop.entry ?? "",
     drop_instance: resource?.drop.instance ?? "",
     drop_boss: resource?.drop.boss ?? "",
     drop_rate: resource?.drop.rate ?? "",
     debug_passed: resource?.debug_passed ?? false,
     added: resource?.added ?? false,
+    notes: resource?.notes || "",
   };
 }
 
@@ -38,6 +46,12 @@ export function useResourceForm(resource?: Resource) {
   );
   const [spellIcon, setSpellIcon] = useState(
     resource?.official_db.spell_icon_name || "",
+  );
+  const [itemWowheadUrl, setItemWowheadUrl] = useState(
+    resource?.official_db.item_wowhead_url || "",
+  );
+  const [spellWowheadUrl, setSpellWowheadUrl] = useState(
+    resource?.official_db.spell_wowhead_url || "",
   );
   const [itemDbc, setItemDbc] = useState<Record<string, unknown>>(
     resource?.dbc.item ?? {},
@@ -51,16 +65,32 @@ export function useResourceForm(resource?: Resource) {
   const [spellDb, setSpellDb] = useState<Record<string, unknown>>(
     resource?.db.creature_template ?? {},
   );
+  const [creatureDisplayInfoDbc, setCreatureDisplayInfoDbc] = useState<
+    Record<string, unknown>
+  >(resource?.dbc.creature_display_info ?? {});
+  const [creatureModelDataDbc, setCreatureModelDataDbc] = useState<
+    Record<string, unknown>
+  >(resource?.dbc.creature_model_data ?? {});
+  // vehicle_id = 0 表示草稿状态（勾选双人骑乘预填后尚未分配 ID），
+  // 保存时仅当 vehicle_id > 0 才会写入。
+  const [vehicle, setVehicle] = useState<VehicleConfig | null>(
+    resource?.vehicle ?? null,
+  );
 
   useEffect(() => {
     if (!resource) return;
     setForm(buildForm(resource));
     setItemIcon(resource.official_db.icon_name || "");
     setSpellIcon(resource.official_db.spell_icon_name || "");
+    setItemWowheadUrl(resource.official_db.item_wowhead_url || "");
+    setSpellWowheadUrl(resource.official_db.spell_wowhead_url || "");
     setItemDbc(resource.dbc.item ?? {});
     setItemDb(resource.db.item_template ?? {});
     setSpellDbc(resource.dbc.spell ?? {});
     setSpellDb(resource.db.creature_template ?? {});
+    setCreatureDisplayInfoDbc(resource.dbc.creature_display_info ?? {});
+    setCreatureModelDataDbc(resource.dbc.creature_model_data ?? {});
+    setVehicle(resource.vehicle ?? null);
   }, [resource]);
 
   const updateField = <K extends keyof FormState>(
@@ -76,6 +106,10 @@ export function useResourceForm(resource?: Resource) {
     if (JSON.stringify(form) !== JSON.stringify(baseForm)) return true;
     if (itemIcon !== (resource.official_db.icon_name || "")) return true;
     if (spellIcon !== (resource.official_db.spell_icon_name || "")) return true;
+    if (itemWowheadUrl !== (resource.official_db.item_wowhead_url || ""))
+      return true;
+    if (spellWowheadUrl !== (resource.official_db.spell_wowhead_url || ""))
+      return true;
     if (JSON.stringify(itemDbc) !== JSON.stringify(resource.dbc.item ?? {}))
       return true;
     if (
@@ -89,16 +123,50 @@ export function useResourceForm(resource?: Resource) {
       JSON.stringify(resource.db.creature_template ?? {})
     )
       return true;
+    if (
+      JSON.stringify(creatureDisplayInfoDbc) !==
+      JSON.stringify(resource.dbc.creature_display_info ?? {})
+    )
+      return true;
+    if (
+      JSON.stringify(creatureModelDataDbc) !==
+      JSON.stringify(resource.dbc.creature_model_data ?? {})
+    )
+      return true;
+    if (JSON.stringify(vehicle) !== JSON.stringify(resource.vehicle ?? null))
+      return true;
     return false;
-  }, [form, resource, itemIcon, spellIcon, itemDbc, itemDb, spellDbc, spellDb]);
+  }, [
+    form,
+    resource,
+    itemIcon,
+    spellIcon,
+    itemWowheadUrl,
+    spellWowheadUrl,
+    itemDbc,
+    itemDb,
+    spellDbc,
+    spellDb,
+    creatureDisplayInfoDbc,
+    creatureModelDataDbc,
+    vehicle,
+  ]);
 
   const liveDbc = useMemo(
     () => ({
       ...resource?.dbc,
       item: itemDbc,
       spell: spellDbc,
+      creature_display_info: creatureDisplayInfoDbc,
+      creature_model_data: creatureModelDataDbc,
     }),
-    [resource?.dbc, itemDbc, spellDbc],
+    [
+      resource?.dbc,
+      itemDbc,
+      spellDbc,
+      creatureDisplayInfoDbc,
+      creatureModelDataDbc,
+    ],
   );
 
   const liveDb = useMemo(
@@ -118,6 +186,10 @@ export function useResourceForm(resource?: Resource) {
     setItemIcon,
     spellIcon,
     setSpellIcon,
+    itemWowheadUrl,
+    setItemWowheadUrl,
+    spellWowheadUrl,
+    setSpellWowheadUrl,
     itemDbc,
     setItemDbc,
     itemDb,
@@ -126,6 +198,12 @@ export function useResourceForm(resource?: Resource) {
     setSpellDbc,
     spellDb,
     setSpellDb,
+    creatureDisplayInfoDbc,
+    setCreatureDisplayInfoDbc,
+    creatureModelDataDbc,
+    setCreatureModelDataDbc,
+    vehicle,
+    setVehicle,
     hasChanges,
     liveDbc,
     liveDb,

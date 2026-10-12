@@ -21,4 +21,13 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 元素
+subtype: 魔像
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 sinstonegolem 即 Sinstone Golem（罪石魔像）；
+  与 0186 同系列同判定，官方侧仅见击杀记分条目，无可用模型条目，判定暂无
+  官方对应数据；预览金粉色晶体、尖塔教堂构型的罪石魔像变体；文件名"金石
+  像"为社区俗称。

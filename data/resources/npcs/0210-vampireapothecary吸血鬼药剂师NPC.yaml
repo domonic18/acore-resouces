@@ -21,4 +21,14 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 亡灵
+subtype: 吸血鬼药剂师
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：文件夹英文段 vampireapothecary 即 Vampire Apothecary
+  （吸血鬼药剂师）；查询词 Blood-Queen Lana'thel 命中 npc=37955（鲜血女
+  王兰娜瑟尔）但 og 为蝙蝠翼女王形态不符拒绝，San'layn 未命中，判定暂无
+  官方对应数据；预览苍白肤色、红黑皮甲红宝石饰、黑爪手套的血精灵吸血鬼
+  药剂师；文件名"吸血鬼药剂师"为社区俗称。

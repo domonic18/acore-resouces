@@ -21,4 +21,12 @@ db:
   creature_template: {}
   creature_model_info: {}
   item_template: {}
-rarity: null
+rarity: 三星
+npc_type: 人形生物
+subtype: 兽人
+tags:
+  - no_official_data
+notes: >-
+  自定义模型说明：查询词 super soldier 及兽人变异系搜索均未命中条目，判定
+  为社区魔改模型，无官方对应数据；预览粉肤紫髻、晶刺骨饰、巨锤的强化兽人
+  士兵造型；文件名"兽人超级士兵"为社区俗称。
