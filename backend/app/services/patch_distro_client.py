@@ -6,6 +6,10 @@
    分发端校验 size/sha256 后标记 complete，之后才对外可见。
 
 推送失败只告警、不影响本地发布结果，可随时用 CLI ``patch distro-push`` 重试。
+
+管理操作（分发端 admin API，需与推送同一把密钥）：
+``delete_distro_batch`` 删分发端批次、``update_distro_batch_meta`` 改元数据、
+``fetch_admin_dist_batches`` 列全部批次（含 pending 残留）。
 """
 
 from __future__ import annotations
@@ -28,6 +32,10 @@ PATCH_NAME_RE = re.compile(r"^patch-zhCN-(\d+)\.mpq$")
 
 class DistroPushError(Exception):
     """分发端推送失败（网络/HTTP 非 2xx/响应异常）。"""
+
+
+class DistroUnsupportedError(DistroPushError):
+    """分发端版本过旧，未提供管理接口（DELETE/PATCH admin 批次）。"""
 
 
 def is_distro_configured() -> bool:
@@ -250,3 +258,101 @@ def fetch_pushed_batches(
         DistroPushError: 分发端不可达或返回异常。
     """
     return {b["batch"] for b in fetch_dist_batches(base_url=base_url, timeout=timeout)}
+
+
+def fetch_admin_dist_batches(
+    *,
+    base_url: str | None = None,
+    api_key: str | None = None,
+    timeout: float = 15.0,
+) -> list[dict[str, Any]]:
+    """查询分发端**全部**批次（含 pending 与失败残留）。
+
+    公开的 /dist/tree 只列 complete 批次；推送失败留下的残留在那里看不见，
+    排查时需要 admin 视角。
+
+    Returns:
+        每个批次的摘要：batch / status / patch_number / patch_file / size_bytes /
+        mount_count / file_count / has_mpq / mpq_bytes。
+
+    Raises:
+        DistroPushError: 分发端不可达或返回异常。
+    """
+    url = f"{(base_url or settings.distro_base_url).rstrip('/')}/api/admin/batches"
+    headers = {"X-Admin-Key": api_key or settings.distro_api_key}
+    try:
+        resp = httpx.get(url, headers=headers, timeout=timeout)
+    except httpx.HTTPError as e:
+        raise DistroPushError(f"查询分发端批次列表失败：{e}") from e
+    if resp.status_code == 404:
+        raise DistroUnsupportedError("分发端未提供管理批次列表接口（版本过旧）")
+    _check_response(resp, "查询分发端批次列表")
+
+    try:
+        data = resp.json()
+    except ValueError as e:
+        raise DistroPushError(f"分发端响应不是合法 JSON：{e}") from e
+
+    batches = data.get("batches") if isinstance(data, dict) else None
+    return [b for b in (batches or []) if isinstance(b, dict)]
+
+
+def delete_distro_batch(
+    batch: str,
+    *,
+    base_url: str | None = None,
+    api_key: str | None = None,
+    timeout: float = 30.0,
+) -> dict[str, Any]:
+    """删除分发端上的批次（meta.json + MPQ）。
+
+    分发端没有此能力时（老版本）返回 404；这是幂等语义下的正常结果。
+
+    Raises:
+        DistroPushError: 分发端不可达或返回异常。
+    """
+    url = f"{(base_url or settings.distro_base_url).rstrip('/')}/api/admin/batches/{batch}"
+    headers = {"X-Admin-Key": api_key or settings.distro_api_key}
+    try:
+        resp = httpx.delete(url, headers=headers, timeout=timeout)
+    except httpx.HTTPError as e:
+        raise DistroPushError(f"删除分发端批次失败：{e}") from e
+    if resp.status_code == 404:
+        raise DistroUnsupportedError("分发端未提供删除批次接口（版本过旧）")
+    _check_response(resp, f"删除分发端批次 {batch}")
+
+    try:
+        data = resp.json()
+    except ValueError as e:
+        raise DistroPushError(f"分发端响应不是合法 JSON：{e}") from e
+    return data if isinstance(data, dict) else {}
+
+
+def update_distro_batch_meta(
+    batch: str,
+    updates: dict[str, Any],
+    *,
+    base_url: str | None = None,
+    api_key: str | None = None,
+    timeout: float = 30.0,
+) -> dict[str, Any]:
+    """修改分发端批次的元数据（如 changelog），不动 MPQ、不改可见性。
+
+    Raises:
+        DistroPushError: 分发端不可达或返回异常。
+    """
+    url = f"{(base_url or settings.distro_base_url).rstrip('/')}/api/admin/batches/{batch}"
+    headers = {"X-Admin-Key": api_key or settings.distro_api_key}
+    try:
+        resp = httpx.patch(url, json=updates, headers=headers, timeout=timeout)
+    except httpx.HTTPError as e:
+        raise DistroPushError(f"更新分发端批次元数据失败：{e}") from e
+    if resp.status_code == 404:
+        raise DistroUnsupportedError("分发端未提供修改元数据接口（版本过旧）")
+    _check_response(resp, f"更新分发端批次 {batch}")
+
+    try:
+        data = resp.json()
+    except ValueError as e:
+        raise DistroPushError(f"分发端响应不是合法 JSON：{e}") from e
+    return data if isinstance(data, dict) else {}

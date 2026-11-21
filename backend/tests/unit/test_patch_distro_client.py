@@ -12,9 +12,13 @@ import pytest
 
 from app.services.patch_distro_client import (
     DistroPushError,
+    DistroUnsupportedError,
     announce_batch,
     build_push_payload,
+    delete_distro_batch,
+    fetch_admin_dist_batches,
     push_batch,
+    update_distro_batch_meta,
     upload_mpq,
 )
 
@@ -193,3 +197,96 @@ def test_push_batch_upload_failure_raises(tmp_path: Path, monkeypatch: pytest.Mo
 
     with pytest.raises(DistroPushError, match="sha256 mismatch"):
         push_batch(batch, base_url="http://x", api_key="k")
+
+
+def test_delete_distro_batch_sends_admin_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.services import patch_distro_client as client
+
+    calls: list[dict[str, Any]] = []
+
+    def _delete(url: str, **kwargs: Any) -> httpx.Response:
+        calls.append({"url": url, **kwargs})
+        return httpx.Response(200, json={"batch": "20260908_055924", "existed": True, "freed_bytes": 42})
+
+    monkeypatch.setattr(client.httpx, "delete", _delete)
+
+    result = delete_distro_batch("20260908_055924", base_url="http://distro:8090", api_key="secret")
+
+    assert calls[0]["url"] == "http://distro:8090/api/admin/batches/20260908_055924"
+    assert calls[0]["headers"] == {"X-Admin-Key": "secret"}
+    assert result["existed"] is True
+    assert result["freed_bytes"] == 42
+
+
+def test_delete_distro_batch_404_raises_unsupported(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """分发端版本过旧（没有该端点）时报 Unsupported，而不是笼统的 HTTP 错误。"""
+    from app.services import patch_distro_client as client
+
+    monkeypatch.setattr(
+        client.httpx, "delete", lambda url, **kw: httpx.Response(404, text="Not Found")
+    )
+
+    with pytest.raises(DistroUnsupportedError, match="版本过旧"):
+        delete_distro_batch("20260908_055924", base_url="http://x", api_key="k")
+
+
+def test_update_distro_batch_meta_patches_json(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.services import patch_distro_client as client
+
+    calls: list[dict[str, Any]] = []
+
+    def _patch(url: str, **kwargs: Any) -> httpx.Response:
+        calls.append({"url": url, **kwargs})
+        return httpx.Response(200, json={"changelog": "新公告"})
+
+    monkeypatch.setattr(client.httpx, "patch", _patch)
+
+    result = update_distro_batch_meta(
+        "20260908_055924",
+        {"changelog": "新公告"},
+        base_url="http://distro:8090",
+        api_key="secret",
+    )
+
+    assert calls[0]["url"] == "http://distro:8090/api/admin/batches/20260908_055924"
+    assert calls[0]["json"] == {"changelog": "新公告"}
+    assert result["changelog"] == "新公告"
+
+
+def test_fetch_admin_dist_batches_parses_list(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.services import patch_distro_client as client
+
+    def _get(url: str, **kwargs: Any) -> httpx.Response:
+        assert url == "http://distro:8090/api/admin/batches"
+        assert kwargs["headers"] == {"X-Admin-Key": "secret"}
+        return httpx.Response(
+            200,
+            json={
+                "batches": [
+                    {"batch": "20260908_055924", "status": "complete", "has_mpq": True}
+                ]
+            },
+        )
+
+    monkeypatch.setattr(client.httpx, "get", _get)
+
+    batches = fetch_admin_dist_batches(base_url="http://distro:8090", api_key="secret")
+
+    assert len(batches) == 1
+    assert batches[0]["batch"] == "20260908_055924"
+    assert batches[0]["status"] == "complete"
+
+
+def test_fetch_admin_dist_batches_404_raises_unsupported(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from app.services import patch_distro_client as client
+
+    monkeypatch.setattr(
+        client.httpx, "get", lambda url, **kw: httpx.Response(404, text="Not Found")
+    )
+
+    with pytest.raises(DistroUnsupportedError, match="版本过旧"):
+        fetch_admin_dist_batches(base_url="http://x", api_key="k")
