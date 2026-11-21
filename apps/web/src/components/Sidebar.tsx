@@ -2,7 +2,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Boxes,
-  Upload,
   Download,
   FolderTree,
   Database,
@@ -29,11 +28,6 @@ const mainNav: NavItem[] = [
     label: "资源表格",
     path: "/resources",
     icon: <Boxes className="h-[18px] w-[18px]" />,
-  },
-  {
-    label: "导入资源",
-    path: "/import",
-    icon: <Upload className="h-[18px] w-[18px]" />,
   },
   {
     label: "导出补丁",

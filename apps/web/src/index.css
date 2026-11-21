@@ -75,7 +75,7 @@ input[type="number"] {
 
 @layer components {
   .btn {
-    @apply inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-bg-surface px-4 text-sm font-semibold text-text-secondary transition-all;
+    @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-border bg-bg-surface px-4 text-sm font-semibold text-text-secondary transition-all;
   }
   .btn:hover:not(:disabled) {
     @apply border-border-hover bg-bg-hover text-text-primary;
@@ -186,6 +186,12 @@ input[type="number"] {
   }
   .badge-gray {
     @apply bg-gray-500/15 text-gray-400;
+  }
+  .badge-cyan {
+    @apply bg-cyan-500/15 text-cyan-400;
+  }
+  .badge-teal {
+    @apply bg-teal-500/15 text-teal-400;
   }
   .badge-success {
     @apply bg-green-500/15 text-green-400;

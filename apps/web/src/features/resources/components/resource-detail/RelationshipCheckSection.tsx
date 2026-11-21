@@ -7,20 +7,29 @@ import { RelationshipChain } from "./RelationshipChain";
 import { RelationshipGraph } from "./RelationshipGraph";
 
 interface RelationshipCheckSectionProps {
-  liveDbc: Record<string, unknown>;
-  liveDb: Record<string, unknown>;
+  resourceType: string;
+  resourceId: number;
+  liveDbc?: Record<string, unknown>;
+  liveDb?: Record<string, unknown>;
   compact?: boolean;
   onSelectTab?: (tab: string) => void;
 }
 
 export function RelationshipCheckSection({
+  resourceType,
+  resourceId,
   liveDbc,
   liveDb,
   compact,
   onSelectTab: _onSelectTab,
 }: RelationshipCheckSectionProps) {
   const [viewMode, setViewMode] = useState<"list" | "graph">("list");
-  const { results, overallStatus } = useResourceRelationships(liveDbc, liveDb);
+  const { results, overallStatus, isLoading } = useResourceRelationships(
+    resourceType,
+    resourceId,
+    liveDbc,
+    liveDb,
+  );
 
   const statusBadge =
     overallStatus === "ok"
@@ -41,7 +50,7 @@ export function RelationshipCheckSection({
                 : "存在缺失"}
           </span>
           <span className="text-xs text-text-tertiary">
-            {results.length} 组关键关联
+            {isLoading ? "加载中..." : `${results.length} 组关键关联`}
           </span>
         </div>
         <div className="flex rounded-md border border-border p-0.5">

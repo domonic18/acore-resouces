@@ -3,7 +3,7 @@ import { FormGroup } from "@/components/form/FormGroup";
 import { cn } from "@/shared/utils";
 import { ExternalLink } from "lucide-react";
 import type { Resource } from "@/shared/types";
-import { SPECIAL_FEATURE_OPTIONS } from "../../lib/resource-list";
+import { SPECIAL_FEATURE_META } from "../../lib/special-features";
 import { PET_TYPES, NPC_TYPES } from "../../constants";
 import type { FormState } from "../../hooks/useResourceForm";
 
@@ -124,28 +124,40 @@ export function BasicInfoSection({
               />
             </FormGroup>
             <FormGroup label="特殊功能" compact={compact}>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1">
-                {SPECIAL_FEATURE_OPTIONS.map((opt) => (
+              <div className="space-y-1.5 py-1">
+                {SPECIAL_FEATURE_META.map((meta) => (
                   <label
-                    key={opt.value}
-                    className="flex items-center gap-1.5 text-xs text-text-secondary"
+                    key={meta.value}
+                    className="flex cursor-pointer items-start gap-1.5 text-xs text-text-secondary"
                   >
                     <input
                       type="checkbox"
-                      className="h-3.5 w-3.5 accent-blue-500"
-                      checked={form.special_features.includes(opt.value)}
+                      className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-blue-500"
+                      checked={form.special_features.includes(meta.value)}
                       onChange={(e) =>
                         updateField(
                           "special_features",
                           e.target.checked
-                            ? [...form.special_features, opt.value]
+                            ? [...form.special_features, meta.value]
                             : form.special_features.filter(
-                                (f) => f !== opt.value,
+                                (f) => f !== meta.value,
                               ),
                         )
                       }
                     />
-                    {opt.label}
+                    <span className="min-w-0">
+                      <span className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-text-primary">{meta.value}</span>
+                        {meta.requiresVehicle && (
+                          <span className="badge badge-warning">
+                            需配置载具
+                          </span>
+                        )}
+                      </span>
+                      <span className="mt-0.5 block text-[11px] leading-4 text-text-tertiary">
+                        {meta.description}
+                      </span>
+                    </span>
                   </label>
                 ))}
               </div>

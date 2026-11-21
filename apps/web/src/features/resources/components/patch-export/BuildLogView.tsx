@@ -5,6 +5,8 @@ interface BuildLogViewProps {
   lines: BuildLogEntry[];
   running: boolean;
   progress: BuildProgress;
+  /** 任务 ID → 坐骑名，用于把进度栏里的 mount_XXXX 显示成坐骑名 */
+  jobName?: string;
 }
 
 function formatTime(ts: string): string {
@@ -12,7 +14,12 @@ function formatTime(ts: string): string {
   return Number.isNaN(d.getTime()) ? "" : d.toLocaleTimeString();
 }
 
-export function BuildLogView({ lines, running, progress }: BuildLogViewProps) {
+export function BuildLogView({
+  lines,
+  running,
+  progress,
+  jobName,
+}: BuildLogViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pinnedRef = useRef(true);
 
@@ -37,11 +44,16 @@ export function BuildLogView({ lines, running, progress }: BuildLogViewProps) {
       <div className="flex items-center justify-between border-b border-border bg-bg-elevated px-3 py-1.5">
         <span className="text-xs font-medium text-text-secondary">
           构建输出
+          {progress.phase_label && (
+            <span className="ml-2 badge badge-blue">{progress.phase_label}</span>
+          )}
         </span>
         <span className="font-mono text-xs text-text-tertiary">
           {running && showProgress
             ? `${progress.current}/${progress.total}${
-                progress.current_job ? ` · ${progress.current_job}` : ""
+                progress.current_job
+                  ? ` · ${jobName ?? progress.current_job}`
+                  : ""
               }`
             : showProgress
               ? `${progress.current}/${progress.total}`
@@ -58,8 +70,8 @@ export function BuildLogView({ lines, running, progress }: BuildLogViewProps) {
             {running ? "等待构建输出..." : "尚未开始构建"}
           </div>
         ) : (
-          lines.map((entry, index) => (
-            <div key={index} className="whitespace-pre-wrap break-all">
+          lines.map((entry) => (
+            <div key={entry.seq} className="whitespace-pre-wrap break-all">
               <span className="text-text-tertiary">
                 {formatTime(entry.ts)}{" "}
               </span>
@@ -67,7 +79,9 @@ export function BuildLogView({ lines, running, progress }: BuildLogViewProps) {
                 className={
                   entry.message.startsWith("ERROR")
                     ? "text-danger"
-                    : "text-text-secondary"
+                    : entry.message.startsWith("警告")
+                      ? "text-warning"
+                      : "text-text-secondary"
                 }
               >
                 {entry.message}

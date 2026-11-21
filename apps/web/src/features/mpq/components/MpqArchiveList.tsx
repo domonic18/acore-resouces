@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Trash2 } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { formatBytes } from "@/features/dbc/lib/columns";
 import { useMpqArchives } from "@/features/mpq/hooks/useMpqViewer";
-import type { MpqArchiveItem } from "@/shared/types";
+import { useDeleteMpqArchive } from "@/features/mpq/hooks/useDeleteMpqArchive";
+import { useDistroStatus } from "@/features/resources/hooks/useDistroPush";
+import { DeleteArchiveDialog } from "@/features/mpq/components/DeleteArchiveDialog";
+import type { DistroBatchInfo, MpqArchiveItem } from "@/shared/types";
 
 const OBFUSCATION_BADGES: Record<
   string,
@@ -31,6 +34,72 @@ function ObfuscationBadge({ level }: { level: string | null }) {
   );
 }
 
+interface DistroOnlySectionProps {
+  details: DistroBatchInfo[];
+  localBatches: Set<string>;
+  reachable: boolean;
+}
+
+/**
+ * 「分发端已有、本地副本已清理」的批次清单。
+ *
+ * 推送成功后本地 MPQ 会被清理（分发端才是玩家下载的来源），
+ * 这类补丁在本地档案列表里看不到，但玩家仍能下载到——不能让它悄悄消失。
+ */
+function DistroOnlySection({
+  details,
+  localBatches,
+  reachable,
+}: DistroOnlySectionProps) {
+  if (!reachable) {
+    return (
+      <div className="mt-3 border-t border-border pt-2 text-[11px] text-text-tertiary">
+        分发端不可达，无法列出已推送的批次
+      </div>
+    );
+  }
+
+  const remoteOnly = details.filter((item) => !localBatches.has(item.batch));
+  if (remoteOnly.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-3 border-t border-border pt-2">
+      <div className="mb-1.5 text-[11px] font-medium text-text-secondary">
+        仅在分发端（本地副本已清理）
+      </div>
+      <ul className="space-y-1.5">
+        {remoteOnly.map((item) => (
+          <li
+            key={item.batch}
+            className="rounded-md border border-border bg-bg-surface px-2.5 py-1.5"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="truncate font-mono text-[11px] text-text-primary">
+                补丁 #{item.patch_number ?? "?"}
+              </span>
+              <span className="shrink-0 text-[10px] text-text-tertiary">
+                {item.size_bytes ? formatBytes(item.size_bytes) : ""}
+              </span>
+            </div>
+            <div className="mt-1 truncate text-[10px] text-text-tertiary">
+              批次 {item.batch}
+              {item.mount_count ? ` · ${item.mount_count} 只坐骑` : ""}
+            </div>
+            <div className="mt-1">
+              <span className="badge badge-blue">玩家可下载</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-1.5 text-[10px] text-text-tertiary">
+        推送成功后本地不再保留副本（分发端是玩家下载的来源）
+      </p>
+    </div>
+  );
+}
+
 interface MpqArchiveListProps {
   selected: string | null;
   onSelect: (relPath: string) => void;
@@ -43,7 +112,12 @@ export function MpqArchiveList({
   onViewChangelog,
 }: MpqArchiveListProps) {
   const [search, setSearch] = useState("");
+  const [pendingDelete, setPendingDelete] = useState<MpqArchiveItem | null>(null);
   const { data, isLoading, isError } = useMpqArchives();
+  const distroStatus = useDistroStatus();
+  const deleteMutation = useDeleteMpqArchive();
+
+  const pushedBatches = new Set(distroStatus.data?.pushed_batches ?? []);
 
   const keyword = search.trim().toLowerCase();
   const items = (data?.items ?? []).filter(
@@ -106,7 +180,7 @@ export function MpqArchiveList({
                 <span className="truncate font-mono text-xs text-text-primary">
                   {item.name}
                 </span>
-                <span className="flex shrink-0 items-center gap-1.5">
+                <span className="flex shrink-0 items-center gap-1">
                   <span className="text-[10px] text-text-tertiary">
                     {formatBytes(item.size)}
                   </span>
@@ -126,12 +200,26 @@ export function MpqArchiveList({
                   >
                     <FileText className="h-3 w-3" />
                   </button>
+                  <button
+                    type="button"
+                    className="btn btn-sm px-1.5 py-0.5 text-danger hover:text-danger"
+                    title="删除该补丁文件（批次元数据保留）"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPendingDelete(item);
+                    }}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </button>
                 </span>
               </div>
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                 <ObfuscationBadge level={item.obfuscation} />
                 {item.published && (
                   <span className="badge badge-green">已发布</span>
+                )}
+                {pushedBatches.has(item.batch) && (
+                  <span className="badge badge-blue">分发端已推送</span>
                 )}
                 <span className="badge badge-gray">
                   {item.source === "dist" ? "dist" : "构建产物"}
@@ -155,10 +243,26 @@ export function MpqArchiveList({
           )}
         </div>
 
+        <DistroOnlySection
+          details={distroStatus.data?.pushed_details ?? []}
+          localBatches={new Set(distroStatus.data?.local_batches ?? [])}
+          reachable={distroStatus.data?.reachable !== false}
+        />
+
         <div className="mt-3 border-t border-border pt-2 text-[11px] text-text-tertiary">
           共 {data?.total ?? 0} 个档案 · 混淆等级来自构建 manifest.json
         </div>
       </div>
+
+      {pendingDelete && (
+        <DeleteArchiveDialog
+          archive={pendingDelete}
+          pushedToDistro={pushedBatches.has(pendingDelete.batch)}
+          distroReachable={distroStatus.data?.reachable !== false}
+          mutation={deleteMutation}
+          onClose={() => setPendingDelete(null)}
+        />
+      )}
     </div>
   );
 }

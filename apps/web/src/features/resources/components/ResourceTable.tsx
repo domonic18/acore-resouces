@@ -15,10 +15,12 @@ import { ResourceThumb } from "@/components/ResourceThumb";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
 import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
 import { ResourceTagBadge } from "@/components/badges/ResourceTagBadge";
+import { SpecialFeatureBadge } from "@/components/badges/SpecialFeatureBadge";
+import { PatchJobStatusBadge } from "@/components/badges/PatchJobStatusBadge";
 import { SortHeader } from "@/components/table/SortHeader";
 import { formatDrop, formatDateTime } from "../lib/resource-list";
 import { getMissingRequiredFields } from "../requiredFields";
-import type { Resource } from "@/shared/types";
+import type { PatchJob, Resource } from "@/shared/types";
 import type { SortKey, SortOrder } from "../lib/resource-list";
 
 function CopyResourceButton({ resource }: { resource: Resource }) {
@@ -74,6 +76,9 @@ interface ResourceTableProps {
   onSelect?: (id: number, selected: boolean) => void;
   onSelectAll?: (selected: boolean) => void;
   showFeatures?: boolean;
+  /** 补丁任务索引（资源 ID → 任务），用于显示流水线位置 */
+  patchJobs?: Map<number, PatchJob>;
+  showPatchStatus?: boolean;
 }
 
 function SpecialFeatureBadges({ resource }: { resource: Resource }) {
@@ -84,9 +89,7 @@ function SpecialFeatureBadges({ resource }: { resource: Resource }) {
   return (
     <div className="flex flex-wrap items-center gap-1">
       {visible.map((f) => (
-        <span key={f} className="badge badge-purple" title={f}>
-          {f}
-        </span>
+        <SpecialFeatureBadge key={f} feature={f} />
       ))}
       {rest > 0 && (
         <span
@@ -111,6 +114,8 @@ export function ResourceTable({
   onSelect,
   onSelectAll,
   showFeatures = false,
+  patchJobs,
+  showPatchStatus = false,
 }: ResourceTableProps) {
   const location = useLocation();
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -143,6 +148,9 @@ export function ResourceTable({
   const handleSelectAll = () => {
     onSelectAll?.(!allSelected);
   };
+
+  // 空态与加载失败时的合并单元格列数
+  const colSpan = 12 + (showFeatures ? 1 : 0) + (showPatchStatus ? 1 : 0);
 
   return (
     <div className="overflow-x-auto">
@@ -190,6 +198,7 @@ export function ResourceTable({
               onClick={() => setSort("drop")}
             />
             <th>状态</th>
+            {showPatchStatus && <th>补丁任务</th>}
             <th>标签</th>
             {showFeatures && <th>功能</th>}
             <th>冲突</th>
@@ -252,6 +261,11 @@ export function ResourceTable({
                   <ResourceStatusBadge resource={resource} />
                   <MissingRequiredBadge resource={resource} />
                 </td>
+                {showPatchStatus && (
+                  <td>
+                    <PatchJobStatusBadge job={patchJobs?.get(resource.id)} />
+                  </td>
+                )}
                 <td>
                   <ResourceTagBadge resource={resource} />
                 </td>
@@ -343,7 +357,7 @@ export function ResourceTable({
                   <tr
                     key={`${resource.resource_type}-${resource.id}-conflicts`}
                   >
-                    <td colSpan={showFeatures ? 13 : 12}>
+                    <td colSpan={colSpan}>
                       <div className="bg-danger/5 px-4 py-3">
                         <div className="flex items-center justify-between">
                           <h4 className="text-sm font-semibold text-danger">
@@ -393,7 +407,7 @@ export function ResourceTable({
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan={showFeatures ? 13 : 12}>
+              <td colSpan={colSpan}>
                 <div className="empty-state">
                   <Search className="mb-3 h-12 w-12 text-text-tertiary" />
                   <h3>暂无资源</h3>

@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { cn } from "@/shared/utils";
-import type { RelationshipResult } from "../../lib/relationships";
+import type { RelationshipCheckOut } from "@/shared/types";
 
 interface RelationshipGraphProps {
-  results: RelationshipResult[];
+  results: RelationshipCheckOut[];
   onSelectTab?: (tab: string) => void;
 }
 
@@ -54,7 +54,7 @@ function formatEdgeLabel(
 
 function getNodeValueLabel(
   node: { id: string; source: "dbc" | "db"; table: string },
-  results: RelationshipResult[],
+  results: RelationshipCheckOut[],
 ): string {
   for (const ruleResult of results) {
     const field = ruleResult.values.find(
@@ -105,8 +105,8 @@ export function RelationshipGraph({
           fromField: from.field,
           toField: to.field,
           status: result.status,
-          value: result.commonValue,
-          label: formatEdgeLabel(from.field, to.field, result.commonValue),
+          value: result.common_value,
+          label: formatEdgeLabel(from.field, to.field, result.common_value),
         });
       }
     });

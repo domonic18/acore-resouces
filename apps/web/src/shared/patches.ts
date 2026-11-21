@@ -2,12 +2,20 @@ import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
   BuildStatus,
   CleanResult,
+  DistroPushResult,
+  DistroStatus,
+  JobArtifactsOut,
+  JobPlansOut,
+  MountPatchPreview,
   Paginated,
   PatchBatch,
   PatchExportResponse,
   PatchJob,
   PatchJobAudit,
   PublishResult,
+  ResourceFlowState,
+  ResourceRelationshipReport,
+  ValidationReportOut,
 } from "@/shared/types";
 
 export interface PatchExportRequest {
@@ -78,15 +86,116 @@ export function listPatchBatches(params: {
   );
 }
 
+/**
+ * 归一化发布响应。
+ *
+ * 前后端版本可能错配（前端 dist 是 bind mount、后端进程需重启才生效），
+ * 旧版后端不返回 preview 字段。缺字段补空数组，避免界面读到 undefined.length 崩掉。
+ */
+function normalizePublishResult(raw: Partial<PublishResult> | null): PublishResult {
+  return {
+    published: raw?.published ?? [],
+    skipped: raw?.skipped ?? [],
+    preview: raw?.preview ?? [],
+    next_number: raw?.next_number ?? 0,
+  };
+}
+
+function normalizeDistroPushResult(
+  raw: Partial<DistroPushResult> | null,
+): DistroPushResult {
+  return {
+    pushed: raw?.pushed ?? [],
+    failed: raw?.failed ?? [],
+    preview: raw?.preview ?? [],
+    cleaned: raw?.cleaned ?? [],
+    configured: raw?.configured ?? true,
+    reachable: raw?.reachable ?? true,
+    error: raw?.error ?? null,
+  };
+}
+
 export function publishPatches(body: {
   start_number?: number;
   dry_run?: boolean;
+  /** 指定要发布的批次；为空则发布所有未发布批次 */
+  batch_ids?: string[];
 }): Promise<PublishResult> {
   return apiFetch("/api/patches/publish", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  }).then((res) => res.json() as Promise<PublishResult>);
+  })
+    .then((res) => res.json() as Promise<Partial<PublishResult>>)
+    .then(normalizePublishResult);
+}
+
+/** 删除一个批次下的全部补丁任务 */
+export function deletePatchBatch(batchId: string): Promise<{
+  deleted: string[];
+  batch: string;
+  total: number;
+}> {
+  return apiFetch(`/api/patches/batches/${batchId}`, {
+    method: "DELETE",
+  }).then((res) => res.json() as Promise<{ deleted: string[]; batch: string; total: number }>);
+}
+
+/** 产物文件的预览/下载链接（复用预览端点，已做路径穿越防护） */
+export function artifactUrl(relativePath: string): string {
+  return `${API_BASE}/api/preview/file/${relativePath.replace(/^\/+/, "")}`;
+}
+
+/** 删除一个 MPQ 档案及其批次元数据 */
+export function deleteMpqArchive(
+  archive: string,
+): Promise<{
+  deleted: string;
+  batch: string;
+  source: string;
+  size_bytes: number;
+  reset_jobs: string[];
+}> {
+  return apiFetch(`/api/mpq/archives/${archive}`, {
+    method: "DELETE",
+  }).then(
+    (res) =>
+      res.json() as Promise<{
+        deleted: string;
+        batch: string;
+        source: string;
+        size_bytes: number;
+        reset_jobs: string[];
+      }>,
+  );
+}
+
+/** 推送到分发端（与本地发布是两个独立动作） */
+export function pushToDistro(body: {
+  batch_ids?: string[];
+  dry_run?: boolean;
+}): Promise<DistroPushResult> {
+  return apiFetch("/api/patches/distro-push", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json() as Promise<Partial<DistroPushResult>>)
+    .then(normalizeDistroPushResult);
+}
+
+/** 本地已发布批次与分发端已推送批次的对照 */
+export function getDistroStatus(): Promise<DistroStatus> {
+  return apiGetJson<Partial<DistroStatus>>("/api/patches/distro/status").then(
+    (raw) => ({
+      local_batches: raw?.local_batches ?? [],
+      pushed_batches: raw?.pushed_batches ?? [],
+      pending_batches: raw?.pending_batches ?? [],
+      pushed_details: raw?.pushed_details ?? [],
+      reachable: raw?.reachable !== false,
+      error: raw?.error ?? null,
+    }),
+  );
 }
 
 export function getPatchJobAudit(jobId: string): Promise<PatchJobAudit> {
@@ -118,4 +227,80 @@ export function cleanWorkspace(body: WorkspaceCleanRequest): Promise<CleanResult
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   }).then((res) => res.json() as Promise<CleanResult>);
+}
+
+/* ---------- 生产流程相关只读端点 ---------- */
+
+/** 坐骑补丁预览（所见即所得）：将要写入的 DBC/SQL 记录与全部问题清单 */
+export function getPatchPreview(
+  resourceType: string,
+  resourceId: number,
+): Promise<MountPatchPreview> {
+  return apiGetJson<MountPatchPreview>(
+    `/api/patches/preview/${resourceType}/${resourceId}`,
+  );
+}
+
+/** 批量补丁预览：与逐个调用等价，但 DBC 只加载一次 */
+export function previewPatchBatch(
+  resourceIds: number[],
+): Promise<MountPatchPreview[]> {
+  return apiFetch("/api/patches/preview/batch", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ resource_ids: resourceIds }),
+  }).then((res) => res.json() as Promise<MountPatchPreview[]>);
+}
+
+/** 资源的跨数据源关联校验结果 */
+export function getResourceRelationships(
+  resourceType: string,
+  resourceId: number,
+): Promise<ResourceRelationshipReport> {
+  return apiGetJson<ResourceRelationshipReport>(
+    `/api/resources/${resourceType}/${resourceId}/relationships`,
+  );
+}
+
+/** 资源在生产流程中的位置与各步状态 */
+export function getResourceFlow(
+  resourceType: string,
+  resourceId: number,
+): Promise<ResourceFlowState> {
+  return apiGetJson<ResourceFlowState>(
+    `/api/resources/${resourceType}/${resourceId}/flow`,
+  );
+}
+
+/** 单个任务的校验报告切片 */
+export function getJobValidationReport(
+  jobId: string,
+): Promise<ValidationReportOut> {
+  return apiGetJson<ValidationReportOut>(
+    `/api/patches/jobs/${jobId}/validation-report`,
+  );
+}
+
+/** 批次的完整校验报告 */
+export function getBatchValidationReport(
+  batch: string,
+): Promise<ValidationReportOut> {
+  return apiGetJson<ValidationReportOut>(
+    `/api/patches/reports/${batch}/validation-report`,
+  );
+}
+
+/** 任务的 DBC/SQL 生成计划：stored 读 dry-run 落盘结果，live 现场重算 */
+export function getJobPlans(
+  jobId: string,
+  source: "stored" | "live" = "stored",
+): Promise<JobPlansOut> {
+  return apiGetJson<JobPlansOut>(
+    `/api/patches/jobs/${jobId}/plans?source=${source}`,
+  );
+}
+
+/** 任务的产物清单（含可下载链接） */
+export function getJobArtifacts(jobId: string): Promise<JobArtifactsOut> {
+  return apiGetJson<JobArtifactsOut>(`/api/patches/jobs/${jobId}/artifacts`);
 }

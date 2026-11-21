@@ -1,16 +1,38 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ListChecks, Trash2 } from "lucide-react";
 import { ExportWizard } from "@/features/resources/components/patch-export/ExportWizard";
+import { FlowContextBar } from "@/features/resources/components/patch-export/FlowContextBar";
 import { JobAuditCard } from "@/features/resources/components/patch-export/JobAuditCard";
+import { ValidationReportDialog } from "@/features/resources/components/patch-export/ValidationReportDialog";
 import { PatchBatchesTable } from "@/features/resources/components/patch-export/PatchBatchesTable";
 import { CleanDialog } from "@/features/resources/components/patch-export/CleanDialog";
 import { useBuildStatus } from "@/features/resources/hooks/usePatchBuild";
+import { WIZARD_FLOW_STEP_IDS } from "@/features/resources/lib/patch-flow";
 
 export function ExportPage() {
   const [auditJobId, setAuditJobId] = useState<string | null>(null);
   const [cleanOpen, setCleanOpen] = useState(false);
+  // 当前所处流程步骤与完成态由页面持有——流程上下文条与向导共用同一份状态
+  const [flowStepId, setFlowStepId] = useState<string>(
+    WIZARD_FLOW_STEP_IDS[0],
+  );
+  const [completed, setCompleted] = useState(false);
+  // 校验报告查看目标：批次号或任务 ID
+  const [validationTarget, setValidationTarget] = useState<{
+    batchId?: string;
+    jobId?: string;
+  } | null>(null);
   const buildStatus = useBuildStatus();
   const building = buildStatus.data?.running ?? false;
+
+  const handleStepChange = useCallback((stepId: string) => {
+    setFlowStepId(stepId);
+    setCompleted(false);
+  }, []);
+
+  const handleCompleted = useCallback(() => {
+    setCompleted(true);
+  }, []);
 
   return (
     <div className="content">
@@ -23,7 +45,22 @@ export function ExportPage() {
         </div>
       </header>
 
-      <ExportWizard />
+      <div className="card mb-4">
+        <div className="card-body py-2.5">
+          <FlowContextBar
+            currentStepId={flowStepId}
+            interactiveStepIds={[...WIZARD_FLOW_STEP_IDS]}
+            onStepSelect={handleStepChange}
+          />
+        </div>
+      </div>
+
+      <ExportWizard
+        stepId={flowStepId}
+        onStepChange={handleStepChange}
+        completed={completed}
+        onCompleted={handleCompleted}
+      />
 
       <div className="card mt-6">
         <div className="card-header">
@@ -44,12 +81,25 @@ export function ExportPage() {
           </button>
         </div>
         <div className="card-body">
-          <PatchBatchesTable building={building} onAudit={setAuditJobId} />
+          <PatchBatchesTable
+            building={building}
+            onAudit={setAuditJobId}
+            onShowValidation={setValidationTarget}
+          />
         </div>
       </div>
 
       {auditJobId && (
         <JobAuditCard jobId={auditJobId} onClose={() => setAuditJobId(null)} />
+      )}
+
+      {validationTarget && (
+        <ValidationReportDialog
+          open
+          onClose={() => setValidationTarget(null)}
+          batchId={validationTarget.batchId}
+          jobId={validationTarget.jobId}
+        />
       )}
 
       {cleanOpen && (
