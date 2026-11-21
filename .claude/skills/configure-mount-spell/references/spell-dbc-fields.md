@@ -1,23 +1,30 @@
 # Spell.dbc 坐骑相关字段参考
 
+> 字段名以 `tools/wow-dbc-tool/schemas/Spell.schema.json`（3.3.5.12340）为准。
+> 注意实际字段名带下划线与槽位后缀：`EffectAura_1`（不是 `EffectApplyAuraName1`）、
+> `AttributesExD`（不是 `AttributesEx4`）、`EffectSpellClassMaskC_3`（3 前有下划线）。
+
 ## 核心字段表
 
-| 字段名 | 类型 | 说明 | 坐骑推荐值 |
+| 字段名 | 类型 | 说明 | 坐骑取值 |
 |--------|------|------|-----------|
-| `ID` | uint32 | Spell 唯一标识 | 自定义建议 80000+ |
+| `ID` | uint32 | Spell 唯一标识 | 自定义段 80000+ |
 | `Mechanic` | uint32 | 机制类型 | **21** = MOUNT |
-| `EffectApplyAuraName1` | uint32 | 第一个效果的 Aura 类型 | **207** = SPELL_AURA_MOUNTED |
-| `EffectApplyAuraName2` | uint32 | 第二个效果的 Aura 类型 | 速度相关 (如 32) |
-| `EffectApplyAuraName3` | uint32 | 第三个效果的 Aura 类型 | 0 或其他 |
-| `EffectBasePoints1` | int32 | 效果1基础值 | CreatureDisplayID (坐骑模型) |
-| `EffectBasePoints2` | int32 | 效果2基础值 | 速度加成值 |
-| `EffectBasePoints3` | int32 | 效果3基础值 | 0 或其他 |
-| `Attributes` | uint32 | 基础属性标志 | 0 或 2147483648 |
-| `AttributesEx4` | uint32 | 扩展属性4标志 | 0 或 67108864 |
-| `AreaGroupId` | uint32 | 区域组限制 | 0 = 无限制 |
-| `SpellVisual2` | uint32 | 视觉效果 | 坐骑外观模型 |
-| `EffectItemType3` | uint32 | 物品类型 | 关联 Item ID |
-| `EffectSpellClassMaskC3` | uint32 | 法术类别掩码 | **7644** (标准坐骑) |
+| `Effect_1` | uint32 | 效果 1 类型 | **6** = APPLY_AURA |
+| `EffectAura_1` | uint32 | 效果 1 的 Aura 类型 | **78** = SPELL_AURA_MOUNTED |
+| `EffectMiscValue_1` | uint32 | 效果 1 的杂项值 | **`creature_template.entry`** |
+| `Effect_2` / `EffectAura_2` | uint32 | 效果 2 | 速度光环：陆地 32 / 飞行 207 / 水上 58 |
+| `EffectBasePoints_2` | int32 | 效果 2 基础值 | 速度百分比 − 1（配 `EffectDieSides_2 = 1`） |
+| `Effect_3` / `EffectAura_3` | uint32 | 效果 3 | 特性叠加时使用（水面行走 104 等） |
+| `Attributes` | uint32 | 基础属性标志 | 陆地 269844752 / 飞行 269844496 |
+| `AttributesExC` | uint32 | 扩展属性 C | 536870912 |
+| `AttributesExD` | uint32 | 扩展属性 D | 0，或飞行坐骑的 67108864 |
+| `AttributesExF` | uint32 | 扩展属性 F | 131072 |
+| `SpellVisualID_1` | uint32 | 视觉效果 ID | 陆地 5160 / 飞行 7644 |
+| `Name_Lang_deDE` | string | 名称 | 写 deDE 列；`zhCN` 列恒为空 |
+| `Name_Lang_Mask` | uint32 | 语言掩码 | 16712190 |
+| `Description_Lang_deDE` | string | 描述 | 同上 |
+| `Description_Lang_Mask` | uint32 | 语言掩码 | 16712190 |
 
 ## Mechanic 值
 
@@ -25,28 +32,50 @@
 |----|------|------|
 | 21 | MOUNT | 坐骑 |
 
-## Aura 类型 (EffectApplyAuraName)
+## Aura 类型（`EffectAura_N`）
 
-| 值 | 名称 | 说明 |
-|----|------|------|
-| 32 | SPELL_AURA_MOD_INCREASE_SPEED | 增加移动速度 |
-| 207 | SPELL_AURA_MOUNTED | 坐骑状态 |
+| 值 | 名称 | 槽位 | 说明 |
+|----|------|------|------|
+| 78 | SPELL_AURA_MOUNTED | **Effect_1** | 挂载光环——**所有坐骑都是它** |
+| 32 | SPELL_AURA_MOD_INCREASE_SPEED | Effect_2 | 地面速度光环 |
+| 207 | 飞行速度光环 | Effect_2 | **仅飞行坐骑**，不是挂载光环 |
+| 58 | 游泳速度光环 | Effect_2 | 水上坐骑 |
+| 104 | WATER_WALK | Effect_3 | 水面行走特性 |
+
+> ⚠️ 最容易搞混的一点：**207 不是 SPELL_AURA_MOUNTED**。
+> 挂载光环是 78（在 `Effect_1`），207 是飞行速度光环（在 `Effect_2`）。
 
 ## 典型坐骑 Spell 结构
 
 ```
-Spell.dbc 记录（坐骑）:
+Spell.dbc 记录（陆地坐骑）:
 ├── ID: [SpellID]
 ├── Mechanic: 21
-├── EffectApplyAuraName1: 207 (MOUNTED)
-├── EffectBasePoints1: [CreatureDisplayID]
-├── EffectApplyAuraName2: 32 (速度)
-├── EffectBasePoints2: [速度值]
-├── Attributes: [标志位组合]
-├── AttributesEx4: [标志位组合]
-├── AreaGroupId: [区域组ID 或 0]
-└── EffectSpellClassMaskC3: 7644
+├── Effect_1: 6 (APPLY_AURA)
+├── EffectAura_1: 78 (MOUNTED)
+├── EffectMiscValue_1: [creature_template.entry]   ← 挂载的生物，不是 display id
+├── Effect_2: 6 (APPLY_AURA)
+├── EffectAura_2: 32 (地面速度)
+├── EffectBasePoints_2: [速度值 - 1]
+├── EffectDieSides_2: 1
+├── Attributes: 269844752
+├── AttributesExC: 536870912
+├── AttributesExD: 0
+├── AttributesExF: 131072
+├── SpellVisualID_1: 5160
+└── Name_Lang_deDE: [坐骑名称]
 ```
+
+## 挂载生物的解析链路
+
+服务端 `HandleAuraMounted` 拿 `EffectMiscValue_1` 当 `creature_template.entry`，
+从生物模板取显示模型。因此：
+
+```
+dbc.spell.visual_id  ==  db.creature_template.entry  ==  Spell.dbc.EffectMiscValue_1
+```
+
+三者必须一致。构建期的 `entry_visual` 校验会检查这一条。
 
 ## 标志位字段说明
 
@@ -58,7 +87,7 @@ Spell.dbc 记录（坐骑）:
 |--------|----------|--------|------|
 | SPELL_ATTR0_OUTDOORS_ONLY | 0x80000000 | 2147483648 | 只能在户外使用 |
 
-### AttributesEx4 (uint32)
+### AttributesExD (uint32)
 
 | 标志名 | 十六进制 | 十进制 | 说明 |
 |--------|----------|--------|------|
@@ -77,3 +106,8 @@ AreaGroupId 指向 AreaGroup.dbc，用于限制特定区域组可用。
 - 艾泽拉斯地球默认不允许飞行（除非服务器修改）
 - 冬拥湖战斗期间不允许飞行
 - 诺森德需要寒冷天气飞行技能 (Spell 54197)
+
+## 相关文件
+
+- 字段权威定义：`tools/wow-dbc-tool/schemas/Spell.schema.json`
+- 生成模板：`backend/app/services/patch_exporter.py` 的 `SPELL_COMMON_FIELDS` / `SPELL_TYPE_TEMPLATES`
