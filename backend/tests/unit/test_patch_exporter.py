@@ -118,3 +118,77 @@ def test_delete_patch_job_refused_while_building(
 
     with pytest.raises(BuildAlreadyRunningError):
         patch_exporter.delete_patch_job("mount_0003")
+
+
+def test_create_patch_job_preserves_existing_state(monkeypatch, tmp_path):
+    """对已构建的任务再次创建任务，不得清空状态与产物登记。
+
+    早期实现无条件 rmtree 任务目录，导致已构建坐骑的 status 从 generated
+    退回 requested、artifacts 里的产物路径丢失——审查步骤再也读不到校验报告。
+    """
+    from app.core.config import Settings
+    from app.services.patch_exporter import create_patch_job, get_patch_job
+
+    jobs_dir = tmp_path / "patch-jobs"
+    jobs_dir.mkdir(parents=True, exist_ok=True)
+
+    def _patch_settings() -> Settings:
+        s = Settings()
+        s.patch_jobs_dir = jobs_dir
+        return s
+
+    monkeypatch.setattr("app.services.patch_exporter.settings", _patch_settings())
+
+    # 先创建一个任务
+    create_patch_job("mount", 3)
+    job_id = "mount_0003"
+
+    # 模拟构建完成：写入 status 与产物登记
+    job_path = jobs_dir / job_id / "job.json"
+    manifest = json.loads(job_path.read_text(encoding="utf-8"))
+    manifest["status"] = "generated"
+    manifest["artifacts"] = {
+        "output": {
+            "dbc_dir": "data/wow-dbc/src/dbc",
+            "sql_files": ["data/sql/x/0003_mount_add.sql"],
+            "mpq": "workspace/mpq/20260101_000000/patch-mounts.mpq",
+            "validation_report": "workspace/reports/20260101_000000/validation-report.json",
+            "audit": "workspace/reports/20260101_000000/audit-report.json",
+        }
+    }
+    job_path.write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+
+    # 再次创建
+    create_patch_job("mount", 3)
+
+    after = get_patch_job(job_id)
+    assert after is not None
+    assert after.status == "generated"
+    assert after.artifacts.output.get("validation_report") == (
+        "workspace/reports/20260101_000000/validation-report.json"
+    )
+    assert after.artifacts.output.get("mpq") == (
+        "workspace/mpq/20260101_000000/patch-mounts.mpq"
+    )
+
+
+def test_create_patch_job_creates_fresh_task(monkeypatch, tmp_path):
+    """全新任务：status 为 requested，产物登记为空。"""
+    from app.core.config import Settings
+    from app.services.patch_exporter import create_patch_job, get_patch_job
+
+    jobs_dir = tmp_path / "patch-jobs"
+    jobs_dir.mkdir(parents=True, exist_ok=True)
+
+    def _patch_settings() -> Settings:
+        s = Settings()
+        s.patch_jobs_dir = jobs_dir
+        return s
+
+    monkeypatch.setattr("app.services.patch_exporter.settings", _patch_settings())
+
+    create_patch_job("mount", 7)
+    manifest = get_patch_job("mount_0007")
+    assert manifest is not None
+    assert manifest.status == "requested"
+    assert manifest.artifacts.output == {}

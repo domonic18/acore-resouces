@@ -22,6 +22,7 @@ from typing import Any
 from app.core.config import settings
 from app.services.patch_distro_client import (
     DistroPushError,
+    build_push_payload,
     is_distro_configured,
     push_batch,
 )
@@ -124,12 +125,78 @@ def publish_batch(batch_dir: Path, dist_dir: Path, number: int) -> Path:
         except (OSError, json.JSONDecodeError) as e:
             print(f"[警告] 批次 {batch_dir.name} manifest 回写发布信息失败：{e}")
 
+    # 批次目录马上要被清掉，先把任务清单读出来
+    batch_job_ids = _read_batch_job_ids(batch_dir / "manifest.json")
+
     try:
         shutil.rmtree(batch_dir)
     except OSError as e:
         print(f"[警告] 发布成功但清理构建目录失败（可稍后用 workspace 清理移除）：{e}")
 
+    _mark_batch_jobs_applied(
+        batch_name=batch_dir.name,
+        job_ids=batch_job_ids,
+        mpq_target=mpq_target,
+    )
     return mpq_target
+
+
+def _read_batch_job_ids(manifest_path: Path) -> list[str]:
+    """从批次 manifest 中读出该批次包含的任务 ID。"""
+    if not manifest_path.is_file():
+        return []
+    try:
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    jobs = data.get("jobs") if isinstance(data, dict) else None
+    if not isinstance(jobs, list):
+        return []
+    return [str(job_id) for job_id in jobs]
+
+
+def _mark_batch_jobs_applied(
+    batch_name: str,
+    job_ids: list[str],
+    mpq_target: Path | None = None,
+) -> None:
+    """把该批次内的补丁任务标记为 applied，并更新产物路径登记。
+
+    没有这一步，任务的 status 永远停在 generated，界面无法区分
+    「构建完成」与「已经发布上线」。
+
+    还要更新 artifacts.output.mpq：发布是**移动**语义，MPQ 从
+    workspace/mpq/<批次>/patch-mounts.mpq 变成
+    workspace/dist/<批次>/patch-zhCN-<N>.mpq，登记不更新的话
+    产物清单里的链接会指向一个已不存在的路径。
+    """
+    if not job_ids:
+        return
+    from app.services.patch_exporter import get_patch_job, update_patch_job_status
+
+    new_mpq = (
+        str(mpq_target.relative_to(settings.project_root))
+        if mpq_target is not None
+        else None
+    )
+
+    for job_id in job_ids:
+        try:
+            if new_mpq:
+                manifest = get_patch_job(job_id)
+                if manifest is not None:
+                    output = dict(manifest.artifacts.output)
+                    output["mpq"] = new_mpq
+                    update_patch_job_status(
+                        job_id,
+                        "applied",
+                        summary=f"已发布批次 {batch_name}",
+                        output_artifacts=output,
+                    )
+                    continue
+            update_patch_job_status(job_id, "applied", summary=f"已发布批次 {batch_name}")
+        except Exception as e:  # noqa: BLE001 - 标记失败不应影响发布结果
+            print(f"[警告] 任务 {job_id} 标记为 applied 失败：{e}")
 
 
 def _max_published_number(dist_dir: Path) -> int:
@@ -144,9 +211,123 @@ def _max_published_number(dist_dir: Path) -> int:
     return best
 
 
+def push_batches(
+    batch_ids: list[str] | None = None,
+    dry_run: bool = False,
+    cleanup_local: bool = True,
+) -> dict[str, Any]:
+    """把 workspace/dist/ 下已发布的批次推送到分发端。
+
+    这是与「本地发布」分离的独立步骤：本地发布只是改名移位，
+    推送才会让补丁对玩家可见——不可撤销，因此必须是显式动作。
+
+    推送成功后默认**清理本地 MPQ 副本**：分发端才是玩家下载的来源，
+    本地再留一份就是双份存储（单个补丁 300MB+）。批次元数据
+    （manifest / changelog / readme）保留，供审计与批次列表使用。
+
+    推送**失败**时本地副本必须保留——那是重试的唯一来源。
+
+    Args:
+        batch_ids: 指定要推送的批次；为空则推送 dist 下全部批次。
+        dry_run: 为 True 时只列出将要推送什么，不实际上传。
+        cleanup_local: 推送成功后是否删除本地 MPQ 副本。
+
+    Returns:
+        包含 pushed / skipped / failed / preview / cleaned 的字典。
+    """
+    if not is_distro_configured():
+        raise PatchPublisherError(
+            "未配置分发端（DISTRO_BASE_URL / DISTRO_API_KEY），无法推送。"
+        )
+
+    empty: dict[str, Any] = {
+        "pushed": [],
+        "skipped": [],
+        "failed": [],
+        "preview": [],
+        "cleaned": [],
+    }
+    if not DIST_DIR.exists():
+        return empty
+
+    dirs = [d for d in sorted(DIST_DIR.iterdir()) if d.is_dir()]
+    if batch_ids:
+        wanted = set(batch_ids)
+        dirs = [d for d in dirs if d.name in wanted]
+    dirs = [d for d in dirs if list(d.glob("patch-zhCN-*.mpq"))]
+
+    if not dirs:
+        return empty
+
+    pushed: list[str] = []
+    failed: list[dict[str, str]] = []
+    preview: list[dict[str, Any]] = []
+    cleaned: list[dict[str, Any]] = []
+
+    for batch_dir in dirs:
+        try:
+            payload, mpq_path = build_push_payload(batch_dir)
+        except DistroPushError as e:
+            failed.append({"batch": batch_dir.name, "error": str(e)})
+            continue
+
+        preview.append(
+            {
+                "batch": batch_dir.name,
+                "path": str(mpq_path.relative_to(settings.project_root)),
+                "patch_number": payload["patch_number"],
+                "size_bytes": payload["size_bytes"],
+            }
+        )
+
+        if dry_run:
+            print(f"[干跑] 将推送: {batch_dir.name} -> {mpq_path.name}")
+            continue
+
+        try:
+            result = push_batch(batch_dir)
+            pushed.append(batch_dir.name)
+            print(f"  已推送 {batch_dir.name}（补丁 #{result['patch_number']}）")
+            if cleanup_local:
+                freed = _remove_local_mpq(batch_dir)
+                cleaned.append({"batch": batch_dir.name, "freed_bytes": freed})
+                print(f"    已清理本地副本，释放 {freed / 1024 / 1024:.1f} MB")
+        except DistroPushError as e:
+            failed.append({"batch": batch_dir.name, "error": str(e)})
+            print(f"  [警告] 推送 {batch_dir.name} 失败：{e}")
+
+    return {
+        "pushed": pushed,
+        "skipped": [],
+        "failed": failed,
+        "preview": preview,
+        "cleaned": cleaned,
+    }
+
+
+def _remove_local_mpq(batch_dir: Path) -> int:
+    """删除已推送批次的本地 MPQ 副本，保留批次元数据。
+
+    Args:
+        batch_dir: workspace/dist/ 下的批次目录。
+
+    Returns:
+        释放的字节数。
+    """
+    freed = 0
+    for mpq in batch_dir.glob("patch-zhCN-*.mpq"):
+        try:
+            freed += mpq.stat().st_size
+            mpq.unlink()
+        except OSError as e:
+            print(f"  [警告] 清理本地副本失败 {mpq.name}：{e}")
+    return freed
+
+
 def publish_patches(
     start_number: int = DEFAULT_START_NUMBER,
     dry_run: bool = False,
+    batch_ids: list[str] | None = None,
 ) -> dict[str, Any]:
     """发布 MPQ 补丁到分发目录。
 
@@ -154,22 +335,29 @@ def publish_patches(
         start_number: 补丁编号起始值下限；实际从 max(start_number,
             dist 现有最大序号 + 1) 起编，确保新补丁序号始终大于已发布补丁。
         dry_run: 为 True 时只预览，不执行发布。
+        batch_ids: 指定要发布的批次；为 None 时发布所有未发布批次。
 
     Returns:
         包含 published, skipped, next_number 的字典。
     """
     start_number = max(start_number, _max_published_number(DIST_DIR) + 1)
     batches = collect_source_batches()
+    if batch_ids:
+        wanted = set(batch_ids)
+        batches = [b for b in batches if b.name in wanted]
     if not batches:
         print("workspace/mpq/ 中没有可发布的批次。")
         return {
             "published": [],
             "skipped": [],
+            # 字段集必须与正常路径一致——前端按固定形状读取，缺字段会崩
+            "preview": [],
             "next_number": start_number,
         }
 
     published: list[tuple[str, Path]] = []
     skipped: list[str] = []
+    preview: list[dict[str, Any]] = []
     next_number = start_number
 
     for batch_dir in batches:
@@ -181,39 +369,44 @@ def publish_patches(
         mpq_target = target_dir / f"patch-zhCN-{next_number}.mpq"
 
         if dry_run:
+            # 干跑也要如实回报「将要发布什么」——否则前端只能显示
+            # 「没有找到可发布的批次」，把预览误报成失败。
+            preview.append(
+                {
+                    "batch": batch_dir.name,
+                    "path": str(mpq_target.relative_to(settings.project_root)),
+                    "patch_number": next_number,
+                }
+            )
             print(f"[干跑] 将发布: {batch_dir.name} -> {mpq_target}")
             next_number += 1
             continue
 
         mpq_target = publish_batch(batch_dir, DIST_DIR, next_number)
         published.append((batch_dir.name, mpq_target))
+        preview.append(
+            {
+                "batch": batch_dir.name,
+                "path": str(mpq_target.relative_to(settings.project_root)),
+                "patch_number": next_number,
+            }
+        )
         print(f"已发布: {batch_dir.name} -> {mpq_target.relative_to(settings.project_root)}")
         next_number += 1
 
     if skipped:
         print(f"\n已跳过（已发布）: {', '.join(skipped)}")
 
-    pushed: list[str] = []
-    push_failed: list[str] = []
     if dry_run:
         print("\n干跑完成，未执行任何发布。")
     else:
         print(f"\n共发布 {len(published)} 个批次。")
-        if published and is_distro_configured():
-            print("\n推送到分发端（acore-patch-distro）...")
-            for name, mpq_path in published:
-                try:
-                    result = push_batch(mpq_path.parent)
-                    pushed.append(name)
-                    print(f"  已推送 {name}（补丁 #{result['patch_number']}）")
-                except DistroPushError as e:
-                    push_failed.append(name)
-                    print(f"  [警告] 推送 {name} 失败（不影响本地发布，可稍后 distro-push 重试）：{e}")
+        print("（推送到分发端是独立的一步，见 patch distro-push）")
 
     return {
         "published": [{"batch": name, "path": str(path)} for name, path in published],
         "skipped": skipped,
+        # 干跑时列出「将要发布什么」，真实发布时与 published 一致
+        "preview": preview,
         "next_number": next_number,
-        "distro_pushed": pushed,
-        "distro_push_failed": push_failed,
     }
