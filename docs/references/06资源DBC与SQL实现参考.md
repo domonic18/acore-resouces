@@ -2,11 +2,21 @@
 
 ## 一、概述
 
-本文档描述在 AzerothCore 3.3.5a 中新增一个**坐骑 / 宠物 / NPC**所需要编辑的 DBC 文件、关键字段，以及需要写入 `acore-world` 数据库的 SQL 内容。所有字段命名以 `wow-dbc-tool` 的 schema 为准。
+本文档描述在 AzerothCore 3.3.5a 中新增一个**坐骑 / 宠物 / NPC**所需要的 DBC 文件、关键字段，以及需要写入 `acore-world` 数据库的 SQL 内容。所有字段命名以 `wow-dbc-tool` 的 schema 为准。
 
 > **版本**：WoW 3.3.5a（WotLK）  
 > **服务端**：AzerothCore  
-> **DBC 工具**：`wow-dbc-tool`（`/Users/deadwalk/Workspace/acore-deploy/wow-dbc/tools/wow-dbc-tool`）
+> **DBC 工具**：`wow-dbc-tool`（仓库内 `tools/wow-dbc-tool/`）
+
+> **状态说明（2026-11 更新）**
+>
+> - §一 ~ §五：**字段级参考**，仍然有效，是各特性附录的底层依据。
+> - §六：**已重写为「管线化实现清单」**。原文描述的是管线化之前的手工 DBC 编辑流程，
+>   与现状冲突——现在坐骑的 DBC/SQL 由 `build_dbc_plan()` / `build_sql_plan()`
+>   从资源 YAML 真相源自动生成，不需要手工编辑 DBC。
+> - §3.3 已按管线实际产出的字段修正（原表把挂载光环写在了 `EffectAura_3`，
+>   速度光环写在了 `EffectAuraPeriod_*`，均与实现不符）。
+> - 当前流程以 [坐骑生产流程总纲](../workflows/01坐骑生产流程总纲.md) 为准。
 
 ---
 
@@ -83,28 +93,40 @@
 |------------------------|------|------|--------|
 | `ID` | int32 | Spell 唯一 ID | 80000+ |
 | `Mechanic` | int32 | 机制类型 | 21 = MOUNT |
-| `Attributes` | int32 | 基础属性 | 0 或 2147483648（户外） |
-| `AttributesExD` | int32 | 扩展属性 4 | 0（陆地） / 67108864（仅飞行区域） |
-| `Effect_3` | int32 | 第三效果类型 | 6 = Apply Aura |
-| `EffectAura_3` | int32 | 第三效果 Aura | 78 = SPELL_AURA_MOUNTED |
-| `EffectMiscValue_3` | int32 | 坐骑模型 ID | `CreatureDisplayInfo.ID` |
-| `EffectAuraPeriod_1` | int32 | 第一速度 Aura 类型 | 32 = 地面 / 207 = 飞行 |
-| `EffectAuraPeriod_2` | int32 | 第二速度 Aura 类型 | 0 或 32 |
-| `EffectMechanic_1` | int32 | 第一速度基础值 | 59(60%) / 99(100%) / 149(150%) / 279(280%) |
-| `EffectMechanic_2` | int32 | 第二速度基础值 | 0 或 99 |
-| `EffectSpellClassMaskC_3` | int32 | 法术类别掩码 | 7644（标准坐骑） |
+| `Attributes` | int32 | 基础属性（SPELL_ATTR0） | 陆地 269844752 / 飞行 269844496 |
+| `AttributesExC` | int32 | 扩展属性 C | 536870912 |
+| `AttributesExD` | int32 | 扩展属性 D（SPELL_ATTR4） | 0（陆地）/ 67108864（仅飞行区域） |
+| `AttributesExF` | int32 | 扩展属性 F | 131072 |
+| `Effect_1` | int32 | 第一效果类型 | 6 = Apply Aura |
+| `EffectAura_1` | int32 | 第一效果 Aura | **78 = SPELL_AURA_MOUNTED（挂载光环）** |
+| `EffectMiscValue_1` | int32 | **挂载的生物 entry** | `creature_template.entry` |
+| `Effect_2` / `EffectAura_2` | int32 | 第二效果（速度光环） | 32 地面 / 207 飞行 / 58 游泳 |
+| `EffectBasePoints_2` | int32 | 速度百分比 | `speed − 1`（配 `EffectDieSides_2 = 1`） |
+| `Effect_3` / `EffectAura_3` | int32 | 第三效果 | 特性叠加时使用（水面行走 104 等） |
+| `SpellVisualID_1` | int32 | 视觉效果 ID | 陆地 5160 / 飞行 7644 |
 | `AreaGroupId` | int32 | 区域组限制 | 0 = 无限制 |
 | `SpellIconID` | int32 | 法术图标 ID | |
-| `Name_Lang_zhCN` | string | 中文名称 | |
-| `Description_Lang_zhCN` | string | 中文描述 | |
+| `Name_Lang_deDE` | string | 名称 | **写 deDE 列**；`zhCN` 列恒为空（MCC 全部数据如此） |
+| `Description_Lang_deDE` | string | 描述 | 同上 |
+| `Name_Lang_Mask` | int32 | 语言掩码 | 16712190 |
+
+> ⚠️ **三处常见错误**：
+> 1. 挂载光环是 `EffectAura_1 = 78`，**不是** `EffectAura_3`。
+> 2. **207 不是 SPELL_AURA_MOUNTED**——它是飞行速度光环，在 `EffectAura_2` 槽位。
+> 3. 法术**不携带 display id**。服务端 `HandleAuraMounted` 拿 `EffectMiscValue_1`
+>    当 `creature_template.entry` 去查生物模板取显示模型，所以
+>    `dbc.spell.visual_id` 必须 == `db.creature_template.entry`。
 
 #### 3.3.2 坐骑类型速查
 
-| 类型 | `EffectAuraPeriod_1` | `EffectAuraPeriod_2` | `EffectMechanic_1` | `EffectMechanic_2` | `AttributesExD` |
-|------|:--------------------:|:--------------------:|:------------------:|:------------------:|:---------------:|
-| 陆地坐骑 | 32 | 0 | 99 | 0 | 0 |
-| 慢速陆地 | 32 | 0 | 59 | 0 | 0 |
-| 飞行坐骑 | 207 | 32 | 279 | 99 | 67108864 |
+| 类型 | `EffectAura_1` | `EffectAura_2` | `EffectBasePoints_2` | `Attributes` | `AttributesExD` | `SpellVisualID_1` |
+|------|:---------------:|:---------------:|:---------------------:|:-------------:|:---------------:|:-----------------:|
+| 陆地坐骑 | 78 | 32 | 速度 − 1 | 269844752 | 0 | 5160 |
+| 飞行坐骑 | 78 | 207 | 速度 − 1 | 269844496 | 67108864 | 7644 |
+| 水上坐骑 | 78 | 58 | 速度 − 1 | 269844752 | 0 | 5160 |
+
+速度光环取值：`32` 地面、`207` 飞行、`58` 游泳。
+`EffectBasePoints_2` = 速度百分比 − 1（如 59 = 60%、99 = 100%、149 = 150%、279 = 280%）。
 
 #### 3.3.3 宠物 Spell 关键字段
 
@@ -266,59 +288,82 @@
 | `ItemDisplayInfo.ID` | 自定义区间 | 自定义物品显示 |
 | `SummonProperties.ID` | 自定义区间 | 自定义召唤属性 |
 | `creature_template.entry` | 9140000+ | 自定义生物 |
+| `Vehicle.dbc.ID` | 90000+ | 自建多人骑乘载具（官方 312/315 除外） |
+
+**所有自建 ID 必须在资源 YAML 中显式声明**，并由
+`check_duplicate_resource_ids()`（`backend/app/services/resource_validation.py`）
+做全局查重——重复会在预检阶段（流程第 5 步）直接报出来。
+
+`Vehicle.dbc` 的空闲号段可以用 `GET /api/dbc/{file}/next-free-id` 探测，
+该接口会一并合并所有坐骑 YAML 已声明的自建 `vehicle_id`，避免并发选号撞号。
 
 ---
 
 ## 六、端到端实现清单
 
-### 6.1 添加一个坐骑
+### 6.1 添加一个坐骑（管线化）
 
-#### DBC 编辑
+> 现状：坐骑的 DBC/SQL **不需要手工编辑**。真相源是
+> `data/resources/mounts/{id}.yaml`，管线从 YAML 生成全部 DBC 记录与 SQL。
+> 下面是「YAML 字段 → 产出目标」的映射表，字段定义见
+> `backend/app/services/patch_exporter.py`。
 
-1. **CreatureModelData.dbc**
-   - 新增记录，设置 `ModelName` 为 `.m2` 路径。
-   - 设置 `ModelScale`、`CollisionWidth`、`CollisionHeight`、`MountHeight`。
+#### YAML → 产出目标映射
 
-2. **CreatureDisplayInfo.dbc**
-   - 新增记录，`ModelID` 指向 `CreatureModelData.ID`。
-   - 设置 `CreatureModelScale`、`TextureVariation_1/2/3`。
+| YAML 路径 | 产出目标 | 生成位置 |
+|---|---|---|
+| `dbc.creature_model_data.id` / `.model_name` | `CreatureModelData.dbc` 新增记录 | `build_dbc_plan` |
+| `dbc.creature_display_info.id` / `.model_id` | `CreatureDisplayInfo.dbc` 新增记录 | `build_dbc_plan` |
+| `dbc.creature_display_info.texture_variation_1/2/3` | `CreatureDisplayInfo.TextureVariation_1/2/3` | `build_dbc_plan` |
+| `dbc.spell.id` / `.icon_id` | `Spell.dbc` 新增记录 | `build_dbc_plan` |
+| `dbc.spell.speed` / `.flight_speed` / `.swim_speed` | `Spell.dbc` 速度光环槽位 | `build_dbc_plan` |
+| `dbc.item.id` / `.display_id` | `Item.dbc` 新增记录 | `build_dbc_plan` |
+| `vehicle.vehicle_id` / `.seat_ids` | `Vehicle.dbc` 新增记录（仅自建载具） | `build_dbc_plan` |
+| `db.creature_model_info.*` | `creature_model_info` INSERT | `build_sql_plan` |
+| `db.creature_template.*` | `creature_template` INSERT | `build_sql_plan` |
+| `db.item_template.*` | `item_template` INSERT | `build_sql_plan` |
+| `dbc.creature_display_info.id` + `db.creature_template.entry` | `creature_template_model` INSERT | `build_sql_plan` |
+| `vehicle.spellclick_spell_id` / `.accessories` | `npc_spellclick_spells` / `vehicle_template_accessory` INSERT | `build_sql_plan` |
+| `drop.*` | `creature_loot_template` / `gameobject_loot_template` INSERT | `build_sql_plan` |
 
-3. **Spell.dbc**
-   - 新增坐骑 spell，复制已有坐骑作为模板。
-   - 设置 `Mechanic=21`、`Effect_3=6`、`EffectAura_3=78`。
-   - `EffectMiscValue_3` = `CreatureDisplayInfo.ID`。
-   - 按陆地/飞行类型配置 `EffectAuraPeriod_*`、`EffectMechanic_*`、`AttributesExD`。
-   - 设置中文名称 `Name_Lang_zhCN`。
+`Spell.dbc` 记录里除上表外的字段（`Mechanic`、`Effect_*`、`EffectAura_*`、
+`Attributes*`、`SpellVisualID_1`、名称/描述）由 `mount_type` 经
+`SPELL_TYPE_TEMPLATES` 自动填充，**不需要在 YAML 里逐个写**。
 
-4. **Item.dbc**（可选，如果通过物品学习/使用）
-   - 新增记录，`ClassID=15`、`SubclassID=5`。
-   - `DisplayInfoID` 指向 `ItemDisplayInfo.ID`。
+#### 完整流程
 
-5. **ItemDisplayInfo.dbc**（可选）
-   - 新增记录，配置 `InventoryIcon_1` 等图标字段。
+见 [坐骑生产流程总纲](../workflows/01坐骑生产流程总纲.md)。命令行等价物：
 
-#### SQL 写入
+```bash
+# 第 5 步：预检（纯读，不落盘）
+curl -s http://localhost:8000/api/patches/preview/mount/3
 
-1. **creature_model_info**
-   - 插入 `DisplayID` = `CreatureDisplayInfo.ID`。
-   - 设置 `BoundingRadius`、`CombatReach`。
+# 第 6 步：创建补丁任务
+uv run python -m app.cli patch export --type mount --id 3
 
-2. **item_template**（可选）
-   - 插入物品记录，`class=15`、`subclass=5`。
-   - `displayid` = `ItemDisplayInfo.ID`。
-   - `spellid_1` = 坐骑 spell ID，`spelltrigger_1=0`。
-   - 配置 `RequiredSkill` / `RequiredSkillRank` 等。
+# 第 7 步：构建
+uv run python -m app.cli patch build --jobs mount_0003 --dry-run   # 干跑
+uv run python -m app.cli patch build --jobs mount_0003            # 正式
 
-3. 如坐骑需要对应生物实体（少数情况），再写入 `creature_template` + `creature_template_model`。
+# 第 8 步：审查产物
+cat workspace/reports/{batch}/validation-report.json
+
+# 第 9 步：发布
+uv run python -m app.cli patch publish --start-number 7
+```
 
 #### 部署
 
-- 服务端：执行 `acore-update-dbc.sh` 同步 DBC，重启 `ac-worldserver`。
-- 客户端：将修改后的 DBC 打包为 MPQ 补丁放入 `Data/` 目录，清除缓存。
+- 服务端：执行 `bash acore-deploy/scripts/acore-update-dbc.sh --local-path data/wow-dbc/src/dbc`，
+  同步 DBC；SQL 补丁由 AzerothCore worldserver 启动时自动加载。
+- 客户端：把 `workspace/dist/{batch}/patch-zhCN-{N}.mpq` 放入客户端 `Data/` 目录，清除 `Data/cache/`。
 
 ---
 
-### 6.2 添加一个宠物
+### 6.2 添加一个宠物（尚未管线化）
+
+> ⚠️ **本节描述的是手工流程**。宠物目前**没有** `patch export` / `patch build` 支持，
+> `patch export` 只接受 `mount` 类型。宠物与 NPC 的管线化是独立议题。
 
 #### DBC 编辑
 
@@ -355,7 +400,9 @@
 
 ---
 
-### 6.3 添加一个 NPC
+### 6.3 添加一个 NPC（尚未管线化）
+
+> ⚠️ **本节描述的是手工流程**。NPC 目前**没有** `patch export` / `patch build` 支持。
 
 #### DBC 编辑
 
