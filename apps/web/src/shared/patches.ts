@@ -2,6 +2,8 @@ import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
   BuildStatus,
   CleanResult,
+  DistroAdminBatches,
+  DistroDeleteResult,
   DistroPushResult,
   DistroStatus,
   JobArtifactsOut,
@@ -196,6 +198,36 @@ export function getDistroStatus(): Promise<DistroStatus> {
       error: raw?.error ?? null,
     }),
   );
+}
+
+/** 分发端全部批次（含 pending 与失败残留） */
+export function getDistroAdminBatches(): Promise<DistroAdminBatches> {
+  return apiGetJson<Partial<DistroAdminBatches>>(
+    "/api/patches/distro/batches",
+  ).then((raw) => ({
+    batches: raw?.batches ?? [],
+    reachable: raw?.reachable !== false,
+    error: raw?.error ?? null,
+  }));
+}
+
+/** 删除分发端上的批次（玩家将不再能下载该补丁） */
+export function deleteDistroBatch(batch: string): Promise<DistroDeleteResult> {
+  return apiFetch(`/api/patches/distro/batches/${encodeURIComponent(batch)}`, {
+    method: "DELETE",
+  }).then((res) => res.json() as Promise<DistroDeleteResult>);
+}
+
+/** 修改分发端批次的元数据（如 changelog），不动 MPQ、不改可见性 */
+export function updateDistroBatchMeta(
+  batch: string,
+  body: { changelog?: string; mount_count?: number; file_count?: number },
+): Promise<Record<string, unknown>> {
+  return apiFetch(`/api/patches/distro/batches/${encodeURIComponent(batch)}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  }).then((res) => res.json() as Promise<Record<string, unknown>>);
 }
 
 export function getPatchJobAudit(jobId: string): Promise<PatchJobAudit> {

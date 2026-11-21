@@ -272,6 +272,43 @@ class DistroStatusOut(BaseModel):
     error: str | None = None
 
 
+class DistroAdminBatchInfo(BaseModel):
+    """分发端上的一个批次（admin 视角，含不可见/失败残留）。"""
+
+    batch: str
+    status: str = "unknown"
+    patch_number: int | None = None
+    patch_file: str | None = None
+    size_bytes: int | None = None
+    mount_count: int | None = None
+    file_count: int | None = None
+    generated_at: str | None = None
+    has_changelog: bool = False
+    has_mpq: bool = False
+    mpq_bytes: int = 0
+    announced_at: str | None = None
+    uploaded_at: str | None = None
+    updated_at: str | None = None
+
+
+class DistroAdminBatchesOut(BaseModel):
+    """分发端全部批次清单。"""
+
+    batches: list[DistroAdminBatchInfo] = Field(default_factory=list)
+    reachable: bool = True
+    error: str | None = None
+
+
+class DistroDeleteResult(BaseModel):
+    """删除分发端批次的结果。"""
+
+    batch: str
+    existed: bool = False
+    freed_bytes: int = 0
+    reachable: bool = True
+    error: str | None = None
+
+
 class JobArtifactsOut(BaseModel):
     """补丁任务的产物清单。"""
 
