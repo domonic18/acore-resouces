@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 
 from app.core.config import settings
 from app.main import app
+from app.services import dbc_query
 
 client = TestClient(app)
 
@@ -16,6 +17,11 @@ SAMPLE_MOUNT_ID = 3
 _requires_mount = pytest.mark.skipif(
     not (settings.project_root / "data/resources/mounts").exists(),
     reason="本地坐骑资源不存在",
+)
+
+_requires_spell_icon = pytest.mark.skipif(
+    not dbc_query.SPELL_ICON_PATH.exists(),
+    reason="本地 SpellIcon.dbc 不存在",
 )
 
 
@@ -131,6 +137,7 @@ def test_batches_endpoint_lists_batches() -> None:
         assert "jobs" in batch
 
 
+@_requires_spell_icon
 def test_spell_icon_lookup() -> None:
     response = client.get("/api/dbc/spell-icon/lookup", params={"name": "inv_hippo_green"})
     assert response.status_code == 200
