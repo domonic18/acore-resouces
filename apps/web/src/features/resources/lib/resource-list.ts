@@ -2,6 +2,7 @@ import type { Resource } from "@/shared/types";
 import { z } from "zod";
 import { extractWowheadId } from "./id-origin";
 import { getMissingRequiredFields } from "../requiredFields";
+import { SPECIAL_FEATURE_META } from "./special-features";
 
 export const TYPES: { key: "all" | "mount" | "pet" | "npc"; label: string }[] =
   [
@@ -357,17 +358,8 @@ export function matchesTagFilter(
   return selectedTags.some((t) => tags.includes(t));
 }
 
-export const SPECIAL_FEATURE_OPTIONS: { value: string; label: string }[] = [
-  { value: "三人骑乘", label: "三人骑乘" },
-  { value: "双人骑乘", label: "双人骑乘" },
-  { value: "自带商人", label: "自带商人" },
-  { value: "自带拍卖行", label: "自带拍卖行" },
-  { value: "修理", label: "修理" },
-  { value: "水面行走", label: "水面行走" },
-  { value: "水下骑乘", label: "水下骑乘" },
-  { value: "骑乘采集", label: "骑乘采集" },
-  { value: "变色涂装", label: "变色涂装" },
-];
+export const SPECIAL_FEATURE_OPTIONS: { value: string; label: string }[] =
+  SPECIAL_FEATURE_META.map((meta) => ({ value: meta.value, label: meta.value }));
 
 export function matchesFeatureFilter(
   resource: Resource,

@@ -585,6 +585,19 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
     )
 
 
+def _read_existing_manifest(job_dir: Path) -> dict[str, Any] | None:
+    """读取已存在的 job.json；缺失或损坏时返回 None。"""
+    job_json = job_dir / "job.json"
+    if not job_json.exists():
+        return None
+    try:
+        with job_json.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return None
+    return data if isinstance(data, dict) and data.get("job_id") else None
+
+
 def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     """为单个资源创建补丁任务。
 
@@ -612,7 +625,21 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
     job_id = _build_job_id(resource)
     job_dir = settings.patch_jobs_dir / job_id
 
-    # 固定目录完全重置，避免历史产物与重复目录
+    # 已存在的任务：保留构建状态与产物登记，只刷新资源快照字段。
+    # 早期实现是无条件 rmtree 重建，导致对一只**已经构建过**的坐骑再次
+    # 「创建补丁任务」会把 status 从 generated 退回 requested、清空
+    # artifacts 里的产物路径——产物还在磁盘上，但登记丢了，审查步骤
+    # 就再也读不到校验报告。
+    existing = _read_existing_manifest(job_dir)
+    if existing is not None:
+        manifest = PatchJobManifest.model_validate(existing)
+        manifest.resource_name = resource.official_db.name or resource.model_folder
+        manifest.resource_model_folder = resource.model_folder
+        manifest.updated_at = datetime.now(UTC).isoformat()
+        _write_json(job_dir / "job.json", manifest.model_dump(exclude_none=False))
+        return manifest
+
+    # 全新任务：目录里可能残留没有 job.json 的旧文件，整体清掉
     if job_dir.exists():
         shutil.rmtree(job_dir)
     _ensure_dir(job_dir)
@@ -701,7 +728,7 @@ def get_patch_job(job_id: str) -> PatchJobManifest | None:
 def update_patch_job_status(
     job_id: str,
     status: str,
-    output_artifacts: dict[str, str] | None = None,
+    output_artifacts: dict[str, Any] | None = None,
     summary: str | None = None,
 ) -> PatchJobManifest | None:
     """更新补丁任务状态。
@@ -709,7 +736,7 @@ def update_patch_job_status(
     Args:
         job_id: 任务 ID。
         status: 新状态。
-        output_artifacts: 输出产物清单。
+        output_artifacts: 输出产物清单。值含列表（如 sql_files），故不是 dict[str, str]。
         summary: 摘要。
 
     Returns:

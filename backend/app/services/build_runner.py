@@ -37,7 +37,27 @@ _status: dict[str, Any] = {
 
 _LOG_MAX_LINES = 500
 _log_buffer: deque[dict[str, Any]] = deque(maxlen=_LOG_MAX_LINES)
-_progress: dict[str, Any] = {"current": 0, "total": 0, "current_job": None}
+_log_seq = 0
+_progress: dict[str, Any] = {
+    "current": 0,
+    "total": 0,
+    "current_job": None,
+    "phase": None,
+    "phase_label": None,
+}
+
+# 构建阶段 → 中文标签，供界面直接显示
+PHASE_LABELS: dict[str, str] = {
+    "load": "读取任务与计划",
+    "validate": "检查 ID 冲突",
+    "apply_dbc": "写入 DBC",
+    "gen_sql": "生成 SQL",
+    "build_mpq": "打包 MPQ",
+    "report": "生成校验报告",
+    "changelog": "生成变更日志",
+    "audit": "生成审计报告",
+    "finalize": "更新任务状态",
+}
 
 
 def _now() -> str:
@@ -45,11 +65,17 @@ def _now() -> str:
 
 
 def _emit_log(msg: str) -> None:
-    _log_buffer.append({"ts": _now(), "message": msg})
+    global _log_seq
+    _log_buffer.append({"seq": _log_seq, "ts": _now(), "message": msg})
+    _log_seq += 1
 
 
 def _emit_progress(current: int, total: int, job_id: str | None) -> None:
     _progress.update(current=current, total=total, current_job=job_id)
+
+
+def _emit_phase(phase: str) -> None:
+    _progress.update(phase=phase, phase_label=PHASE_LABELS.get(phase, phase))
 
 
 def get_build_status() -> dict[str, Any]:
@@ -70,8 +96,10 @@ def start_build(
     """
     if not _lock.acquire(blocking=False):
         raise BuildAlreadyRunningError("已有构建任务在执行中，请稍后再试")
+    global _log_seq
     _log_buffer.clear()
-    _progress.update(current=0, total=0, current_job=None)
+    _log_seq = 0
+    _progress.update(current=0, total=0, current_job=None, phase=None, phase_label=None)
     _status.update(
         running=True,
         started_at=_now(),
@@ -96,6 +124,7 @@ def run_build(
             force=force,
             log=_emit_log,
             progress=_emit_progress,
+            phase=_emit_phase,
         )
         _status["result"] = {
             "jobs": result.get("jobs", []),
@@ -110,12 +139,15 @@ def run_build(
     except DBCConflictError as e:
         _status["error"] = f"DBC ID 冲突，构建终止：{e}"
         _emit_log(f"ERROR: {_status['error']}")
+        _mark_jobs_failed(e.job_ids, str(e))
     except MountPatchBuilderError as e:
         _status["error"] = f"构建失败：{e}"
         _emit_log(f"ERROR: {_status['error']}")
+        _mark_jobs_failed(e.job_ids, str(e))
     except Exception as e:  # 兜底：后台任务任何异常都必须释放锁
         _status["error"] = f"构建异常：{e}"
         _emit_log(f"ERROR: {_status['error']}")
+        _mark_jobs_failed(list(job_ids) if job_ids else [], str(e))
     finally:
         _status["running"] = False
         _status["finished_at"] = _now()
@@ -123,3 +155,20 @@ def run_build(
             _lock.release()
         except RuntimeError:
             pass
+
+
+def _mark_jobs_failed(job_ids: list[str], reason: str) -> None:
+    """把构建失败的任务标记为 failed。
+
+    没有这一步，界面上分不清「构建失败」与「还没构建」——
+    两种情况下任务的 status 都是 requested。
+    """
+    if not job_ids:
+        return
+    from app.services.patch_exporter import update_patch_job_status
+
+    for job_id in job_ids:
+        try:
+            update_patch_job_status(job_id, "failed", summary=f"构建失败：{reason}")
+        except Exception:  # noqa: BLE001 - 标记失败不能掩盖原始错误
+            continue

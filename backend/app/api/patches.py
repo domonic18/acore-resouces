@@ -5,17 +5,39 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-from app.schemas.patch import PatchJobStatus, PatchJobUpdateRequest
+from app.core.config import settings
+from app.schemas.patch import (
+    DistroBatchInfo,
+    DistroPushCleaned,
+    DistroPushItem,
+    DistroPushRequest,
+    DistroPushResult,
+    DistroStatusOut,
+    JobArtifactsOut,
+    JobPlansOut,
+    MountPatchPreview,
+    PatchJobStatus,
+    PatchJobUpdateRequest,
+    ValidationReportOut,
+)
+from app.schemas.resource import Mount
 from app.services.build_runner import (
     BuildAlreadyRunningError,
     get_build_status,
     run_build,
     start_build,
 )
+from app.services.mount_patch_builder import MountPatchBuilderError
+from app.services.mount_preview import build_mount_preview, build_mount_previews
+from app.services.patch_artifacts import load_job_artifacts
 from app.services.patch_audit import load_audit_by_job
 from app.services.patch_batches import list_patch_batches
+from app.services.patch_distro_client import (
+    DistroPushError,
+    fetch_dist_batches,
+)
 from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
@@ -23,7 +45,17 @@ from app.services.patch_exporter import (
     list_patch_jobs,
     update_patch_job_status,
 )
-from app.services.patch_publisher import PatchPublisherError, publish_patches
+from app.services.patch_plans import build_live_plans, load_stored_plans
+from app.services.patch_publisher import (
+    PatchPublisherError,
+    publish_patches,
+    push_batches,
+)
+from app.services.patch_reports import (
+    load_validation_report_by_batch,
+    load_validation_report_by_job,
+)
+from app.services.resource_store import load_resource
 from app.services.workspace_cleaner import (
     WorkspaceCleanerError,
     clean_workspace,
@@ -37,6 +69,12 @@ class PatchExportRequest(BaseModel):
 
     resource_type: str
     resource_ids: list[int]
+
+
+class PatchPreviewBatchRequest(BaseModel):
+    """批量补丁预览请求。"""
+
+    resource_ids: list[int] = Field(default_factory=list)
 
 
 @router.post("/export-request")
@@ -95,6 +133,9 @@ class PatchPublishRequest(BaseModel):
 
     start_number: int = 5
     dry_run: bool = False
+    batch_ids: list[str] | None = Field(
+        default=None, description="指定要发布的批次；为空则发布所有未发布批次"
+    )
 
 
 @router.post("/build", status_code=202)
@@ -102,6 +143,12 @@ def build_patches(background_tasks: BackgroundTasks, body: PatchBuildRequest) ->
     """后台启动补丁构建，立即返回；进度经 /build/status 轮询。"""
     if not body.all_requested and not body.job_ids:
         raise HTTPException(400, "请指定 all_requested 或 job_ids")
+    if body.job_ids and body.all_requested:
+        raise HTTPException(400, "job_ids 与 all_requested 不能同时指定")
+    if body.job_ids:
+        missing = [jid for jid in body.job_ids if get_patch_job(jid) is None]
+        if missing:
+            raise HTTPException(404, f"任务不存在：{', '.join(missing)}")
     try:
         start_build(body.all_requested, body.job_ids, body.dry_run, body.force)
     except BuildAlreadyRunningError as e:
@@ -133,9 +180,37 @@ def list_batches(
 def publish(body: PatchPublishRequest) -> dict[str, Any]:
     """发布 MPQ 批次到分发目录（同步执行）。"""
     try:
-        return publish_patches(start_number=body.start_number, dry_run=body.dry_run)
+        return publish_patches(
+            start_number=body.start_number,
+            dry_run=body.dry_run,
+            batch_ids=body.batch_ids,
+        )
     except PatchPublisherError as e:
         raise HTTPException(500, f"发布失败: {e}") from e
+
+
+@router.delete("/batches/{batch_id}")
+def delete_batch(batch_id: str) -> dict[str, Any]:
+    """删除一个批次下的全部补丁任务。
+
+    仅移除任务目录，不影响真相源与已生成的 DBC/SQL/MPQ 产物。
+    """
+    batch = next(
+        (b for b in list_patch_batches() if b.batch_id == batch_id), None
+    )
+    if batch is None or not batch.jobs:
+        raise HTTPException(404, f"批次 {batch_id} 下没有可删除的任务")
+
+    deleted = []
+    for job in batch.jobs:
+        try:
+            if delete_patch_job(job.job_id):
+                deleted.append(job.job_id)
+        except ValueError as e:
+            raise HTTPException(400, str(e)) from e
+        except BuildAlreadyRunningError as e:
+            raise HTTPException(409, str(e)) from e
+    return {"deleted": deleted, "batch": batch_id, "total": len(deleted)}
 
 
 class WorkspaceCleanRequest(BaseModel):
@@ -159,6 +234,168 @@ def clean(body: WorkspaceCleanRequest) -> dict[str, Any]:
         )
     except WorkspaceCleanerError as e:
         raise HTTPException(409, str(e)) from e
+
+
+@router.get("/preview/{resource_type}/{resource_id}", response_model=MountPatchPreview)
+def preview_patch(resource_type: str, resource_id: int) -> MountPatchPreview:
+    """坐骑补丁预览（所见即所得）。
+
+    纯读：在创建补丁任务之前计算「这次构建会往 DBC/SQL 写入什么」，
+    并列出关联不一致、ID 冲突、资源缺失等问题，不落盘。
+    """
+    resource = load_resource(resource_type, resource_id)
+    if resource is None:
+        raise HTTPException(404, f"未找到 {resource_type} ID={resource_id}")
+    if resource.resource_type != "mount":
+        raise HTTPException(400, "第一阶段仅支持 mount 类型")
+    return build_mount_preview(resource)
+
+
+@router.post("/preview/batch", response_model=list[MountPatchPreview])
+def preview_patch_batch(body: PatchPreviewBatchRequest) -> list[MountPatchPreview]:
+    """批量坐骑补丁预览。
+
+    与逐个调用 /preview/{type}/{id} 等价，但共享 DBC 占用 ID 缓存——
+    每个 DBC 文件只加载一次。
+    """
+    if not body.resource_ids:
+        raise HTTPException(400, "resource_ids 不能为空")
+    if len(body.resource_ids) > 100:
+        raise HTTPException(400, "一次最多预览 100 个资源")
+
+    resources: list[Mount] = []
+    missing = []
+    for rid in body.resource_ids:
+        resource = load_resource("mount", rid)
+        if resource is None:
+            missing.append(rid)
+        elif resource.resource_type == "mount":
+            resources.append(resource)
+    if missing:
+        raise HTTPException(404, f"未找到坐骑：{', '.join(str(m) for m in missing)}")
+
+    return build_mount_previews(resources)
+
+
+@router.post("/distro-push", response_model=DistroPushResult)
+def distro_push(body: DistroPushRequest) -> DistroPushResult:
+    """把已发布批次推送到分发端。
+
+    与「本地发布」是**两个独立动作**：本地发布只是改名移位（可反悔），
+    推送才会让补丁对玩家可见、公告同步发布——不可撤销，因此必须显式触发。
+    """
+    try:
+        result = push_batches(
+            batch_ids=body.batch_ids or None, dry_run=body.dry_run
+        )
+    except PatchPublisherError as e:
+        return DistroPushResult(configured=False, reachable=False, error=str(e))
+    except DistroPushError as e:
+        return DistroPushResult(reachable=False, error=str(e))
+
+    return DistroPushResult(
+        pushed=list(result["pushed"]),
+        failed=[
+            DistroPushItem(batch=item["batch"], error=item.get("error"))
+            for item in result["failed"]
+        ],
+        preview=[
+            DistroPushItem(
+                batch=item["batch"],
+                path=item.get("path"),
+                patch_number=item.get("patch_number"),
+                size_bytes=item.get("size_bytes"),
+            )
+            for item in result["preview"]
+        ],
+        cleaned=[
+            DistroPushCleaned(
+                batch=item["batch"], freed_bytes=int(item.get("freed_bytes") or 0)
+            )
+            for item in result.get("cleaned", [])
+        ],
+    )
+
+
+@router.get("/distro/status", response_model=DistroStatusOut)
+def distro_status() -> DistroStatusOut:
+    """对比本地已发布批次与分发端已推送批次。"""
+    local = sorted(
+        d.name
+        for d in settings.workspace_dir.joinpath("dist").iterdir()
+        if d.is_dir() and list(d.glob("patch-zhCN-*.mpq"))
+    ) if settings.workspace_dir.joinpath("dist").exists() else []
+
+    try:
+        details = fetch_dist_batches()
+    except DistroPushError as e:
+        return DistroStatusOut(
+            local_batches=local, reachable=False, error=str(e)
+        )
+
+    pushed = sorted(d["batch"] for d in details)
+    return DistroStatusOut(
+        local_batches=local,
+        pushed_batches=pushed,
+        pending_batches=[b for b in local if b not in pushed],
+        pushed_details=[
+            DistroBatchInfo(
+                batch=d["batch"],
+                patch_number=d.get("patch_number"),
+                patch_file=d.get("patch_file"),
+                size_bytes=d.get("size_bytes"),
+                mount_count=d.get("mount_count"),
+                file_count=d.get("file_count"),
+                generated_at=d.get("generated_at"),
+            )
+            for d in details
+        ],
+    )
+
+
+@router.get("/reports/{batch}/validation-report", response_model=ValidationReportOut)
+def get_batch_validation_report(batch: str) -> ValidationReportOut:
+    """按批次读取校验报告。"""
+    try:
+        return load_validation_report_by_batch(batch)
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e)) from e
+
+
+@router.get("/jobs/{job_id}/validation-report", response_model=ValidationReportOut)
+def get_job_validation_report(job_id: str) -> ValidationReportOut:
+    """按任务读取校验报告切片。"""
+    try:
+        return load_validation_report_by_job(job_id)
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e)) from e
+
+
+@router.get("/jobs/{job_id}/plans", response_model=JobPlansOut)
+def get_job_plans(
+    job_id: str,
+    source: str = Query(
+        "stored", pattern="^(stored|live)$", description="读 dry-run 落盘计划或现场重算"
+    ),
+) -> JobPlansOut:
+    """读取补丁任务的 DBC/SQL 生成计划。"""
+    try:
+        if source == "live":
+            return build_live_plans(job_id)
+        return load_stored_plans(job_id)
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e)) from e
+    except MountPatchBuilderError as e:
+        raise HTTPException(409, str(e)) from e
+
+
+@router.get("/jobs/{job_id}/artifacts", response_model=JobArtifactsOut)
+def get_job_artifacts(job_id: str) -> JobArtifactsOut:
+    """读取补丁任务的产物清单（含可下载链接）。"""
+    try:
+        return load_job_artifacts(job_id)
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e)) from e
 
 
 @router.get("/{job_id}")

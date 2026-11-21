@@ -1,6 +1,12 @@
 # Attributes 标志位完整参考
 
-## SPELL_ATTR0 (Attributes)
+> 权威来源：`azerothcore-wotlk/src/server/shared/SharedDefines.h`
+> （枚举名以服务端为准：`SPELL_ATTR0_ONLY_OUTDOORS` / `SPELL_ATTR4_ONLY_FLYING_AREAS`）。
+>
+> ⚠️ 坐骑相关字段名是 `Attributes`（SPELL_ATTR0）、`AttributesExC`、`AttributesExD`（SPELL_ATTR4）……
+> **没有 `AttributesEx4` 这个字段名**，SPELL_ATTR4 对应的是 `AttributesExD`。
+
+## SPELL_ATTR0 (`Attributes`)
 
 | 位 | 名称 | 十六进制 | 十进制 | 说明 |
 |----|------|----------|--------|------|
@@ -18,8 +24,8 @@
 | 11 | SPELL_ATTR0_UNK11 | 0x00000800 | 2048 | 未知 |
 | 12 | SPELL_ATTR0_DAYTIME_ONLY | 0x00001000 | 4096 | 仅白天 |
 | 13 | SPELL_ATTR0_NIGHT_ONLY | 0x00002000 | 8192 | 仅夜晚 |
-| 14 | SPELL_ATTR0_INDOORS_ONLY | 0x00004000 | 16384 | 仅室内 |
-| 15 | SPELL_ATTR0_OUTDOORS_ONLY | 0x00008000 | 32768 | 仅户外 |
+| 14 | SPELL_ATTR0_ONLY_INDOORS | 0x00004000 | 16384 | 仅室内 |
+| **15** | **SPELL_ATTR0_ONLY_OUTDOORS** | **0x00008000** | **32768** | **仅户外** |
 | 16 | SPELL_ATTR0_NOT_SHAPESHIFT | 0x00010000 | 65536 | 不能变形 |
 | 17 | SPELL_ATTR0_ONLY_STEALTHED | 0x00020000 | 131072 | 仅潜行时 |
 | 18 | SPELL_ATTR0_DONT_AFFECT_SHEATH_STATE | 0x00040000 | 262144 | 不影响武器状态 |
@@ -35,51 +41,57 @@
 | 28 | SPELL_ATTR0_CANT_USED_IN_COMBAT | 0x10000000 | 268435456 | 战斗中不能使用 |
 | 29 | SPELL_ATTR0_UNAFFECTED_BY_INVULNERABILITY | 0x20000000 | 536870912 | 不受无敌影响 |
 | 30 | SPELL_ATTR0_HEARTBEAT_RESIST_CHECK | 0x40000000 | 1073741824 | 心跳抵抗检查 |
-| 31 | SPELL_ATTR0_CANT_CANCEL | 0x80000000 | 2147483648 | 不能取消 |
+| 31 | SPELL_ATTR0_NO_AURA_CANCEL | 0x80000000 | 2147483648 | 光环不能被取消 |
 
-**注意**: 坐骑常用 `SPELL_ATTR0_OUTDOORS_ONLY` (位15 = 32768)。
+> ⚠️ **常见误解**：`2147483648`（0x80000000，位 31）是 `SPELL_ATTR0_NO_AURA_CANCEL`，
+> **不是**户外限制。户外限制是 **32768**（0x00008000，位 15）。
 
-上面原文档中有错误，正确的 `SPELL_ATTR0_OUTDOORS_ONLY` 位定义需参考 AzerothCore 源码。
-根据实际源码，常用的户外限制值是 **2147483648** (0x80000000)，但具体位定义需以源码为准。
-
-## SPELL_ATTR4 (AttributesEx4)
+## SPELL_ATTR4 (`AttributesExD`)
 
 | 位 | 名称 | 十六进制 | 十进制 | 说明 |
 |----|------|----------|--------|------|
-| 0-21 | (多位) | - | - | 各种效果 |
-| 22 | SPELL_ATTR4_ONLY_FLYING_AREAS | 0x00400000 | 67108864 | 只能在飞行区域使用 |
+| **26** | **SPELL_ATTR4_ONLY_FLYING_AREAS** | **0x04000000** | **67108864** | **只能在飞行区域使用** |
 
-## 坐骑常用组合
+> 十六进制是 `0x04000000`（四个零），不是 `0x00400000`（那是 4194304，位 22）。
 
-| 场景 | Attributes | AttributesEx4 | 说明 |
-|------|-----------|---------------|------|
-| 纯陆地坐骑 | 0 | 0 | 无限制 |
-| 户外限制坐骑 | 2147483648 | 0 | 仅户外可用 |
-| 飞行坐骑 | 0 | 67108864 | 仅飞行区域 |
-| 户外飞行坐骑 | 2147483648 | 67108864 | 户外+飞行区域 |
+## 坐骑实际取值
+
+管线（`backend/app/services/patch_exporter.py` 的 `SPELL_TYPE_TEMPLATES`）与
+3.3.5a 官方坐骑法术采用的取值：
+
+| 场景 | `Attributes` | `AttributesExD` | 说明 |
+|------|-------------|-----------------|------|
+| 陆地坐骑 | 269844752 (0x10158110) | 0 | 含位 15（仅户外），与官方一致 |
+| 飞行坐骑 | 269844496 (0x10158010) | 67108864 | 仅飞行区域 |
+| 水上坐骑 | 269844752 (0x10158110) | 0 | 同陆地 |
+
+对照：3.3.5a 官方 `Mechanic=21` 的法术里，`Attributes = 269844752` 出现 236 次、
+`269582608` 出现 104 次，是主流取值。
 
 ## 计算标志位值
 
 多个标志位组合时使用按位或：
 
 ```python
-# 户外 + 仅飞行区域
-attributes = 2147483648 | 0  # = 2147483648
-attributes_ex4 = 0 | 67108864  # = 67108864
+# 仅户外 + 仅飞行区域
+attributes = 32768 | 0            # = 32768
+attributes_ex_d = 0 | 67108864    # = 67108864
 
-# 纯陆地
-attributes = 0
-attributes_ex4 = 0
+# 仅户外
+attributes = 32768
 ```
 
 ## 验证标志位
 
 ```python
-# 检查是否设置了特定位
 def has_flag(value, flag):
     return (value & flag) == flag
 
-# 示例
-has_flag(67108864, 67108864)  # True - 设置了 ONLY_FLYING_AREAS
+has_flag(67108864, 67108864)  # True  - 设置了 ONLY_FLYING_AREAS
 has_flag(0, 67108864)         # False - 未设置
 ```
+
+## 相关文件
+
+- 常量定义：`azerothcore-wotlk/src/server/shared/SharedDefines.h`
+- 管线取值：`backend/app/services/patch_exporter.py`

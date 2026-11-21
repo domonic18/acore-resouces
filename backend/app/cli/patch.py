@@ -19,6 +19,7 @@ from app.services.mount_patch_builder import (
     build_mount_patches,
 )
 from app.services.patch_audit import load_audit_by_batch, load_audit_by_job
+from app.services.patch_distro_client import DistroPushError
 from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
@@ -26,7 +27,11 @@ from app.services.patch_exporter import (
     list_patch_jobs,
     update_patch_job_status,
 )
-from app.services.patch_publisher import PatchPublisherError, publish_patches
+from app.services.patch_publisher import (
+    PatchPublisherError,
+    publish_patches,
+    push_batches,
+)
 from app.services.workspace_cleaner import (
     WorkspaceCleanerError,
     clean_workspace,
@@ -117,14 +122,27 @@ def build_patch(
 def publish_patch(
     start_number: int = typer.Option(5, "--start-number", help="补丁编号起始值"),
     dry_run: bool = typer.Option(False, "--dry-run", help="仅预览，不执行发布"),
+    batch: list[str] = typer.Option(
+        None, "--batch", help="只发布指定批次（可重复）；不指定则发布全部未发布批次"
+    ),
+    push_distro: bool = typer.Option(
+        False,
+        "--push-distro",
+        help="发布后立即推送到分发端（推送后补丁对玩家可见，不可撤销；默认不推）",
+    ),
 ) -> None:
     """将 workspace/mpq/ 下未发布的批次移动发布到 workspace/dist/。
 
     MPQ 大文件移动改名（不重复占磁盘），manifest/readme 等元数据随发布
     复制到 dist，发布成功后清理构建侧批次目录。
+
+    推送到分发端是**独立的一步**（patch distro-push）——推送后补丁对玩家
+    可见、公告同步发布且无法撤销，因此默认不推。
     """
     try:
-        result = publish_patches(start_number=start_number, dry_run=dry_run)
+        result = publish_patches(
+            start_number=start_number, dry_run=dry_run, batch_ids=list(batch) if batch else None
+        )
     except PatchPublisherError as e:
         console.print(f"[red]{e}[/red]")
         raise typer.Exit(1) from e
@@ -135,19 +153,27 @@ def publish_patch(
             console.print(f"  {item['batch']} -> {item['path']}")
     if result["skipped"]:
         console.print(f"[yellow]已跳过（已发布）: {', '.join(result['skipped'])}[/yellow]")
-    if result.get("distro_pushed"):
-        console.print(f"[green]已推送分发端: {', '.join(result['distro_pushed'])}[/green]")
-    if result.get("distro_push_failed"):
-        console.print(
-            f"[yellow]推送分发端失败（可稍后 patch distro-push 重试）: "
-            f"{', '.join(result['distro_push_failed'])}[/yellow]"
-        )
+    if push_distro and result["published"]:
+        console.print("[cyan]推送到分发端...[/cyan]")
+        try:
+            pushed = push_batches(batch_ids=list(batch) if batch else None)
+        except (PatchPublisherError, DistroPushError) as e:
+            console.print(f"[yellow]推送分发端失败（可稍后 patch distro-push 重试）: {e}[/yellow]")
+        else:
+            if pushed["pushed"]:
+                console.print(f"[green]已推送分发端: {', '.join(pushed['pushed'])}[/green]")
+            for item in pushed["failed"]:
+                console.print(f"[yellow]推送失败 {item['batch']}: {item['error']}[/yellow]")
+    elif result["published"]:
+        console.print("[dim]未推送分发端。需要玩家可下载时执行: patch distro-push[/dim]")
 
 
 @app.command("distro-push", help="推送已发布批次到分发端（acore-patch-distro）")
 def distro_push(
     all_batches: bool = typer.Option(False, "--all", help="推送 dist 下全部批次（含存量迁移）"),
-    batch: str | None = typer.Option(None, "--batch", help="指定批次时间戳，如 20260908_055924"),
+    batch: list[str] = typer.Option(
+        None, "--batch", help="指定批次时间戳（可重复），如 --batch 20260908_055924"
+    ),
     base_url: str | None = typer.Option(None, "--base-url", help="覆盖 DISTRO_BASE_URL"),
     api_key: str | None = typer.Option(None, "--api-key", help="覆盖 DISTRO_API_KEY"),
 ) -> None:
@@ -170,7 +196,7 @@ def distro_push(
 
     dist_dir = app_settings.workspace_dir / "dist"
     if batch:
-        dirs = [dist_dir / batch]
+        dirs = [dist_dir / b for b in batch]
     else:
         dirs = [d for d in sorted(dist_dir.iterdir()) if d.is_dir()] if dist_dir.exists() else []
 

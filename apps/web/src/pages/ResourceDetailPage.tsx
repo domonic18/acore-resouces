@@ -19,6 +19,9 @@ import { CreatureModelDataSection } from "@/features/resources/components/resour
 import { VehicleSection } from "@/features/resources/components/resource-detail/VehicleSection";
 import { buildVehicleDraft } from "@/features/resources/lib/vehicle";
 import { ResourceDetailSidebar } from "@/features/resources/components/resource-detail/ResourceDetailSidebar";
+import { MountFlowStepper } from "@/features/resources/components/resource-detail/MountFlowStepper";
+import { MountPreviewPanel } from "@/features/resources/components/resource-detail/MountPreviewPanel";
+import { useResourceFlow } from "@/features/resources/hooks/usePatchFlow";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
 import { DisplayInfoPickerDialog } from "@/features/resources/components/resource-detail/DisplayInfoPickerDialog";
 import { PatchExportButton } from "@/features/resources/components/PatchExportButton";
@@ -76,6 +79,11 @@ export function ResourceDetailPage() {
     resourceType,
     resourceId,
     !!resource,
+  );
+
+  const flowQuery = useResourceFlow(
+    resourceType,
+    resource?.resource_type === "mount" ? resourceId : null,
   );
 
   const {
@@ -243,11 +251,7 @@ export function ResourceDetailPage() {
         </div>
         <div className="topbar-actions">
           {isMount && (
-            <PatchExportButton
-              resourceType={resourceType}
-              resourceId={resourceId}
-              resourceName={resource.name || resource.model_folder}
-            />
+            <PatchExportButton resource={resource} />
           )}
           <button className="btn btn-danger" disabled title="删除功能开发中">
             删除
@@ -291,6 +295,28 @@ export function ResourceDetailPage() {
         </nav>
 
         <div className="detail-main space-y-4">
+          {isMount && flowQuery.data && (
+            <div className="card">
+              <div className="card-body">
+                <MountFlowStepper flow={flowQuery.data} />
+              </div>
+            </div>
+          )}
+
+          {isMount && (
+            <div className="card">
+              <div className="card-header">
+                <div className="card-title">补丁预检</div>
+                <div className="card-subtitle">
+                  创建补丁任务前预览将要写入的 DBC/SQL 记录
+                </div>
+              </div>
+              <div className="card-body">
+                <MountPreviewPanel resourceId={resourceId} />
+              </div>
+            </div>
+          )}
+
           <div id="section-basic" className="scroll-mt-20">
             <BasicInfoSection
               resource={resource}
@@ -400,6 +426,8 @@ export function ResourceDetailPage() {
 
           <div id="section-relationships" className="scroll-mt-20">
             <RelationshipCheckSection
+              resourceType={resourceType}
+              resourceId={resourceId}
               liveDbc={formState.liveDbc}
               liveDb={formState.liveDb}
               compact

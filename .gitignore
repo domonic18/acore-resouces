@@ -67,3 +67,6 @@ dist/
 
 # 本地环境配置（含分发端推送密钥，不入 Git）
 backend/.env
+
+# Claude Code 本地配置（不入 Git）；.claude/skills/ 是项目资产，需入库
+.claude/settings.local.json

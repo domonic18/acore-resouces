@@ -1,7 +1,7 @@
-import { useSearchParams, Link, useLocation } from "react-router-dom";
-import { Search, Plus, X } from "lucide-react";
+import { useSearchParams, useLocation } from "react-router-dom";
+import { Search, X } from "lucide-react";
 import { cn } from "@/shared/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   TYPES,
   parseResourceType,
@@ -12,6 +12,10 @@ import { ResourceFilters } from "@/features/resources/components/ResourceFilters
 import { ResourceTable } from "@/features/resources/components/ResourceTable";
 import { ResourcePagination } from "@/features/resources/components/ResourcePagination";
 import { BulkPatchExportButton } from "@/features/resources/components/BulkPatchExportButton";
+import {
+  toJobMap,
+  useMountPatchJobs,
+} from "@/features/resources/hooks/useMountPatchJobs";
 
 const PAGE_SIZE = 20;
 
@@ -54,6 +58,13 @@ export function ResourceListPage() {
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
+  // 补丁任务状态：让列表页直接显示每只坐骑在补丁流水线上的位置
+  const patchJobsQuery = useMountPatchJobs();
+  const patchJobMap = useMemo(
+    () => toJobMap(patchJobsQuery.data ?? []),
+    [patchJobsQuery.data],
+  );
+
   const handleSelect = (id: number, selected: boolean) => {
     setSelectedIds((prev) =>
       selected ? [...prev, id] : prev.filter((itemId) => itemId !== id),
@@ -69,6 +80,12 @@ export function ResourceListPage() {
   };
 
   const canBulkExport = typeParam === "mount";
+
+  // 选中的坐骑对象（对话框里要显示名称与预检结果）
+  const selectedResources = useMemo(
+    () => (allItems ?? []).filter((item) => selectedIds.includes(item.id)),
+    [allItems, selectedIds],
+  );
 
   return (
     <div className="content">
@@ -95,9 +112,6 @@ export function ResourceListPage() {
               </button>
             )}
           </div>
-          <Link to="/import" className="btn btn-primary">
-            <Plus className="h-4 w-4" /> 新增资源
-          </Link>
         </div>
       </header>
 
@@ -124,25 +138,39 @@ export function ResourceListPage() {
           toggleParamValue={toggleParamValue}
         />
 
-        <div className="flex items-center justify-between border-b border-border bg-bg-surface px-5 py-3">
-          <div className="text-xs text-text-secondary">
-            已选择{" "}
-            <span className="font-semibold text-text-primary">
-              {selectedIds.length}
-            </span>{" "}
-            项
+        <div className="flex items-center justify-between gap-4 border-b border-border bg-bg-surface px-5 py-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-secondary">
+            {selectedResources.length > 0 ? (
+              <>
+                <span className="shrink-0">已选</span>
+                <span className="font-semibold tabular-nums text-text-primary">
+                  {selectedResources.length}
+                </span>
+                <span className="shrink-0">项：</span>
+                {selectedResources.slice(0, 4).map((item) => (
+                  <span
+                    key={item.id}
+                    className="badge badge-gray max-w-[12rem] truncate"
+                    title={item.name || item.model_folder}
+                  >
+                    {item.name || item.model_folder}
+                  </span>
+                ))}
+                {selectedResources.length > 4 && (
+                  <span className="shrink-0 text-text-tertiary">
+                    等 {selectedResources.length} 项
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className="text-text-tertiary">
+                勾选坐骑后即可批量创建补丁任务
+              </span>
+            )}
           </div>
-          <div
-            className="flex items-center gap-3"
-            title={
-              canBulkExport
-                ? undefined
-                : "批量导出当前仅支持坐骑（mount）标签页"
-            }
-          >
+          <div className="shrink-0">
             <BulkPatchExportButton
-              resourceType="mount"
-              resourceIds={selectedIds}
+              resources={selectedResources}
               disabled={!canBulkExport}
             />
           </div>
@@ -159,6 +187,8 @@ export function ResourceListPage() {
           onSelect={handleSelect}
           onSelectAll={handleSelectAll}
           showFeatures={typeParam === "mount" || typeParam === "all"}
+          showPatchStatus={typeParam === "mount"}
+          patchJobs={patchJobMap}
         />
 
         {!isLoading && !error && (

@@ -217,6 +217,7 @@ export interface PatchBuildResult {
 }
 
 export interface BuildLogEntry {
+  seq: number;
   ts: string;
   message: string;
 }
@@ -225,6 +226,10 @@ export interface BuildProgress {
   current: number;
   total: number;
   current_job: string | null;
+  /** 当前构建阶段，如 gen_sql */
+  phase: string | null;
+  /** 阶段中文标签 */
+  phase_label: string | null;
 }
 
 export interface BuildStatus {
@@ -237,10 +242,251 @@ export interface BuildStatus {
   progress: BuildProgress;
 }
 
+export interface PublishPreviewItem {
+  batch: string;
+  path: string;
+  patch_number: number;
+}
+
 export interface PublishResult {
   published: { batch: string; path: string }[];
   skipped: string[];
+  /** 干跑时列出「将要发布什么」；真实发布时与 published 内容一致 */
+  preview: PublishPreviewItem[];
   next_number: number;
+}
+
+export interface DistroPushItem {
+  batch: string;
+  path?: string | null;
+  patch_number?: number | null;
+  size_bytes?: number | null;
+  error?: string | null;
+}
+
+export interface DistroPushCleaned {
+  batch: string;
+  freed_bytes: number;
+}
+
+export interface DistroPushResult {
+  pushed: string[];
+  failed: DistroPushItem[];
+  preview: DistroPushItem[];
+  /** 推送成功后被清理的本地副本 */
+  cleaned: DistroPushCleaned[];
+  configured: boolean;
+  reachable: boolean;
+  error?: string | null;
+}
+
+export interface DistroBatchInfo {
+  batch: string;
+  patch_number: number | null;
+  patch_file: string | null;
+  size_bytes: number | null;
+  mount_count: number | null;
+  file_count: number | null;
+  generated_at: string | null;
+}
+
+export interface DistroStatus {
+  local_batches: string[];
+  pushed_batches: string[];
+  pending_batches: string[];
+  /** 分发端上的批次详情（含本地已清理的） */
+  pushed_details: DistroBatchInfo[];
+  reachable: boolean;
+  error?: string | null;
+}
+
+/* ---------- 生产流程：预览 / 流程状态 / 校验报告 / 计划 / 产物 ---------- */
+
+export interface PreviewIssue {
+  severity: "error" | "warning";
+  code: string;
+  message: string;
+  expected?: unknown;
+  actual?: unknown;
+}
+
+export interface PreviewAssetFile {
+  name: string;
+  relative_path: string;
+  file_type: string;
+}
+
+export interface PreviewAssets {
+  model_folder: string;
+  source_dir: string | null;
+  exists: boolean;
+  model_name: string | null;
+  m2_files: PreviewAssetFile[];
+  blp_files: PreviewAssetFile[];
+  matched_textures: PreviewAssetFile[];
+  icon_files: PreviewAssetFile[];
+}
+
+export interface DbcPlanOperation {
+  action: "add" | "edit";
+  record_id: number;
+  reason: string;
+  fields: Record<string, unknown>;
+}
+
+export interface DbcPlanFile {
+  dbc_file: string;
+  operations: DbcPlanOperation[];
+}
+
+export interface DbcPlan {
+  source_dbc_dir: string;
+  output_dbc_dir: string;
+  spell_profile: Record<string, unknown>;
+  plans: DbcPlanFile[];
+}
+
+export interface SqlPlanTable {
+  name: string;
+  operation: string;
+  records: Record<string, unknown>[];
+}
+
+export interface SqlPlan {
+  target_database: string;
+  output_sql_file: string;
+  tables: SqlPlanTable[];
+}
+
+export interface RelationshipFieldOut {
+  source: "dbc" | "db";
+  table: string;
+  field: string;
+  value?: unknown;
+}
+
+export interface RelationshipRuleOut {
+  key: string;
+  name: string;
+  description: string;
+  fields: RelationshipFieldOut[];
+}
+
+export interface RelationshipCheckOut {
+  rule: RelationshipRuleOut;
+  status: "ok" | "mismatch" | "missing";
+  values: RelationshipFieldOut[];
+  common_value?: unknown;
+}
+
+export interface DuplicateIssueOut {
+  field: string;
+  value: number;
+  resources: {
+    id: number;
+    resource_type: string;
+    model_folder: string;
+    name: string | null;
+  }[];
+}
+
+export interface RequiredFieldsReport {
+  missing: { path: string; label: string }[];
+  ok: boolean;
+}
+
+export interface MountPatchPreview {
+  resource_type: string;
+  resource_id: number;
+  resource_name: string;
+  model_folder: string;
+  dbc_plan: DbcPlan;
+  sql_plan: SqlPlan;
+  assets: PreviewAssets;
+  relationships: RelationshipCheckOut[];
+  duplicates: DuplicateIssueOut[];
+  required_fields: RequiredFieldsReport;
+  issues: PreviewIssue[];
+  ready: boolean;
+}
+
+export interface ResourceRelationshipReport {
+  resource_type: string;
+  resource_id: number;
+  overall_status: "ok" | "mismatch" | "missing";
+  relationships: RelationshipCheckOut[];
+  duplicates: DuplicateIssueOut[];
+  required_fields: RequiredFieldsReport;
+}
+
+export interface FlowStepState {
+  step_id: string;
+  index: number;
+  status: "pending" | "active" | "done" | "blocked";
+  completed: boolean;
+  message: string | null;
+  details?: Record<string, unknown> | null;
+}
+
+export interface ResourceFlowState {
+  resource_type: string;
+  resource_id: number;
+  current_step_id: string;
+  current_step_index: number;
+  completed: boolean;
+  steps: FlowStepState[];
+  job: PatchJob | null;
+  validation_passed: boolean | null;
+}
+
+export interface ValidationCheckOut {
+  name: string;
+  passed: boolean;
+  severity: "error" | "warning";
+  expected?: unknown;
+  actual?: unknown;
+  message: string;
+}
+
+export interface ValidationJobOut {
+  job_id: string;
+  mount_name: string;
+  passed: boolean;
+  checks: ValidationCheckOut[];
+}
+
+export interface ValidationReportOut {
+  batch: string | null;
+  generated_at: string | null;
+  batch_size: number;
+  job_ids: string[];
+  all_passed: boolean;
+  path: string | null;
+  jobs: ValidationJobOut[];
+}
+
+export interface JobPlansOut {
+  job_id: string;
+  source: "stored" | "live";
+  dbc_plan: DbcPlan;
+  sql_plan: SqlPlan;
+  assets: Record<string, unknown>;
+}
+
+export interface ArtifactEntry {
+  kind: string;
+  label: string;
+  path: string | null;
+  url: string | null;
+  exists: boolean;
+  is_dir: boolean;
+  size_bytes: number | null;
+}
+
+export interface JobArtifactsOut {
+  job_id: string;
+  batch: string | null;
+  entries: ArtifactEntry[];
 }
 
 export interface AuditDbcEntry {

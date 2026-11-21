@@ -1,6 +1,8 @@
-"""MPQ 档案只读查看 REST API 路由。"""
+"""MPQ 档案浏览与清理 REST API 路由。"""
 
 from __future__ import annotations
+
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -13,6 +15,19 @@ router = APIRouter(prefix="/api/mpq", tags=["mpq"])
 def list_mpq_archives_endpoint() -> dict:
     """列出 workspace/mpq 与 workspace/dist 下全部 MPQ 档案（含混淆等级）。"""
     return mpq_inspector.list_archives()
+
+
+@router.delete("/archives/{archive:path}")
+def delete_mpq_archive(archive: str) -> dict[str, Any]:
+    """删除一个 MPQ 档案及其批次元数据。
+
+    只删 workspace/mpq|dist 下的批次目录，不触碰资源真相源与源 DBC。
+    引用该批次的补丁任务会退回「待构建」，产物登记同步清空。
+    """
+    try:
+        return mpq_inspector.delete_archive(archive)
+    except mpq_inspector.MpqArchiveNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.get("/files")

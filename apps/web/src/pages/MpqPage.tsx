@@ -25,7 +25,7 @@ export function MpqPage() {
       <header className="topbar">
         <h1 className="page-title">MPQ 查看</h1>
         <div className="topbar-actions">
-          <span className="badge badge-gray">只读查看器</span>
+          <span className="badge badge-gray">浏览与清理补丁档案</span>
         </div>
       </header>
 

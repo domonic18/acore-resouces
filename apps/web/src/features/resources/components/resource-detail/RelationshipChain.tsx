@@ -1,9 +1,9 @@
 import { Check, AlertTriangle, Minus } from "lucide-react";
 import { cn } from "@/shared/utils";
-import type { RelationshipResult } from "../../lib/relationships";
+import type { RelationshipCheckOut } from "@/shared/types";
 
 interface RelationshipChainProps {
-  result: RelationshipResult;
+  result: RelationshipCheckOut;
 }
 
 const STATUS_CONFIG = {
@@ -83,8 +83,8 @@ export function RelationshipChain({ result }: RelationshipChainProps) {
                   className={cn(
                     "text-sm font-semibold",
                     result.status === "mismatch" &&
-                      field.value !== result.commonValue &&
-                      result.commonValue !== null
+                      field.value !== result.common_value &&
+                      result.common_value !== null
                       ? "text-danger"
                       : status.valueClass,
                   )}

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from app.api import dbc, files, mpq, patches, preview, resources, settings, system
+from app.api import dbc, files, mpq, patches, preview, resources, settings, system, wowhead
 
 app = FastAPI(title="acore-resouces API", version="0.1.0")
 
@@ -25,6 +25,7 @@ app.include_router(files.router)
 app.include_router(patches.router)
 app.include_router(settings.router)
 app.include_router(system.router)
+app.include_router(wowhead.router)
 
 
 @app.get("/health")

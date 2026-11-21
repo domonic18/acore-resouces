@@ -177,3 +177,76 @@ def push_batch(
     announce_batch(batch, payload, base_url=base_url, api_key=api_key)
     upload_mpq(batch, mpq_path, base_url=base_url, api_key=api_key)
     return {"batch": batch, "patch_number": payload["patch_number"], "size_bytes": payload["size_bytes"]}
+
+
+def fetch_dist_batches(
+    *,
+    base_url: str | None = None,
+    timeout: float = 15.0,
+) -> list[dict[str, Any]]:
+    """查询分发端已推送（complete）的批次清单。
+
+    用于界面对比「本地已发布但还没推送」以及「分发端有、本地已清理」的批次。
+    分发端不可达时抛异常——调用方据此显示「状态未知」而不是「未推送」。
+
+    Returns:
+        每个批次的摘要：batch / patch_number / patch_file / size_bytes /
+        mount_count / file_count / generated_at。
+
+    Raises:
+        DistroPushError: 分发端不可达或返回异常。
+    """
+    # 分发端的路由挂在 /api 前缀下
+    url = f"{(base_url or settings.distro_base_url).rstrip('/')}/api/dist/tree"
+    try:
+        resp = httpx.get(url, timeout=timeout)
+    except httpx.HTTPError as e:
+        raise DistroPushError(f"查询分发端失败：{e}") from e
+    _check_response(resp, "查询分发端批次列表")
+
+    try:
+        data = resp.json()
+    except ValueError as e:
+        raise DistroPushError(f"分发端响应不是合法 JSON：{e}") from e
+
+    batches: list[dict[str, Any]] = []
+    children = data.get("children") if isinstance(data, dict) else None
+    for node in children or []:
+        name = str(node.get("name") or "")
+        if not name:
+            continue
+        # 批次目录下挂的是补丁文件节点，meta 里带补丁号与大小
+        files = node.get("children") or []
+        meta: dict[str, Any] = {}
+        patch_file = ""
+        for child in files:
+            child_meta = child.get("meta") or {}
+            if child_meta:
+                meta = child_meta
+                patch_file = str(child.get("name") or "")
+                break
+        batches.append(
+            {
+                "batch": name,
+                "patch_number": meta.get("patch_number"),
+                "patch_file": patch_file,
+                "size_bytes": meta.get("size_bytes"),
+                "mount_count": meta.get("mount_count"),
+                "file_count": meta.get("file_count"),
+                "generated_at": meta.get("generated_at"),
+            }
+        )
+    return batches
+
+
+def fetch_pushed_batches(
+    *,
+    base_url: str | None = None,
+    timeout: float = 15.0,
+) -> set[str]:
+    """查询分发端已推送（complete）的批次号集合。
+
+    Raises:
+        DistroPushError: 分发端不可达或返回异常。
+    """
+    return {b["batch"] for b in fetch_dist_batches(base_url=base_url, timeout=timeout)}
