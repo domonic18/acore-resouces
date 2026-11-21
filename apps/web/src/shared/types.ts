@@ -300,6 +300,39 @@ export interface DistroStatus {
   error?: string | null;
 }
 
+/** 分发端批次（admin 视角，含 pending 与失败残留） */
+export interface DistroAdminBatchInfo {
+  batch: string;
+  status: string;
+  patch_number: number | null;
+  patch_file: string | null;
+  size_bytes: number | null;
+  mount_count: number | null;
+  file_count: number | null;
+  generated_at: string | null;
+  has_changelog: boolean;
+  has_mpq: boolean;
+  mpq_bytes: number;
+  announced_at: string | null;
+  uploaded_at: string | null;
+  updated_at: string | null;
+}
+
+export interface DistroAdminBatches {
+  batches: DistroAdminBatchInfo[];
+  reachable: boolean;
+  error?: string | null;
+}
+
+/** 删除分发端批次的结果 */
+export interface DistroDeleteResult {
+  batch: string;
+  existed: boolean;
+  freed_bytes: number;
+  reachable: boolean;
+  error?: string | null;
+}
+
 /* ---------- 生产流程：预览 / 流程状态 / 校验报告 / 计划 / 产物 ---------- */
 
 export interface PreviewIssue {
