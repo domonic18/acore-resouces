@@ -10,10 +10,17 @@ services:
     container_name: acore-resources-web
     ports:
       - "8080:8000"
+    env_file:
+      # 分发端地址与密钥（DISTRO_API_KEY 等）
+      - ./backend/.env
     environment:
       - PROJECT_ROOT=/app
       # 宿主侧项目根：前端展示的文件路径由 /app 映射回宿主真实路径（复制后可直接前往）
       - HOST_PROJECT_ROOT=${PWD}
+      # 容器内 localhost 指向容器自己；分发端跑在宿主 8090 端口，
+      # 必须用 host.docker.internal，否则推送会被静默跳过（is_distro_configured 为假）
+      - DISTRO_BASE_URL=http://host.docker.internal:8090
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     volumes:
       - ./sources:/app/sources
       - ./data:/app/data

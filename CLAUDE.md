@@ -12,7 +12,7 @@ acore-resouces 采用 **Electron 桌面外壳 + Python FastAPI 后端 + React/Vi
 
 ### 技术栈概览
 
-- **前端**: React 18.3+ + TypeScript 5.3+ + Vite 5.0+ + shadcn/ui + Tailwind CSS 3.4+ + Three.js 0.160+
+- **前端**: React 18.3+ + TypeScript 5.3+ + Vite 5.0+ + Tailwind CSS 3.4+ + Three.js 0.160+
 - **后端**: Python 3.11+ + FastAPI 0.110+ + SQLAlchemy 2.0+ + Pydantic 2.5+ + Typer 0.12+
 - **桌面**: Electron 33+（启动时托管 Python 后端）
 - **数据存储**: YAML/JSON 资源文件（Git 版本控制）+ SQLite（运行时缓存）
