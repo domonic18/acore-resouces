@@ -2,20 +2,26 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from app.preview.asset_resolver import resolve_resource_assets
 from app.schemas.dbc import CreatureDisplayInfo, CreatureModelData, Item, Spell
+from app.schemas.flow import ResourceFlowState, ResourceRelationshipReport
 from app.schemas.resource import Resource
 from app.schemas.sql import CreatureTemplate, ItemTemplate
 from app.schemas.vehicle import VehicleConfig
+from app.services.mount_flow import get_mount_flow_state
 from app.services.resource_store import list_resources, load_resource, save_resource
 from app.services.resource_validation import (
     DuplicateIdIssue,
     check_duplicate_resource_ids,
+    check_resource_relationships,
+    compute_required_fields,
+    duplicate_issues_to_out,
+    relationship_checks_to_out,
 )
 
 router = APIRouter(prefix="/api/resources", tags=["resources"])
@@ -243,6 +249,61 @@ def get_resource_endpoint(
             detail=f"未找到 {resource_type} ID={resource_id}",
         )
     return _resource_to_dict(resource)
+
+
+@router.get(
+    "/{resource_type}/{resource_id}/relationships", response_model=ResourceRelationshipReport
+)
+def get_resource_relationships(
+    resource_type: str,
+    resource_id: int,
+) -> ResourceRelationshipReport:
+    """获取资源的跨数据源关联校验结果与全局唯一 ID 冲突。
+
+    这是关联校验的唯一实现入口——CLI 与界面共用同一份判定口径。
+    """
+    resource = load_resource(resource_type, resource_id)
+    if resource is None:
+        raise HTTPException(404, f"未找到 {resource_type} ID={resource_id}")
+
+    relationships = relationship_checks_to_out(check_resource_relationships(resource))
+    all_resources = list_resources(resource_type)
+    duplicates = duplicate_issues_to_out(
+        check_duplicate_resource_ids(all_resources, focus_resource=resource),
+        all_resources,
+    )
+    required_fields = compute_required_fields(resource)
+
+    overall: Literal["ok", "mismatch", "missing"]
+    if relationships and all(check.status == "ok" for check in relationships):
+        overall = "ok"
+    elif any(check.status == "mismatch" for check in relationships):
+        overall = "mismatch"
+    else:
+        overall = "missing"
+
+    return ResourceRelationshipReport(
+        resource_type=resource_type,
+        resource_id=resource_id,
+        overall_status=overall,
+        relationships=relationships,
+        duplicates=duplicates,
+        required_fields=required_fields,
+    )
+
+
+@router.get("/{resource_type}/{resource_id}/flow", response_model=ResourceFlowState)
+def get_resource_flow(
+    resource_type: str,
+    resource_id: int,
+) -> ResourceFlowState:
+    """获取资源在坐骑生产流程中的位置与各步状态。"""
+    resource = load_resource(resource_type, resource_id)
+    if resource is None:
+        raise HTTPException(404, f"未找到 {resource_type} ID={resource_id}")
+    if resource.resource_type != "mount":
+        raise HTTPException(400, "第一阶段仅支持 mount 类型")
+    return get_mount_flow_state(resource)
 
 
 @router.put("/{resource_type}/{resource_id}")

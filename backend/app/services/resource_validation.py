@@ -4,14 +4,32 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal, TypedDict
 
+from app.schemas.flow import (
+    REQUIRED_FIELD_DEFS,
+    DuplicateIssueOut,
+    DuplicateResourceOut,
+    MissingRequiredField,
+    RelationshipCheckOut,
+    RelationshipFieldOut,
+    RelationshipRuleOut,
+    RequiredFieldsReport,
+)
 from app.schemas.resource import Resource
+
+
+class RelationshipFieldSpec(TypedDict):
+    """关联规则涉及的一个字段。"""
+
+    source: Literal["dbc", "db"]
+    table: str
+    field: str
 
 
 @dataclass
 class RelationshipField:
-    source: str
+    source: Literal["dbc", "db"]
     table: str
     field: str
     value: Any
@@ -22,7 +40,7 @@ class RelationshipRule:
     key: str
     name: str
     description: str
-    fields: list[dict[str, str]]
+    fields: list[RelationshipFieldSpec]
 
 
 @dataclass
@@ -242,7 +260,135 @@ def check_duplicate_resource_ids(
     return issues
 
 
+def compute_required_fields(resource: Resource) -> RequiredFieldsReport:
+    """统计资源未填写的必填字段。
+
+    仅坐骑适用；字段定义与前端
+    apps/web/src/features/resources/requiredFields.ts 的 REQUIRED_FIELD_DEFS 对齐。
+
+    Args:
+        resource: 待检查的资源。
+
+    Returns:
+        必填字段填写情况。
+    """
+    if resource.resource_type != "mount":
+        return RequiredFieldsReport(missing=[], ok=True)
+
+    missing = [
+        MissingRequiredField(path=def_["path"], label=def_["label"])
+        for def_ in REQUIRED_FIELD_DEFS
+        if _is_required_empty(_get_field_value_by_path(resource, def_["path"]))
+    ]
+    return RequiredFieldsReport(missing=missing, ok=not missing)
+
+
+def _is_required_empty(value: Any) -> bool:
+    """判定必填字段是否为空。
+
+    与前端 isRequiredEmpty 一致：None、0、空字符串均视为空。
+    """
+    if value is None:
+        return True
+    if isinstance(value, bool):
+        return False
+    if isinstance(value, int | float):
+        return value == 0
+    if isinstance(value, str):
+        return not value.strip()
+    return False
+
+
+def _get_field_value_by_path(resource: Resource, path: str) -> Any:
+    """按点号路径读取资源字段值。"""
+    current: Any = resource
+    for key in path.split("."):
+        if isinstance(current, dict):
+            current = current.get(key)
+        elif hasattr(current, key):
+            current = getattr(current, key)
+        else:
+            return None
+    return current
+
+
 def format_duplicate_issue(issue: DuplicateIdIssue) -> str:
     """将重复问题格式化为人类可读字符串。"""
     names = [f"{resource_id:04d}-{model_folder}" for resource_id, model_folder in issue.resources]
     return f"重复 ID: {issue.field.path}={issue.value} 出现在 {', '.join(names)}"
+
+
+def relationship_checks_to_out(
+    checks: Sequence[RelationshipCheck],
+) -> list[RelationshipCheckOut]:
+    """把关联校验结果转换为 API 响应模型。
+
+    Args:
+        checks: check_mount_relationships / check_resource_relationships 的结果。
+
+    Returns:
+        可直接序列化的关联校验条目。
+    """
+    return [
+        RelationshipCheckOut(
+            rule=RelationshipRuleOut(
+                key=check.rule.key,
+                name=check.rule.name,
+                description=check.rule.description,
+                fields=[
+                    RelationshipFieldOut(
+                        source=field["source"],
+                        table=field["table"],
+                        field=field["field"],
+                    )
+                    for field in check.rule.fields
+                ],
+            ),
+            status=check.status,  # type: ignore[arg-type]
+            values=[
+                RelationshipFieldOut(
+                    source=value.source,
+                    table=value.table,
+                    field=value.field,
+                    value=value.value,
+                )
+                for value in check.values
+            ],
+            common_value=check.common_value,
+        )
+        for check in checks
+    ]
+
+
+def duplicate_issues_to_out(
+    issues: Sequence[DuplicateIdIssue],
+    resources: Sequence[Resource],
+) -> list[DuplicateIssueOut]:
+    """把重复 ID 问题转换为 API 响应模型。
+
+    Args:
+        issues: check_duplicate_resource_ids 的结果。
+        resources: 全部资源，用于补齐冲突资源的名称。
+
+    Returns:
+        可直接序列化的重复 ID 条目。
+    """
+    names = {(r.id, r.model_folder): r.official_db.name for r in resources}
+    result: list[DuplicateIssueOut] = []
+    for issue in issues:
+        result.append(
+            DuplicateIssueOut(
+                field=issue.field.path,
+                value=issue.value,
+                resources=[
+                    DuplicateResourceOut(
+                        id=resource_id,
+                        resource_type="mount",
+                        model_folder=model_folder,
+                        name=names.get((resource_id, model_folder)),
+                    )
+                    for resource_id, model_folder in issue.resources
+                ],
+            )
+        )
+    return result

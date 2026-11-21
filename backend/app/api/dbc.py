@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.schemas.dbc import ItemDisplayInfoEntry, ItemDisplayInfoPage
+from app.schemas.dbc import (
+    ItemDisplayInfoEntry,
+    ItemDisplayInfoPage,
+    SpellIconCandidate,
+    SpellIconLookupOut,
+)
 from app.services import dbc_annotation, dbc_query, dbc_reader
 from app.services.resource_store import list_resources
 
@@ -43,6 +48,35 @@ def list_dbc_files_endpoint() -> dict:
         return dbc_reader.list_dbc_files()
     except OSError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.get("/spell-icon/lookup", response_model=SpellIconLookupOut)
+def lookup_spell_icon_endpoint(
+    name: str = Query(
+        ..., min_length=1, max_length=100, description="图标名，如 inv_ardenwealdstagmount_blue"
+    ),
+    limit: int = Query(10, ge=1, le=50, description="模糊候选上限"),
+) -> SpellIconLookupOut:
+    """按图标名反查 SpellIcon.dbc 的记录 ID。
+
+    精确命中用于直接填入 YAML 的 dbc.spell.icon_id；
+    模糊候选用于图标名拼写有出入时给出备选。
+    """
+    try:
+        exact_ids = dbc_query.lookup_spell_icon_ids(name)
+        candidates = dbc_query.search_spell_icon_candidates(name, limit=limit)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    exact_set = set(exact_ids)
+    return SpellIconLookupOut(
+        icon_name=name,
+        exact_ids=exact_ids,
+        candidates=[
+            SpellIconCandidate(id=record_id, name=candidate_name, exact=record_id in exact_set)
+            for record_id, candidate_name in candidates
+        ],
+    )
 
 
 @router.get("/{file}/next-free-id")

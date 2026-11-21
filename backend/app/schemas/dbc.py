@@ -122,3 +122,19 @@ class ItemDisplayInfoPage(BaseModel):
 
     items: list[ItemDisplayInfoEntry]
     total: int
+
+
+class SpellIconCandidate(BaseModel):
+    """SpellIcon.dbc 的一个候选记录。"""
+
+    id: int
+    name: str
+    exact: bool = False
+
+
+class SpellIconLookupOut(BaseModel):
+    """按图标名反查 SpellIcon.dbc 的结果。"""
+
+    icon_name: str
+    exact_ids: list[int] = Field(default_factory=list)
+    candidates: list[SpellIconCandidate] = Field(default_factory=list)
