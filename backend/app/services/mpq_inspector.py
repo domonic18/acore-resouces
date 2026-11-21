@@ -1,9 +1,12 @@
 """MPQ 档案只读查看服务。
 
 对 workspace/mpq/{batch}/ 与 workspace/dist/{batch}/ 下的补丁 MPQ 档案
-提供只读浏览：档案列表、文件清单（三级来源回退）、档案元信息、单文件
-提取（带缓存）与按扩展名的内容分发。不提供任何写操作——MPQ 产物一律
-经补丁构建 / 发布流程生成。
+提供档案浏览：档案列表、文件清单（三级来源回退）、档案元信息、单文件
+提取（带缓存）与按扩展名的内容分发。另有单个档案的删除能力——多出来的
+补丁产物需要在界面上能清理掉，不必去命令行。
+
+MPQ 产物一律经补丁构建 / 发布流程生成；删除只清理产物，不触碰
+资源真相源与源 DBC。
 
 清单三级来源：① 同批次 manifest.json（构建时持久化、发布时随附复制到
 dist，含 size/sha256/kind）→ ② 同批次 listfile.txt 外部清单（经
@@ -175,6 +178,95 @@ def list_archives() -> dict[str, Any]:
             )
     items.sort(key=lambda item: item["mtime"], reverse=True)
     return {"total": len(items), "items": items}
+
+
+def delete_archive(rel: str) -> dict[str, Any]:
+    """删除一个 MPQ 档案。
+
+    只删 MPQ 文件本身，保留同批次的 manifest.json / changelog.md / readme.txt
+    ——它们是审计与玩家公告的存档。与推送成功后的本地清理语义一致。
+
+    只允许删 workspace/mpq|dist 下的批次目录（路径穿越由 _resolve_archive 挡住）。
+    删除后同步清理引用该批次的补丁任务产物登记——登记指向已删文件会让
+    产物清单里的链接失效，状态也会失真。
+
+    Args:
+        rel: 档案的 workspace 相对路径，如 dist/20261121_013605/patch-zhCN-7.mpq。
+
+    Returns:
+        含 deleted / batch / source / size_bytes / reset_jobs 的字典。
+
+    Raises:
+        MpqArchiveNotFoundError: 档案不存在、不在允许目录内，或批次目录结构异常。
+    """
+    mpq = _resolve_archive(rel)
+    batch_dir = mpq.parent
+    source = next(
+        (key for key, root in ARCHIVE_ROOTS.items() if root.resolve() == batch_dir.parent.resolve()),
+        None,
+    )
+    if source is None:
+        raise MpqArchiveNotFoundError(f"批次目录不在允许的根目录下：{rel}")
+
+    size_bytes = mpq.stat().st_size
+    reset_jobs = _reset_jobs_for_batch(batch_dir.name)
+    mpq.unlink()
+    # 批次目录只剩元数据时一并清掉，避免留空目录
+    if not any(batch_dir.iterdir()):
+        batch_dir.rmdir()
+    return {
+        "deleted": rel,
+        "batch": batch_dir.name,
+        "source": source,
+        "size_bytes": size_bytes,
+        "reset_jobs": reset_jobs,
+    }
+
+
+def _reset_jobs_for_batch(batch: str) -> list[str]:
+    """把引用该批次的补丁任务退回「待构建」，并清掉已失效的产物登记。
+
+    Args:
+        batch: 批次目录名。
+
+    Returns:
+        被重置的任务 ID 列表。
+    """
+    from app.services.patch_exporter import get_patch_job, update_patch_job_status
+
+    jobs_dir = settings.patch_jobs_dir
+    if not jobs_dir.exists():
+        return []
+
+    reset: list[str] = []
+    for job_dir in sorted(jobs_dir.iterdir()):
+        if not job_dir.is_dir():
+            continue
+        manifest = get_patch_job(job_dir.name)
+        if manifest is None:
+            continue
+        output = dict(manifest.artifacts.output)
+        mpq_path = output.get("mpq")
+        if not isinstance(mpq_path, str) or f"/{batch}/" not in mpq_path:
+            continue
+        output.pop("mpq", None)
+        update_patch_job_status(
+            job_dir.name,
+            "requested",
+            output_artifacts=output,
+            summary=f"补丁产物已删除（批次 {batch}），需重新构建",
+        )
+        reset.append(job_dir.name)
+    return reset
+
+
+def _dir_size_bytes(path: Path) -> int:
+    """目录内所有文件的总字节数。"""
+    if not path.exists():
+        return 0
+    if path.is_file():
+        return path.stat().st_size
+    return sum(f.stat().st_size for f in path.rglob("*") if f.is_file())
 
 
 def _normalize_list_lines(stdout: str) -> list[str]:
