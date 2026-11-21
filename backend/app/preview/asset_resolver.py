@@ -102,18 +102,28 @@ def list_asset_files(resource_dir: Path) -> list[AssetFile]:
 
 
 def _extract_texture_variations(resource: Resource) -> list[str]:
-    """从资源定义中提取贴图变体名称列表。"""
+    """从资源定义中提取贴图变体名称列表。
+
+    creature_display_info 在资源模型上是 Pydantic 对象，在早期实现里只按
+    dict 判断，导致变体名永远取不到、贴图匹配恒为空。
+    """
     variations: list[str] = []
     dbc_info = resource.dbc
     if not dbc_info:
         return variations
 
-    display_info = getattr(dbc_info, "creature_display_info", None) or {}
-    if isinstance(display_info, dict):
-        for key in ("texture_variation_1", "texture_variation_2", "texture_variation_3"):
-            value = display_info.get(key)
-            if value and isinstance(value, str):
-                variations.append(value)
+    display_info = getattr(dbc_info, "creature_display_info", None)
+    if display_info is None:
+        return variations
+
+    for key in ("texture_variation_1", "texture_variation_2", "texture_variation_3"):
+        value = (
+            display_info.get(key)
+            if isinstance(display_info, dict)
+            else getattr(display_info, key, None)
+        )
+        if value and isinstance(value, str):
+            variations.append(value)
     return variations
 
 
@@ -123,19 +133,25 @@ def _match_texture_files(
 ) -> list[AssetFile]:
     """根据变体名称匹配贴图文件。
 
-    匹配规则：文件名包含变体名称（忽略大小写），每个变体只取第一个匹配。
+    匹配规则：文件名包含变体名称（忽略大小写），每个文件只匹配一次。
+    三个变体槽位常指向同一张贴图，此时去重后只保留一条。
     """
     matched: list[AssetFile] = []
     used: set[str] = set()
+    seen_variations: set[str] = set()
 
     for variation in variations:
         var_lower = variation.lower()
+        if var_lower in seen_variations:
+            continue
+        seen_variations.add(var_lower)
         for asset in texture_files:
-            if asset.name.lower() in used:
+            name_lower = asset.name.lower()
+            if name_lower in used:
                 continue
-            if var_lower in asset.name.lower():
+            if var_lower in name_lower:
                 matched.append(asset)
-                used.add(asset.name)
+                used.add(name_lower)
                 break
 
     return matched
