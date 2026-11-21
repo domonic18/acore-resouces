@@ -54,6 +54,7 @@ REQUIRED_DBC_FILES = [
 
 _active_log: Callable[[str], None] | None = None
 _active_progress: Callable[[int, int, str | None], None] | None = None
+_active_phase: Callable[[str], None] | None = None
 
 
 def _log(msg: str = "") -> None:
@@ -67,6 +68,16 @@ def _progress(current: int, total: int, job_id: str | None = None) -> None:
     """上报构建进度（当前序号 / 总数 / 当前任务 ID）。"""
     if _active_progress is not None:
         _active_progress(current, total, job_id)
+
+
+def _phase(name: str) -> None:
+    """上报当前构建阶段。
+
+    与 progress 回调分开：progress 描述「第几个任务」，phase 描述
+    「整体处于哪个阶段」（读计划 → 应用 DBC → 生成 SQL → 打包 MPQ …）。
+    """
+    if _active_phase is not None:
+        _active_phase(name)
 
 
 def _load_wow_dbc_schemas() -> None:
@@ -112,6 +123,11 @@ class JobValidation:
 
 class MountPatchBuilderError(Exception):
     """坐骑补丁构建过程中的通用错误。"""
+
+    def __init__(self, message: str, job_ids: list[str] | None = None) -> None:
+        super().__init__(message)
+        # 构建失败时，把本次涉及的任务 ID 带出来，便于调用方把任务标记为 failed
+        self.job_ids = job_ids or []
 
 
 class DBCConflictError(MountPatchBuilderError):
@@ -288,7 +304,10 @@ def find_jobs(
             continue
         data = load_json(job_json)
         status = data.get("status")
-        if status not in ("requested", "generated", "failed"):
+        # 显式指定任务时不过滤状态——用户点名要构建哪个任务就是覆盖意图，
+        # 已发布（applied）的任务也允许重建。all_requested 模式才排除 applied，
+        # 否则每次「构建全部」都会把已发布的批次重做一遍。
+        if not job_ids and status not in ("requested", "generated", "failed"):
             continue
         if status == "generated":
             rebuild.add(d.name)
@@ -298,7 +317,10 @@ def find_jobs(
             _log(f"  警告：跳过任务 {d.name}: {exc}")
 
     if not contexts:
-        raise MountPatchBuilderError("没有可处理的任务。")
+        raise MountPatchBuilderError(
+            "没有可处理的任务。",
+            job_ids=list(job_ids) if job_ids else [],
+        )
     return contexts, rebuild
 
 
@@ -823,6 +845,61 @@ def _record_by_id(dbc_path: Path, record_id: int | None) -> dict[str, Any] | Non
     return cast(dict[str, Any], record) if record is not None else None
 
 
+def load_dbc_record_ids(dbc_path: Path) -> set[int]:
+    """加载 DBC 文件中全部记录的 ID。
+
+    用于批量判断「某条记录是否已被占用」——加载一次即可复用，
+    避免为每个坐骑重复读取整个 DBC 文件。
+
+    Args:
+        dbc_path: DBC 文件路径。
+
+    Returns:
+        该文件中已存在的记录 ID 集合；文件不存在时返回空集。
+    """
+    if not dbc_path.exists():
+        return set()
+    dbc = DBCFile(dbc_path)
+    dbc.load()
+    return {int(record.get("ID")) for record in dbc.records if record.get("ID")}
+
+
+def find_existing_dbc_records(
+    dbc_plan: DBCPlan,
+    id_cache: dict[str, set[int]] | None = None,
+) -> list[dict[str, Any]]:
+    """检查计划中每条 DBC 记录是否已存在于源 DBC。
+
+    构建时已存在的记录会被跳过而不覆盖，预检阶段提前暴露这一点。
+
+    Args:
+        dbc_plan: 待检查的 DBC 修改计划。
+        id_cache: 跨计划复用的「文件名 → 已占用 ID 集合」缓存；
+            批量预检时传入可避免重复加载 DBC。
+
+    Returns:
+        每条记录的占用情况，形如
+        ``{"dbc_file": "Spell.dbc", "record_id": 80003, "exists": True}``。
+    """
+    result: list[dict[str, Any]] = []
+    cache = id_cache if id_cache is not None else {}
+    for plan_file in dbc_plan.plans:
+        if plan_file.dbc_file not in cache:
+            cache[plan_file.dbc_file] = load_dbc_record_ids(
+                WOW_DBC_DIR / plan_file.dbc_file
+            )
+        occupied = cache[plan_file.dbc_file]
+        for op in plan_file.operations:
+            result.append(
+                {
+                    "dbc_file": plan_file.dbc_file,
+                    "record_id": op.record_id,
+                    "exists": op.record_id in occupied,
+                }
+            )
+    return result
+
+
 def _find_sql_record(sql_plan: dict[str, Any], table_name: str) -> dict[str, Any] | None:
     """在 sql-plan 中查找指定表的第一条记录。"""
     for table in sql_plan.get("tables", []):
@@ -1295,6 +1372,7 @@ def build_mount_patches(
     force: bool = False,
     log: Callable[[str], None] | None = None,
     progress: Callable[[int, int, str | None], None] | None = None,
+    phase: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     """批量构建坐骑补丁的入口函数。
 
@@ -1305,6 +1383,7 @@ def build_mount_patches(
         force: 为 True 时已存在的 DBC 记录按计划强制重写，SQL 跳过历史条目检查，用于全量重建。
         log: 可选日志回调，接收构建进度文本（如 web 端构建日志缓冲）。
         progress: 可选进度回调，签名 (current, total, job_id)。
+        phase: 可选阶段回调，签名 (phase_name)，上报整体构建阶段。
 
     Returns:
         包含 jobs, sql_files, mpq_path, report_path 的字典。
@@ -1313,13 +1392,19 @@ def build_mount_patches(
         DBCConflictError: 检测到 DBC ID 冲突。
         MountPatchBuilderError: 其他构建错误。
     """
-    global _active_log, _active_progress
-    _active_log, _active_progress = log, progress
+    global _active_log, _active_progress, _active_phase
+    _active_log, _active_progress, _active_phase = log, progress, phase
     try:
         return _build_mount_patches_impl(all_requested, job_ids, dry_run, force)
+    except MountPatchBuilderError as exc:
+        # 构建中断时把涉及的任务带出来，调用方据此把任务标记为 failed
+        if not exc.job_ids:
+            exc.job_ids = list(job_ids) if job_ids else []
+        raise
     finally:
         _active_log = None
         _active_progress = None
+        _active_phase = None
 
 
 def _build_mount_patches_impl(
@@ -1328,16 +1413,19 @@ def _build_mount_patches_impl(
     dry_run: bool,
     force: bool,
 ) -> dict[str, Any]:
+    _phase("load")
     contexts, rebuild_jobs = find_jobs(settings.patch_jobs_dir, all_requested, job_ids)
 
-    _log(f"将处理 {len(contexts)} 个任务：")
+    _log(f"将处理 {len(contexts)} 个坐骑：")
     for ctx in contexts:
-        marker = "（重建）" if ctx.job_id in rebuild_jobs else ""
-        _log(f"  - {ctx.job_id}{marker}")
+        marker = "（重建：覆盖已有 DBC 记录）" if ctx.job_id in rebuild_jobs else ""
+        name = ctx.resource.official_db.name or ctx.resource.model_folder
+        _log(f"  - {ctx.job_id}  {name}{marker}")
     _log()
 
     grouped_ops = collect_dbc_operations(contexts)
 
+    _phase("validate")
     _log("检查 DBC ID 冲突...")
     conflicts = check_conflicts(grouped_ops, rebuild_jobs)
     if conflicts:
@@ -1345,19 +1433,26 @@ def _build_mount_patches_impl(
         for job_id, items in conflicts.items():
             details = ", ".join(f"{dbc}#{rid}" for dbc, rid in items)
             _log(f"  {job_id}: {details}")
-        raise DBCConflictError("存在 DBC ID 冲突，停止构建。")
+        raise DBCConflictError(
+            "存在 DBC ID 冲突，停止构建。",
+            job_ids=sorted(conflicts.keys()),
+        )
     _log("无冲突。\n")
 
     if dry_run:
         _dump_plans(contexts)
-        _log(f"审查计划已写入各任务目录 plans/ 子目录（共 {len(contexts)} 个任务）。")
-        _log("确认无误后，去掉 --dry-run 正式执行。\n")
+        _log(
+            f"审查计划已写入各任务目录 plans/ 子目录（共 {len(contexts)} 个任务）。"
+        )
+        _log("本次是试运行：没有修改任何源文件。确认无误后再执行正式构建。\n")
     else:
         _clear_plans(contexts)
 
+    _phase("apply_dbc")
     _log("应用 DBC 操作（直接编辑源 DBC）...")
     dbc_audit_records = apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
 
+    _phase("gen_sql")
     _log("生成坐骑 SQL（每只坐骑独立目录）...")
     sql_files: list[Path] = []
     sql_entries: list[dict[str, Any]] = []
@@ -1365,8 +1460,9 @@ def _build_mount_patches_impl(
     for index, ctx in enumerate(contexts, start=1):
         _progress(index, len(contexts), ctx.job_id)
         written = generate_sql(ctx, dry_run=dry_run, force=force)
+        mount_name = ctx.resource.official_db.name or ctx.resource.model_folder
         for f in written:
-            _log(f"  {f}")
+            _log(f"  {mount_name}：{f}")
             sql_files.append(f)
         sql_entries.append(
             {
@@ -1380,11 +1476,13 @@ def _build_mount_patches_impl(
         _log("  无新增 SQL（所有坐骑均已存在 SQL 文件）。")
     _log()
 
+    _phase("build_mpq")
     _log("构建 MPQ...")
     mpq_path, job_assets, mpq_manifest = build_mpq(contexts, sql_files, dry_run=dry_run)
     _log(f"  {mpq_path}\n")
 
     timestamp = mpq_path.parent.name
+    _phase("report")
     _log("生成校验报告...")
     report_path = write_validation_report(contexts, job_assets, timestamp, dry_run=dry_run)
     _log(f"  {report_path}\n")
@@ -1393,6 +1491,7 @@ def _build_mount_patches_impl(
     if dry_run:
         _log("干跑：跳过变更日志生成。\n")
     else:
+        _phase("changelog")
         _log("生成变更日志（changelog.md）...")
         from app.services import changelog_writer
 
@@ -1402,6 +1501,7 @@ def _build_mount_patches_impl(
         changelog_source = changelog_writer.write_changelog(mpq_path.parent, changelog_ctx)
         _log(f"  {changelog_path}（{'AI 起草' if changelog_source == 'ai' else '模板生成'}）\n")
 
+    _phase("audit")
     _log("生成审计报告...")
     from app.services.patch_audit import write_audit_report
 
@@ -1410,13 +1510,14 @@ def _build_mount_patches_impl(
     )
     _log(f"  {audit_path}\n")
 
+    _phase("finalize")
     _log("更新任务状态...")
     update_job_records(contexts, sql_files, mpq_path, report_path, audit_path, dry_run=dry_run)
 
     if dry_run:
         _log("干跑完成，未修改任何源文件。")
     else:
-        _log("完成。请手动提交 data/wow-dbc 子模块的 DBC 改动。")
+        _log("构建完成。请手动提交 data/wow-dbc 子模块的 DBC 改动。")
         _log(f"校验报告：{report_path}")
         _log(f"审计报告：{audit_path}")
 

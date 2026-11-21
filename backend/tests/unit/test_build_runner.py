@@ -21,7 +21,9 @@ def _reset_status():
             error=None,
         )
         build_runner._log_buffer.clear()
-        build_runner._progress.update(current=0, total=0, current_job=None)
+        build_runner._progress.update(
+            current=0, total=0, current_job=None, phase=None, phase_label=None
+        )
 
     _reset()
     yield
@@ -109,19 +111,28 @@ def test_status_shape_includes_log_and_progress():
         "progress",
     } <= set(status)
     assert status["log"] == []
-    assert status["progress"] == {"current": 0, "total": 0, "current_job": None}
+    assert status["progress"] == {
+        "current": 0,
+        "total": 0,
+        "current_job": None,
+        "phase": None,
+        "phase_label": None,
+    }
 
 
 def test_log_buffer_captured_and_cleared(monkeypatch):
     def fake_build(**kwargs):
         log = kwargs["log"]
         progress = kwargs["progress"]
+        phase = kwargs["phase"]
+        phase("load")
         log("将处理 2 个任务：")
         progress(0, 2, None)
         log("  - job-1")
         progress(1, 2, "job-1")
         log("  - job-2")
         progress(2, 2, "job-2")
+        phase("gen_sql")
         return {
             "jobs": ["job-1", "job-2"],
             "sql_files": [],
@@ -142,13 +153,52 @@ def test_log_buffer_captured_and_cleared(monkeypatch):
     assert "  - job-1" in messages
     assert "构建完成。" in messages
     assert all("ts" in entry for entry in status["log"])
-    assert status["progress"] == {"current": 2, "total": 2, "current_job": "job-2"}
+    # 日志带单调递增序号，便于界面增量拉取
+    seqs = [entry["seq"] for entry in status["log"]]
+    assert seqs == list(range(len(seqs)))
+    assert status["progress"] == {
+        "current": 2,
+        "total": 2,
+        "current_job": "job-2",
+        "phase": "gen_sql",
+        "phase_label": "生成 SQL",
+    }
 
     # 再次启动时缓冲被清空
     build_runner.start_build(True, None, False, False)
     fresh = build_runner.get_build_status()
     assert fresh["log"] == []
-    assert fresh["progress"] == {"current": 0, "total": 0, "current_job": None}
+    assert fresh["progress"] == {
+        "current": 0,
+        "total": 0,
+        "current_job": None,
+        "phase": None,
+        "phase_label": None,
+    }
+
+
+def test_failed_build_marks_jobs_failed(monkeypatch):
+    """构建失败时把涉及的任务标记为 failed，界面才能区分「失败」与「未构建」。"""
+
+    def fake_build(**kwargs):
+        raise DBCConflictError("Spell.dbc#80000 已存在", job_ids=["mount_0003"])
+
+    marked: list[tuple[str, str]] = []
+
+    def fake_update(job_id, status, summary=None):
+        marked.append((job_id, status))
+        return None
+
+    monkeypatch.setattr(build_runner, "build_mount_patches", fake_build)
+    monkeypatch.setattr(
+        "app.services.patch_exporter.update_patch_job_status",
+        fake_update,
+    )
+    build_runner.start_build(True, ["mount_0003"], False, False)
+    build_runner.run_build(True, ["mount_0003"], False, False)
+
+    assert marked == [("mount_0003", "failed")]
+    assert build_runner.get_build_status()["error"] is not None
 
 
 def test_error_appended_to_log(monkeypatch):
