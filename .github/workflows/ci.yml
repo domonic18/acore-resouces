@@ -142,11 +142,12 @@ jobs:
         uses: actions/checkout@v6
 
       # docker/web/Dockerfile 会 COPY tools/wow-dbc-tool（后端 path 依赖）与
-      # tools/wow-mpq-cli（mpqcli-builder 阶段编译 Linux 静态二进制），缺一则构建失败
+      # tools/wow-mpq-cli（mpqcli-builder 阶段编译 Linux 静态二进制，其自身嵌套
+      # extern/StormLib / extern/CLI11 子模块，须 --recursive），缺一则构建失败
       - name: Init submodules / 初始化构建所需子模块
         run: |
           git submodule update --init --depth 1 tools/wow-dbc-tool
-          git submodule update --init --depth 1 tools/wow-mpq-cli
+          git submodule update --init --depth 1 --recursive tools/wow-mpq-cli
 
       # 本机持久 builder（buildkitd 配国内 docker.io 镜像源 + 本地缓存跨 job 持久，见 ~/Workspace/actions-runner/buildkitd.toml）
       - name: Select builder / 选择构建器
