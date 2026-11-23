@@ -160,6 +160,8 @@ export interface PatchJob {
     // 后端 job.json 的 sql_files 等值为数组，此处只透传不约束结构
     output: Record<string, unknown>;
   };
+  /** 是否查得到校验报告（试运行与从未构建的任务为 false） */
+  has_validation_report: boolean;
   completed_at: string | null;
   summary: string | null;
 }
@@ -185,6 +187,8 @@ export interface PatchBatchJob {
   completed_at: string | null;
   summary: string | null;
   audit: PatchBatchJobAudit | null;
+  /** 是否查得到校验报告（试运行与从未构建的任务为 false） */
+  has_validation_report: boolean;
 }
 
 export interface PatchBatch {

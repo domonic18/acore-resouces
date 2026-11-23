@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
+  AlertTriangle,
   ArrowLeft,
   CheckCircle2,
   ClipboardCheck,
@@ -190,7 +191,15 @@ export function ExportWizard({
     : null;
   const batchValidationQuery = useBatchValidationReport(batchId);
 
-
+  // 该任务是否查得到校验报告——由后端判定（登记路径 + 批次报告回退）。
+  // 试运行与从未构建的任务没有报告，点进去只会撞 404，所以不给点击入口。
+  const jobHasReport = useMemo(() => {
+    const map = new Map<string, boolean>();
+    for (const job of patchJobsQuery.data ?? []) {
+      map.set(job.job_id, job.has_validation_report);
+    }
+    return map;
+  }, [patchJobsQuery.data]);
 
   useEffect(() => {
     if (status?.running) setStep(1);
@@ -212,6 +221,25 @@ export function ExportWizard({
   }, [incomingJobIds, stepId, setStep]);
 
   const buildSucceeded = buildResult !== null && buildError === null;
+  // 试运行不落盘校验报告与产物——审查与发布都无从谈起，必须先正式构建。
+  const hasBuildArtifacts =
+    buildSucceeded && buildResult !== null && !buildResult.dry_run;
+
+  // 「审查产物」被禁用时的说明：光有灰按钮没有解释，用户会以为坏了。
+  const reviewGateReason = (() => {
+    if (hasBuildArtifacts) return null;
+    if (buildError) return `最近一次构建失败：${buildError}`;
+    if (buildResult === null)
+      return "还没有构建结果。「审查产物」需要一次正式构建产出的校验报告——试运行只写构建计划，不产出报告与补丁包。";
+    if (buildResult.dry_run)
+      return "最近一次是试运行：它只写构建计划，不产出校验报告与补丁包，所以这一步没法审查。";
+    return "最近一次构建没有产出可审查的产物。";
+  })();
+
+  const reviewGateAction =
+    jobIds.length > 0 || buildAll
+      ? "继续的做法：取消勾选上面的「先试运行，不改任何文件」，再点「开始构建」；构建完成后这一步就会亮起。"
+      : "当前向导没有待构建的坐骑。请在下方「补丁批次列表」里对目标批次点「重建」并选「正式构建」，或回到第 ① 步选择坐骑。";
 
   // 该批次是否已推送到分发端
   const batchPushed = Boolean(
@@ -254,6 +282,16 @@ export function ExportWizard({
       ? { all_requested: true, dry_run: dryRun, force }
       : { job_ids: jobIds, dry_run: dryRun, force };
     buildMutation.mutate(body);
+  };
+
+  /** 跳过试运行直接正式构建——审查产物的前置条件 */
+  const handleRealBuild = () => {
+    setDryRun(false);
+    buildMutation.mutate(
+      buildAll
+        ? { all_requested: true, dry_run: false, force }
+        : { job_ids: jobIds, dry_run: false, force },
+    );
   };
 
   const handlePublish = () => {
@@ -453,13 +491,42 @@ export function ExportWizard({
               <button
                 type="button"
                 className="btn"
-                disabled={!buildSucceeded}
+                disabled={!hasBuildArtifacts}
                 onClick={() => setStep(2)}
-                title={buildSucceeded ? "" : "先成功完成构建"}
+                title={
+                  hasBuildArtifacts
+                    ? ""
+                    : buildResult?.dry_run
+                      ? "试运行不会生成校验报告，先正式构建再审查"
+                      : "先成功完成构建"
+                }
               >
                 下一步：审查产物
               </button>
             </div>
+
+            {reviewGateReason && (
+              <div className="rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  <div className="space-y-1">
+                    <p>{reviewGateReason}</p>
+                    <p className="text-text-secondary">{reviewGateAction}</p>
+                    {buildResult?.dry_run && (jobIds.length > 0 || buildAll) && (
+                      <button
+                        type="button"
+                        className="btn btn-sm mt-1"
+                        disabled={building || buildMutation.isPending}
+                        onClick={handleRealBuild}
+                      >
+                        <Hammer className="h-3.5 w-3.5" />
+                        跳过试运行，直接正式构建
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {buildMutation.isError && (
               <div className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
@@ -535,19 +602,37 @@ export function ExportWizard({
               审查本次构建产物的校验结果，确认后再发布。
             </div>
 
+            {!hasBuildArtifacts && (
+              <div className="rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
+                {buildResult?.dry_run
+                  ? "最近一次是试运行——试运行不产出校验报告，也没有补丁包。请回到「构建补丁」取消勾选「先试运行」后正式构建。"
+                  : "还没有可供审查的构建产物。请先到「构建补丁」步骤完成一次正式构建。"}
+              </div>
+            )}
+
             {jobIds.length > 1 ? (
               <div className="rounded-md border border-border bg-bg-surface px-3 py-2 text-xs text-text-tertiary">
                 本批共 {jobIds.length} 个任务。点击任务查看其详细校验报告：
-                {jobIds.map((jobId) => (
-                  <button
-                    key={jobId}
-                    type="button"
-                    className="ml-2 font-mono text-accent hover:underline"
-                    onClick={() => setReviewJobId(jobId)}
-                  >
-                    {jobId}
-                  </button>
-                ))}
+                {jobIds.map((jobId) =>
+                  jobHasReport.get(jobId) === false ? (
+                    <span
+                      key={jobId}
+                      className="ml-2 font-mono text-text-tertiary"
+                      title="该任务没有校验报告——它从未成功构建过（试运行不产出报告）"
+                    >
+                      {jobId}（未构建）
+                    </span>
+                  ) : (
+                    <button
+                      key={jobId}
+                      type="button"
+                      className="ml-2 font-mono text-accent hover:underline"
+                      onClick={() => setReviewJobId(jobId)}
+                    >
+                      {jobId}
+                    </button>
+                  ),
+                )}
               </div>
             ) : null}
 
@@ -587,6 +672,12 @@ export function ExportWizard({
                 {validationQuery.error instanceof Error
                   ? validationQuery.error.message
                   : "未知错误"}
+                {currentJobId && (
+                  <div className="mt-1 text-text-secondary">
+                    该任务没有校验报告——它可能没被构建过（试运行不产出报告），
+                    或构建记录已被重新创建覆盖。重新构建后再试。
+                  </div>
+                )}
               </div>
             )}
 
@@ -603,9 +694,15 @@ export function ExportWizard({
               <button
                 type="button"
                 className="btn btn-primary"
-                disabled={!buildSucceeded}
+                disabled={!hasBuildArtifacts}
                 onClick={() => setStep(3)}
-                title={buildSucceeded ? "" : "先成功完成构建"}
+                title={
+                  hasBuildArtifacts
+                    ? ""
+                    : buildResult?.dry_run
+                      ? "试运行没有产出补丁包，先正式构建再发布"
+                      : "先成功完成构建"
+                }
               >
                 下一步：发布补丁
               </button>
