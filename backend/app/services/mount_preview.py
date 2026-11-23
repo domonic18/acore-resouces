@@ -234,9 +234,7 @@ def build_mount_previews(resources: list[Mount]) -> list[MountPatchPreview]:
     """
     id_cache: dict[str, set[int]] = {}
     all_mounts = cast(list[Mount], list_resources("mount"))
-    return [
-        build_mount_preview(resource, id_cache, all_mounts) for resource in resources
-    ]
+    return [build_mount_preview(resource, id_cache, all_mounts) for resource in resources]
 
 
 def preview_relationship_report(resource: Mount) -> dict[str, Any]:

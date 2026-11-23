@@ -174,11 +174,7 @@ def _mark_batch_jobs_applied(
         return
     from app.services.patch_exporter import get_patch_job, update_patch_job_status
 
-    new_mpq = (
-        str(mpq_target.relative_to(settings.project_root))
-        if mpq_target is not None
-        else None
-    )
+    new_mpq = str(mpq_target.relative_to(settings.project_root)) if mpq_target is not None else None
 
     for job_id in job_ids:
         try:
@@ -236,9 +232,7 @@ def push_batches(
         包含 pushed / skipped / failed / preview / cleaned 的字典。
     """
     if not is_distro_configured():
-        raise PatchPublisherError(
-            "未配置分发端（DISTRO_BASE_URL / DISTRO_API_KEY），无法推送。"
-        )
+        raise PatchPublisherError("未配置分发端（DISTRO_BASE_URL / DISTRO_API_KEY），无法推送。")
 
     empty: dict[str, Any] = {
         "pushed": [],

@@ -21,9 +21,7 @@ def read_ai_config(db: Session = Depends(get_db)) -> AiConfigResponse:
 
 
 @router.put("/ai-config", response_model=AiConfigResponse)
-def update_ai_config(
-    payload: AiConfigUpdate, db: Session = Depends(get_db)
-) -> AiConfigResponse:
+def update_ai_config(payload: AiConfigUpdate, db: Session = Depends(get_db)) -> AiConfigResponse:
     """保存 AI 服务配置；api_key 留空表示保持不变。"""
     row = ai_config_service.upsert(db, payload)
     return ai_config_service.to_response(row)

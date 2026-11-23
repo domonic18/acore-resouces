@@ -164,7 +164,10 @@ def upload_mpq(
 ) -> None:
     """第二步：流式上传 MPQ 字节（分发端校验 size/sha256 后标记 complete）。"""
     url = f"{(base_url or settings.distro_base_url).rstrip('/')}/api/admin/batches/{batch}/mpq"
-    headers = {"X-Admin-Key": api_key or settings.distro_api_key, "Content-Type": "application/octet-stream"}
+    headers = {
+        "X-Admin-Key": api_key or settings.distro_api_key,
+        "Content-Type": "application/octet-stream",
+    }
     try:
         with mpq_path.open("rb") as f:
             resp = httpx.put(url, content=f, headers=headers, timeout=UPLOAD_TIMEOUT)
@@ -184,7 +187,11 @@ def push_batch(
     payload, mpq_path = build_push_payload(batch_dir)
     announce_batch(batch, payload, base_url=base_url, api_key=api_key)
     upload_mpq(batch, mpq_path, base_url=base_url, api_key=api_key)
-    return {"batch": batch, "patch_number": payload["patch_number"], "size_bytes": payload["size_bytes"]}
+    return {
+        "batch": batch,
+        "patch_number": payload["patch_number"],
+        "size_bytes": payload["size_bytes"],
+    }
 
 
 def fetch_dist_batches(
