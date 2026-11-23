@@ -85,6 +85,20 @@ docker compose up -d --build
 
 根目录 `package.json` 仅作为命令编排入口，不存放依赖，因此**不要在根目录执行 `npm install`**。
 
+## 生产部署（Mac Mini，单环境 8000）
+
+`main` 分支 push 后 CI 自动部署：`docker` job 构建镜像推 TCR，`deploy` job 在部署机
+（自托管 runner 即本机）执行 `docker compose pull && up -d` 滚动更新并做 `/health`
+健康检查。部署目录 `~/Workspace/acore-resouces-deploy/`（`compose.yml` + `.env`，
+不入 Git）；容器挂载仓库真实目录（`data→/data`、`sources→/sources`、`workspace→/workspace`），
+YAML/SQLite 单一真相源。手动运维：
+
+```bash
+cd ~/Workspace/acore-resouces-deploy
+IMAGE_REF=<registry>/<ns>/acore-resouces:main-<sha> docker compose up -d   # 手动指定镜像
+docker logs -f acore-resouces-web                                          # 看日志
+```
+
 ## CLI
 
 ```bash
