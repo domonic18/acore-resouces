@@ -1,7 +1,7 @@
 id: 195
 model_folder: giantvampirebatmount嗜血恐翼蝠
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.x）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80190
     visual_id: 9140190
+    icon_id: 1577
     name: 枯木恐翼蝠
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 163706
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 51143
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 枯木恐翼蝠
     class: 15
     subclass: 5
+    displayid: 51143
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

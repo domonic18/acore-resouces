@@ -59,7 +59,9 @@ def test_upsert_blank_key_keeps_and_clear_removes(db: Session, key_env: Path) ->
     ai_config_service.upsert(
         db, AiConfigUpdate(base_url="https://x", model="m", api_key="sk-keep-me-123", enabled=True)
     )
-    row = ai_config_service.upsert(db, AiConfigUpdate(base_url="https://x", model="m", enabled=True))
+    row = ai_config_service.upsert(
+        db, AiConfigUpdate(base_url="https://x", model="m", enabled=True)
+    )
     assert ai_config_service.decrypt_key(row) == "sk-keep-me-123"
 
     row = ai_config_service.upsert(
@@ -76,9 +78,7 @@ def test_load_effective_config_gates(
         db,
         AiConfigUpdate(base_url="https://x", model="m", api_key="sk-k", enabled=False),
     )
-    monkeypatch.setattr(ai_config_service, "SessionLocal", sessionmaker(
-        bind=db.get_bind()
-    ))
+    monkeypatch.setattr(ai_config_service, "SessionLocal", sessionmaker(bind=db.get_bind()))
     assert ai_config_service.load_effective_config() is None
 
     ai_config_service.upsert(db, AiConfigUpdate(base_url="https://x", model="", enabled=True))
@@ -94,7 +94,9 @@ def test_load_effective_config_gates(
 
     ai_config_service.upsert(
         db,
-        AiConfigUpdate(base_url="https://x", model="m", timeout_seconds=300, max_tokens=8000, enabled=True),
+        AiConfigUpdate(
+            base_url="https://x", model="m", timeout_seconds=300, max_tokens=8000, enabled=True
+        ),
     )
     cfg = ai_config_service.load_effective_config()
     assert cfg is not None
@@ -125,7 +127,9 @@ def test_test_connection_ok_persists(
     monkeypatch.setattr(ai_config_service.httpx, "post", _fake_httpx_post(200))
     ai_config_service.upsert(
         db,
-        AiConfigUpdate(base_url="https://api.test/v1", model="m", api_key="sk-abcdef123456", enabled=True),
+        AiConfigUpdate(
+            base_url="https://api.test/v1", model="m", api_key="sk-abcdef123456", enabled=True
+        ),
     )
 
     ok, err = ai_config_service.test_connection(db)
@@ -147,7 +151,8 @@ def test_test_connection_http_error_and_timeout(
 ) -> None:
     monkeypatch.setattr(ai_config_service.httpx, "post", _fake_httpx_post(401))
     ai_config_service.upsert(
-        db, AiConfigUpdate(base_url="https://api.test/v1", model="m", api_key="sk-bad", enabled=True)
+        db,
+        AiConfigUpdate(base_url="https://api.test/v1", model="m", api_key="sk-bad", enabled=True),
     )
     ok, err = ai_config_service.test_connection(db)
     assert not ok and err is not None and "401" in err
@@ -169,7 +174,9 @@ def test_test_connection_anthropic_ok(
     db: Session, key_env: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """anthropic 协议：请求 /v1/messages，双认证头，解析 content 块。"""
-    monkeypatch.setattr(ai_config_service.httpx, "post", _fake_httpx_post(200, protocol="anthropic"))
+    monkeypatch.setattr(
+        ai_config_service.httpx, "post", _fake_httpx_post(200, protocol="anthropic")
+    )
     ai_config_service.upsert(
         db,
         AiConfigUpdate(
@@ -248,9 +255,7 @@ def test_chat_anthropic_bad_structure_raises(key_env: Path) -> None:
         ai_config_service.httpx.post = orig  # type: ignore[assignment]
 
 
-def test_ensure_table_migrates_legacy_protocol_column(
-    db: Session, key_env: Path
-) -> None:
+def test_ensure_table_migrates_legacy_protocol_column(db: Session, key_env: Path) -> None:
     """存量库（无 protocol/timeout_seconds/max_tokens 列）自动补列并回填默认值。"""
     engine = db.get_bind()
     from sqlalchemy import text as sa_text
@@ -263,7 +268,9 @@ def test_ensure_table_migrates_legacy_protocol_column(
                 "last_tested_at DATETIME, last_test_status VARCHAR, last_test_error TEXT)"
             )
         )
-        conn.execute(sa_text("INSERT INTO ai_config (id, base_url, model) VALUES (1, 'https://x', 'm')"))
+        conn.execute(
+            sa_text("INSERT INTO ai_config (id, base_url, model) VALUES (1, 'https://x', 'm')")
+        )
 
     row = ai_config_service.get_row(db)
     assert row is not None

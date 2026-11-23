@@ -1,7 +1,7 @@
 id: 227
 model_folder: Horse2纯心骏马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.2）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80223
     visual_id: 9140223
+    icon_id: 21723
     name: 纯心骏马
     description: 召唤或解散你的纯心骏马。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 163982
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102723
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 纯心骏马
     class: 15
     subclass: 5
+    displayid: 102723
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

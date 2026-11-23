@@ -1,7 +1,7 @@
 id: 125
 model_folder: DRAGONHAWK阿曼尼龙鹰
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.4）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80120
     visual_id: 9140120
+    icon_id: 9920
     name: 红色装甲龙鹰
     description: 召唤或解散一只可供骑乘的红色装甲龙鹰。这是一种飞行坐骑。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 98104
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90920
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 红色装甲龙鹰
     class: 15
     subclass: 5
+    displayid: 90920
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 114
 model_folder: devourerswarmermount吞噬者坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.1）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80109
     visual_id: 9140109
+    icon_id: 18883
     name: 暴怒的重殴者
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 187183
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99883
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 暴怒的重殴者
     class: 15
     subclass: 5
+    displayid: 99883
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

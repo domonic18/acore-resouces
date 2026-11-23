@@ -1,7 +1,7 @@
 id: 279
 model_folder: MooseMount2石皮大角鹿
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.0，至高岭声望）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80275
     visual_id: 9140275
+    icon_id: 27386
     name: 至高岭大角鹿
     description: 召唤或解散你的至高岭大角鹿。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 147807
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108386
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 至高岭大角鹿
     class: 15
     subclass: 5
+    displayid: 108386
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

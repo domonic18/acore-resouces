@@ -1,7 +1,7 @@
 id: 329
 model_folder: protodrakegladiatormount始祖幼龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：巫妖王之怒（3.1，25人奥杜尔成就）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80325
     visual_id: 9140325
+    icon_id: 3941
     name: 铁箍始祖幼龙
     description: 召唤或解散一条可供骑乘的铁箍始祖幼龙。这是一种速度极快的坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 45801
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 59690
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 铁箍始祖幼龙
     class: 15
     subclass: 5
+    displayid: 59690
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

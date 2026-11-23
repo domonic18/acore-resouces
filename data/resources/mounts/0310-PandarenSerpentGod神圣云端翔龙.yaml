@@ -1,7 +1,7 @@
 id: 310
 model_folder: PandarenSerpentGod神圣云端翔龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.x）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80306
     visual_id: 9140306
+    icon_id: 27738
     name: 神圣猩红云端翔龙
     description: 召唤或解散一条可供骑乘的神圣猩红云端翔龙。这是一种飞行坐骑。需要学习云端翔龙骑士团的云端翔龙骑术。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 87773
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108738
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 神圣猩红云端翔龙
     class: 15
     subclass: 5
+    displayid: 108738
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 113
 model_folder: devourersmallmount末日迷沼飞虫
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80108
     visual_id: 9140108
+    icon_id: 18877
     name: 末日迷沼飞虫
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 180582
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99877
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 末日迷沼飞虫
     class: 15
     subclass: 5
+    displayid: 99877
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

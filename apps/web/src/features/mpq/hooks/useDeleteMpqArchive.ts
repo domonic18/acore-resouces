@@ -10,7 +10,6 @@ export function useDeleteMpqArchive() {
       queryClient.invalidateQueries({ queryKey: ["mpq", "archives"] });
       queryClient.invalidateQueries({ queryKey: ["patch-batches"] });
       queryClient.invalidateQueries({ queryKey: ["patch-jobs"] });
-      queryClient.invalidateQueries({ queryKey: ["distro-status"] });
     },
   });
 }

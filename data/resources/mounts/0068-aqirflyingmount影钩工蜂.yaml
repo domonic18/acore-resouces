@@ -1,7 +1,7 @@
 id: 68
 model_folder: aqirflyingmount影钩工蜂
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.3）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80063
     visual_id: 9140063
+    icon_id: 14272
     name: 影钩工蜂
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 174771
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95272
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 影钩工蜂
     class: 15
     subclass: 5
+    displayid: 95272
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

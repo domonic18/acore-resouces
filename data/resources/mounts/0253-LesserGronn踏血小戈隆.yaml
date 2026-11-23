@@ -1,7 +1,7 @@
 id: 253
 model_folder: LesserGronn踏血小戈隆
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.0，戈尔隆德）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80249
     visual_id: 9140249
+    icon_id: 23837
     name: 阳炎之肤小戈隆
     description: 召唤或解散你的阳炎之肤小戈隆。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 116792
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 104837
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 阳炎之肤小戈隆
     class: 15
     subclass: 5
+    displayid: 104837
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

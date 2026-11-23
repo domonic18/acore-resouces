@@ -1,7 +1,7 @@
 id: 406
 model_folder: stormpikebattlecharger迅捷美酒节赛羊
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：燃烧远征（2.2，美酒节）
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80402
     visual_id: 9140402
+    icon_id: 1177
     name: 迅捷美酒节赛羊
     description: 召唤或解散一头可以骑乘的迅捷美酒节赛羊。这是一种速度非常快的坐骑。
     speed: 100
@@ -37,7 +38,7 @@ dbc:
     id: 33977
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 17343
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 迅捷美酒节赛羊
     class: 15
     subclass: 5
+    displayid: 17343
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

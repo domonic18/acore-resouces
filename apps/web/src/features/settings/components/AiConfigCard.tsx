@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { KeyRound, Loader2, Plug, Save, Sparkles } from "lucide-react";
+import { useCanWrite } from "@/features/auth/useAuth";
 import {
   useAiConfig,
   useTestAiConfig,
@@ -92,6 +93,7 @@ export function AiConfigCard() {
   const { data, isLoading, isError } = useAiConfig();
   const update = useUpdateAiConfig();
   const test = useTestAiConfig();
+  const canWrite = useCanWrite();
 
   const [baseUrl, setBaseUrl] = useState("");
   const [model, setModel] = useState("");
@@ -336,7 +338,9 @@ export function AiConfigCard() {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleSave}
+                title={canWrite ? undefined : "仅管理员可修改 AI 配置"}
                 disabled={
+                  !canWrite ||
                   savePending ||
                   !baseUrl.trim() ||
                   !model.trim() ||

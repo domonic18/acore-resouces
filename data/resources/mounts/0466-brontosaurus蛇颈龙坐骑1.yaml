@@ -1,0 +1,152 @@
+id: 466
+model_folder: brontosaurus蛇颈龙坐骑1
+debug_passed: false
+added: true
+notes: |-
+  ## 官方信息
+  - **版本**：待查
+  - **获取**：待查（未找到确定的官方物品）
+  - **官方形态**：幼年商队雷龙是三人 + 商队/拍卖行的多人坐骑（原版 BFA 雷龙，三人+拍卖行）
+
+  ## 模型说明（2026-11-22 换模 + 降为单人坐骑）
+  - 本条目**改用 `brontosaurus蛇颈龙坐骑1/brontosaurus/brontosaurus.m2`**（无驮架的素体蛇颈龙）。
+    原 `babybrontosaurus长颈龙坐骑/babybrontosaurus/babybrontosaurus.m2` 贴图虽完好，但只有
+    1/2/2 submesh、**没有座位几何体**，背上光秃秃，撑不起官方商队形态，挂件必然悬空。
+  - `brontosaurus.m2` 的 M2 贴图表只有 2 项：type 11（= CreatureDisplayInfo 的
+    TextureVariation_1，实体）+ type 0 硬编码 `creature\brontosaurus\armorreflect4.blp`。
+    4 个 skin（00/01/02/03）共 28 个 batch **全部**走 textureLookup=0 →
+    **TextureVariation_1 必须是 `brontosaurus_green`**（tv2/tv3 不被引用，仍写同值保持一致）。
+  - 该模型**不含驮架**：`creature/brontosaurus/` 下虽然残留 `brontosauruspack_*.blp`
+    （驮架贴图），但模型没有任何 batch 引用它们。
+  - 3.3.5 原版 DBC 里没有任何记录引用 `creature\brontosaurus\brontosaurus.m2`，路径不与原版冲突。
+
+  ## 降级为单人坐骑（2026-11-22）
+  - 官方 312（巨商队猛犸象）与自建 90001 的乘客挂点都按「带驮架的模型」设计，
+    本模型既无座位几何体、骨骼也对不上（挂件会落到肚子上）→ **移除 `vehicle` 块**，
+    `creature_template.VehicleId=0`，AC 走 `Unit::Mount` 单人骑乘路径，
+    不再生成商人/拍卖行 NPC 挂件。
+  - 随之删除自建 **Vehicle.dbc 90001** 与 **VehicleSeat.dbc 91001–91007**（换模后无引用；
+    Vehicle 90000 归 #0062，保留）。
+
+  ## 兄弟条目备注
+  - #24 雄壮商队雷龙 用 `brontosauruspack.m2`（**带驮架、贴图完好**），
+    是库内唯一能撑起商队形态的雷龙模型 —— 别把本条目换成它，两条会撞模型。
+  - `brontosaurusmount雄壮商队雷龙/brontosaurusmount.m2` 是**坏模型**（贴图槽被清空，
+    渲染必为白色），详见 #24 条目的备注；修好之前不要使用。
+drop: {}
+official_db:
+  name: 幼年商队雷龙
+  spell_icon_name: inv_brontosaurusmount
+  icon_name: inv_brontosaurusmount
+dbc:
+  creature_model_data:
+    id: 104463
+    flags: 2
+    model_name: creature\brontosaurus\brontosaurus.m2
+  creature_display_info:
+    id: 140463
+    model_id: 104463
+    sound_id: 0
+    extra_display_information_id: 0
+    scale: 1.0
+    opacity: 255
+    texture_variation_1: brontosaurus_green
+    texture_variation_2: brontosaurus_green
+    texture_variation_3: brontosaurus_green
+  spell:
+    id: 80463
+    visual_id: 9140463
+    icon_id: 17130
+    name: 幼年商队雷龙
+    description: 召唤或解散一只可供骑乘的幼年商队雷龙。这是一种速度非常快的坐骑。
+    speed: 100
+  item:
+    id: 91463
+    class: 15
+    subclass: 5
+    display_id: 98130
+    inventory_type: 0
+    sheath: 0
+db:
+  creature_template:
+    entry: 9140463
+    name: 幼年商队雷龙
+    subname: ''
+    IconName: ''
+    AIName: ''
+    ScriptName: ''
+    faction: 35
+    type: 1
+    unit_class: 1
+    unit_flags2: 2048
+    minlevel: 1
+    maxlevel: 2
+    speed_walk: 1.0
+    speed_run: 1.14286
+    speed_swim: 1.0
+    speed_flight: 1.0
+    detection_range: 1.0
+    HoverHeight: 1.0
+    DamageModifier: 1.0
+    HealthModifier: 1.0
+    ManaModifier: 1.0
+    ArmorModifier: 1.0
+    ExperienceModifier: 1.0
+    RegenHealth: 1
+    flags_extra: 2
+    BaseVariance: 0.0
+    RangeVariance: 0.0
+    VerifiedBuild: 0
+  creature_model_info:
+    display_id: 140463
+  item_template:
+    entry: 91463
+    name: 幼年商队雷龙
+    class: 15
+    subclass: 5
+    displayid: 98130
+    spellid_1: 55884
+    spelltrigger_1: 0
+    spellcharges_1: -1
+    spellppmRate_1: 0
+    spellcooldown_1: -1
+    spellcategory_1: 330
+    spellcategorycooldown_1: 3000
+    spellid_2: 80463
+    spelltrigger_2: 6
+    spellcharges_2: 0
+    spellppmRate_2: 0
+    spellcooldown_2: -1
+    spellcategory_2: 0
+    spellcategorycooldown_2: -1
+    Quality: 4
+    AllowableClass: -1
+    AllowableRace: 2047
+    BuyCount: 1
+    BuyPrice: 1000000
+    SellPrice: 250000
+    InventoryType: 0
+    ItemLevel: 40
+    RequiredLevel: 40
+    RequiredSkill: 762
+    RequiredSkillRank: 150
+    bonding: 1
+    Material: 4
+    sheath: 0
+    stackable: 1
+    description: ' 教你学会召唤这种坐骑。这是一种非常快速的坐骑。'
+    delay: 0
+    holy_res: 0
+    fire_res: 0
+    nature_res: 0
+    frost_res: 0
+    shadow_res: 0
+    arcane_res: 0
+    VerifiedBuild: 12340
+resource_type: mount
+mount_type: 陆地坐骑
+star_rating: 四星
+subtype: 雷龙
+# 单人坐骑（2026-11-22）：模型无座位几何体，官方/自建多人挂点与本模型骨架对不上，
+# 挂件会落到肚子或悬空 → 不配置 vehicle，creature_template.VehicleId 保持 0，
+# AC 走 Unit::Mount 单人骑乘路径，也不会再生成商人/拍卖行 NPC 挂件。

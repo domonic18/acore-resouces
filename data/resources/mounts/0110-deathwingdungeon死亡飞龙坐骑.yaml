@@ -1,7 +1,7 @@
 id: 110
 model_folder: deathwingdungeon死亡飞龙坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.x）
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80105
     visual_id: 9140105
+    icon_id: 27485
     name: 燃烬巨龙
     description: 召唤或解散一只可骑乘的燃烬巨龙。这是一种飞行坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 142552
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108485
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 燃烬巨龙
     class: 15
     subclass: 5
+    displayid: 108485
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

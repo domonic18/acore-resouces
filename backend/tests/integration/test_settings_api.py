@@ -46,7 +46,9 @@ def client() -> TestClient:
     return TestClient(app)
 
 
-def test_get_ai_config_initial_empty(client: TestClient, db_session: Session, key_env: Path) -> None:
+def test_get_ai_config_initial_empty(
+    client: TestClient, db_session: Session, key_env: Path
+) -> None:
     resp = client.get("/api/settings/ai-config")
     assert resp.status_code == 200
     data = resp.json()
@@ -59,8 +61,13 @@ def test_get_ai_config_initial_empty(client: TestClient, db_session: Session, ke
 def test_put_then_get_masks_key(client: TestClient, db_session: Session, key_env: Path) -> None:
     resp = client.put(
         "/api/settings/ai-config",
-        json={"base_url": "https://api.moonshot.cn/anthropic", "model": "kimi-k2.5",
-              "protocol": "anthropic", "api_key": "sk-testkey12345678", "enabled": True},
+        json={
+            "base_url": "https://api.moonshot.cn/anthropic",
+            "model": "kimi-k2.5",
+            "protocol": "anthropic",
+            "api_key": "sk-testkey12345678",
+            "enabled": True,
+        },
     )
     assert resp.status_code == 200
 
@@ -79,9 +86,14 @@ def test_put_timeout_and_max_tokens_round_trip(
 ) -> None:
     resp = client.put(
         "/api/settings/ai-config",
-        json={"base_url": "https://api.kimi.com/coding", "model": "kimi-k3",
-              "protocol": "anthropic", "timeout_seconds": 300, "max_tokens": 8000,
-              "enabled": True},
+        json={
+            "base_url": "https://api.kimi.com/coding",
+            "model": "kimi-k3",
+            "protocol": "anthropic",
+            "timeout_seconds": 300,
+            "max_tokens": 8000,
+            "enabled": True,
+        },
     )
     assert resp.status_code == 200
     data = client.get("/api/settings/ai-config").json()

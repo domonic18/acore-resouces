@@ -14,17 +14,12 @@ from app.services.patch_publisher import (
     PatchPublisherError,
     publish_batch,
     publish_patches,
-    push_batches,
 )
 
 
 @pytest.fixture
 def pub_dirs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Path]:
-    """将发布范围目录指向临时目录（publish_patches 输出依赖 project_root）。
-
-    默认禁用分发端推送：backend/.env 可能配置了真实 DISTRO_BASE_URL，
-    不屏蔽会把测试产物推到线上；推送用例自行覆盖为 True。
-    """
+    """将发布范围目录指向临时目录（publish_patches 输出依赖 project_root）。"""
     mpq_dir = tmp_path / "mpq"
     dist_dir = tmp_path / "dist"
     mpq_dir.mkdir()
@@ -32,7 +27,6 @@ def pub_dirs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Path]
     monkeypatch.setattr(patch_publisher, "MPQ_DIR", mpq_dir)
     monkeypatch.setattr(patch_publisher, "DIST_DIR", dist_dir)
     monkeypatch.setattr(settings, "project_root", tmp_path)
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: False)
     return {"mpq": mpq_dir, "dist": dist_dir}
 
 
@@ -86,9 +80,7 @@ def test_publish_batch_marks_jobs_applied(
     )
 
     marked: list[tuple[str, str, dict | None]] = []
-    monkeypatch.setattr(
-        "app.services.patch_exporter.get_patch_job", lambda job_id: None
-    )
+    monkeypatch.setattr("app.services.patch_exporter.get_patch_job", lambda job_id: None)
     monkeypatch.setattr(
         "app.services.patch_exporter.update_patch_job_status",
         lambda job_id, status, output_artifacts=None, summary=None: marked.append(
@@ -174,85 +166,6 @@ def test_collect_source_batches_ignores_empty_batch(pub_dirs: dict[str, Path]) -
     assert patch_publisher.collect_source_batches() == []
 
 
-def test_publish_does_not_push_distro(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """发布只做本地改名移位，不推送分发端。
-
-    推送是一次不可逆的对外动作（玩家可下载、公告同步发布），
-    必须是显式的独立步骤，不能藏在发布里。
-    """
-    _make_batch(pub_dirs["mpq"])
-    pushed: list[Path] = []
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
-    monkeypatch.setattr(
-        patch_publisher,
-        "push_batch",
-        lambda batch_dir, **kw: pushed.append(batch_dir)
-        or {"batch": batch_dir.name, "patch_number": 5, "size_bytes": 10},
-    )
-
-    result = publish_patches(start_number=5)
-
-    assert pushed == [], "发布不得隐式推送分发端"
-    assert "distro_pushed" not in result
-    assert (pub_dirs["dist"] / "20260907_024029" / "patch-zhCN-5.mpq").exists()
-
-
-def test_push_batches_pushes_dist(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """推送是独立动作：把 dist 下已发布的批次上传到分发端。"""
-    _make_batch(pub_dirs["mpq"])
-    publish_patches(start_number=5)
-
-    pushed: list[Path] = []
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
-    monkeypatch.setattr(
-        patch_publisher,
-        "push_batch",
-        lambda batch_dir, **kw: pushed.append(batch_dir)
-        or {"batch": batch_dir.name, "patch_number": 5, "size_bytes": 10},
-    )
-
-    result = push_batches()
-
-    assert result["pushed"] == ["20260907_024029"]
-    assert result["failed"] == []
-    assert [d.name for d in pushed] == ["20260907_024029"]
-
-
-def test_push_batches_reports_failure_without_raising(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """推送失败只记入 failed，不抛异常——本地发布已完成，不应被回滚。"""
-    _make_batch(pub_dirs["mpq"])
-    publish_patches(start_number=5)
-
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
-    from app.services.patch_distro_client import DistroPushError
-
-    def _boom(batch_dir: Path, **kw: object) -> dict[str, object]:
-        raise DistroPushError("endpoint down")
-
-    monkeypatch.setattr(patch_publisher, "push_batch", _boom)
-
-    result = push_batches()
-
-    assert result["pushed"] == []
-    assert result["failed"][0]["batch"] == "20260907_024029"
-
-
-def test_push_batches_requires_distro_config(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """未配置分发端时拒绝推送，并说明原因。"""
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: False)
-
-    with pytest.raises(PatchPublisherError):
-        push_batches()
-
-
 def test_publish_dry_run_reports_preview(pub_dirs: dict[str, Path]) -> None:
     """干跑必须如实回报「将要发布什么」。
 
@@ -279,9 +192,7 @@ def test_publish_batch_filter_limits_scope(pub_dirs: dict[str, Path]) -> None:
     wanted = _make_batch(pub_dirs["mpq"], "20260101_000000")
     other = _make_batch(pub_dirs["mpq"], "20260101_000001")
 
-    result = publish_patches(
-        start_number=7, dry_run=True, batch_ids=[wanted.name]
-    )
+    result = publish_patches(start_number=7, dry_run=True, batch_ids=[wanted.name])
 
     assert [item["batch"] for item in result["preview"]] == [wanted.name]
     assert other.name not in [item["batch"] for item in result["preview"]]
@@ -305,9 +216,7 @@ def test_publish_batch_updates_mpq_path_registration(
     from app.schemas.patch import PatchJobManifest
 
     batch = _make_batch(pub_dirs["mpq"])
-    (batch / "manifest.json").write_text(
-        json.dumps({"jobs": ["mount_0003"]}), encoding="utf-8"
-    )
+    (batch / "manifest.json").write_text(json.dumps({"jobs": ["mount_0003"]}), encoding="utf-8")
 
     manifest = PatchJobManifest(
         job_id="mount_0003",
@@ -320,9 +229,7 @@ def test_publish_batch_updates_mpq_path_registration(
         status="generated",
         artifacts={"output": {"mpq": "workspace/mpq/old/patch-mounts.mpq"}},
     )
-    monkeypatch.setattr(
-        "app.services.patch_exporter.get_patch_job", lambda job_id: manifest
-    )
+    monkeypatch.setattr("app.services.patch_exporter.get_patch_job", lambda job_id: manifest)
 
     captured: list[dict | None] = []
     monkeypatch.setattr(
@@ -338,80 +245,3 @@ def test_publish_batch_updates_mpq_path_registration(
     assert captured[0] is not None
     assert captured[0]["mpq"].endswith("patch-zhCN-6.mpq")
     assert "dist" in captured[0]["mpq"]
-
-
-def test_push_cleans_local_mpq_after_success(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """推送成功后删除本地 MPQ 副本——分发端才是玩家下载的来源。
-
-    本地再留一份就是双份存储（单个补丁 300MB+）。
-    """
-    batch = _make_batch(pub_dirs["mpq"])
-    publish_patches(start_number=5)
-    dist_batch = pub_dirs["dist"] / batch.name
-    mpq = dist_batch / "patch-zhCN-5.mpq"
-    assert mpq.exists()
-    mpq_size = mpq.stat().st_size
-
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
-    monkeypatch.setattr(
-        patch_publisher,
-        "push_batch",
-        lambda batch_dir, **kw: {"batch": batch_dir.name, "patch_number": 5, "size_bytes": 10},
-    )
-
-    result = push_batches()
-
-    assert result["pushed"] == [batch.name]
-    assert not mpq.exists(), "推送成功后本地副本应被清理"
-    # 批次元数据保留，供审计与批次列表使用
-    assert (dist_batch / "manifest.json").exists()
-    assert len(result["cleaned"]) == 1
-    assert result["cleaned"][0]["batch"] == batch.name
-    assert result["cleaned"][0]["freed_bytes"] == mpq_size
-
-
-def test_push_keeps_local_mpq_on_failure(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """推送失败时本地副本必须保留——那是重试的唯一来源。"""
-    batch = _make_batch(pub_dirs["mpq"])
-    publish_patches(start_number=5)
-    dist_batch = pub_dirs["dist"] / batch.name
-    mpq = dist_batch / "patch-zhCN-5.mpq"
-
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
-    from app.services.patch_distro_client import DistroPushError
-
-    def _boom(batch_dir: Path, **kw: object) -> dict[str, object]:
-        raise DistroPushError("endpoint down")
-
-    monkeypatch.setattr(patch_publisher, "push_batch", _boom)
-
-    result = push_batches()
-
-    assert result["pushed"] == []
-    assert mpq.exists(), "推送失败时本地副本必须保留以便重试"
-    assert result["cleaned"] == []
-
-
-def test_push_can_keep_local_mpq(
-    pub_dirs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """cleanup_local=False 时推送后保留本地副本。"""
-    batch = _make_batch(pub_dirs["mpq"])
-    publish_patches(start_number=5)
-    mpq = pub_dirs["dist"] / batch.name / "patch-zhCN-5.mpq"
-
-    monkeypatch.setattr(patch_publisher, "is_distro_configured", lambda: True)
-    monkeypatch.setattr(
-        patch_publisher,
-        "push_batch",
-        lambda batch_dir, **kw: {"batch": batch_dir.name, "patch_number": 5, "size_bytes": 10},
-    )
-
-    result = push_batches(cleanup_local=False)
-
-    assert mpq.exists()
-    assert result["cleaned"] == []

@@ -1,7 +1,7 @@
 id: 431
 model_folder: viciousgoblintrike勇猛的战车
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（PvP 邪恶鞍具）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80427
     visual_id: 9140427
+    icon_id: 32577
     name: 勇猛的战车
     description: 召唤或解散你的勇猛的战车。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 140354
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113577
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 勇猛的战车
     class: 15
     subclass: 5
+    displayid: 113577
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -130,7 +130,46 @@ uv add --group dev <package>
 测试框架 pytest，用例位于 `backend/tests/`（`unit/` + `integration/`）：
 `uv run pytest`，单个用例 `uv run pytest -xvs tests/unit/test_validators.py`。
 
-## 6. 任务完成后检查清单
+## 6. 鉴权与分发（账号中心：自建账号 + 委托验证 + 玩家下载）
+
+- **账号来源**：本系统自建账号（SQLite `local_user` 表 + bcrypt 哈希），资源系统是
+  唯一账号中心；`POST /api/auth/verify` 提供委托验证（`X-Delegation-Key` 恒时比较）
+  供外部系统共用同一套账号，本系统对游戏主站/MySQL 零依赖。
+- **首次启动**：`local_user` 表为空且配置了 `AUTH_BOOTSTRAP_ADMIN_PASSWORD` 时，
+  自动创建 `admin` 账号；表空且未配置时登录接口返回明确的配置错误提示。
+- **`.env` 必填项**：`AUTH_JWT_SECRET`（≥32 字节随机）；可选项
+  `AUTH_BOOTSTRAP_ADMIN_PASSWORD`（仅首启建 admin）、`AUTH_DELEGATION_KEY`
+  （为空时 verify 端点整体禁用）。缺失必填项时接口明确报错，绝不硬编码兜底。
+- **角色规则**：两级角色 admin/viewer 存在 `local_user.role`，viewer 即玩家；
+  管理员可在「账号权限」页创建账号、改角色、重置密码、删除（不可操作自己）。
+- **查看权限**：权限码 `PERMISSION_CODES = ("dist", "mount", "pet", "npc")` 存
+  `local_user.permissions`（JSON 数字符串）；admin 隐式全量（存储值被忽略），权限仅对
+  viewer 生效。登录时写入 JWT claim `perms`，中间件按前缀路由：`/api/auth*` 恒通、
+  `/api/dist*` 需 dist、`/api/resources/{mount|pet|npc}*` 需对应权限（list/detail/
+  relationships/flow/assets 全覆盖）、`/api/preview*` 任一资源权限即可（图标/缩略图跨
+  类型共用，松散门控——决策已确认）；其余路径（dbc/mpq/patches/settings/system/
+  wowhead/files）仅 admin。旧 token 无 `perms` claim 视为空权限，重新登录即恢复。
+  存量库无 `permissions` 列时 `_ensure_local_table()` 自动 ALTER，存量 viewer 默认
+  `["dist"]`（行为与权限系统上线前一致）。写权限不依赖此模型：非 GET 仅 admin 规则照旧。
+- **端点**（`api/auth.py`）：`/login`、`/verify` 为公开端点（verify 路由内自校验
+  委托密钥）；`/accounts` 系列仅 admin（`PUT /accounts/{id}/permissions` 校验
+  ⊆ PERMISSION_CODES）；`PUT /api/auth/me/password` 仅需登录
+  （在 `WRITE_EXEMPTS` 豁免，bootstrap admin 的首次改密入口）。
+- **中间件**（`app/core/security.py`）：只拦 `/api/*`；放行 `OPTIONS`、公开端点；
+  token 取 `Authorization: Bearer` 头，缺失时兜底 `?token=` 查询参数
+  （浏览器 `<a href>`/`<img src>` 下载带不了 Header；权衡：token 会进访问日志，
+  仅用于下载/图片链接）；viewer 走 `_viewer_permitted` 前缀权限路由（见「查看权限」），
+  未命中一律 403「权限不足：当前账号无权访问该内容」；GET 仅需登录；非 GET 默认 admin
+  （豁免清单 `WRITE_EXEMPTS`：wowhead 搜索、AI 连通性测试、改自己密码）。
+  **必须在 CORS 之前 `add_middleware`**，让 CORS 保持最外层（Starlette 后加者在最外层）。
+- **补丁分发**（`services/dist_site.py` + `api/dist.py`）：发布即上架——`publish`
+  把 MPQ 移入 `workspace/dist/{批次}/` 并写 manifest 补丁编号，`GET /api/dist/tree`
+  即列出该批次；下载走 `GET /api/dist/download/{path}`（resolve 后限 dist 目录、
+  仅 `.mpq`、`FileResponse` 附件下载）。管理操作（批次列表/改公告/下线）要求 admin。
+- **测试**：`tests/conftest.py` 的 autouse fixture 会剥离 AuthMiddleware，
+  中间件行为由 `tests/unit/test_auth_middleware.py` 单独用最小 app 覆盖。
+
+## 7. 任务完成后检查清单
 
 完成后端编码任务后：
 

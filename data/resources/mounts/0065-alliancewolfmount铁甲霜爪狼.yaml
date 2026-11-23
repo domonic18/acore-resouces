@@ -1,7 +1,7 @@
 id: 65
 model_folder: alliancewolfmount铁甲霜爪狼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.3）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80060
     visual_id: 9140060
+    icon_id: 14238
     name: 铁甲霜爪狼
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 168056
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95238
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 铁甲霜爪狼
     class: 15
     subclass: 5
+    displayid: 95238
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

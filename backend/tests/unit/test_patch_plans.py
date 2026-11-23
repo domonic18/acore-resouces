@@ -1684,9 +1684,7 @@ def test_validate_job_accessory_untagged_warns(
     job_dir = tmp_path / "patch-jobs" / "mount_0003"
     ctx = _make_job_context(job_dir, sample_mount, monkeypatch)
 
-    result = mpb.validate_job(
-        ctx, [Path("creature/ardenwealdstag/ardenwealdstagmount.m2")]
-    )
+    result = mpb.validate_job(ctx, [Path("creature/ardenwealdstag/ardenwealdstagmount.m2")])
     by_name = {c.name: c for c in result.checks}
     vendor = by_name["accessory_vendor_matches_special_features"]
     repair = by_name["accessory_repair_matches_special_features"]

@@ -1,7 +1,7 @@
 id: 391
 model_folder: soulhoundmount带镣铐的乌祖尔
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.3.5，安托鲁斯）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80387
     visual_id: 9140387
+    icon_id: 31137
     name: 带镣铐的乌祖尔
     description: 召唤或解散你的带镣铐的乌祖尔。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 152789
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112137
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 带镣铐的乌祖尔
     class: 15
     subclass: 5
+    displayid: 112137
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

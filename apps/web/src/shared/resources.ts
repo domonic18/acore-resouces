@@ -1,4 +1,5 @@
 import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
+import { getAccessToken } from "@/shared/token";
 import type {
   ItemDisplayInfoEntry,
   ItemDisplayInfoPage,
@@ -9,8 +10,14 @@ import type {
   ModelPreview,
 } from "@/shared/types";
 
+/**
+ * 预览图 URL 收口点。资源页用纯 <img src> 加载，带不了 Authorization 头，
+ * 统一追加 ?token= 让中间件兜底鉴权（Header 请求优先，带头的调用不受影响）。
+ */
 function buildPreviewUrl(path: string): string {
-  return `${API_BASE}${path}`;
+  const token = getAccessToken();
+  const suffix = token ? `${path.includes("?") ? "&" : "?"}token=${encodeURIComponent(token)}` : "";
+  return `${API_BASE}${path}${suffix}`;
 }
 
 export function listResources(

@@ -11,15 +11,12 @@ import {
 } from "lucide-react";
 import { usePatchJobDelete } from "@/features/resources/hooks/usePatchJobDelete";
 import { usePatchBatches } from "@/features/resources/hooks/usePatchBatches";
+import { useCanWrite } from "@/features/auth/useAuth";
 import {
   useBatchBuild,
   useBatchDelete,
   useBatchPublish,
 } from "@/features/resources/hooks/usePatchBatchActions";
-import {
-  useDistroPush,
-  useDistroStatus,
-} from "@/features/resources/hooks/useDistroPush";
 import { Dialog } from "@/shared/components/ui/Dialog";
 import { artifactUrl } from "@/shared/patches";
 import type { PatchBatch, PatchBatchJob, PatchBatchJobAudit } from "@/shared/types";
@@ -112,9 +109,7 @@ export function PatchBatchesTable({
 
   const deleteMutation = usePatchJobDelete();
   const batchDeleteMutation = useBatchDelete();
-  const distroStatus = useDistroStatus();
   const { data, isLoading } = usePatchBatches(status || undefined, building);
-  const pushedBatches = new Set(distroStatus.data?.pushed_batches ?? []);
 
   const toggle = (batchId: string) => {
     setExpanded((prev) => {
@@ -160,7 +155,6 @@ export function PatchBatchesTable({
               <th>批次</th>
               <th>坐骑数</th>
               <th>状态</th>
-              <th>分发端</th>
               <th>补丁包（MPQ）</th>
               <th>SQL</th>
               <th style={{ textAlign: "right" }}>操作</th>
@@ -184,8 +178,6 @@ export function PatchBatchesTable({
                   onRebuild={setRebuildTarget}
                   onPublish={setPublishTarget}
                   onDeleteBatch={setPendingBatchDelete}
-                  pushed={pushedBatches.has(batch.batch_id)}
-                  distroKnown={distroStatus.data?.reachable !== false}
                 />
               );
             })}
@@ -293,10 +285,6 @@ interface BatchRowsProps {
   onRebuild: (batch: PatchBatch) => void;
   onPublish: (batch: PatchBatch) => void;
   onDeleteBatch: (batch: PatchBatch) => void;
-  /** 该批次是否已推送到分发端 */
-  pushed: boolean;
-  /** 是否已知分发端状态（不可达时为 false） */
-  distroKnown: boolean;
 }
 
 function BatchRows({
@@ -311,11 +299,10 @@ function BatchRows({
   onRebuild,
   onPublish,
   onDeleteBatch,
-  pushed,
-  distroKnown,
 }: BatchRowsProps) {
   const isPending = batch.batch_id === "pending";
   const hasMpq = Boolean(batch.output.mpq);
+  const canWrite = useCanWrite();
   return (
     <>
       <tr className="cursor-pointer" onClick={onToggle}>
@@ -343,17 +330,6 @@ function BatchRows({
           <span className={`badge ${STATUS_BADGE[batch.status]}`}>
             {STATUS_LABEL[batch.status]}
           </span>
-        </td>
-        <td>
-          {!distroKnown ? (
-            <span className="text-xs text-text-tertiary" title="分发端不可达">
-              未知
-            </span>
-          ) : pushed ? (
-            <span className="badge badge-success">已推送</span>
-          ) : (
-            <span className="badge badge-gray">未推送</span>
-          )}
         </td>
         <td className="max-w-64">
           {isPending ? (
@@ -389,8 +365,8 @@ function BatchRows({
             <button
               type="button"
               className="btn btn-sm"
-              disabled={building}
-              title={building ? "构建运行中" : "重新构建这个批次"}
+              disabled={!canWrite || building}
+              title={!canWrite ? "仅管理员可操作" : building ? "构建运行中" : "重新构建这个批次"}
               onClick={() => onRebuild(batch)}
             >
               <Hammer className="h-3.5 w-3.5" />
@@ -400,7 +376,8 @@ function BatchRows({
               <button
                 type="button"
                 className="btn btn-sm"
-                title="发布这个批次到分发目录"
+                disabled={!canWrite}
+                title={!canWrite ? "仅管理员可发布补丁" : "发布这个批次到分发目录"}
                 onClick={() => onPublish(batch)}
               >
                 <UploadCloud className="h-3.5 w-3.5" />
@@ -410,8 +387,14 @@ function BatchRows({
             <button
               type="button"
               className="btn btn-sm btn-danger"
-              disabled={building}
-              title={building ? "构建运行中，禁止删除" : "删除这个批次下的全部任务"}
+              disabled={!canWrite || building}
+              title={
+                !canWrite
+                  ? "仅管理员可删除"
+                  : building
+                    ? "构建运行中，禁止删除"
+                    : "删除这个批次下的全部任务"
+              }
               onClick={() => onDeleteBatch(batch)}
             >
               <Trash2 className="h-3.5 w-3.5" />
@@ -423,7 +406,7 @@ function BatchRows({
       {isOpen && (
         <tr>
           <td />
-          <td colSpan={6} className="bg-bg-elevated/40">
+          <td colSpan={7} className="bg-bg-elevated/40">
             <BatchDetail
               batch={batch}
               building={building}
@@ -455,6 +438,7 @@ function BatchDetail({
 }: BatchDetailProps) {
   const isPending = batch.batch_id === "pending";
   const sqlFiles = batch.output.sql_files ?? [];
+  const canWrite = useCanWrite();
   return (
     <div className="space-y-3 py-2">
       {!isPending && (
@@ -566,9 +550,15 @@ function BatchDetail({
                   <button
                     type="button"
                     className="btn btn-sm btn-danger"
-                    disabled={building}
+                    disabled={!canWrite || building}
                     onClick={() => onDelete(job)}
-                    title={building ? "构建运行中，禁止删除" : "删除任务"}
+                    title={
+                      !canWrite
+                        ? "仅管理员可删除"
+                        : building
+                          ? "构建运行中，禁止删除"
+                          : "删除任务"
+                    }
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
@@ -728,11 +718,6 @@ function BatchPublishDialog({
 }) {
   const [startNumber, setStartNumber] = useState(5);
   const publish = useBatchPublish();
-  const push = useDistroPush();
-  const distroStatus = useDistroStatus();
-  const alreadyPushed = Boolean(
-    distroStatus.data?.pushed_batches.includes(batch.batch_id),
-  );
 
   return (
     <Dialog
@@ -745,20 +730,6 @@ function BatchPublishDialog({
         <div className="flex justify-end gap-2">
           <button type="button" className="btn btn-sm" onClick={onClose}>
             {publish.isSuccess ? "关闭" : "取消"}
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm"
-            disabled={push.isPending || alreadyPushed}
-            onClick={() =>
-              push.mutate({ batch_ids: [batch.batch_id] })
-            }
-          >
-            {push.isPending
-              ? "推送中..."
-              : alreadyPushed
-                ? "已推送到分发端"
-                : "推送到分发端"}
           </button>
           <button
             type="button"
@@ -804,7 +775,7 @@ function BatchPublishDialog({
           </span>
         </label>
         <div className="rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
-          发布后会自动推送到分发端，请确认目标环境正确。
+          发布即上架：批次会立即出现在玩家「补丁下载」页，请确认目标环境正确。
         </div>
       </div>
       {publish.isError && (
@@ -828,33 +799,6 @@ function BatchPublishDialog({
               </li>
             ))}
           </ul>
-        </div>
-      )}
-
-      {push.isSuccess && push.data && (
-        <div className="mt-3 space-y-1 rounded-md border border-success/30 bg-success/10 px-3 py-2 text-xs text-success">
-          <div className="font-semibold">
-            已推送 {push.data.pushed.length} 个批次
-          </div>
-          {push.data.cleaned.length > 0 && (
-            <div className="text-text-secondary">
-              本地副本已清理：
-              {push.data.cleaned
-                .map(
-                  (item) =>
-                    `${item.batch} 释放 ${(item.freed_bytes / 1024 / 1024).toFixed(1)} MB`,
-                )
-                .join("；")}
-            </div>
-          )}
-          {push.data.failed.length > 0 && (
-            <div className="text-warning">
-              推送失败：
-              {push.data.failed
-                .map((item) => `${item.batch}（${item.error}）`)
-                .join("、")}
-            </div>
-          )}
         </div>
       )}
     </Dialog>

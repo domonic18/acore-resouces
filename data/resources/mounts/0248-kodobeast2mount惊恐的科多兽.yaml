@@ -1,7 +1,7 @@
 id: 248
 model_folder: kodobeast2mount惊恐的科多兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.1，黑海岸）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80244
     visual_id: 9140244
+    icon_id: 1684
     name: 惊恐的科多兽
     description: 召唤或解散一头可供骑乘的惊恐的科多兽。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 166433
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 29447
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 惊恐的科多兽
     class: 15
     subclass: 5
+    displayid: 29447
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

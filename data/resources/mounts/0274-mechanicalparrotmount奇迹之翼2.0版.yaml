@@ -1,7 +1,7 @@
 id: 274
 model_folder: mechanicalparrotmount奇迹之翼2.0版
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.1）
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80270
     visual_id: 9140270
+    icon_id: 24517
     name: 奇迹之翼2.0版
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 169162
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 105517
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 奇迹之翼2.0版
     class: 15
     subclass: 5
+    displayid: 105517
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

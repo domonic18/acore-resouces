@@ -1,7 +1,7 @@
 id: 154
 model_folder: FacelessMount拍浪水母
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.2，纳沙塔尔）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80149
     visual_id: 9140149
+    icon_id: 25387
     name: 拍浪水母
     description: 召唤或解散一只可供骑乘的拍浪水母。
     swim_speed: 60
@@ -38,7 +39,7 @@ dbc:
     id: 163585
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 53167
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 拍浪水母
     class: 15
     subclass: 5
+    displayid: 53167
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

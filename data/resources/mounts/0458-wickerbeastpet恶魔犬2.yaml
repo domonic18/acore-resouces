@@ -1,7 +1,7 @@
 id: 458
 model_folder: wickerbeastpet恶魔犬2
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -29,6 +29,7 @@ dbc:
   spell:
     id: 80454
     visual_id: 9140454
+    icon_id: 33025
     name: 柳魔幼兽
     description: 召唤或解散柳魔幼兽。
     speed: 100
@@ -36,7 +37,7 @@ dbc:
     id: 143189
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 114025
     inventory_type: 0
     sheath: 0
 db:
@@ -76,6 +77,7 @@ db:
     name: 柳魔幼兽
     class: 15
     subclass: 5
+    displayid: 114025
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

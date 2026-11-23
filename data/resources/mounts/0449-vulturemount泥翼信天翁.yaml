@@ -1,7 +1,7 @@
 id: 449
 model_folder: vulturemount泥翼信天翁
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -34,6 +34,7 @@ dbc:
   spell:
     id: 80445
     visual_id: 9140445
+    icon_id: 32597
     name: 泥翼信天翁
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -42,7 +43,7 @@ dbc:
     id: 166745
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113597
     inventory_type: 0
     sheath: 0
 db:
@@ -82,6 +83,7 @@ db:
     name: 泥翼信天翁
     class: 15
     subclass: 5
+    displayid: 113597
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

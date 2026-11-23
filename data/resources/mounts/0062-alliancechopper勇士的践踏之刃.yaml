@@ -2,7 +2,7 @@ id: 62
 model_folder: alliancechopper勇士的践踏之刃
 preview_image: null
 debug_passed: false
-added: false
+added: true
 notes: '## 官方信息
 
   - **版本**：德拉诺之王（6.0，Azeroth Choppers 活动）
@@ -56,7 +56,7 @@ dbc:
     id: 80057
     visual_id: 9140057
     spell_visual_id: null
-    icon_id: null
+    icon_id: 18356
     name: 勇士的践踏之刃
     description: 召唤或解散你的勇士的践踏之刃。
     speed: 100
@@ -67,7 +67,7 @@ dbc:
     class_: 15
     subclass: 5
     material: 4
-    display_id: 0
+    display_id: 99356
     inventory_type: 0
     sheath: 0
 db:
@@ -112,7 +112,7 @@ db:
     name: 勇士的践踏之刃
     class_: 15
     subclass: 5
-    displayid: null
+    displayid: 99356
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

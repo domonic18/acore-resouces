@@ -1,7 +1,7 @@
 id: 462
 model_folder: yakgod火焰耗牛坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -27,13 +27,14 @@ dbc:
   spell:
     id: 80458
     visual_id: 9140458
+    icon_id: 10090
     name: 火焰耗牛
     speed: 100
   item:
     id: 91458
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91090
     inventory_type: 0
     sheath: 0
 db:
@@ -73,6 +74,7 @@ db:
     name: 火焰耗牛
     class: 15
     subclass: 5
+    displayid: 91090
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

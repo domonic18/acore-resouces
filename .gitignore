@@ -67,6 +67,11 @@ venv/
 node_modules/
 dist/
 *.tsbuildinfo
+# 反排除：前端 dist 域模块目录（与构建产物 dist/ 同名但需入库）
+!apps/web/src/features/dist/
+
+# 后端内嵌的前端构建产物（本地/容器部署时由 dist 拷入，不入 Git）
+backend/app/static/
 
 # 本地环境配置（含分发端推送密钥，不入 Git）
 backend/.env

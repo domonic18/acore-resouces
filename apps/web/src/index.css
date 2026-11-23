@@ -169,6 +169,22 @@ input[type="number"] {
     @apply mt-1 text-xs text-text-tertiary;
   }
 
+  /* 查看模式横幅：viewer 登录后全局显示，明确与编辑者身份的区别 */
+  .viewer-banner {
+    @apply sticky top-0 z-40 flex items-center gap-2 border-b border-border bg-accent-soft px-6 py-2 text-xs font-medium text-accent;
+  }
+
+  /* 只读容器：重置 fieldset 默认样式，并统一弱化被禁用的表单控件与按钮 */
+  fieldset.viewer-readonly {
+    @apply m-0 min-w-0 border-0 p-0;
+  }
+  fieldset.viewer-readonly :disabled {
+    @apply cursor-not-allowed border-border bg-bg-surface text-text-secondary opacity-70;
+  }
+  fieldset.viewer-readonly :disabled:focus {
+    @apply shadow-none outline-none;
+  }
+
   .badge {
     @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-[11px] font-semibold;
   }

@@ -1,7 +1,7 @@
 id: 75
 model_folder: basiliskmount拳手的健壮蜥蜴
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80070
     visual_id: 9140070
+    icon_id: 14877
     name: 拳手的健壮蜥蜴
     description: 召唤或解散一头可供骑乘的拳手的健壮蜥蜴。
     speed: 100

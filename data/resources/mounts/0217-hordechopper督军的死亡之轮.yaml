@@ -1,7 +1,7 @@
 id: 217
 model_folder: hordechopper督军的死亡之轮
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.0，Azeroth Choppers 活动）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80213
     visual_id: 9140213
+    icon_id: 18357
     name: 督军的死亡之轮
     description: 召唤或解散你的督军的死亡之轮。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 116788
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99357
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 督军的死亡之轮
     class: 15
     subclass: 5
+    displayid: 99357
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

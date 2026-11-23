@@ -1,7 +1,7 @@
 id: 74
 model_folder: azeritewarmachinealliance联盟狮虎战车
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -28,13 +28,14 @@ dbc:
   spell:
     id: 80069
     visual_id: 9140069
+    icon_id: 14472
     name: 联盟狮虎战车
     speed: 100
   item:
     id: 91069
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95472
     inventory_type: 0
     sheath: 0
 db:
@@ -74,6 +75,7 @@ db:
     name: 联盟狮虎战车
     class: 15
     subclass: 5
+    displayid: 95472
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

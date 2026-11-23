@@ -1,7 +1,7 @@
 id: 452
 model_folder: WarNightSaberMount勇猛卡多雷作战刃豹
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.4，PvP 邪恶鞍具）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80448
     visual_id: 9140448
+    icon_id: 10083
     name: 勇猛卡多雷作战刃豹
     description: 召唤或解散一头可供骑乘的勇猛卡多雷作战刃豹。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 102514
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91083
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 勇猛卡多雷作战刃豹
     class: 15
     subclass: 5
+    displayid: 91083
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

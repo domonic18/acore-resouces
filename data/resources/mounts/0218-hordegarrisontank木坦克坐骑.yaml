@@ -1,7 +1,7 @@
 id: 218
 model_folder: hordegarrisontank木坦克坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -29,13 +29,14 @@ dbc:
   spell:
     id: 80214
     visual_id: 9140214
+    icon_id: 3762
     name: 木坦克
     speed: 100
   item:
     id: 91214
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91532
     inventory_type: 0
     sheath: 0
 db:
@@ -75,6 +76,7 @@ db:
     name: 木坦克
     class: 15
     subclass: 5
+    displayid: 91532
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

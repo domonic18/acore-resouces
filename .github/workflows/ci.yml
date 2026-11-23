@@ -6,12 +6,34 @@ on:
   pull_request:
     branches: [develop, main]
   workflow_dispatch:
+    inputs:
+      skip_lint:
+        description: '跳过代码检查阶段'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      skip_test:
+        description: '跳过单元测试阶段'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 env:
+  # 强制 GitHub Actions 使用 Node.js 24 runtime（actions/checkout, actions/setup-node 等）
+  # 解决 "Node.js 20 actions are deprecated" 弃用警告，与 acore-manager / acore-ranking 同规则
+  # 参考: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  # 与 docker/web/Dockerfile（node:20-alpine）保持一致
   NODE_VERSION: '20'
   PYTHON_VERSION: '3.11'
-  REGISTRY: ccr.ccs.tencentyun.com
-  NAMESPACE: ${{ secrets.TCR_NAMESPACE }}
+  # 镜像仓库地址（非敏感，走 vars；未配置回落默认 TCR 域名）
+  REGISTRY: ${{ vars.TCR_REGISTRY || 'ccr.ccs.tencentyun.com' }}
   IMAGE_NAME: acore-resouces
 
 jobs:
@@ -24,10 +46,10 @@ jobs:
 
     steps:
       - name: Checkout / 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js / 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
@@ -41,9 +63,10 @@ jobs:
 
       - name: Install Dependencies / 安装依赖
         working-directory: apps/web
-        run: npm install
+        run: npm ci
 
       - name: Lint / 代码检查
+        if: github.event.inputs.skip_lint != 'true'
         working-directory: apps/web
         run: npm run lint
 
@@ -66,7 +89,7 @@ jobs:
 
     steps:
       - name: Checkout / 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # backend/pyproject.toml 以 path 依赖引用 ../tools/wow-dbc-tool（子模块），
       # 缺失时 uv sync 无法生成包元数据
@@ -89,56 +112,72 @@ jobs:
         run: uv sync
 
       - name: Test / 运行测试
+        if: github.event.inputs.skip_test != 'true'
         working-directory: backend
         run: uv run pytest
 
   # ============================================================
   # Stage 3: Docker 镜像构建与推送
+  # 构建机为自托管 runner（Mac，本机直推 TCR 国内链路）；与 acore-manager /
+  # acore-ranking / ai-invest-assisstant 保持同一口径：
+  #   自托管 + 常驻 ci-builder + build-push-action（provenance 关闭、锁 linux/amd64）
+  # 注意：这里刻意不用 docker/setup-buildx-action —— 它在自托管机会新建临时
+  # builder 并顶掉默认 builder，导致 ci-builder 的本地缓存全部失效（见
+  # ~/Workspace/actions-runner/ci-standards/README.md）
   # ============================================================
   docker:
     name: Docker Build & Push / Docker 构建与推送
-    # 构建机为自托管 runner（Mac，本机直推 TCR 国内链路）；与 acore-manager /
-    # acore-ranking / ai-invest-assisstant 保持同一口径：
-    #   自托管 + 常驻 ci-builder + build-push-action（provenance 关闭、锁 linux/amd64）
-    # 注意：这里刻意不用 docker/setup-buildx-action —— 它在自托管机会新建临时
-    # builder 并顶掉默认 builder，导致 ci-builder 的本地缓存全部失效。
     runs-on: [self-hosted]
     needs: [frontend, backend]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
     timeout-minutes: 60
+    outputs:
+      # 只传不含密钥的片段：TCR 命名空间是 secret，含它的完整镜像地址会被
+      # GitHub 判为含密而丢弃输出（与 acore-manager 同规则）
+      image_tag: ${{ steps.image_info.outputs.image_tag }}
+      image_digest: ${{ steps.image_info.outputs.image_digest }}
 
     steps:
       - name: Checkout / 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      # docker/web/Dockerfile 会 COPY tools/wow-dbc-tool 供后端镜像安装 path 依赖
-      - name: Init wow-dbc-tool submodule / 初始化 wow-dbc-tool 子模块
-        run: git submodule update --init --depth 1 tools/wow-dbc-tool
+      # docker/web/Dockerfile 会 COPY tools/wow-dbc-tool（后端 path 依赖）与
+      # tools/wow-mpq-cli（mpqcli-builder 阶段编译 Linux 静态二进制，其自身嵌套
+      # extern/StormLib / extern/CLI11 子模块，须 --recursive），缺一则构建失败
+      - name: Init submodules / 初始化构建所需子模块
+        run: |
+          git submodule update --init --depth 1 tools/wow-dbc-tool
+          git submodule update --init --depth 1 --recursive tools/wow-mpq-cli
 
       # 本机持久 builder（buildkitd 配国内 docker.io 镜像源 + 本地缓存跨 job 持久，见 ~/Workspace/actions-runner/buildkitd.toml）
       - name: Select builder / 选择构建器
         run: docker buildx use ci-builder
 
       - name: Login to TCR / 登录腾讯云容器镜像服务
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.TCR_USERNAME }}
           password: ${{ secrets.TCR_PASSWORD }}
 
+      # 命名空间是 secret：只在步骤 env 注入、shell 内拼装镜像地址，
+      # 不经 ${{ }} 展开进脚本明文，也不回显完整镜像地址
       - name: Generate image tags / 生成镜像标签
         id: vars
+        env:
+          TCR_NAMESPACE: ${{ secrets.TCR_NAMESPACE }}
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
           BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '-')
           APP_VERSION=$(cat VERSION)
           echo "sha_short=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
           echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
-          echo "image_tag=${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${BRANCH}-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
-          echo "latest_tag=${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:latest" >> "$GITHUB_OUTPUT"
+          echo "image_tag=${REGISTRY}/${TCR_NAMESPACE}/${IMAGE_NAME}:${BRANCH}-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "latest_tag=${REGISTRY}/${TCR_NAMESPACE}/${IMAGE_NAME}:latest" >> "$GITHUB_OUTPUT"
           echo "app_version=${APP_VERSION}.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Build and Push / 构建并推送
+        id: push
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -154,6 +193,10 @@ jobs:
             VITE_APP_VERSION=${{ steps.vars.outputs.app_version }}
 
       - name: Output image info / 输出镜像信息
+        id: image_info
         run: |
-          echo "Image pushed: ${{ steps.vars.outputs.image_tag }}"
-          echo "Latest tag: ${{ steps.vars.outputs.latest_tag }}"
+          # 只输出不含密钥的片段（分支-SHA 与 digest），不回显含命名空间的完整地址
+          echo "image_tag=${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}" >> "$GITHUB_OUTPUT"
+          echo "image_digest=${{ steps.push.outputs.digest }}" >> "$GITHUB_OUTPUT"
+          echo "Image tag: ${{ steps.image_info.outputs.image_tag }}"
+          echo "Image digest: ${{ steps.push.outputs.digest }}"

@@ -94,11 +94,15 @@ def test_write_audit_report_shape(audit_dirs: Path) -> None:
             "job_id": "mount_0003",
             "output_sql_file": "data/sql/mounts/0003_x/0003_mount_add.sql",
             "status": "written",
-            "tables": [{"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}],
+            "tables": [
+                {"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}
+            ],
         }
     ]
 
-    path = patch_audit.write_audit_report(ctxs, dbc_records, sql_entries, manifest, "20260101_120000")
+    path = patch_audit.write_audit_report(
+        ctxs, dbc_records, sql_entries, manifest, "20260101_120000"
+    )
 
     assert path == audit_dirs / "reports" / "20260101_120000" / "audit-report.json"
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -167,19 +171,48 @@ def _batch_report() -> dict:
         "batch": "20260101_120000",
         "job_ids": ["mount_0003", "mount_0101"],
         "jobs": [
-            {"job_id": "mount_0003", "resource_name": "审计测试", "model_folder": "audit_test_mount"},
+            {
+                "job_id": "mount_0003",
+                "resource_name": "审计测试",
+                "model_folder": "audit_test_mount",
+            },
             {"job_id": "mount_0101", "resource_name": "石牙斗猪", "model_folder": "stone_tusk"},
         ],
         "dbc": [
-            {"dbc_file": "Spell.dbc", "record_id": 80000, "job_id": "mount_0003",
-             "action": "add", "action_taken": "added", "before": None, "after": {"ID": 80000}},
-            {"dbc_file": "Spell.dbc", "record_id": 80101, "job_id": "mount_0101",
-             "action": "add", "action_taken": "added", "before": None, "after": {"ID": 80101}},
+            {
+                "dbc_file": "Spell.dbc",
+                "record_id": 80000,
+                "job_id": "mount_0003",
+                "action": "add",
+                "action_taken": "added",
+                "before": None,
+                "after": {"ID": 80000},
+            },
+            {
+                "dbc_file": "Spell.dbc",
+                "record_id": 80101,
+                "job_id": "mount_0101",
+                "action": "add",
+                "action_taken": "added",
+                "before": None,
+                "after": {"ID": 80101},
+            },
         ],
         "sql": [
-            {"job_id": "mount_0003", "output_sql_file": "a.sql", "status": "written",
-             "tables": [{"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}]},
-            {"job_id": "mount_0101", "output_sql_file": "b.sql", "status": "already_exists", "tables": []},
+            {
+                "job_id": "mount_0003",
+                "output_sql_file": "a.sql",
+                "status": "written",
+                "tables": [
+                    {"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}
+                ],
+            },
+            {
+                "job_id": "mount_0101",
+                "output_sql_file": "b.sql",
+                "status": "already_exists",
+                "tables": [],
+            },
         ],
         "mpq": {
             "batch": "20260101_120000",
@@ -187,7 +220,14 @@ def _batch_report() -> dict:
             "obfuscation": "none",
             "file_count": 2,
             "counts_by_kind": {"dbc": 1, "asset": 1},
-            "files": [{"path": "DBFilesClient/Spell.dbc", "size_bytes": 10, "sha256": "aaa", "kind": "dbc"}],
+            "files": [
+                {
+                    "path": "DBFilesClient/Spell.dbc",
+                    "size_bytes": 10,
+                    "sha256": "aaa",
+                    "kind": "dbc",
+                }
+            ],
             "diff": None,
         },
     }

@@ -1,7 +1,7 @@
 id: 441
 model_folder: viciouswarfoxalliance勇猛的战狐
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（PvP 邪恶鞍具）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80437
     visual_id: 9140437
+    icon_id: 32588
     name: 勇猛的战狐
     description: 召唤或解散你的勇猛的战狐
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 152869
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113588
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 勇猛的战狐
     class: 15
     subclass: 5
+    displayid: 113588
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

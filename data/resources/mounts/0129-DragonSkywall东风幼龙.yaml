@@ -1,7 +1,7 @@
 id: 129
 model_folder: DragonSkywall东风幼龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.x）
@@ -34,6 +34,7 @@ dbc:
   spell:
     id: 80124
     visual_id: 9140124
+    icon_id: 27100
     name: 西风幼龙
     description: 召唤或解散一条可供骑乘的西风幼龙。这是一种飞行坐骑。
     speed: 100
@@ -42,7 +43,7 @@ dbc:
     id: 65356
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108100
     inventory_type: 0
     sheath: 0
 db:
@@ -82,6 +83,7 @@ db:
     name: 西风幼龙
     class: 15
     subclass: 5
+    displayid: 108100
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

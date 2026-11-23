@@ -1,7 +1,7 @@
 id: 427
 model_folder: viciousalliancebearmount邪恶战熊
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.x，PvP 邪恶鞍具）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80423
     visual_id: 9140423
+    icon_id: 27405
     name: 邪恶战熊
     description: 召唤或解散你的邪恶战熊。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 142234
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108405
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 邪恶战熊
     class: 15
     subclass: 5
+    displayid: 108405
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

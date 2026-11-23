@@ -1,7 +1,7 @@
 id: 430
 model_folder: viciousdragonturtlemount邪恶战龟
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（PvP 邪恶鞍具）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80426
     visual_id: 9140426
+    icon_id: 32576
     name: 邪恶战龟
     description: 召唤或解散你的邪恶战龟。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 143648
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113576
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 邪恶战龟
     class: 15
     subclass: 5
+    displayid: 113576
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

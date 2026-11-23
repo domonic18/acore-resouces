@@ -1,7 +1,7 @@
 id: 365
 model_folder: serpentmount深渊蠕虫
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.2，萨格拉斯之墓）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80361
     visual_id: 9140361
+    icon_id: 30005
     name: 深渊蠕虫
     description: 召唤或解散你的深渊蠕虫。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 143643
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 111005
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 深渊蠕虫
     class: 15
     subclass: 5
+    displayid: 111005
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

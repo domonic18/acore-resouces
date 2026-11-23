@@ -1,7 +1,7 @@
 id: 144
 model_folder: elitegryphon重装狮鹫
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.1）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80139
     visual_id: 9140139
+    icon_id: 25205
     name: 重装狮鹫
     description: 召唤或解散一头可供骑乘的重装狮鹫坐骑。这种坐骑的性能会根据你的骑术等级和所在区域改变。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 93168
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 106205
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 重装狮鹫
     class: 15
     subclass: 5
+    displayid: 106205
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

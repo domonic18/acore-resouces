@@ -1,4 +1,4 @@
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useSearchParams, useLocation, Navigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { useEffect, useMemo, useState } from "react";
@@ -16,13 +16,29 @@ import {
   toJobMap,
   useMountPatchJobs,
 } from "@/features/resources/hooks/useMountPatchJobs";
+import { useAuth, resourcePermsOf } from "@/features/auth/useAuth";
 
 const PAGE_SIZE = 20;
+
+const RESOURCE_KEYS: string[] = ["mount", "pet", "npc"];
 
 export function ResourceListPage() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
+  const { isAdmin } = useAuth();
+  const perms = resourcePermsOf(useAuth().user);
+  // 可见页签：admin 全量（含「全部」）；viewer 仅已授权类型，「全部」需三类型齐
+  const visibleTypes = isAdmin
+    ? TYPES
+    : TYPES.filter(
+        (t) => t.key !== "all" || perms.length === RESOURCE_KEYS.length,
+      );
+  const allowedKeys = isAdmin
+    ? RESOURCE_KEYS
+    : RESOURCE_KEYS.filter((k) => perms.includes(k));
   const typeParam = parseResourceType(searchParams.get("type"));
+  const typeAllowed =
+    typeParam === "all" ? visibleTypes.some((t) => t.key === "all") : allowedKeys.includes(typeParam);
 
   useEffect(() => {
     if (location.state?.restoreScroll) {
@@ -34,8 +50,10 @@ export function ResourceListPage() {
     }
   }, [location.state]);
 
-  const { allItems, isLoading, error, countMap } =
-    useResourceListData(typeParam);
+  const { allItems, isLoading, error, countMap } = useResourceListData(
+    typeParam,
+    allowedKeys,
+  );
 
   const {
     searchInput,
@@ -59,7 +77,7 @@ export function ResourceListPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   // 补丁任务状态：让列表页直接显示每只坐骑在补丁流水线上的位置
-  const patchJobsQuery = useMountPatchJobs();
+  const patchJobsQuery = useMountPatchJobs(isAdmin);
   const patchJobMap = useMemo(
     () => toJobMap(patchJobsQuery.data ?? []),
     [patchJobsQuery.data],
@@ -86,6 +104,11 @@ export function ResourceListPage() {
     () => (allItems ?? []).filter((item) => selectedIds.includes(item.id)),
     [allItems, selectedIds],
   );
+
+  // viewer 的 ?type= 不在授权集内 → 回到首个允许类型（RequirePerm 已保证至少一项）
+  if (!typeAllowed) {
+    return <Navigate to={`/resources?type=${allowedKeys[0]}`} replace />;
+  }
 
   return (
     <div className="content">
@@ -117,7 +140,7 @@ export function ResourceListPage() {
 
       <div className="card">
         <div className="tabs">
-          {TYPES.map((t) => (
+          {visibleTypes.map((t) => (
             <button
               key={t.key}
               className={cn("tab", typeParam === t.key && "active")}
@@ -138,43 +161,46 @@ export function ResourceListPage() {
           toggleParamValue={toggleParamValue}
         />
 
-        <div className="flex items-center justify-between gap-4 border-b border-border bg-bg-surface px-5 py-3">
-          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-secondary">
-            {selectedResources.length > 0 ? (
-              <>
-                <span className="shrink-0">已选</span>
-                <span className="font-semibold tabular-nums text-text-primary">
-                  {selectedResources.length}
+        {/* 批量勾选与补丁导出是编辑者（管理员）的工作流，查看者不展示 */}
+        {isAdmin && (
+          <div className="flex items-center justify-between gap-4 border-b border-border bg-bg-surface px-5 py-3">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-secondary">
+              {selectedResources.length > 0 ? (
+                <>
+                  <span className="shrink-0">已选</span>
+                  <span className="font-semibold tabular-nums text-text-primary">
+                    {selectedResources.length}
+                  </span>
+                  <span className="shrink-0">项：</span>
+                  {selectedResources.slice(0, 4).map((item) => (
+                    <span
+                      key={item.id}
+                      className="badge badge-gray max-w-[12rem] truncate"
+                      title={item.name || item.model_folder}
+                    >
+                      {item.name || item.model_folder}
+                    </span>
+                  ))}
+                  {selectedResources.length > 4 && (
+                    <span className="shrink-0 text-text-tertiary">
+                      等 {selectedResources.length} 项
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="text-text-tertiary">
+                  勾选坐骑后即可批量创建补丁任务
                 </span>
-                <span className="shrink-0">项：</span>
-                {selectedResources.slice(0, 4).map((item) => (
-                  <span
-                    key={item.id}
-                    className="badge badge-gray max-w-[12rem] truncate"
-                    title={item.name || item.model_folder}
-                  >
-                    {item.name || item.model_folder}
-                  </span>
-                ))}
-                {selectedResources.length > 4 && (
-                  <span className="shrink-0 text-text-tertiary">
-                    等 {selectedResources.length} 项
-                  </span>
-                )}
-              </>
-            ) : (
-              <span className="text-text-tertiary">
-                勾选坐骑后即可批量创建补丁任务
-              </span>
-            )}
+              )}
+            </div>
+            <div className="shrink-0">
+              <BulkPatchExportButton
+                resources={selectedResources}
+                disabled={!canBulkExport}
+              />
+            </div>
           </div>
-          <div className="shrink-0">
-            <BulkPatchExportButton
-              resources={selectedResources}
-              disabled={!canBulkExport}
-            />
-          </div>
-        </div>
+        )}
 
         <ResourceTable
           currentItems={currentItems}
@@ -183,11 +209,11 @@ export function ResourceListPage() {
           setSort={setSort}
           isLoading={isLoading}
           error={error}
-          selectedIds={selectedIds}
-          onSelect={handleSelect}
-          onSelectAll={handleSelectAll}
+          selectedIds={isAdmin ? selectedIds : undefined}
+          onSelect={isAdmin ? handleSelect : undefined}
+          onSelectAll={isAdmin ? handleSelectAll : undefined}
           showFeatures={typeParam === "mount" || typeParam === "all"}
-          showPatchStatus={typeParam === "mount"}
+          showPatchStatus={typeParam === "mount" && isAdmin}
           patchJobs={patchJobMap}
         />
 

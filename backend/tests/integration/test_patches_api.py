@@ -55,7 +55,9 @@ def _write_audit_env(tmp_path: Path, *, with_audit: bool = True) -> None:
         "generated_at": "2026-01-01T12:00:00+00:00",
         "batch": "20260101_120000",
         "job_ids": ["mount_0003"],
-        "jobs": [{"job_id": "mount_0003", "resource_name": "审计测试", "model_folder": "audit_mount"}],
+        "jobs": [
+            {"job_id": "mount_0003", "resource_name": "审计测试", "model_folder": "audit_mount"}
+        ],
         "dbc": [
             {
                 "dbc_file": "Spell.dbc",
@@ -72,7 +74,9 @@ def _write_audit_env(tmp_path: Path, *, with_audit: bool = True) -> None:
                 "job_id": "mount_0003",
                 "output_sql_file": "data/sql/mounts/0003_x/0003_mount_add.sql",
                 "status": "written",
-                "tables": [{"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}],
+                "tables": [
+                    {"name": "item_template", "operation": "insert", "records": [{"entry": 91000}]}
+                ],
             }
         ],
         "mpq": {
@@ -81,13 +85,22 @@ def _write_audit_env(tmp_path: Path, *, with_audit: bool = True) -> None:
             "obfuscation": "none",
             "file_count": 1,
             "counts_by_kind": {"dbc": 1},
-            "files": [{"path": "DBFilesClient/Spell.dbc", "size_bytes": 10, "sha256": "aaa", "kind": "dbc"}],
+            "files": [
+                {
+                    "path": "DBFilesClient/Spell.dbc",
+                    "size_bytes": 10,
+                    "sha256": "aaa",
+                    "kind": "dbc",
+                }
+            ],
             "diff": None,
         },
     }
     report_dir = tmp_path / "reports" / "20260101_120000"
     report_dir.mkdir(parents=True, exist_ok=True)
-    (report_dir / "audit-report.json").write_text(json.dumps(report, ensure_ascii=False), encoding="utf-8")
+    (report_dir / "audit-report.json").write_text(
+        json.dumps(report, ensure_ascii=False), encoding="utf-8"
+    )
 
     output: dict = {"sql_files": ["data/sql/mounts/0003_x/0003_mount_add.sql"]}
     if with_audit:

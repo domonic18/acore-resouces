@@ -1,7 +1,7 @@
 id: 342
 model_folder: raptorloa斩龙坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80338
     visual_id: 9140338
+    icon_id: 14379
     name: 奢华暴掠龙
     description: 召唤或解散你的奢华暴掠龙。
     speed: 100
@@ -37,7 +38,7 @@ dbc:
     id: 153540
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95379
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 奢华暴掠龙
     class: 15
     subclass: 5
+    displayid: 95379
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

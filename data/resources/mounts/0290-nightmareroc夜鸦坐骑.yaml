@@ -1,7 +1,7 @@
 id: 290
 model_folder: nightmareroc夜鸦坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -27,6 +27,7 @@ dbc:
   spell:
     id: 80286
     visual_id: 9140286
+    icon_id: 9936
     name: 梦魇巨鸦
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -34,7 +35,7 @@ dbc:
     id: 91286
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90936
     inventory_type: 0
     sheath: 0
 db:
@@ -74,6 +75,7 @@ db:
     name: 梦魇巨鸦
     class: 15
     subclass: 5
+    displayid: 90936
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 80
 model_folder: bloodtrollfemalebeast_mount孢林抱齿兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.0，地渊孢林）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80075
     visual_id: 9140075
+    icon_id: 15666
     name: 孢林抱齿兽
     description: 召唤或解散你的孢林抱齿兽坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 160829
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 96666
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 孢林抱齿兽
     class: 15
     subclass: 5
+    displayid: 96666
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

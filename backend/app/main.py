@@ -4,9 +4,26 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from app.api import dbc, files, mpq, patches, preview, resources, settings, system, wowhead
+from app.api import (
+    auth,
+    dbc,
+    dist,
+    files,
+    mpq,
+    patches,
+    preview,
+    resources,
+    settings,
+    system,
+    wowhead,
+)
+from app.core.security import AuthMiddleware
 
 app = FastAPI(title="acore-resouces API", version="0.1.0")
+
+# 鉴权中间件先 add（位于 CORS 内层）：CORS 保持最外层处理预检，
+# 401/403 响应也能带上跨域头；中间件仅拦 /api/*，静态资源与 /health 放行。
+app.add_middleware(AuthMiddleware)
 
 # 本地开发调试：允许任意 localhost 端口的跨域请求
 app.add_middleware(
@@ -17,6 +34,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
+app.include_router(dist.router)
 app.include_router(resources.router)
 app.include_router(dbc.router)
 app.include_router(mpq.router)

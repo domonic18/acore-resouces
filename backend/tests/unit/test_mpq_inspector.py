@@ -340,7 +340,7 @@ class TestExtractAndPreview:
             out = Path(args[args.index("-o") + 1])
             target = out / inner
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes("中文内容".encode("utf-8"))
+            target.write_bytes("中文内容".encode())
             return subprocess.CompletedProcess([], 0, "", "")
 
         monkeypatch.setattr(mpq_inspector, "_run_mpqcli", _run)

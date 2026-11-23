@@ -1,7 +1,7 @@
 id: 323
 model_folder: ProtoDragon地狱咆哮战龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -27,6 +27,7 @@ dbc:
   spell:
     id: 80319
     visual_id: 9140319
+    icon_id: 9960
     name: 地狱咆哮战龙
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -35,7 +36,7 @@ dbc:
     id: 91319
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90960
     inventory_type: 0
     sheath: 0
 db:
@@ -75,6 +76,7 @@ db:
     name: 地狱咆哮战龙
     class: 15
     subclass: 5
+    displayid: 90960
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

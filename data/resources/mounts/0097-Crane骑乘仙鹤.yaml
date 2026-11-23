@@ -1,7 +1,7 @@
 id: 97
 model_folder: Crane骑乘仙鹤
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.0）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80092
     visual_id: 9140092
+    icon_id: 9912
     name: 金黄骑乘仙鹤
     description: 召唤或解散一只可供骑乘的金黄骑乘仙鹤。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 87782
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90912
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 金黄骑乘仙鹤
     class: 15
     subclass: 5
+    displayid: 90912
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

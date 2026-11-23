@@ -1,3 +1,5 @@
+import { clearAccessToken, getAccessToken } from "@/shared/token";
+
 export const API_BASE =
   import.meta.env.VITE_API_BASE_URL ??
   (import.meta.env.DEV ? "http://localhost:8000" : "");
@@ -7,15 +9,24 @@ export async function apiFetch(path: string, init?: RequestInit) {
     path.startsWith("http://") || path.startsWith("https://")
       ? path
       : `${API_BASE}${path}`;
+  const token = getAccessToken();
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(init?.headers || {}),
     },
     ...init,
   });
 
   if (!response.ok) {
+    // 令牌失效/缺失：清掉本地状态并回登录页（登录请求本身除外，避免死循环）
+    if (response.status === 401 && !path.startsWith("/api/auth/login")) {
+      clearAccessToken();
+      if (!window.location.pathname.startsWith("/login")) {
+        window.location.assign("/login");
+      }
+    }
     const text = await response.text().catch(() => "");
     throw new Error(extractErrorMessage(text, response.status));
   }

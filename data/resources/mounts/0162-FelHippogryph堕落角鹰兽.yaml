@@ -1,7 +1,7 @@
 id: 162
 model_folder: FelHippogryph堕落角鹰兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.x）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80157
     visual_id: 9140157
+    icon_id: 2554
     name: 堕落角鹰兽
     description: 召唤或解散一只可供骑乘的堕落角鹰兽。这种坐骑的速度会根据你的骑术等级和所在区域改变。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 72582
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 47934
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 堕落角鹰兽
     class: 15
     subclass: 5
+    displayid: 47934
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

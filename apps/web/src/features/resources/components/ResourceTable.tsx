@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useCanWrite } from "@/features/auth/useAuth";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
 import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
@@ -72,6 +73,7 @@ interface ResourceTableProps {
   setSort: (key: SortKey) => void;
   isLoading: boolean;
   error: Error | null;
+  /** 勾选列（批量补丁导出）仅供编辑者；不传即整体隐藏，查看者无此交互 */
   selectedIds?: number[];
   onSelect?: (id: number, selected: boolean) => void;
   onSelectAll?: (selected: boolean) => void;
@@ -118,7 +120,10 @@ export function ResourceTable({
   showPatchStatus = false,
 }: ResourceTableProps) {
   const location = useLocation();
+  const canWrite = useCanWrite();
   const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const selectable = Boolean(onSelect && onSelectAll);
 
   const saveScrollAndNavigate = () => {
     sessionStorage.setItem("resourceListScrollY", String(window.scrollY));
@@ -149,24 +154,29 @@ export function ResourceTable({
     onSelectAll?.(!allSelected);
   };
 
-  // 空态与加载失败时的合并单元格列数
-  const colSpan = 12 + (showFeatures ? 1 : 0) + (showPatchStatus ? 1 : 0);
+  // 空态与加载失败时的合并单元格列数（勾选列随 selectable 增减）
+  const colSpan =
+    (selectable ? 12 : 11) +
+    (showFeatures ? 1 : 0) +
+    (showPatchStatus ? 1 : 0);
 
   return (
     <div className="overflow-x-auto">
       <table className="data-table w-full">
         <thead>
           <tr>
-            <th style={{ width: 40 }}>
-              <input
-                type="checkbox"
-                checked={allSelected}
-                ref={(el) => {
-                  if (el) el.indeterminate = someSelected;
-                }}
-                onChange={handleSelectAll}
-              />
-            </th>
+            {selectable && (
+              <th style={{ width: 40 }}>
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  ref={(el) => {
+                    if (el) el.indeterminate = someSelected;
+                  }}
+                  onChange={handleSelectAll}
+                />
+              </th>
+            )}
             <SortHeader
               label="资源"
               active={sortKey === "resource"}
@@ -221,13 +231,15 @@ export function ResourceTable({
           {currentItems.map((resource) => (
             <>
               <tr key={`${resource.resource_type}-${resource.id}`}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedIds.includes(resource.id)}
-                    onChange={(e) => onSelect?.(resource.id, e.target.checked)}
-                  />
-                </td>
+                {selectable && (
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(resource.id)}
+                      onChange={(e) => onSelect?.(resource.id, e.target.checked)}
+                    />
+                  </td>
+                )}
                 <td>
                   <div className="flex items-center gap-2">
                     <Link
@@ -307,21 +319,23 @@ export function ResourceTable({
                       state={listState}
                       onClick={saveScrollAndNavigate}
                       className="btn btn-icon btn-sm"
-                      title="编辑资源"
-                      aria-label="编辑资源"
+                      title={canWrite ? "编辑资源" : "查看详情"}
+                      aria-label={canWrite ? "编辑资源" : "查看详情"}
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </Link>
-                    <Link
-                      to={`/preview/${resource.resource_type}/${resource.id}`}
-                      state={listState}
-                      onClick={saveScrollAndNavigate}
-                      className="btn btn-icon btn-sm btn-primary"
-                      title="预览模型"
-                      aria-label="预览模型"
-                    >
-                      <Eye className="h-3.5 w-3.5" />
-                    </Link>
+                    {canWrite && (
+                      <Link
+                        to={`/preview/${resource.resource_type}/${resource.id}`}
+                        state={listState}
+                        onClick={saveScrollAndNavigate}
+                        className="btn btn-icon btn-sm btn-primary"
+                        title="预览模型"
+                        aria-label="预览模型"
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                      </Link>
+                    )}
                     {resource.official_db.spell_wowhead_url && (
                       <a
                         href={resource.official_db.spell_wowhead_url}

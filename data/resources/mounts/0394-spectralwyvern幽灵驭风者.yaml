@@ -1,7 +1,7 @@
 id: 394
 model_folder: spectralwyvern幽灵驭风者
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80390
     visual_id: 9140390
+    icon_id: 10050
     name: 幽灵驭风者
     description: 召唤或解散一头可供骑乘的幽灵驭风者坐骑。这是一种飞行坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 76902
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91050
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 幽灵驭风者
     class: 15
     subclass: 5
+    displayid: 91050
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

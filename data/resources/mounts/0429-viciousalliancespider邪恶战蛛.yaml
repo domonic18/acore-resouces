@@ -1,7 +1,7 @@
 id: 429
 model_folder: viciousalliancespider邪恶战蛛
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（PvP 邪恶鞍具）
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80425
     visual_id: 9140425
+    icon_id: 32573
     name: 邪恶战蛛
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -37,7 +38,7 @@ dbc:
     id: 184014
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113573
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 邪恶战蛛
     class: 15
     subclass: 5
+    displayid: 113573
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

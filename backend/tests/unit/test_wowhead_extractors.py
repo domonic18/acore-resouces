@@ -16,7 +16,7 @@ def test_npc_display_name_strips_title_and_brackets() -> None:
 
 
 def test_flavor_skips_patch_banner_cn() -> None:
-    body = "增加于 4.2 \"[Rage of the Firelands]\"\n使用: 教你学会召唤这种小伙伴。"
+    body = '增加于 4.2 "[Rage of the Firelands]"\n使用: 教你学会召唤这种小伙伴。'
     assert _extract_flavor_text(body) is None
 
 
@@ -26,7 +26,7 @@ def test_flavor_skips_patch_banner_en() -> None:
 
 
 def test_flavor_finds_cjk_quote() -> None:
-    body = "使用: 召唤小伙伴。\n\"虽然体型变小了，小拉格依然是一团暴躁的破坏之力。\"\n需要等级 1"
+    body = '使用: 召唤小伙伴。\n"虽然体型变小了，小拉格依然是一团暴躁的破坏之力。"\n需要等级 1'
     assert _extract_flavor_text(body) == "虽然体型变小了，小拉格依然是一团暴躁的破坏之力。"
 
 

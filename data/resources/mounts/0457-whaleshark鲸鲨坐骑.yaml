@@ -1,7 +1,7 @@
 id: 457
 model_folder: whaleshark鲸鲨坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80453
     visual_id: 9140453
+    icon_id: 30017
     name: 翡翠鲸鲨
     description: 召唤或解散这种坐骑。
     swim_speed: 60
@@ -37,7 +38,7 @@ dbc:
     id: 91453
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 111017
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 翡翠鲸鲨
     class: 15
     subclass: 5
+    displayid: 111017
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

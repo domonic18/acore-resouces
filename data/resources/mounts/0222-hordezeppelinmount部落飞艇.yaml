@@ -1,7 +1,7 @@
 id: 222
 model_folder: hordezeppelinmount部落飞艇
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.3.5，BlizzCon 2018 赠品）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80218
     visual_id: 9140218
+    icon_id: 21707
     name: 奥格瑞玛拦截飞艇
     description: 召唤或解散你的奥格瑞玛拦截飞艇。这是一种飞行坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 151617
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102707
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 奥格瑞玛拦截飞艇
     class: 15
     subclass: 5
+    displayid: 102707
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

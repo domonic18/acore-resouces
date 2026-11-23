@@ -1,7 +1,7 @@
 id: 437
 model_folder: vicioushorse勇猛的吉尔尼斯战马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（PvP 邪恶鞍具）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80433
     visual_id: 9140433
+    icon_id: 27407
     name: 勇猛的吉尔尼斯战马
     description: 召唤或解散一只可供骑乘的勇猛的吉尔尼斯战马
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 140353
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108407
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 勇猛的吉尔尼斯战马
     class: 15
     subclass: 5
+    displayid: 108407
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 108
 model_folder: deathwargmount碎愿者加尔贡
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80103
     visual_id: 9140103
+    icon_id: 18852
     name: 堕罪加尔贡
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 183715
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99852
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 堕罪加尔贡
     class: 15
     subclass: 5
+    displayid: 99852
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -35,7 +35,11 @@ def test_pet_type_not_available_on_mount_and_npc() -> None:
 
 
 def test_tags_default_empty_list() -> None:
-    for resource in (Mount(id=1, model_folder="a"), Pet(id=2, model_folder="b"), Npc(id=3, model_folder="c")):
+    for resource in (
+        Mount(id=1, model_folder="a"),
+        Pet(id=2, model_folder="b"),
+        Npc(id=3, model_folder="c"),
+    ):
         assert resource.tags == []
 
 

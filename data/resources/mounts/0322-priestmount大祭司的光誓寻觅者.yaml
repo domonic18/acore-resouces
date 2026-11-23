@@ -1,7 +1,7 @@
 id: 322
 model_folder: priestmount大祭司的光誓寻觅者
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.2，职业坐骑）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80318
     visual_id: 9140318
+    icon_id: 29404
     name: 大祭司的光誓寻觅者
     description: 召唤或解散你的大祭司的光誓寻觅者。这是一种飞行坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 91318
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 110404
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 大祭司的光誓寻觅者
     class: 15
     subclass: 5
+    displayid: 110404
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

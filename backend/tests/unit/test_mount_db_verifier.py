@@ -37,9 +37,9 @@ def test_check_mounts_db_reports_missing_rows(monkeypatch: pytest.MonkeyPatch) -
     monkeypatch.setattr(
         verifier,
         "_query_ids",
-        lambda table, column, values: set(values)
-        if table == verifier.TABLE_CREATURE_TEMPLATE
-        else set(),
+        lambda table, column, values: (
+            set(values) if table == verifier.TABLE_CREATURE_TEMPLATE else set()
+        ),
     )
     monkeypatch.setattr(verifier, "_query_creatures_with_model", lambda ids: set())
 

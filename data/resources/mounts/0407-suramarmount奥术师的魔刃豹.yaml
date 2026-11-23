@@ -1,7 +1,7 @@
 id: 407
 model_folder: suramarmount奥术师的魔刃豹
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.1，苏拉玛起义任务线）
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80403
     visual_id: 9140403
+    icon_id: 31628
     name: 奥术师的魔刃豹
     description: 召唤或解散你的奥术师的魔刃豹。
     speed: 100
@@ -37,7 +38,7 @@ dbc:
     id: 142436
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112628
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 奥术师的魔刃豹
     class: 15
     subclass: 5
+    displayid: 112628
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

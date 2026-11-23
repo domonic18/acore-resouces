@@ -1,7 +1,7 @@
 id: 101
 model_folder: deathelementalmount罪触死亡行者
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80096
     visual_id: 9140096
+    icon_id: 18839
     name: 罪触死亡行者
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 182717
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99839
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 罪触死亡行者
     class: 15
     subclass: 5
+    displayid: 99839
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

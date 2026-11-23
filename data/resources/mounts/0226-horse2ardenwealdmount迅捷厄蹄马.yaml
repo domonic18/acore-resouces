@@ -1,7 +1,7 @@
 id: 226
 model_folder: horse2ardenwealdmount迅捷厄蹄马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80222
     visual_id: 9140222
+    icon_id: 21712
     name: 无畏的暮行者
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 181317
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102712
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 无畏的暮行者
     class: 15
     subclass: 5
+    displayid: 102712
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

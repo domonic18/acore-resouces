@@ -1,7 +1,7 @@
 id: 287
 model_folder: MushanBeast拳手的健壮穆山兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.0，世界首领加隆）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80283
     visual_id: 9140283
+    icon_id: 27413
     name: 炮舰之子
     description: 召唤或解散一只可供骑乘的炮舰之子。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 89783
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108413
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 炮舰之子
     class: 15
     subclass: 5
+    displayid: 108413
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

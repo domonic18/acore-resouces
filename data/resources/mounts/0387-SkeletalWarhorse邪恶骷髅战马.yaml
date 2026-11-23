@@ -1,7 +1,7 @@
 id: 387
 model_folder: SkeletalWarhorse邪恶骷髅战马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80383
     visual_id: 9140383
+    icon_id: 31083
     name: 邪恶骷髅战马
     description: 召唤或解散一匹可供骑乘的邪恶骷髅战马。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 102533
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112083
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 邪恶骷髅战马
     class: 15
     subclass: 5
+    displayid: 112083
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

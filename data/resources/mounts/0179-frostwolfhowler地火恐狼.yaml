@@ -1,7 +1,7 @@
 id: 179
 model_folder: frostwolfhowler地火恐狼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80174
     visual_id: 9140174
+    icon_id: 33041
     name: 地火恐狼
     description: 召唤或解散你的地火恐狼。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 127140
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 114041
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 地火恐狼
     class: 15
     subclass: 5
+    displayid: 114041
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1
