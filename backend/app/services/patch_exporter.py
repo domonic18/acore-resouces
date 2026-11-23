@@ -152,6 +152,39 @@ CUSTOM_VEHICLE_FIELD_DEFAULTS: dict[str, Any] = {
     "VehicleUIIndicatorID": 225,
 }
 
+# 自建 VehicleSeat.dbc 记录的字段默认值取原版 2764（官方 312 的乘客位）实测；
+# 只改 ID / AttachmentID / 三个偏移，其余沿用。
+CUSTOM_VEHICLE_SEAT_DEFAULTS: dict[str, Any] = {
+    "EnterSpeed": 10.0,
+    "EnterGravity": 19.29,
+    "EnterMinDuration": 0.6,
+    "EnterMaxDuration": 1.0,
+    "EnterMinArcHeight": 1.5,
+    "EnterMaxArcHeight": 4.0,
+    "EnterAnimStart": 37,
+    "EnterAnimLoop": 38,
+    "RideAnimStart": -1,
+    "RideAnimLoop": 91,
+    "RideUpperAnimStart": 128,
+    "RideUpperAnimLoop": 123,
+    "ExitSpeed": 10.0,
+    "ExitGravity": 19.29,
+    "ExitMinDuration": 0.6,
+    "ExitMaxDuration": 2.0,
+    "ExitMinArcHeight": 1.5,
+    "ExitMaxArcHeight": 2.0,
+    "ExitAnimStart": 37,
+    "ExitAnimLoop": 38,
+    "ExitAnimEnd": 39,
+    "PassengerAttachmentID": -1,
+    "VehicleEnterAnim": 226,
+    "VehicleExitAnim": 107,
+    "VehicleRideAnimLoop": 158,
+    "VehicleExitAnimBone": 1,
+    "VehicleEnterAnimBone": 1,
+    "VehicleAbilityDisplay": 1,
+}
+
 
 def _ensure_dir(path: Path) -> None:
     """确保目录存在。"""
@@ -407,6 +440,29 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                 ],
             )
         )
+
+    # VehicleSeat.dbc：自建乘客位记录（挂点骨骼 + 偏移）。
+    # 官方座位只覆盖到骨骼 21，而载具模型的骨骼可到 50+，想挂在模型后半段必须自建。
+    if vehicle and vehicle.seats:
+        seat_ops = []
+        for spec in vehicle.seats:
+            seat_fields: dict[str, Any] = {
+                "ID": int(spec.id),
+                **CUSTOM_VEHICLE_SEAT_DEFAULTS,
+                "AttachmentID": int(spec.attachment_id),
+                "AttachmentOffset_1": float(spec.offset_x),
+                "AttachmentOffset_2": float(spec.offset_y),
+                "AttachmentOffset_3": float(spec.offset_z),
+            }
+            seat_ops.append(
+                DBCPlanOperation(
+                    action="add",
+                    record_id=int(spec.id),
+                    reason="新增多人骑乘座位记录",
+                    fields=seat_fields,
+                )
+            )
+        plans.append(DBCPlanFile(dbc_file="VehicleSeat.dbc", operations=seat_ops))
 
     return DBCPlan(
         source_dbc_dir=str(settings.project_root / "data" / "wow-dbc" / "src" / "dbc"),
