@@ -70,9 +70,7 @@ def test_build_context_collects_materials(env: Path) -> None:
     sql = env / "data/sql/mounts/0146_Hippogryph2/0146_mount_add.sql"
     ctx_obj = _mount_ctx(drop=DropInfo(instance="旋云之巅", boss="阿尔泰鲁斯", rate=0.05))
 
-    ctx = changelog_writer.build_context(
-        [ctx_obj], [sql], _manifest(), _report(env)
-    )
+    ctx = changelog_writer.build_context([ctx_obj], [sql], _manifest(), _report(env))
 
     assert ctx["batch"] == "20260908_023938"
     assert ctx["mount_count"] == 1
@@ -120,13 +118,9 @@ def test_write_changelog_ai_success(env: Path, monkeypatch: pytest.MonkeyPatch) 
     monkeypatch.setattr(
         changelog_writer,
         "load_effective_config",
-        lambda: EffectiveAiConfig(
-            base_url="https://x", api_key="sk", model="m", enabled=True
-        ),
+        lambda: EffectiveAiConfig(base_url="https://x", api_key="sk", model="m", enabled=True),
     )
-    monkeypatch.setattr(
-        changelog_writer, "generate_ai", lambda ctx, cfg: "# AI 公告\n\n内容"
-    )
+    monkeypatch.setattr(changelog_writer, "generate_ai", lambda ctx, cfg: "# AI 公告\n\n内容")
     ctx = changelog_writer.build_context([_mount_ctx()], [], _manifest(), _report(env))
 
     source = changelog_writer.write_changelog(env / "batch", ctx)
@@ -153,17 +147,19 @@ def test_generate_ai_uses_configured_params(monkeypatch: pytest.MonkeyPatch) -> 
 
     monkeypatch.setattr(changelog_writer, "chat_completions", _fake_chat)
     cfg = EffectiveAiConfig(
-        base_url="https://x", api_key="sk", model="m",
-        timeout_seconds=300, max_tokens=8000, enabled=True,
+        base_url="https://x",
+        api_key="sk",
+        model="m",
+        timeout_seconds=300,
+        max_tokens=8000,
+        enabled=True,
     )
     changelog_writer.generate_ai({"batch": "b"}, cfg)
     assert captured["timeout"] == 300.0
     assert captured["max_tokens"] == 8000
 
 
-def test_write_changelog_ai_failure_falls_back(
-    env: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_write_changelog_ai_failure_falls_back(env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         changelog_writer,
         "load_effective_config",

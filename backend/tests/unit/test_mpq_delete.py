@@ -24,10 +24,18 @@ def fake_roots(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, Pat
         "ARCHIVE_ROOTS",
         {"mpq": mpq_root, "dist": dist_root},
     )
-    monkeypatch.setattr(mpq_inspector, "settings", type("S", (), {
-        "patch_jobs_dir": jobs_dir,
-        "project_root": tmp_path,
-    })())
+    monkeypatch.setattr(
+        mpq_inspector,
+        "settings",
+        type(
+            "S",
+            (),
+            {
+                "patch_jobs_dir": jobs_dir,
+                "project_root": tmp_path,
+            },
+        )(),
+    )
     return {"mpq": mpq_root, "dist": dist_root, "jobs": jobs_dir}
 
 
@@ -48,9 +56,7 @@ def test_delete_archive_removes_mpq_keeps_metadata(
     """删除只移除 MPQ 文件，批次元数据（manifest / changelog）保留供审计。"""
     batch_dir = _make_batch(fake_roots["dist"], "20261121_013605")
 
-    result = mpq_inspector.delete_archive(
-        "dist/20261121_013605/patch-zhCN-7.mpq"
-    )
+    result = mpq_inspector.delete_archive("dist/20261121_013605/patch-zhCN-7.mpq")
 
     assert result["batch"] == "20261121_013605"
     assert result["source"] == "dist"
@@ -127,9 +133,7 @@ def test_delete_archive_resets_referencing_jobs(
     )
     monkeypatch.setattr(patch_exporter.settings, "patch_jobs_dir", fake_roots["jobs"])
 
-    result = mpq_inspector.delete_archive(
-        "dist/20261121_013605/patch-zhCN-7.mpq"
-    )
+    result = mpq_inspector.delete_archive("dist/20261121_013605/patch-zhCN-7.mpq")
 
     assert result["reset_jobs"] == ["mount_0003"]
 

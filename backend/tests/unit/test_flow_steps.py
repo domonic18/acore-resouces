@@ -12,9 +12,7 @@ import re
 from app.core.config import settings
 from app.schemas.flow import FLOW_STEP_IDS
 
-PATCH_FLOW_TS = (
-    settings.project_root / "apps/web/src/features/resources/lib/patch-flow.ts"
-)
+PATCH_FLOW_TS = settings.project_root / "apps/web/src/features/resources/lib/patch-flow.ts"
 
 _ID_PATTERN = re.compile(r'^\s*id:\s*"([a-z0-9-]+)",\s*$', re.MULTILINE)
 
@@ -43,9 +41,7 @@ def test_step_ids_are_unique() -> None:
 def test_wizard_step_ids_exist_in_flow() -> None:
     """向导引用的步骤 id 必须存在于完整流程中。"""
     source = PATCH_FLOW_TS.read_text(encoding="utf-8")
-    match = re.search(
-        r"WIZARD_FLOW_STEP_IDS\s*=\s*\[(.*?)\]", source, re.DOTALL
-    )
+    match = re.search(r"WIZARD_FLOW_STEP_IDS\s*=\s*\[(.*?)\]", source, re.DOTALL)
     assert match is not None
     wizard_ids = re.findall(r'"([a-z0-9-]+)"', match.group(1))
     assert wizard_ids
@@ -55,9 +51,7 @@ def test_wizard_step_ids_exist_in_flow() -> None:
 
 def test_document_anchors_match_frontend() -> None:
     """总纲文档里的步骤锚点必须与前端 docAnchor 一致。"""
-    doc_path = (
-        settings.project_root / "docs/workflows/01坐骑生产流程总纲.md"
-    )
+    doc_path = settings.project_root / "docs/workflows/01坐骑生产流程总纲.md"
     assert doc_path.exists(), f"流程总纲缺失：{doc_path}"
 
     source = PATCH_FLOW_TS.read_text(encoding="utf-8")

@@ -107,9 +107,7 @@ def _write_batch_artifacts() -> None:
         ],
         "mpq": {},
     }
-    (reports_dir / "audit-report.json").write_text(
-        json.dumps(audit), encoding="utf-8"
-    )
+    (reports_dir / "audit-report.json").write_text(json.dumps(audit), encoding="utf-8")
 
 
 def test_groups_jobs_by_mpq_batch(batch_dirs: Path) -> None:

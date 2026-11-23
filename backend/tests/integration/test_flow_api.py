@@ -104,9 +104,7 @@ def test_preview_batch_rejects_empty() -> None:
 
 @_requires_mount
 def test_preview_batch_404_for_missing_resource() -> None:
-    response = client.post(
-        "/api/patches/preview/batch", json={"resource_ids": [999999]}
-    )
+    response = client.post("/api/patches/preview/batch", json={"resource_ids": [999999]})
     assert response.status_code == 404
 
 

@@ -174,9 +174,7 @@ def test_texture_variation_missing_blp_is_error(model_dir: Path) -> None:
     _write_m2(folder / "demo.m2", [(11, "")])
     _write_skin(folder / "demo.skin", [0])
 
-    result = _audit(
-        _make_mount("demo", "creature\\demo\\demo.m2", texture_variation_1="NOT_THERE")
-    )
+    result = _audit(_make_mount("demo", "creature\\demo\\demo.m2", texture_variation_1="NOT_THERE"))
     assert "texture_variation_missing" in {issue.code for issue in result.errors}
 
 
