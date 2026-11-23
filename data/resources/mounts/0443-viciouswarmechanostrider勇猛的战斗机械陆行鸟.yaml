@@ -1,7 +1,7 @@
 id: 443
 model_folder: viciouswarmechanostrider勇猛的战斗机械陆行鸟
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（PvP 邪恶鞍具）
@@ -34,6 +34,7 @@ dbc:
   spell:
     id: 80439
     visual_id: 9140439
+    icon_id: 10079
     name: 勇猛的战斗机械陆行鸟
     description: 召唤或解散一部可供骑乘的勇猛的战斗机械陆行鸟。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 124089
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91079
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 勇猛的战斗机械陆行鸟
     class: 15
     subclass: 5
+    displayid: 91079
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

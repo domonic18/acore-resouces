@@ -1,7 +1,7 @@
 id: 356
 model_folder: rocmaldraxxusmount巨型灭爪鹏
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80352
     visual_id: 9140352
+    icon_id: 29927
     name: 掠食的凋零大鹏
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 182080
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 110927
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 掠食的凋零大鹏
     class: 15
     subclass: 5
+    displayid: 110927
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

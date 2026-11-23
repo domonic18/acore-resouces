@@ -1,7 +1,7 @@
 id: 379
 model_folder: Shredder飞天魔像
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.4，工程学制造）
@@ -9,6 +9,21 @@ notes: |-
   - **特殊功能**：骑乘时可以采集草药
   - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=95416/%E9%A3%9E%E5%A4%A9%E9%AD%94%E5%83%8F)
   - **多人骑乘挂点**：1/2/15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
+
+  ## 已知缺陷：模型贴图槽被清空（白模，2026-11-22 记录）
+  - `shreddermount.m2` 的 TEX[1] / TEX[4] 是 **type 0（硬编码路径）但
+    filename 为空**，且被 skin 的 batch 引用 → 这两块渲染成白色。
+  - 名称表在文件尾部 3978768 起，5 条记录的偏移间隔为
+    36 / 41 / 37 / 30 字节 → 原文件名长度已知，但**具体路径无法唯一确定**：
+    同族 `shredderpet.m2` 用的是 `item\objectcomponents\...` /
+    `spells\...` / `world\expansion02\...` 等现代客户端路径，
+    而模型目录里备选贴图是 `armorreflect4.blp` / `draenei_wire_spark.blp` /
+    `bubble_twirl_b.blp` / `flare05.blp` / `t_vfx_smokeanim02_blured.blp`，
+    按 `creature\Shredder\` 前缀推算长度只有 3/4 条对得上（第 3 条差 1~2 字节）。
+  - **结论**：本条坐骑的模型需要原始文件（或客户端实测逐槽确认）才能补齐，
+    仓库内无法离线唯一还原。其余部分（数据行 / DBC）已就绪。
+  - 另注：本条的「骑乘采集」特性**目前没有服务端实现**，导出器只把它当标签，
+    实机测试时只能验证模型显示，不能验证采集行为。
 drop: {}
 official_db:
   name: 飞天魔像
@@ -34,6 +49,7 @@ dbc:
   spell:
     id: 80375
     visual_id: 9140375
+    icon_id: 10040
     name: 飞天魔像
     speed: 100
     flight_speed: 280
@@ -41,7 +57,7 @@ dbc:
     id: 95416
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91040
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +97,7 @@ db:
     name: 飞天魔像
     class: 15
     subclass: 5
+    displayid: 91040
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

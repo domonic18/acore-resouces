@@ -1,7 +1,7 @@
 id: 293
 model_folder: nozdormudragon黄龙坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：巫妖王之怒（3.0，净化斯坦索姆）
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80289
     visual_id: 9140289
+    icon_id: 3440
     name: 青铜幼龙
     description: 召唤或解散一条可供骑乘的青铜幼龙。这是一种速度非常快的坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 43951
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 56306
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 青铜幼龙
     class: 15
     subclass: 5
+    displayid: 56306
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

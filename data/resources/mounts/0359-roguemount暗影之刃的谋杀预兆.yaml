@@ -1,7 +1,7 @@
 id: 359
 model_folder: roguemount暗影之刃的谋杀预兆
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.2，职业坐骑）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80355
     visual_id: 9140355
+    icon_id: 29941
     name: 暗影之刃的怨恨预兆
     description: 召唤或解散你的暗影之刃的谋杀预兆。这是一种飞行坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 143491
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 110941
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 暗影之刃的怨恨预兆
     class: 15
     subclass: 5
+    displayid: 110941
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

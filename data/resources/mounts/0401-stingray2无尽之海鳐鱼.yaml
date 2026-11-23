@@ -1,7 +1,7 @@
 id: 401
 model_folder: stingray2无尽之海鳐鱼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80397
     visual_id: 9140397
+    icon_id: 31564
     name: 暗水鳐鱼
     description: 召唤或解散一条可供骑乘的暗水鳐鱼。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 142398
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112564
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 暗水鳐鱼
     class: 15
     subclass: 5
+    displayid: 112564
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

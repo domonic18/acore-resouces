@@ -1,7 +1,7 @@
 id: 70
 model_folder: ardenwealdstagmount2魔化梦光符文牡鹿
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80065
     visual_id: 9140065
+    icon_id: 14356
     name: 魔化梦光符文牡鹿
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 180721
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95356
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 魔化梦光符文牡鹿
     class: 15
     subclass: 5
+    displayid: 95356
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

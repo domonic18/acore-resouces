@@ -1,7 +1,7 @@
 id: 211
 model_folder: Hippogryph_Arcane魔羽角鹰兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.1）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80207
     visual_id: 9140207
+    icon_id: 27401
     name: 魔羽角鹰兽
     description: 召唤或解散一只可骑乘的魔羽角鹰兽。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 141217
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108401
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 魔羽角鹰兽
     class: 15
     subclass: 5
+    displayid: 108401
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

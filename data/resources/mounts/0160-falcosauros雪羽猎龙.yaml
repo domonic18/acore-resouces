@@ -1,7 +1,7 @@
 id: 160
 model_folder: falcosauros雪羽猎龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.1，小盗龙养成任务线）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80155
     visual_id: 9140155
+    icon_id: 19400
     name: 火羽恐嘴龙
     description: 召唤或解散你的火羽恐嘴龙。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 137579
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 100400
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 火羽恐嘴龙
     class: 15
     subclass: 5
+    displayid: 100400
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

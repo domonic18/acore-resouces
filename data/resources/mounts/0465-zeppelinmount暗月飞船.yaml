@@ -1,7 +1,7 @@
 id: 465
 model_folder: zeppelinmount暗月飞船
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80461
     visual_id: 9140461
+    icon_id: 33065
     name: 暗月飞船
     description: 召唤或解散你的暗月飞船。这种坐骑会依据你的骑乘技能和地区而改变。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 153485
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 114065
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 暗月飞船
     class: 15
     subclass: 5
+    displayid: 114065
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

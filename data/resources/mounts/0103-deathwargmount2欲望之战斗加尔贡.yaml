@@ -1,7 +1,7 @@
 id: 103
 model_folder: deathwargmount2欲望之战斗加尔贡
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80098
     visual_id: 9140098
+    icon_id: 18845
     name: 欲望之战斗加尔贡
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 182209
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99845
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 欲望之战斗加尔贡
     class: 15
     subclass: 5
+    displayid: 99845
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

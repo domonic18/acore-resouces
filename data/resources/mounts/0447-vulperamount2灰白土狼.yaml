@@ -1,7 +1,7 @@
 id: 447
 model_folder: vulperamount2灰白土狼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.3，狐人种族坐骑）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80443
     visual_id: 9140443
+    icon_id: 21807
     name: 灰白土狼
     description: 召唤或解散你的灰白土狼。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 161773
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102807
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 灰白土狼
     class: 15
     subclass: 5
+    displayid: 102807
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

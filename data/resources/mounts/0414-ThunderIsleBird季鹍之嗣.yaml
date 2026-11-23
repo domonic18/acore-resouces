@@ -1,7 +1,7 @@
 id: 414
 model_folder: ThunderIsleBird季鹍之嗣
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.2，雷电王座）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80410
     visual_id: 9140410
+    icon_id: 10893
     name: 季鹍之嗣
     description: 召唤或解散一只可供骑乘的季鹍之嗣。这是一种飞行坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 95059
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91893
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 季鹍之嗣
     class: 15
     subclass: 5
+    displayid: 91893
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

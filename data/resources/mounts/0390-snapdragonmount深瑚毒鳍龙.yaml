@@ -1,7 +1,7 @@
 id: 390
 model_folder: snapdragonmount深瑚毒鳍龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80386
     visual_id: 9140386
+    icon_id: 31130
     name: 皇家毒鳍龙
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 169198
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112130
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 皇家毒鳍龙
     class: 15
     subclass: 5
+    displayid: 112130
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 139
 model_folder: DRAKEMOUNT邪能幼龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：巫妖王之怒（3.x，玛里苟斯）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80134
     visual_id: 9140134
+    icon_id: 3667
     name: 蓝色幼龙
     description: 召唤或解散一条可供骑乘的蓝色幼龙。这是一种速度非常快的坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 43953
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 57552
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 蓝色幼龙
     class: 15
     subclass: 5
+    displayid: 57552
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

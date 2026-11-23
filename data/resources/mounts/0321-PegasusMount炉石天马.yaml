@@ -1,7 +1,7 @@
 id: 321
 model_folder: PegasusMount炉石天马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.4，炉石传说活动赠品）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80317
     visual_id: 9140317
+    icon_id: 28499
     name: 炉石天马
     description: 召唤或解散一匹炉石天马。这种坐骑的速度会根据你的骑术等级和所在区域改变。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 98618
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 109499
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 炉石天马
     class: 15
     subclass: 5
+    displayid: 109499
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 142
 model_folder: dressedhorse海鬃骏马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.3）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80137
     visual_id: 9140137
+    icon_id: 18961
     name: 海鬃骏马
     description: 召唤或解散你的海鬃骏马。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 153539
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99961
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 海鬃骏马
     class: 15
     subclass: 5
+    displayid: 99961
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

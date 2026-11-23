@@ -1,7 +1,7 @@
 id: 260
 model_folder: maldraxxusboarmount灼背血牙猪
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.0）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80256
     visual_id: 9140256
+    icon_id: 24399
     name: 血刺
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 182084
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 105399
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 血刺
     class: 15
     subclass: 5
+    displayid: 105399
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

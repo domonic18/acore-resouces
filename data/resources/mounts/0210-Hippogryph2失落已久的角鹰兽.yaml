@@ -1,7 +1,7 @@
 id: 210
 model_folder: Hippogryph2失落已久的角鹰兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.0，阿苏纳水晶）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80206
     visual_id: 9140206
+    icon_id: 2554
     name: 失落已久的角鹰兽
     description: 召唤或解散一匹可骑乘的失落已久的角鹰兽。这是飞行坐骑。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 138258
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 47934
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 失落已久的角鹰兽
     class: 15
     subclass: 5
+    displayid: 47934
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

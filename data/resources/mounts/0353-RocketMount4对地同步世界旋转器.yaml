@@ -1,7 +1,7 @@
 id: 353
 model_folder: RocketMount4对地同步世界旋转器
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80349
     visual_id: 9140349
+    icon_id: 10037
     name: 对地同步世界旋转器
     speed: 100
     flight_speed: 280
@@ -37,7 +38,7 @@ dbc:
     id: 87251
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91037
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 对地同步世界旋转器
     class: 15
     subclass: 5
+    displayid: 91037
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

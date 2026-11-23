@@ -1,7 +1,7 @@
 id: 24
 model_folder: brontosauruspack蛇颈龙坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.2）
@@ -10,6 +10,50 @@ notes: |-
   - **特殊功能**：三人骑乘，自带商人与拍卖行
   - [Wowhead 物品页](https://www.wowhead.com/cn/item=163042/%E9%9B%84%E5%A3%AE%E5%95%86%E9%98%9F%E9%9B%B7%E9%BE%99%E7%9A%84%E7%BC%B0%E7%BB%B3)
   - **多人骑乘挂点**：15/16/19/20/21（原版即多人坐骑（BFA 雷龙同族模型），挂点位置可信）
+
+  ## 模型说明（当前用的是 brontosauruspack，不是 brontosaurusmount）
+  - 本条目 `model_folder` = **`brontosauruspack蛇颈龙坐骑`** → 模型
+    `creature\brontosauruspack\brontosauruspack.m2`（**带驮架、贴图完好**）。
+    库内能撑起「商队」形态的雷龙模型只有它。
+  - 同名目录 `brontosaurusmount雄壮商队雷龙/brontosaurusmount/brontosaurusmount.m2`
+    是**坏模型，不要用**：它的 M2 贴图表（字节 1311664 起，4 条 16 字节记录）里
+    TEX[0]/TEX[1]/TEX[3] 三条都是 **type 0（硬编码路径）且 filenameLength=0**，
+    filenameOffset（4620208 / 4620257）指向文件尾部那段**被清零的区域**；
+    TEX[2] 才是 type 11（可替换槽 = TextureVariation_1）。
+  - **白色驮架的成因**：每个 skin 里 14 个 batch（驮架 + 甲件）走 TEX[0]，
+    路径解析不到 → 客户端渲染成白色；只有 4/6/6/12 个 batch（身体）走 TEX[2]。
+    所以换 CreatureDisplayInfo 的替换槽（绿/黑/蓝）**对驮架完全无效**——
+    驮架用的根本不是可替换槽。
+  - 对照组 `brontosauruspack.m2`（本条目在用）：4 条贴图记录为
+    `[type12=TV2, type0=armorreflect4.blp, type0=brontosauruspack_items.blp, type11=TV1]`，
+    **323 个 batch 绑到 `brontosauruspack_items.blp`（驮架皮革贴图）** → 正常解析，不发白。
+  - **修复配方（已离线验证可行，2026-11-22）**：
+    ① **只需改 TEX[0] 一个字段**：filenameLength 0 → 49，filenameOffset 保持 4620208，
+       写回 `creature\brontosaurusmount\brontosaurusmount.blp`。
+       该文件**本来就在模型目录里**（源目录 `brontosaurusmount.blp`，1024×512，
+       内容是木架/红布/工具的**驮架贴图**，不是身体贴图）——不需要另找皮革贴图，
+       更不需要复制 brontosauruspack_items.blp 改名。
+       （文件尾部 4620200–4620345 是一段 145 字节零区，4620208/4620257 两个
+       filenameOffset 都指在这段里，原文件名就是被这段清零抹掉的。）
+    ② TEX[1]（offset 4620257，type 0）、TEX[3]（offset 0，type 0）同样是空文件名，
+       但 **4 个 skin 的 86 个 batch 一个都没引用它们**（只用 TEX[0] 和 TEX[2]），
+       可以不动。
+    ③ TEX[2] 是 type 11，CDI 的 TextureVariation_1 需设为 `babybrontosaurus_green`
+    （源目录只有 babybrontosaurus_{black,white,blue,brown,green}.blp）。
+    ④ **额外异常**：该 M2 **完全没有骨名块**（同族的 brontosauruspack.m2 有 "Bip01"
+       等骨名，本文件搜不到任何可打印骨名串），疑似同一次改写事故所致。
+       客户端多人座位靠 VehicleSeat.dbc 的 AttachmentID（骨骼下标）定位，
+       骨名缺失是否影响客户端渲染需实机确认；若不影响，① 改完即可启用。
+    - **离线验证结论**：按 ① 打补丁后用项目自带的 M2→Three.js 管线离线渲染，
+      白色驮架变为正常的木架皮革，确认根因判断无误。
+
+  ## 模型占用规则（避免撞车）
+  - **同模型只允许一个坐骑条目**；再要一条雷龙坐骑，必须换模型文件夹，
+    或用不同贴图变体（CreatureDisplayInfo 的 TextureVariation）区分外观。
+  - 当前占用：`brontosauruspack.m2` → 本条目 #24；
+    `brontosaurus.m2`（无驮架）→ **#466 幼年商队雷龙**（2026-11-22 已改用，已降为单人坐骑）。
+  - `babybrontosaurus.m2`（无驮架、贴图完好）目前**无坐骑条目占用**，
+    保留作备用素体模型；其局限见 #466 的备注。
 drop: {}
 official_db:
   name: 雄壮商队雷龙
@@ -35,14 +79,14 @@ dbc:
   spell:
     id: 80021
     visual_id: 9140021
-    icon_id: 3443
+    icon_id: 17130
     description: 召唤或解散一只可供骑乘的雄壮商队雷龙。这是一种速度非常快的坐骑。
     speed: 100
   item:
     id: 163042
     class: 15
     subclass: 5
-    display_id: 31511
+    display_id: 98130
     inventory_type: 0
     sheath: 0
 db:
@@ -82,7 +126,7 @@ db:
     name: 雄壮商队雷龙
     class: 15
     subclass: 5
-    displayid: 31511
+    displayid: 98130
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

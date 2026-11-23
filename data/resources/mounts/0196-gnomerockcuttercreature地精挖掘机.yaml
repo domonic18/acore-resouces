@@ -1,7 +1,7 @@
 id: 196
 model_folder: gnomerockcuttercreature地精挖掘机
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -28,13 +28,14 @@ dbc:
   spell:
     id: 80191
     visual_id: 9140191
+    icon_id: 10040
     name: 地精挖掘机
     speed: 100
   item:
     id: 91191
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91040
     inventory_type: 0
     sheath: 0
 db:
@@ -74,6 +75,7 @@ db:
     name: 地精挖掘机
     class: 15
     subclass: 5
+    displayid: 91040
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

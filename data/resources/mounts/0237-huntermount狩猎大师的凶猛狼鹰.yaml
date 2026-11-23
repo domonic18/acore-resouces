@@ -1,7 +1,7 @@
 id: 237
 model_folder: huntermount狩猎大师的凶猛狼鹰
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.2，职业坐骑）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80233
     visual_id: 9140233
+    icon_id: 21801
     name: 狩猎大师的恐怖狼鹰
     description: 召唤或解散你的狩猎大师的恐怖狼鹰。这是一种飞行坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 142228
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102801
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 狩猎大师的恐怖狼鹰
     class: 15
     subclass: 5
+    displayid: 102801
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

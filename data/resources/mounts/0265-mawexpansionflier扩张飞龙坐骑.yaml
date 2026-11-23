@@ -1,7 +1,7 @@
 id: 265
 model_folder: mawexpansionflier扩张飞龙坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.1）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80261
     visual_id: 9140261
+    icon_id: 24457
     name: 翔天刀翼兽
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 186648
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 105457
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 翔天刀翼兽
     class: 15
     subclass: 5
+    displayid: 105457
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

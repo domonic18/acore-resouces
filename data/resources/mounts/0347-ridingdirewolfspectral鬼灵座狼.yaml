@@ -1,7 +1,7 @@
 id: 347
 model_folder: ridingdirewolfspectral鬼灵座狼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80343
     visual_id: 9140343
+    icon_id: 27404
     name: 鬼灵座狼
     description: 召唤或解散一头可供骑乘的鬼灵座狼。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 64999
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108404
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 鬼灵座狼
     class: 15
     subclass: 5
+    displayid: 108404
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

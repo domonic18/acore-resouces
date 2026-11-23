@@ -1,7 +1,7 @@
 id: 339
 model_folder: Quilin秦薛的永恒魁麟
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.0，海岛探险）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80335
     visual_id: 9140335
+    icon_id: 11651
     name: 秦薛的永恒魁麟
     description: 召唤或解散秦薛的永恒魁麟。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 163582
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 92651
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 秦薛的永恒魁麟
     class: 15
     subclass: 5
+    displayid: 92651
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 254
 model_folder: lightforgedelekk荣耀邪能碾压者
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.3，阿古斯）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80250
     visual_id: 9140250
+    icon_id: 23865
     name: 荣耀邪能碾压者
     description: 召唤或解散你的荣耀邪能碾压者。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 153042
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 104865
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 荣耀邪能碾压者
     class: 15
     subclass: 5
+    displayid: 104865
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

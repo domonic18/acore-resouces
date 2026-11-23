@@ -1,7 +1,7 @@
 id: 404
 model_folder: StormDragonMount2瓦拉加尔风暴之翼幼龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.0，瓦拉加尔）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80400
     visual_id: 9140400
+    icon_id: 31604
     name: 瓦拉加尔风暴之翼幼龙
     description: 召唤或解散你的瓦拉加尔风暴之翼幼龙。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 147805
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112604
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 瓦拉加尔风暴之翼幼龙
     class: 15
     subclass: 5
+    displayid: 112604
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

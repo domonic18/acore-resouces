@@ -1,7 +1,7 @@
 id: 455
 model_folder: WaterStrider水黾
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -9,6 +9,24 @@ notes: |-
   - **特殊功能**：可在水面上行走
   - [Wowhead 物品页](https://www.wowhead.com/mop-classic/cn/item=87791/%E7%8C%A9%E7%BA%A2%E6%B0%B4%E9%BB%BE%E7%BC%B0%E7%BB%B3)
   - **多人骑乘挂点**：15/16/19/20/21（位置未实测，启用前需客户端验证乘客落座点）
+
+  ## 模型贴图槽修复（2026-11-22 已修）
+  - `WaterStriderMount.m2` 的贴图表（记录起点 159456，每条 16 字节）里
+    **TEX[1] 是 type 0（硬编码路径）但 filename 为空**，而它被 skin 的 batch
+    引用 → 客户端渲染成白色（水黾本体发白）。
+  - 对照组 `WaterStrider.m2`（水黾本体）的同序号 TEX[1] 是
+    `Creature\WaterStrider\ArmorReflect4.blp`；同族的
+    `brontosauruspack.m2` 同序号也是 `armorreflect4.blp` → 判定坐骑模型
+    该槽原本就是护甲反光贴图。
+  - **修复方式（不改文件大小）**：贴图表末尾到 textureLookups 表
+    （159712）之间有 178 字节零区，每个贴图索引预留 40 字节槽位
+    （槽位 i = 159536 + 40*i）。把 40 字节
+    `creature\WaterStrider\ArmorReflect4.blp\0` 写进 **159576**
+    （= TEX[1] 的槽位），并把 TEX[1] 记录（159472）的
+    filenameLength 写 40、filenameOffset 写 159576。
+  - 原始文件已备份为 `WaterStriderMount.m2.orig`；`.orig` 不在打包扩展名
+    白名单（.m2/.blp/.anim/.skin/.phys）内，不会进 MPQ。
+  - 修复后 `verify mounts --model-folder WaterStrider水黾` 0 阻断性问题。
 drop: {}
 official_db:
   name: 猩红水黾
@@ -34,6 +52,7 @@ dbc:
   spell:
     id: 80451
     visual_id: 9140451
+    icon_id: 10084
     name: 猩红水黾
     description: 召唤或解散一只可供骑乘的猩红水黾。这种坐骑可以在除战场之外的水面上行走，直到受到伤害为止。
     speed: 100
@@ -41,7 +60,7 @@ dbc:
     id: 87791
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91084
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +100,7 @@ db:
     name: 猩红水黾
     class: 15
     subclass: 5
+    displayid: 91084
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

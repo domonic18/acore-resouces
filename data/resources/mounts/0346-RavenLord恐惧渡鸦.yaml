@@ -1,7 +1,7 @@
 id: 346
 model_folder: RavenLord恐惧渡鸦
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80342
     visual_id: 9140342
+    icon_id: 29615
     name: 恐惧渡鸦
     description: 召唤或解散一头恐惧渡鸦。这种坐骑会根据你的骑术等级和所在区域改变。
     speed: 100
@@ -37,7 +38,7 @@ dbc:
     id: 109013
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 110615
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 恐惧渡鸦
     class: 15
     subclass: 5
+    displayid: 110615
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

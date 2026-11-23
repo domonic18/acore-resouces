@@ -1,7 +1,7 @@
 id: 363
 model_folder: Seahorse瓦丝琪尔海马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.0，瓦丝琪尔任务坐骑）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80359
     visual_id: 9140359
+    icon_id: 10039
     name: 瓦丝琪尔海马
     description: 召唤或解散你的瓦丝琪尔海马。只能在瓦丝琪尔使用。
     swim_speed: 60
@@ -40,7 +41,7 @@ dbc:
     id: 54465
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91039
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 瓦丝琪尔海马
     class: 15
     subclass: 5
+    displayid: 91039
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

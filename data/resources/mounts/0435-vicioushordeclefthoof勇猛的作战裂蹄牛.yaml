@@ -1,7 +1,7 @@
 id: 435
 model_folder: vicioushordeclefthoof勇猛的作战裂蹄牛
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（PvP 邪恶鞍具）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80431
     visual_id: 9140431
+    icon_id: 32579
     name: 勇猛的作战裂蹄牛
     description: 召唤或解散你的勇猛的作战裂蹄牛。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 163124
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113579
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 勇猛的作战裂蹄牛
     class: 15
     subclass: 5
+    displayid: 113579
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

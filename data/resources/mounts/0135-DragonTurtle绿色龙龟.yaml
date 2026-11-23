@@ -1,7 +1,7 @@
 id: 135
 model_folder: DragonTurtle绿色龙龟
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：熊猫人之谜（5.0）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80130
     visual_id: 9140130
+    icon_id: 9988
     name: 巨型绿色龙龟
     description: 召唤或解散一只可供骑乘的巨型绿色龙龟。
     swim_speed: 60
@@ -39,7 +40,7 @@ dbc:
     id: 87801
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90988
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 巨型绿色龙龟
     class: 15
     subclass: 5
+    displayid: 90988
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

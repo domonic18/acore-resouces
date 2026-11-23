@@ -1,7 +1,7 @@
 id: 440
 model_folder: viciouswarelekk勇猛的作战雷象
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（PvP 邪恶鞍具）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80436
     visual_id: 9140436
+    icon_id: 10077
     name: 勇猛的作战雷象
     description: 召唤或解散一只可供骑乘的勇猛的作战雷象。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 140350
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91077
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 勇猛的作战雷象
     class: 15
     subclass: 5
+    displayid: 91077
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

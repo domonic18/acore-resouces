@@ -1,7 +1,7 @@
 id: 412
 model_folder: TalbukDraenor银鬃塔布羊
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.0，纳格兰）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80408
     visual_id: 9140408
+    icon_id: 10058
     name: 风蹄公羊
     description: 召唤或解散你的风蹄公羊。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 116775
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 91058
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 风蹄公羊
     class: 15
     subclass: 5
+    displayid: 91058
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

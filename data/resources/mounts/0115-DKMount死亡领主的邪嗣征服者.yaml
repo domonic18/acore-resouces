@@ -1,7 +1,7 @@
 id: 115
 model_folder: DKMount死亡领主的邪嗣征服者
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.2，职业坐骑）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80110
     visual_id: 9140110
+    icon_id: 9915
     name: 死亡领主的邪嗣征服者
     description: 召唤或解散你的死亡领主的邪嗣征服者。这是一种飞行坐骑。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 142231
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90915
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 死亡领主的邪嗣征服者
     class: 15
     subclass: 5
+    displayid: 90915
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

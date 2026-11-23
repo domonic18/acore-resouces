@@ -1,7 +1,7 @@
 id: 153
 model_folder: encrypted22大理石雷霆之翼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：巨龙时代（10.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80148
     visual_id: 9140148
+    icon_id: 19218
     name: 大理石雷霆之翼
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 207963
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 100218
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 大理石雷霆之翼
     class: 15
     subclass: 5
+    displayid: 100218
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

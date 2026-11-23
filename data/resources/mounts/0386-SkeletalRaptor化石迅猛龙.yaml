@@ -1,7 +1,7 @@
 id: 386
 model_folder: SkeletalRaptor化石迅猛龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.0.3，考古学）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80382
     visual_id: 9140382
+    icon_id: 9940
     name: 化石迅猛龙
     description: 召唤或解散一头化石迅猛龙。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 60954
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90940
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 化石迅猛龙
     class: 15
     subclass: 5
+    displayid: 90940
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

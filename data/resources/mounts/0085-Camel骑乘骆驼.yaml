@@ -1,7 +1,7 @@
 id: 85
 model_folder: Camel骑乘骆驼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80080
     visual_id: 9140080
+    icon_id: 9895
     name: 白色骑乘骆驼
     description: 召唤或解散一只可供骑乘的白色骑乘骆驼。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 72575
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90895
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 白色骑乘骆驼
     class: 15
     subclass: 5
+    displayid: 90895
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

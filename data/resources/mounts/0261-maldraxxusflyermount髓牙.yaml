@@ -1,7 +1,7 @@
 id: 261
 model_folder: maldraxxusflyermount髓牙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.x）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80257
     visual_id: 9140257
+    icon_id: 24406
     name: 髓牙
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 181819
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 105406
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 髓牙
     class: 15
     subclass: 5
+    displayid: 105406
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

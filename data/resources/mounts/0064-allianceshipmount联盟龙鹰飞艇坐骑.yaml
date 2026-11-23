@@ -1,7 +1,7 @@
 id: 64
 model_folder: allianceshipmount联盟龙鹰飞艇坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.x，BlizzCon 2017 赠品）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80059
     visual_id: 9140059
+    icon_id: 14236
     name: 暴风城逐天战机
     description: 召唤或解散你的暴风城逐天战机。这是一种飞行坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 151618
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95236
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 暴风城逐天战机
     class: 15
     subclass: 5
+    displayid: 95236
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

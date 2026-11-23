@@ -1,7 +1,7 @@
 id: 228
 model_folder: Horse2纯心骏马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：暗影国度（9.x）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80224
     visual_id: 9140224
+    icon_id: 21711
     name: 晋升天鬃马
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 183741
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102711
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 晋升天鬃马
     class: 15
     subclass: 5
+    displayid: 102711
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 316
 model_folder: PandarenSerpent云端翔龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.3）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80312
     visual_id: 9140312
+    icon_id: 27749
     name: 莱加尼战争翔龙
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 174649
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108749
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 莱加尼战争翔龙
     class: 15
     subclass: 5
+    displayid: 108749
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 419
 model_folder: toadloamount情侣沼泽跃蛙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80415
     visual_id: 9140415
+    icon_id: 33232
     name: 青绿沼泽跃蛙
     description: 召唤或解散一只青绿沼泽跃蛙。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 163183
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 114232
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 青绿沼泽跃蛙
     class: 15
     subclass: 5
+    displayid: 114232
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

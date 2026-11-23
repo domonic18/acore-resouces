@@ -1,7 +1,7 @@
 id: 130
 model_folder: DragonSkywall东风幼龙
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.3）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80125
     visual_id: 9140125
+    icon_id: 18923
     name: 四风幼龙
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -41,7 +42,7 @@ dbc:
     id: 174641
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 99923
     inventory_type: 0
     sheath: 0
 db:
@@ -81,6 +82,7 @@ db:
     name: 四风幼龙
     class: 15
     subclass: 5
+    displayid: 99923
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

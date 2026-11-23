@@ -1,7 +1,7 @@
 id: 182
 model_folder: GiantBoar霜原野猪
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80177
     visual_id: 9140177
+    icon_id: 19993
     name: 霜原斗猪
     description: 召唤或解散你的霜原斗猪。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 116670
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 100993
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 霜原斗猪
     class: 15
     subclass: 5
+    displayid: 100993
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

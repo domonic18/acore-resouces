@@ -1,7 +1,7 @@
 id: 87
 model_folder: Camel骑乘骆驼
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.x，骆驼狂人多尔穆斯）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80082
     visual_id: 9140082
+    icon_id: 9895
     name: 灰色骑乘骆驼
     description: 召唤或解散一个可供骑乘的灰色骑乘骆驼。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 63046
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 90895
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 灰色骑乘骆驼
     class: 15
     subclass: 5
+    displayid: 90895
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 396
 model_folder: SpiderMount血牙寡妇蛛
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80392
     visual_id: 9140392
+    icon_id: 31155
     name: 血牙寡妇蛛
     description: 召唤或解散一只可供骑乘的血牙寡妇蜘蛛。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 137570
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 112155
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 血牙寡妇蛛
     class: 15
     subclass: 5
+    displayid: 112155
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

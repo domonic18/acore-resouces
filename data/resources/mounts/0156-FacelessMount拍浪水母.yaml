@@ -1,7 +1,7 @@
 id: 156
 model_folder: FacelessMount拍浪水母
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：军团再临（7.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80151
     visual_id: 9140151
+    icon_id: 19603
     name: 深海水母
     description: 召唤或解散一只可供骑乘的深海水母。
     swim_speed: 60
@@ -39,7 +40,7 @@ dbc:
     id: 138201
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 100603
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 深海水母
     class: 15
     subclass: 5
+    displayid: 100603
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

@@ -1,7 +1,7 @@
 id: 395
 model_folder: spidercrab红蜘蛛坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -30,6 +30,7 @@ dbc:
   spell:
     id: 80391
     visual_id: 9140391
+    icon_id: 29474
     name: 绯红始源蟹蛛
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -37,7 +38,7 @@ dbc:
     id: 91391
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 110474
     inventory_type: 0
     sheath: 0
 db:
@@ -77,6 +78,7 @@ db:
     name: 绯红始源蟹蛛
     class: 15
     subclass: 5
+    displayid: 110474
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

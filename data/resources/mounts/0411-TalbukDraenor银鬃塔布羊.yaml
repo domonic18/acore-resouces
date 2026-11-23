@@ -1,7 +1,7 @@
 id: 411
 model_folder: TalbukDraenor银鬃塔布羊
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.0，纳格兰）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80407
     visual_id: 9140407
+    icon_id: 32268
     name: 苍白食棘者
     description: 召唤或解散你的苍白食棘者。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 116776
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 113268
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 苍白食棘者
     class: 15
     subclass: 5
+    displayid: 113268
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

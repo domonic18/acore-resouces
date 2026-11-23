@@ -1,7 +1,7 @@
 id: 397
 model_folder: steamtank公羊战车
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -26,6 +26,7 @@ dbc:
   spell:
     id: 80393
     visual_id: 9140393
+    icon_id: 1177
     name: 黑铁公羊战车
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -33,7 +34,7 @@ dbc:
     id: 91393
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 17343
     inventory_type: 0
     sheath: 0
 db:
@@ -73,6 +74,7 @@ db:
     name: 黑铁公羊战车
     class: 15
     subclass: 5
+    displayid: 17343
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

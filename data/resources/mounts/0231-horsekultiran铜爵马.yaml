@@ -1,7 +1,7 @@
 id: 231
 model_folder: horsekultiran铜爵马
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.x）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80227
     visual_id: 9140227
+    icon_id: 21790
     name: 库尔提拉斯军马
     description: 召唤或解散你的库尔提拉斯军马。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 164762
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102790
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 库尔提拉斯军马
     class: 15
     subclass: 5
+    displayid: 102790
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

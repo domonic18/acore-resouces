@@ -1,7 +1,7 @@
 id: 296
 model_folder: nzothserpent大毒蛇坐骑
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：待查
@@ -28,6 +28,7 @@ dbc:
   spell:
     id: 80292
     visual_id: 9140292
+    icon_id: 14116
     name: 恩佐斯魔蛇
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -35,7 +36,7 @@ dbc:
     id: 91292
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 95116
     inventory_type: 0
     sheath: 0
 db:
@@ -75,6 +76,7 @@ db:
     name: 恩佐斯魔蛇
     class: 15
     subclass: 5
+    displayid: 95116
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

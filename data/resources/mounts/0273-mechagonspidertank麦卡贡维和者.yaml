@@ -1,7 +1,7 @@
 id: 273
 model_folder: mechagonspidertank麦卡贡维和者
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.2，麦卡贡）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80269
     visual_id: 9140269
+    icon_id: 24509
     name: 生锈的机械爬蛛
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 168823
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 105509
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 生锈的机械爬蛛
     class: 15
     subclass: 5
+    displayid: 105509
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

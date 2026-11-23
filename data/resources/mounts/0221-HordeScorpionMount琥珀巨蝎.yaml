@@ -1,7 +1,7 @@
 id: 221
 model_folder: HordeScorpionMount琥珀巨蝎
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.x）
@@ -32,6 +32,7 @@ dbc:
   spell:
     id: 80217
     visual_id: 9140217
+    icon_id: 27402
     name: 库卡隆横扫者
     description: 召唤或解散库卡隆横扫者。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 67107
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108402
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 库卡隆横扫者
     class: 15
     subclass: 5
+    displayid: 108402
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

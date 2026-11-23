@@ -1,7 +1,7 @@
 id: 294
 model_folder: nzothserpentmount恩佐斯的黑蟒
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：争霸艾泽拉斯（8.3）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80290
     visual_id: 9140290
+    icon_id: 27499
     name: 恩佐斯的黑蟒
     description: 召唤或解散这种坐骑。
     speed: 100
@@ -39,7 +40,7 @@ dbc:
     id: 174654
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108499
     inventory_type: 0
     sheath: 0
 db:
@@ -79,6 +80,7 @@ db:
     name: 恩佐斯的黑蟒
     class: 15
     subclass: 5
+    displayid: 108499
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

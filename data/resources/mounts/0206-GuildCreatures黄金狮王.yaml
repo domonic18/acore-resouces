@@ -1,7 +1,7 @@
 id: 206
 model_folder: GuildCreatures黄金狮王
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.1，公会商人）
@@ -33,6 +33,7 @@ dbc:
   spell:
     id: 80201
     visual_id: 9140201
+    icon_id: 27395
     name: 黄金狮王
     description: 召唤或解散一个可供骑乘的黄金狮王。
     speed: 100
@@ -40,7 +41,7 @@ dbc:
     id: 62298
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 108395
     inventory_type: 0
     sheath: 0
 db:
@@ -80,6 +81,7 @@ db:
     name: 黄金狮王
     class: 15
     subclass: 5
+    displayid: 108395
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

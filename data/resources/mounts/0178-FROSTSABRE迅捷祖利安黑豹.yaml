@@ -1,7 +1,7 @@
 id: 178
 model_folder: FROSTSABRE迅捷祖利安黑豹
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：大地的裂变（4.1，祖尔格拉布）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80173
     visual_id: 9140173
+    icon_id: 836
     name: 迅捷祖利安黑豹
     description: 召唤或解散一头迅捷祖利安黑豹。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 68824
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 17606
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 迅捷祖利安黑豹
     class: 15
     subclass: 5
+    displayid: 17606
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1

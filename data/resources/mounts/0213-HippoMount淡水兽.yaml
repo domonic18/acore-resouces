@@ -1,7 +1,7 @@
 id: 213
 model_folder: HippoMount淡水兽
 debug_passed: false
-added: false
+added: true
 notes: |-
   ## 官方信息
   - **版本**：德拉诺之王（6.x）
@@ -31,6 +31,7 @@ dbc:
   spell:
     id: 80209
     visual_id: 9140209
+    icon_id: 21661
     name: 泥背淡水兽
     description: 召唤或解散你的泥背淡水兽。
     speed: 100
@@ -38,7 +39,7 @@ dbc:
     id: 116769
     class: 15
     subclass: 5
-    display_id: 0
+    display_id: 102661
     inventory_type: 0
     sheath: 0
 db:
@@ -78,6 +79,7 @@ db:
     name: 泥背淡水兽
     class: 15
     subclass: 5
+    displayid: 102661
     spellid_1: 55884
     spelltrigger_1: 0
     spellcharges_1: -1
