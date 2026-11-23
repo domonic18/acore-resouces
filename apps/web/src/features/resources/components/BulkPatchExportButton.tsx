@@ -1,5 +1,6 @@
 import { PackagePlus } from "lucide-react";
 import { CreatePatchJobsDialog } from "@/features/resources/components/patch-export/CreatePatchJobsDialog";
+import { useCanWrite } from "@/features/auth/useAuth";
 import { useState } from "react";
 import type { Resource } from "@/shared/types";
 
@@ -19,15 +20,17 @@ export function BulkPatchExportButton({
   disabled: disabledProp,
 }: BulkPatchExportButtonProps) {
   const [open, setOpen] = useState(false);
+  const canWrite = useCanWrite();
+  const disabled = !canWrite || resources.length === 0 || disabledProp;
 
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        disabled={resources.length === 0 || disabledProp}
+        disabled={disabled}
         className="btn btn-primary whitespace-nowrap"
-        title="为选中的坐骑创建补丁任务（生产流程第 6 步）"
+        title={canWrite ? "为选中的坐骑创建补丁任务（生产流程第 6 步）" : "仅管理员可创建补丁任务"}
       >
         <PackagePlus className="h-4 w-4" />
         创建补丁任务

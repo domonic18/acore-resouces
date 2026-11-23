@@ -7,11 +7,13 @@ import { ValidationReportDialog } from "@/features/resources/components/patch-ex
 import { PatchBatchesTable } from "@/features/resources/components/patch-export/PatchBatchesTable";
 import { CleanDialog } from "@/features/resources/components/patch-export/CleanDialog";
 import { useBuildStatus } from "@/features/resources/hooks/usePatchBuild";
+import { useCanWrite } from "@/features/auth/useAuth";
 import { WIZARD_FLOW_STEP_IDS } from "@/features/resources/lib/patch-flow";
 
 export function ExportPage() {
   const [auditJobId, setAuditJobId] = useState<string | null>(null);
   const [cleanOpen, setCleanOpen] = useState(false);
+  const canWrite = useCanWrite();
   // 当前所处流程步骤与完成态由页面持有——流程上下文条与向导共用同一份状态
   const [flowStepId, setFlowStepId] = useState<string>(
     WIZARD_FLOW_STEP_IDS[0],
@@ -75,6 +77,8 @@ export function ExportPage() {
           <button
             type="button"
             className="btn btn-sm"
+            disabled={!canWrite}
+            title={canWrite ? "清理补丁工作区" : "仅管理员可清理工作区"}
             onClick={() => setCleanOpen(true)}
           >
             <Trash2 className="h-3.5 w-3.5" /> 清理工作区

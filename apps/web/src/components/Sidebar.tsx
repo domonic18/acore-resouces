@@ -1,4 +1,5 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Boxes,
@@ -7,10 +8,16 @@ import {
   Database,
   Package,
   Settings,
+  Users,
+  KeyRound,
+  LogOut,
+  HardDriveDownload,
 } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { LogoIcon } from "@/shared/components/ui/LogoIcon";
 import { SHORT_VERSION } from "@/shared/config/version";
+import { useAuth, resourcePermsOf } from "@/features/auth/useAuth";
+import { ChangePasswordDialog } from "@/features/auth/ChangePasswordDialog";
 
 interface NavItem {
   label: string;
@@ -18,11 +25,44 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
+const RESOURCE_TYPE_LABEL: Record<string, string> = {
+  mount: "坐骑",
+  pet: "宠物",
+  npc: "NPC",
+};
+
+function buildPlayerNav(hasPerm: (code: string) => boolean, perms: string[]): NavItem[] {
+  const items: NavItem[] = [];
+  if (hasPerm("dist")) {
+    items.push({
+      label: "补丁下载",
+      path: "/dist",
+      icon: <HardDriveDownload className="h-[18px] w-[18px]" />,
+    });
+  }
+  if (perms.length > 0) {
+    items.push({
+      label:
+        perms.length === 1
+          ? `${RESOURCE_TYPE_LABEL[perms[0]] ?? ""}资源`
+          : "资源表格",
+      path: "/resources",
+      icon: <Boxes className="h-[18px] w-[18px]" />,
+    });
+  }
+  return items;
+}
+
 const mainNav: NavItem[] = [
   {
     label: "仪表盘",
     path: "/",
     icon: <LayoutDashboard className="h-[18px] w-[18px]" />,
+  },
+  {
+    label: "补丁下载",
+    path: "/dist",
+    icon: <HardDriveDownload className="h-[18px] w-[18px]" />,
   },
   {
     label: "资源表格",
@@ -57,6 +97,11 @@ const systemNav: NavItem[] = [
     path: "/settings",
     icon: <Settings className="h-[18px] w-[18px]" />,
   },
+  {
+    label: "账号权限",
+    path: "/accounts",
+    icon: <Users className="h-[18px] w-[18px]" />,
+  },
 ];
 
 function isActive(path: string, pathname: string): boolean {
@@ -73,6 +118,18 @@ function isActive(path: string, pathname: string): boolean {
 
 export function Sidebar() {
   const { pathname } = useLocation();
+  const { user, isAdmin, hasPerm, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [passwordOpen, setPasswordOpen] = useState(false);
+
+  function handleSignOut() {
+    signOut();
+    navigate("/login", { replace: true });
+  }
+
+  const roleLabel = isAdmin ? "管理员" : "普通账号";
+  const initial = (user?.username ?? "?").slice(0, 1).toUpperCase();
+  const playerNav = buildPlayerNav(hasPerm, resourcePermsOf(user));
 
   return (
     <aside className="fixed inset-y-0 left-0 z-50 flex w-60 flex-col border-r border-border bg-bg-elevated">
@@ -96,56 +153,100 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">
-        <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
-          主菜单
-        </div>
-        {mainNav.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={cn(
-              "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
-              isActive(item.path, pathname)
-                ? "bg-accent-soft text-accent"
-                : "hover:bg-bg-hover hover:text-text-primary",
-            )}
-          >
-            {item.icon}
-            {item.label}
-          </NavLink>
-        ))}
+        {!isAdmin && (
+          <>
+            <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+              补丁
+            </div>
+            {playerNav.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
+                  isActive(item.path, pathname)
+                    ? "bg-accent-soft text-accent"
+                    : "hover:bg-bg-hover hover:text-text-primary",
+                )}
+              >
+                {item.icon}
+                {item.label}
+              </NavLink>
+            ))}
+          </>
+        )}
+        {isAdmin && (
+          <>
+            <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+              主菜单
+            </div>
+            {mainNav.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
+                  isActive(item.path, pathname)
+                    ? "bg-accent-soft text-accent"
+                    : "hover:bg-bg-hover hover:text-text-primary",
+                )}
+              >
+                {item.icon}
+                {item.label}
+              </NavLink>
+            ))}
 
-        <div className="mt-4 px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
-          系统
-        </div>
-        {systemNav.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={cn(
-              "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
-              isActive(item.path, pathname)
-                ? "bg-accent-soft text-accent"
-                : "hover:bg-bg-hover hover:text-text-primary",
-            )}
-          >
-            {item.icon}
-            {item.label}
-          </NavLink>
-        ))}
+            <div className="mt-4 px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+              系统
+            </div>
+            {systemNav.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
+                  isActive(item.path, pathname)
+                    ? "bg-accent-soft text-accent"
+                    : "hover:bg-bg-hover hover:text-text-primary",
+                )}
+              >
+                {item.icon}
+                {item.label}
+              </NavLink>
+            ))}
+          </>
+        )}
       </nav>
 
       <div className="border-t border-border p-3">
         <div className="flex items-center gap-2.5 rounded-md border border-border bg-bg-surface p-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-red-500 text-xs font-semibold text-white">
-            GM
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-red-500 text-xs font-semibold text-white">
+            {initial}
           </div>
-          <div className="min-w-0">
-            <div className="truncate text-xs font-semibold">Game Master</div>
-            <div className="text-[11px] text-text-tertiary">资源管理员</div>
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-xs font-semibold">{user?.username ?? "未登录"}</div>
+            <div className="text-[11px] text-text-tertiary">{roleLabel}</div>
           </div>
+          <button
+            type="button"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-text-tertiary transition-colors hover:bg-bg-hover hover:text-text-primary"
+            title="修改密码"
+            onClick={() => setPasswordOpen(true)}
+          >
+            <KeyRound className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-text-tertiary transition-colors hover:bg-bg-hover hover:text-text-primary"
+            title="退出登录"
+            onClick={handleSignOut}
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
+
+      <ChangePasswordDialog open={passwordOpen} onClose={() => setPasswordOpen(false)} />
     </aside>
   );
 }

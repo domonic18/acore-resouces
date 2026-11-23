@@ -1,6 +1,11 @@
 import { useState, useMemo } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link, useLocation, Navigate } from "react-router-dom";
 import { ArrowLeft, Save } from "lucide-react";
+import {
+  useCanWrite,
+  useAuth,
+  resourcePermsOf,
+} from "@/features/auth/useAuth";
 import { useResourceDetail } from "@/features/resources/hooks/useResourceDetail";
 import { useResourceAssets } from "@/features/resources/hooks/useResourceAssets";
 import { useResourceIcons } from "@/features/resources/hooks/useResourceIcons";
@@ -25,7 +30,7 @@ import { useResourceFlow } from "@/features/resources/hooks/usePatchFlow";
 import { IconPickerDialog } from "@/features/resources/components/resource-detail/IconPickerDialog";
 import { DisplayInfoPickerDialog } from "@/features/resources/components/resource-detail/DisplayInfoPickerDialog";
 import { PatchExportButton } from "@/features/resources/components/PatchExportButton";
-import { uniqueFiles } from "@/shared/utils";
+import { cn, uniqueFiles } from "@/shared/utils";
 import type { AssetFile } from "@/shared/types";
 
 const DETAIL_NAV_ITEMS = [
@@ -49,11 +54,16 @@ function scrollToSection(id: string) {
 }
 
 export function ResourceDetailPage() {
+  const canWrite = useCanWrite();
+  const { user, isAdmin } = useAuth();
   const { resourceType = "mount", id } = useParams<{
     resourceType: string;
     id: string;
   }>();
   const resourceId = parseInt(id || "0", 10);
+  // viewer 仅能打开已授权类型的详情；越权访问回列表页
+  const typeAllowed =
+    isAdmin || resourcePermsOf(user).includes(resourceType);
   const location = useLocation();
   const listLocation = location.state?.from as
     { pathname: string; search: string } | undefined;
@@ -73,17 +83,17 @@ export function ResourceDetailPage() {
     data: resource,
     isLoading,
     error,
-  } = useResourceDetail(resourceType, resourceId);
+  } = useResourceDetail(resourceType, resourceId, typeAllowed);
 
   const { data: assets } = useResourceAssets(
     resourceType,
     resourceId,
-    !!resource,
+    typeAllowed && !!resource,
   );
 
   const flowQuery = useResourceFlow(
     resourceType,
-    resource?.resource_type === "mount" ? resourceId : null,
+    typeAllowed && resource?.resource_type === "mount" ? resourceId : null,
   );
 
   const {
@@ -92,7 +102,7 @@ export function ResourceDetailPage() {
     isError: iconsError,
     error: iconsErrorObj,
     refetch: refetchIcons,
-  } = useResourceIcons(!!resource);
+  } = useResourceIcons(typeAllowed && !!resource);
 
   const formState = useResourceForm(resource);
   const { updateMutation, handleSave } = useResourceUpdate(
@@ -202,6 +212,10 @@ export function ResourceDetailPage() {
       : null;
   }, [formState.itemDbc, resource]);
 
+  if (!typeAllowed) {
+    return <Navigate to="/resources" replace />;
+  }
+
   if (isLoading) {
     return (
       <div className="content">
@@ -250,20 +264,24 @@ export function ResourceDetailPage() {
           <h1 className="page-title">编辑资源</h1>
         </div>
         <div className="topbar-actions">
-          {isMount && (
+          {isMount && canWrite && (
             <PatchExportButton resource={resource} />
           )}
-          <button className="btn btn-danger" disabled title="删除功能开发中">
-            删除
-          </button>
-          <button
-            className="btn btn-success"
-            disabled={!formState.hasChanges || updateMutation.isPending}
-            onClick={() => handleSave(resource, formState)}
-          >
-            <Save className="h-4 w-4" />
-            {updateMutation.isPending ? "保存中..." : "保存"}
-          </button>
+          {canWrite && (
+            <>
+              <button className="btn btn-danger" disabled title="删除功能开发中">
+                删除
+              </button>
+              <button
+                className="btn btn-success"
+                disabled={!formState.hasChanges || updateMutation.isPending}
+                onClick={() => handleSave(resource, formState)}
+              >
+                <Save className="h-4 w-4" />
+                {updateMutation.isPending ? "保存中..." : "保存"}
+              </button>
+            </>
+          )}
         </div>
       </header>
 
@@ -275,6 +293,7 @@ export function ResourceDetailPage() {
         </div>
       )}
 
+      {/* viewer 整体只读：fieldset[disabled] 一次禁掉全部输入/按钮/选择器入口（导航栏在外的区域不受影响） */}
       <div className="detail-layout">
         <nav className="detail-nav">
           <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-text-tertiary">
@@ -294,7 +313,10 @@ export function ResourceDetailPage() {
           </div>
         </nav>
 
-        <div className="detail-main space-y-4">
+        <fieldset
+          disabled={!canWrite}
+          className={cn("detail-main space-y-4", !canWrite && "viewer-readonly")}
+        >
           {isMount && flowQuery.data && (
             <div className="card">
               <div className="card-body">
@@ -303,7 +325,7 @@ export function ResourceDetailPage() {
             </div>
           )}
 
-          {isMount && (
+          {isMount && canWrite && (
             <div className="card">
               <div className="card-header">
                 <div className="card-title">补丁预检</div>
@@ -444,7 +466,7 @@ export function ResourceDetailPage() {
               compact
             />
           </div>
-        </div>
+        </fieldset>
 
         <ResourceDetailSidebar
           resourceType={resourceType}

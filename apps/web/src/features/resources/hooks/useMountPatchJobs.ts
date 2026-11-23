@@ -9,8 +9,9 @@ const PAGE_SIZE = 100;
  *
  * 资源列表页用它显示每只坐骑在补丁流水线上的位置——
  * 让入口页本身成为流程状态总览，而不是只显示「调试通过 / 已添加」。
+ * enabled=false 时（无权限查看补丁任务）不发请求，避免 403 噪音。
  */
-export function useMountPatchJobs() {
+export function useMountPatchJobs(enabled = true) {
   return useQuery({
     queryKey: ["mount-patch-jobs"],
     queryFn: async () => {
@@ -24,6 +25,7 @@ export function useMountPatchJobs() {
       return [first, ...rest].flatMap((page) => page.items);
     },
     staleTime: 10_000,
+    enabled,
   });
 }
 
