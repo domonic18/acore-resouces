@@ -130,9 +130,7 @@ def load_validation_report_by_job(job_id: str) -> ValidationReportOut:
                 sliced["batch_size"] = len(sliced.get("jobs") or [])
                 return _to_report(sliced, batch=report_path.parent.name, path=report_path)
         # 登记的路径失效（报告被清理等），继续走批次回退
-        raise FileNotFoundError(
-            f"任务 {job_id} 登记的校验报告已不存在：{report_rel}"
-        )
+        raise FileNotFoundError(f"任务 {job_id} 登记的校验报告已不存在：{report_rel}")
 
     batch = find_batch_for_job(job_id)
     if batch is None:
@@ -141,9 +139,7 @@ def load_validation_report_by_job(job_id: str) -> ValidationReportOut:
         )
 
     batch_report = load_validation_report_by_batch(batch)
-    job_entry = next(
-        (job for job in batch_report.jobs if job.job_id == job_id), None
-    )
+    job_entry = next((job for job in batch_report.jobs if job.job_id == job_id), None)
     if job_entry is None:
         raise FileNotFoundError(f"批次 {batch} 的校验报告中无任务 {job_id}")
     return ValidationReportOut(

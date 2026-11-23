@@ -182,7 +182,8 @@ def icon_id(
                     "icon_name": name,
                     "exact_ids": exact,
                     "candidates": [
-                        {"id": record_id, "name": normalized} for record_id, normalized in candidates
+                        {"id": record_id, "name": normalized}
+                        for record_id, normalized in candidates
                     ],
                 },
                 ensure_ascii=False,

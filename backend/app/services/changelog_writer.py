@@ -105,7 +105,9 @@ def build_context(
 
 def _mount_line(mount: dict[str, Any]) -> str:
     parts: list[str] = [f"**{mount['name']}**"]
-    tags = [t for t in (mount.get("mount_type"), mount.get("subtype"), mount.get("star_rating")) if t]
+    tags = [
+        t for t in (mount.get("mount_type"), mount.get("subtype"), mount.get("star_rating")) if t
+    ]
     if tags:
         parts.append(f"（{'·'.join(tags)}）")
     acq = mount.get("acquisition")
@@ -201,9 +203,7 @@ def write_changelog(mpq_dir: Path, ctx: dict[str, Any]) -> str:
                 source = "ai"
         except Exception as exc:  # noqa: BLE001 - AI 失败必须回退模板，不能阻塞构建
             logger.warning("changelog AI 生成失败，回退模板：%s", exc)
-            content = (
-                f"> ⚠️ AI 生成失败，已回退模板：{exc}\n\n" + render_template(ctx)
-            )
+            content = f"> ⚠️ AI 生成失败，已回退模板：{exc}\n\n" + render_template(ctx)
     target = Path(mpq_dir) / "changelog.md"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(content, encoding="utf-8")

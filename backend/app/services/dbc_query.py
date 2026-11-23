@@ -234,6 +234,38 @@ def lookup_spell_icon_ids(icon_name: str) -> list[int]:
     return _load_spell_icon_index().get(keyword, [])
 
 
+def load_spell_icon_names() -> dict[int, str]:
+    """加载 SpellIcon.dbc 为 {记录 ID: 归一化图标名} 索引。
+
+    Returns:
+        记录 ID → 图标名（去路径前缀、小写）的字典。
+
+    Raises:
+        FileNotFoundError: DBC 文件缺失。
+    """
+    dbc = DBCFile(SPELL_ICON_PATH, _SPELL_ICON_FIELDS).load()
+    names: dict[int, str] = {}
+    for record in dbc.all():
+        record_id = record.get("ID")
+        name = record.get("Name")
+        if record_id is None or not name:
+            continue
+        names[int(record_id)] = _normalize_icon_name(str(name))
+    return names
+
+
+def load_item_display_icons() -> dict[int, str]:
+    """加载 ItemDisplayInfo.dbc 为 {记录 ID: 图标名} 索引。
+
+    Returns:
+        记录 ID → InventoryIcon 图标名（保留原始大小写）；图标为空的记录不收录。
+
+    Raises:
+        FileNotFoundError: DBC 文件缺失。
+    """
+    return {record_id: icon for record_id, icon in _load_index().items() if icon}
+
+
 def search_spell_icon_candidates(icon_name: str, *, limit: int = 10) -> list[tuple[int, str]]:
     """按图标名子串模糊搜索 SpellIcon.dbc 候选记录（精确命中置顶）。
 

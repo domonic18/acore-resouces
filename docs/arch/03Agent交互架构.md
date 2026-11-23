@@ -99,11 +99,14 @@ uv run --project backend python -m app.cli <group> <command> [options]
 | | `build` | 批量构建 DBC/SQL/MPQ（`--all-requested` 或 `--jobs`，支持 `--dry-run`、`--force`） |
 | | `publish` | 发布 MPQ 到 `workspace/dist/`（`--start-number`、`--dry-run`） |
 | | `list` / `get` / `update` | 补丁任务查询与状态更新 |
-| | `audit` | 输出批次审计报告（DBC before→after / SQL 字段 / MPQ 清单，见 [07 §十二](07DBC维护与同步方案.md)） |
+| | `audit` | 输出批次审计报告（DBC before→after / SQL 字段 / MPQ 清单，见 [05 §十二](05DBC维护与同步方案.md)） |
 | | `delete` | 删除补丁任务记录（默认二次确认，不影响真相源与审计报告） |
-| | `clean` | 清理中间产物（`--dry-run` 预览路径与体积，见 [07 §十三](07DBC维护与同步方案.md)） |
-| `dbc` | `files` / `query` / `get` / `icon-id` | DBC 文件与记录查看、SpellIcon 反查（只读，见 [07 §十五](07DBC维护与同步方案.md)） |
-| | `query` / `get` | DBC 记录查看与搜索（只读，含来源资源标注，见 [07 §十五](07DBC维护与同步方案.md)） |
+| | `clean` | 清理中间产物（`--dry-run` 预览路径与体积，见 [05 §十三](05DBC维护与同步方案.md)） |
+| | `db-apply` | 把坐骑 SQL 导入测试服 `acore_world`（默认 dry-run 预览，`--execute` 才写入） |
+| `dbc` | `files` / `query` / `get` / `icon-id` | DBC 文件与记录查看、SpellIcon 反查（只读，见 [05 §十五](05DBC维护与同步方案.md)） |
+| | `query` / `get` | DBC 记录查看与搜索（只读，含来源资源标注，见 [05 §十五](05DBC维护与同步方案.md)） |
+| `verify` | `mounts` | 坐骑资源闭包静态审计（DBC / 模型 / 贴图），发现白模与不出现的隐患 |
+| | `db` | 校验坐骑数据行是否已落地到测试服数据库 |
 
 > 命令的具体选项可能随版本演进，使用 `--help` 查看最新参数：例如 `uv run --project backend python -m app.cli patch build --help`。
 
@@ -201,7 +204,7 @@ workspace/patch-jobs/{job_id}/
 > - `job_id` 当前实现为 `{resource_type}_{id:04d}`（如 `mount_0003`），不再带时间戳，便于幂等重跑。
 > - 资源定义的唯一真相源是 `data/resources/mounts/*.yaml`：`patch export` 不再生成 `input/` 快照，`patch build` 按 `job.json` 中的 `resource_id` 现场读取最新 YAML。
 > - 构建产物不在任务目录内：DBC 直接编辑 `data/wow-dbc/src/dbc/`，SQL 写入 `data/sql/azerothcore-updates/mounts/`（每坐骑独立目录），MPQ 写入 `workspace/mpq/{batch}/`。
-> - 正式 build 会在服务层生成批次级审计报告 `workspace/reports/{timestamp}/audit-report.json`（DBC before→after、SQL 字段、MPQ 清单，入口无关），并在 `job.json` 的 `artifacts` 中登记 `audit` 路径；审计报告不随任务删除而清理（见 [07 §十二](07DBC维护与同步方案.md)）。
+> - 正式 build 会在服务层生成批次级审计报告 `workspace/reports/{timestamp}/audit-report.json`（DBC before→after、SQL 字段、MPQ 清单，入口无关），并在 `job.json` 的 `artifacts` 中登记 `audit` 路径；审计报告不随任务删除而清理（见 [05 §十二](05DBC维护与同步方案.md)）。
 
 ---
 
@@ -310,7 +313,7 @@ CLI patch publish --start-number {next}
 
 Agent **不得**直接执行以下操作：
 
-- 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`：**资源管理记录**（资源 YAML `dbc.*` 引用的条目）必须由 `patch build` 通过 `wow-dbc-tool` 写入；系统内 DBC 查看器为只读（[07 §十五](07DBC维护与同步方案.md)），不提供写入口，Agent 优先走资源编辑 + 补丁流程。
+- 直接覆盖 `data/wow-dbc/src/dbc/*.dbc`：**资源管理记录**（资源 YAML `dbc.*` 引用的条目）必须由 `patch build` 通过 `wow-dbc-tool` 写入；系统内 DBC 查看器为只读（[05 §十五](05DBC维护与同步方案.md)），不提供写入口，Agent 优先走资源编辑 + 补丁流程。
 - 直接连接 `acore-world` 数据库执行写入（必须通过 `acore-update-db.sh` 或追加到 `data/sql/azerothcore-updates/`）。
 - 直接删除原始图片资源目录。
 - 直接修改 `registry.json`（必须由系统同步生成）。
@@ -328,6 +331,8 @@ Agent **不得**直接执行以下操作：
 | 清理中间产物 | CLI `patch clean --dry-run` 预览后执行 |
 | 删除任务记录 | CLI `patch delete` 或 Web 任务列表操作列 |
 | 应用到 acore-deploy | 人工执行 `acore-update-dbc.sh` / `acore-update-db.sh` |
+| 导入坐骑 SQL 到测试服 | CLI `patch db-apply --execute`（内部仍走 `acore-update-db.sh`） |
+| 提交前排查白模 / 坐骑不出现 | CLI `verify mounts`（资源闭包） + `verify db`（数据落地） |
 
 ### 5.3 大文件处理
 

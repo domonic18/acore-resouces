@@ -202,7 +202,11 @@ def delete_archive(rel: str) -> dict[str, Any]:
     mpq = _resolve_archive(rel)
     batch_dir = mpq.parent
     source = next(
-        (key for key, root in ARCHIVE_ROOTS.items() if root.resolve() == batch_dir.parent.resolve()),
+        (
+            key
+            for key, root in ARCHIVE_ROOTS.items()
+            if root.resolve() == batch_dir.parent.resolve()
+        ),
         None,
     )
     if source is None:

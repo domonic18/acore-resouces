@@ -67,12 +67,10 @@ def _ensure_table(db: Session) -> None:
         return
     columns = {col["name"] for col in inspector.get_columns("ai_config")}
     migrations = {
-        "protocol": "ALTER TABLE ai_config ADD COLUMN protocol "
-        "VARCHAR NOT NULL DEFAULT 'openai'",
+        "protocol": "ALTER TABLE ai_config ADD COLUMN protocol VARCHAR NOT NULL DEFAULT 'openai'",
         "timeout_seconds": "ALTER TABLE ai_config ADD COLUMN timeout_seconds "
         "INTEGER NOT NULL DEFAULT 180",
-        "max_tokens": "ALTER TABLE ai_config ADD COLUMN max_tokens "
-        "INTEGER NOT NULL DEFAULT 4000",
+        "max_tokens": "ALTER TABLE ai_config ADD COLUMN max_tokens INTEGER NOT NULL DEFAULT 4000",
     }
     for column, ddl in migrations.items():
         if column not in columns:
@@ -160,8 +158,12 @@ def chat_completions(
         httpx.HTTPError: 网络层失败（超时/连接错误）。
     """
     if cfg.protocol == "anthropic":
-        return _chat_anthropic(cfg, messages, timeout=timeout, max_tokens=max_tokens, temperature=temperature)
-    return _chat_openai(cfg, messages, timeout=timeout, max_tokens=max_tokens, temperature=temperature)
+        return _chat_anthropic(
+            cfg, messages, timeout=timeout, max_tokens=max_tokens, temperature=temperature
+        )
+    return _chat_openai(
+        cfg, messages, timeout=timeout, max_tokens=max_tokens, temperature=temperature
+    )
 
 
 def _chat_openai(
@@ -216,9 +218,7 @@ def _chat_anthropic(
     if cfg.api_key:
         headers["x-api-key"] = cfg.api_key
         headers["Authorization"] = f"Bearer {cfg.api_key}"
-    resp = httpx.post(
-        f"{cfg.base_url}/v1/messages", json=payload, headers=headers, timeout=timeout
-    )
+    resp = httpx.post(f"{cfg.base_url}/v1/messages", json=payload, headers=headers, timeout=timeout)
     if resp.status_code != 200:
         raise AiConfigError(f"HTTP {resp.status_code}: {resp.text[:200]}")
     data = resp.json()

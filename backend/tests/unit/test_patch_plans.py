@@ -1492,7 +1492,9 @@ def test_validate_job_vehicle_custom_missing_dbc_record_fails(
 ) -> None:
     """自建载具记录尚未写入 DBC 时 vehicle_dbc_record_matches_plan 失败。"""
     sample_mount.special_features = ["双人骑乘"]
-    _make_vehicle_mount(sample_mount, vehicle_id=90000, seat_ids=[2764])
+    # 用一个本地 DBC 里不存在的号段——90000 可能已被历史构建写进源 DBC，
+    # 用它会让「记录缺失」这个前提失效。
+    _make_vehicle_mount(sample_mount, vehicle_id=90099, seat_ids=[2764])
 
     job_dir = tmp_path / "patch-jobs" / "mount_0003"
     ctx = _make_job_context(job_dir, sample_mount, monkeypatch)

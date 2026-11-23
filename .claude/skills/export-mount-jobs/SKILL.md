@@ -2,9 +2,9 @@
 name: export-mount-jobs
 description: >
   根据用户指定的条件从 acore-resouces 资源库中筛选坐骑，
-  为指定数量坐骑创建补丁任务（仅写 job.json 元数据），
-  并可选择直接构建/发布为 patch-zhCN-5.mpq。
-  支持按星级、调试状态、已发布状态、坐骑类型等条件组合筛选。
+  为指定数量坐骑创建补丁任务（仅写 job.json 元数据）。
+  支持按星级、调试状态、已添加状态、坐骑类型等条件组合筛选；
+  构建与发布衔接 /build-mount-patch 与 /publish-patch。
 argument-hint: [--star <星级>] [--debug <true|false>] [--added <true|false>] [--type <坐骑类型>] [--count N]
 allowed-tools: [Read, Bash]
 model: sonnet
@@ -13,7 +13,7 @@ model: sonnet
 # /export-mount-jobs
 
 按条件筛选坐骑资源，为前 N 个满足条件的坐骑创建补丁任务。
-条件可组合使用，未指定条件时不应执行导出，需向用户确认。
+条件可组合使用，**未指定任何条件时不得执行导出**，需向用户确认。
 
 ## 输入格式
 
@@ -23,7 +23,7 @@ model: sonnet
 - `--debug <true|false>`：调试通过状态。`false` 表示待调试。
 - `--added <true|false>`：是否已标记为 added。
 - `--type <坐骑类型>`：如 `陆地坐骑`、`飞行坐骑`、`水上坐骑`。
-- `--count N`：导出数量，默认 5。
+- `--count N`：导出数量，**默认 5**。
 
 示例：
 
@@ -35,86 +35,66 @@ model: sonnet
 
 ## 执行流程
 
-### 1. 解析条件并查询匹配坐骑
+### 1. 筛选并创建任务（单段完整脚本，筛选与导出同源）
 
-在 `backend` 目录下运行 Python，读取所有坐骑资源并按条件过滤：
-
-```bash
-cd backend
-uv run python -c "
-from app.services.resource_store import list_resources
-
-mounts = [m for m in list_resources('mount')]
-# 根据用户提供的条件逐项过滤
-# --star
-# mounts = [m for m in mounts if m.star_rating == '四星']
-# --debug
-# mounts = [m for m in mounts if m.debug_passed is False]
-# --added
-# mounts = [m for m in mounts if m.added is True]
-# --type
-# mounts = [m for m in mounts if m.mount_type == '飞行坐骑']
-
-print(f'匹配坐骑总数: {len(mounts)}')
-for m in mounts[:5]:
-    print(f'{m.id:04d} {m.star_rating} added={m.added} debug={m.debug_passed} {m.official_db.name if m.official_db else m.model_folder}')
-"
-```
-
-如果匹配数量为 0，停止并告知用户。
-
-### 2. 创建补丁任务
-
-对筛选出的前 N 个坐骑逐个创建补丁任务（任务目录仅含 `job.json`，
-资源定义以 `data/resources/mounts/*.yaml` 真相源为准，构建时现场读取）：
+`patch export` CLI 目前只支持单资源 `--id`，条件筛选暂在 skill 层完成
+（未来筛选参数下沉 CLI 后应改回纯 CLI 调用）。以下脚本按用户给出的条件
+组装过滤器，**筛选与导出在同一段代码里**，避免两步逻辑漂移：
 
 ```bash
-cd backend
-uv run python -c "
+cd backend && uv run python -c "
 from app.services.resource_store import list_resources
 from app.services.patch_exporter import create_patch_job
 
-# 此处应使用与步骤 1 相同的过滤逻辑
-mounts = [...][:5]
-for m in mounts:
+# —— 按用户条件逐项组装（未在命令行给出的条件不要加）——
+STAR  = '四星'        # --star
+DEBUG = False         # --debug
+ADDED = None          # --added
+MTYPE = None          # --type
+COUNT = 5             # --count
+
+mounts = list_resources('mount')
+if STAR is not None:
+    mounts = [m for m in mounts if m.star_rating == STAR]
+if DEBUG is not None:
+    mounts = [m for m in mounts if m.debug_passed is DEBUG]
+if ADDED is not None:
+    mounts = [m for m in mounts if m.added is ADDED]
+if MTYPE is not None:
+    mounts = [m for m in mounts if m.mount_type == MTYPE]
+
+print(f'匹配坐骑总数: {len(mounts)}')
+for m in mounts[:COUNT]:
     create_patch_job('mount', m.id)
-    print(f'exported mount_{m.id:04d}')
+    print(f'exported mount_{m.id:04d} {m.star_rating} added={m.added} '
+          f'{m.official_db.name if m.official_db else m.model_folder}')
 "
 ```
 
-创建前会完全重置对应 `mount_{id:04d}` 目录。
+- 匹配数为 0：停止并告知用户，不创建任何任务。
+- 创建前会完全重置对应 `mount_{id:04d}` 任务目录，**旧产物会被删除**；
+  对已 `applied` 的任务重建需显式指定 job_ids（`patch build --jobs`）。
 
-### 3. （可选）构建并发布
+### 2. 后续构建与发布（衔接 skill）
 
-如果用户要求同步构建/发布，执行：
+任务就绪后按用户指令推进，不要默认连跑：
 
-```bash
-# 干跑校验
-cd backend
-uv run python -m app.cli patch build --all-requested --dry-run
-
-# 正式构建
-cd backend
-uv run python -m app.cli patch build --all-requested
-
-# 发布
-cd backend
-uv run python -m app.cli patch publish
-```
-
-构建时会自动跳过 `data/sql/azerothcore-updates/` 中已存在 `item_template` entry 的坐骑（详见 `/build-mount-patch` 的 SQL 去重说明）。
+- 构建 → `/build-mount-patch`（先 `--dry-run` 审查计划再正式构建；
+  改过已构建坐骑时记得 `--force`）。
+- 发布 → `/publish-patch`（必须显式指定 `--start-number`，见该 skill 的编号规则）。
+- 构建前建议先跑 `/verify-model` 层 A 审计，白模/贴图缺失问题在构建前挡住。
 
 ## 输出产物
 
-- `workspace/patch-jobs/mount_{id:04d}/`：补丁任务目录（固定目录，仅含 job.json）。
-- （可选）`workspace/mpq/{timestamp}/patch-mounts.mpq`：批次 MPQ。
-- （可选）`workspace/dist/{timestamp}/patch-zhCN-5.mpq`：客户端补丁。
-- （可选）`data/sql/azerothcore-updates/mounts/{id:04d}_{slug}/`：仅新增坐骑的 SQL。
-- （可选）`workspace/reports/{timestamp}/validation-report.json`：校验报告。
+- `workspace/patch-jobs/mount_{id:04d}/job.json`：补丁任务（固定目录，仅元数据；
+  资源定义构建时现场读取 `data/resources/mounts/*.yaml` 真相源）。
+- （衔接步骤产出，见对应 skill）：`workspace/mpq/{timestamp}/`、
+  `workspace/dist/{batch}/patch-zhCN-<N>.mpq`、SQL、校验报告。
 
 ## 注意事项
 
 - 未指定任何筛选条件时，不得执行导出，需请用户补充条件。
-- 导出会重置已有的 `mount_{id:04d}` 目录，旧产物会被删除。
-- 构建/发布是可选步骤，按用户指令决定是否执行。
-- 发布固定使用 `patch-zhCN-5.mpq`，分发目录中同名文件会被覆盖。
+- 导出会重置已有任务目录；`added=true` 的坐骑重复导出没有意义，建议组合
+  `--added false` 使用。
+- SQL 生成按 `item_template.entry` 去重：历史上已生成过 SQL 的坐骑会被构建
+  跳过，要刷新必须 `patch build --force`（详见 `/build-mount-patch`）。

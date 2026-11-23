@@ -17,16 +17,14 @@ class AiConfigUpdate(BaseModel):
         default="",
         description="端点根地址：OpenAI 兼容如 https://open.bigmodel.cn/api/paas/v4；Anthropic 如 https://api.moonshot.cn/anthropic",
     )
-    model: str = Field(default="", description="模型名，如 glm-5.3 / kimi-k3 / deepseek-chat / MiniMax-M3")
+    model: str = Field(
+        default="", description="模型名，如 glm-5.3 / kimi-k3 / deepseek-chat / MiniMax-M3"
+    )
     protocol: AiProtocol = Field(default="openai", description="请求协议：openai 或 anthropic")
     api_key: str | None = Field(default=None, description="留空/省略表示保持不变")
     clear_api_key: bool = Field(default=False, description="清除已保存的密钥")
-    timeout_seconds: int = Field(
-        default=180, ge=10, le=600, description="LLM 请求超时（秒）"
-    )
-    max_tokens: int = Field(
-        default=4000, ge=256, le=32000, description="LLM 单次回复最大 tokens"
-    )
+    timeout_seconds: int = Field(default=180, ge=10, le=600, description="LLM 请求超时（秒）")
+    max_tokens: int = Field(default=4000, ge=256, le=32000, description="LLM 单次回复最大 tokens")
     enabled: bool = Field(default=False, description="是否在构建时启用 AI 生成 changelog")
 
 

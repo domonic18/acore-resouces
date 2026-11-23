@@ -192,3 +192,42 @@ def test_create_patch_job_creates_fresh_task(monkeypatch, tmp_path):
     assert manifest is not None
     assert manifest.status == "requested"
     assert manifest.artifacts.output == {}
+
+
+def test_has_validation_report_follows_registered_path(
+    patch_jobs_dir: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """登记了报告路径的任务算有报告；没登记的算没有。"""
+    from app.services.patch_exporter import list_patch_jobs
+
+    monkeypatch.setattr(
+        "app.services.patch_exporter.find_batch_for_job", lambda job_id: None
+    )
+    _write_job(
+        patch_jobs_dir,
+        "mount_0001",
+        {
+            "validation_report": "workspace/reports/20260101_000000/validation-report.json"
+        },
+    )
+    _write_job(patch_jobs_dir, "mount_0002")
+
+    items = {j["job_id"]: j for j in list_patch_jobs()["items"]}
+    assert items["mount_0001"]["has_validation_report"] is True
+    assert items["mount_0002"]["has_validation_report"] is False
+
+
+def test_has_validation_report_falls_back_to_batch_report(
+    patch_jobs_dir: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """任务登记丢失（被重新创建）时，批次报告仍覆盖它就算有报告。"""
+    from app.services.patch_exporter import list_patch_jobs
+
+    monkeypatch.setattr(
+        "app.services.patch_exporter.find_batch_for_job",
+        lambda job_id: "20260101_000000" if job_id == "mount_0003" else None,
+    )
+    _write_job(patch_jobs_dir, "mount_0003")
+
+    items = {j["job_id"]: j for j in list_patch_jobs()["items"]}
+    assert items["mount_0003"]["has_validation_report"] is True

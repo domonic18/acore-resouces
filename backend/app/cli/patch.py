@@ -19,6 +19,11 @@ from app.services.mount_patch_builder import (
     build_mount_patches,
 )
 from app.services.patch_audit import load_audit_by_batch, load_audit_by_job
+from app.services.patch_db_applier import (
+    DbApplyError,
+    apply_sql_files,
+    collect_sql_files,
+)
 from app.services.patch_distro_client import DistroPushError
 from app.services.patch_exporter import (
     create_patch_job,
@@ -474,3 +479,68 @@ def clean_workspace_cmd(
         console.print("[yellow]dry-run 预览，未删除任何文件；加 --execute 执行[/yellow]")
     else:
         console.print(f"[green]清理完成，共删除 {len(result['targets'])} 个目录[/green]")
+
+
+@app.command("db-apply", help="把坐骑 SQL 导入测试服数据库（默认 dry-run 预览）")
+def db_apply(
+    resource_id: int | None = typer.Option(None, "--id", "-i", help="只处理指定坐骑 ID"),
+    execute: bool = typer.Option(False, "--execute", help="真正导入数据库（默认仅预览待导入清单）"),
+    include_changed: bool = typer.Option(
+        False, "--include-changed", help="连同「内容被改过」的文件一起重新导入"
+    ),
+) -> None:
+    """对比仓库里的坐骑 SQL 与线上 ``acore_world.updates``，导入尚未生效的文件。
+
+    导入通过 acore-deploy 的 ``acore-update-db.sh`` 完成，成功后把文件登记进
+    ``updates`` 表，与 AzerothCore 自动更新器保持一致。
+    """
+    files = collect_sql_files(resource_id)
+    if not files:
+        console.print("[yellow]没有找到坐骑 SQL 文件[/yellow]")
+        raise typer.Exit(0)
+
+    try:
+        report = apply_sql_files(
+            files,
+            include_changed=include_changed,
+            dry_run=not execute,
+            progress=lambda message: console.print(f"[dim]{message}[/dim]"),
+        )
+    except DbApplyError as e:
+        console.print(f"[red]{e}[/red]")
+        raise typer.Exit(1) from e
+
+    table = Table(title="坐骑 SQL 导入状态")
+    table.add_column("文件", style="cyan")
+    table.add_column("状态")
+    table.add_column("说明")
+    for state in report.states:
+        if state.status == "applied":
+            table.add_row(escape(state.name), "[green]已导入[/green]", "内容与线上一致")
+        elif state.status == "changed":
+            table.add_row(
+                escape(state.name),
+                "[yellow]内容有改动[/yellow]",
+                "线上哈希与本地不一致",
+            )
+        else:
+            table.add_row(escape(state.name), "[red]未导入[/red]", "线上无此文件")
+    console.print(table)
+
+    console.print(
+        f"共 {len(report.states)} 个文件："
+        f"[red]{len(report.pending)} 个未导入[/red]、"
+        f"[yellow]{len(report.changed)} 个内容有改动[/yellow]、"
+        f"[green]{len(report.applied)} 个已是最新[/green]"
+    )
+
+    if not execute:
+        console.print("[yellow]dry-run 预览，未写入数据库；加 --execute 执行[/yellow]")
+        raise typer.Exit(0)
+
+    if report.failed:
+        for state, message in report.failed:
+            console.print(f"[red]导入失败 {escape(state.name)}：{escape(message)}[/red]")
+    console.print(f"[green]已导入 {len(report.imported)} 个文件[/green]")
+    if report.failed:
+        raise typer.Exit(1)

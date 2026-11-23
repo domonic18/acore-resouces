@@ -527,14 +527,23 @@ function BatchDetail({
               </td>
               <td>
                 <div className="flex items-center justify-end gap-1.5">
-                  <button
-                    type="button"
-                    className="btn btn-sm"
-                    title="查看这个任务的校验报告"
-                    onClick={() => onShowValidation({ jobId: job.job_id })}
-                  >
-                    校验
-                  </button>
+                  {job.has_validation_report ? (
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      title="查看这个任务的校验报告"
+                      onClick={() => onShowValidation({ jobId: job.job_id })}
+                    >
+                      校验
+                    </button>
+                  ) : (
+                    <span
+                      className="text-xs text-text-tertiary"
+                      title="该任务没有校验报告——它从未成功构建过（试运行不产出报告）"
+                    >
+                      校验—
+                    </span>
+                  )}
                   {job.audit ? (
                     <button
                       type="button"
@@ -692,6 +701,12 @@ function BatchRebuildDialog({
           </span>
         </label>
       </div>
+      {dryRun && (
+        <div className="mt-3 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
+          试运行不产出校验报告与补丁包，所以构建完仍然无法「审查产物」。
+          想让流程继续往下走，请改选「正式构建」。
+        </div>
+      )}
       <p className="mt-3 text-xs text-text-tertiary">
         构建只处理这 {batch.job_count} 只坐骑，不影响其它待处理任务。
       </p>

@@ -15,8 +15,36 @@ from typing import Any
 M2_MAGIC = b"MD20"
 SKIN_MAGIC = b"SKIN"
 
-# 已验证可完整解析的 M2 版本号（当前为 WotLK 3.3.5a）
-SUPPORTED_FULL_VERSIONS = {263}
+# 已验证可完整解析的 M2 版本号（263=WotLK 3.3.5a，264=Cataclysm 4.x）
+SUPPORTED_FULL_VERSIONS = {263, 264}
+
+# 各版本贴图表在文件头中的字节位置（count, offset）。
+# 263（WotLK）在 vertices 之后是 numViews + numSkinProfiles 两个 uint32；
+# 264 起两者合并为一个 uint32，其后的数组整体前移 4 字节。
+TEXTURE_TABLE_OFFSETS: dict[int, tuple[int, int]] = {
+    263: (0x54, 0x58),
+    264: (0x50, 0x54),
+}
+
+# 各版本共有且位置固定的表头字段。
+ANIMATIONS_COUNT_OFFSET = 0x1C
+VERTICES_COUNT_OFFSET = 0x3C
+
+# 各版本 textureLookups 表在文件头中的字节位置（count, offset）。
+# 该表把 skin 的 batch 编号映射到 M2 贴图表下标。
+TEXTURE_LOOKUP_OFFSETS: dict[int, tuple[int, int]] = {
+    263: (0x84, 0x88),
+    264: (0x80, 0x84),
+}
+
+# SKIN 文件头：magic 之后依次是 indices / triangles / boneIndices /
+# submeshes / batches 五组 (count, offset)。
+SKIN_BATCHES_COUNT_OFFSET = 0x24
+SKIN_BATCHES_OFFSET = 0x28
+
+# SKIN batch 记录长度（13 个 uint16），其中 textureLookup 位于第 9 个 uint16。
+SKIN_BATCH_SIZE = 26
+SKIN_BATCH_TEXTURE_LOOKUP_OFFSET = 16
 
 
 @dataclass
@@ -39,6 +67,7 @@ class M2Metadata:
     animations_count: int | None = None
     textures_count: int | None = None
     textures: list[M2TextureInfo] = field(default_factory=list)
+    texture_lookups: list[int] = field(default_factory=list)
     skin_files: list[dict[str, Any]] = field(default_factory=list)
     partial: bool = False
     partial_reason: str | None = None
@@ -67,8 +96,8 @@ def _parse_header_name(data: bytes) -> tuple[int, int, str]:
     return version, name_length, name
 
 
-def _parse_wotlk_metadata(m2_path: Path, data: bytes) -> M2Metadata:
-    """解析 WotLK 版本（263）M2 的完整元数据。
+def _parse_full_metadata(m2_path: Path, data: bytes, version: int) -> M2Metadata:
+    """解析已知版本 M2 的完整元数据。
 
     标准头布局（起始偏移 0x14 = 20）：
     0: nGlobalSequences, 1: ofsGlobalSequences
@@ -77,15 +106,17 @@ def _parse_wotlk_metadata(m2_path: Path, data: bytes) -> M2Metadata:
     6: nBones,           7: ofsBones
     8: nKeyBoneLookup,   9: ofsKeyBoneLookup
     10: nVertices,       11: ofsVertices
-    12: nViews,          13: ofsViews
-    14: nColors,         15: ofsColors
-    16: nTextures,       17: ofsTextures
+    12: nColors,         13: ofsColors
+    14: nTextures,       15: ofsTextures
+
+    264 起 numViews/numSkinProfiles 合并为一个 uint32，贴图表位置见
+    TEXTURE_TABLE_OFFSETS。
     """
-    offsets = struct.unpack_from("<" + "I" * 26, data, 20)
-    n_vertices = offsets[10]
-    n_animations = offsets[2]
-    n_textures = offsets[16]
-    ofs_textures = offsets[17]
+    count_offset, table_offset = TEXTURE_TABLE_OFFSETS[version]
+    n_animations = struct.unpack_from("<I", data, ANIMATIONS_COUNT_OFFSET)[0]
+    n_vertices = struct.unpack_from("<I", data, VERTICES_COUNT_OFFSET)[0]
+    n_textures = struct.unpack_from("<I", data, count_offset)[0]
+    ofs_textures = struct.unpack_from("<I", data, table_offset)[0]
 
     textures: list[M2TextureInfo] = []
     for i in range(n_textures):
@@ -107,8 +138,67 @@ def _parse_wotlk_metadata(m2_path: Path, data: bytes) -> M2Metadata:
         animations_count=n_animations,
         textures_count=n_textures,
         textures=textures,
+        texture_lookups=_read_texture_lookups(data, version),
         skin_files=_read_skin_files(m2_path),
     )
+
+
+def _read_texture_lookups(data: bytes, version: int) -> list[int]:
+    """读取 textureLookups 表：batch 编号 → M2 贴图表下标。"""
+    offsets = TEXTURE_LOOKUP_OFFSETS.get(version)
+    if offsets is None:
+        return []
+    count_offset, table_offset = offsets
+    count = struct.unpack_from("<I", data, count_offset)[0]
+    offset = struct.unpack_from("<I", data, table_offset)[0]
+    if count == 0 or offset == 0 or offset + count * 2 > len(data):
+        return []
+    return list(struct.unpack_from(f"<{count}h", data, offset))
+
+
+def _read_skin_batch_lookups(skin_path: Path) -> list[int]:
+    """读取单个 SKIN 文件中各 batch 的 textureLookup 值。"""
+    try:
+        data = skin_path.read_bytes()
+    except OSError:
+        return []
+    if len(data) < 0x2C or data[:4] != SKIN_MAGIC:
+        return []
+
+    count = struct.unpack_from("<I", data, SKIN_BATCHES_COUNT_OFFSET)[0]
+    offset = struct.unpack_from("<I", data, SKIN_BATCHES_OFFSET)[0]
+    lookups: list[int] = []
+    for index in range(count):
+        entry = offset + index * SKIN_BATCH_SIZE
+        if entry + SKIN_BATCH_SIZE > len(data):
+            break
+        lookups.append(struct.unpack_from("<H", data, entry + SKIN_BATCH_TEXTURE_LOOKUP_OFFSET)[0])
+    return lookups
+
+
+def read_skin_texture_usage(m2_path: Path, metadata: M2Metadata) -> set[int]:
+    """统计模型实际用到的 M2 贴图表下标。
+
+    链路：SKIN 的 batch → batch.textureLookup → M2.textureLookups → 贴图下标。
+    只被未使用的贴图槽位（例如历史遗留的空文件名）引用不到的批次不会计入，
+    因此不会把「存在但没人用」的坏贴图当成白模根因。
+
+    Args:
+        m2_path: M2 文件路径。
+        metadata: 已解析的 M2 元数据。
+
+    Returns:
+        被实际使用的贴图下标集合；无法判定时返回空集合。
+    """
+    if not metadata.texture_lookups:
+        return set()
+
+    used: set[int] = set()
+    for skin_path in sorted(m2_path.parent.glob(f"{m2_path.stem}*.skin")):
+        for lookup in _read_skin_batch_lookups(skin_path):
+            if lookup < len(metadata.texture_lookups):
+                used.add(metadata.texture_lookups[lookup])
+    return used
 
 
 def _read_skin_file(skin_path: Path) -> dict[str, Any] | None:
@@ -173,7 +263,7 @@ def read_m2_metadata(m2_path: Path) -> M2Metadata:
     version, _, name = _parse_header_name(data)
 
     if version in SUPPORTED_FULL_VERSIONS:
-        return _parse_wotlk_metadata(m2_path, data)
+        return _parse_full_metadata(m2_path, data, version)
 
     return M2Metadata(
         version=version,
@@ -205,5 +295,6 @@ def m2_metadata_to_dict(metadata: M2Metadata) -> dict[str, Any]:
             }
             for t in metadata.textures
         ],
+        "texture_lookups": metadata.texture_lookups,
         "skin_files": metadata.skin_files,
     }

@@ -30,6 +30,7 @@ from app.schemas.patch import (
 from app.schemas.resource import Mount, Resource
 from app.schemas.vehicle import OFFICIAL_MULTI_SEAT_VEHICLE_IDS
 from app.services.build_runner import BuildAlreadyRunningError, get_build_status
+from app.services.patch_reports import find_batch_for_job
 from app.services.resource_store import load_resource
 
 # 坐骑召唤法术模板，逐字段核对自 live Spell.dbc 中 MCC 已部署的 127 条
@@ -150,6 +151,39 @@ CUSTOM_VEHICLE_FIELD_DEFAULTS: dict[str, Any] = {
     "CameraFadeDistScalarMin": 1.0,
     "CameraFadeDistScalarMax": 1.5,
     "VehicleUIIndicatorID": 225,
+}
+
+# 自建 VehicleSeat.dbc 记录的字段默认值取原版 2764（官方 312 的乘客位）实测；
+# 只改 ID / AttachmentID / 三个偏移，其余沿用。
+CUSTOM_VEHICLE_SEAT_DEFAULTS: dict[str, Any] = {
+    "EnterSpeed": 10.0,
+    "EnterGravity": 19.29,
+    "EnterMinDuration": 0.6,
+    "EnterMaxDuration": 1.0,
+    "EnterMinArcHeight": 1.5,
+    "EnterMaxArcHeight": 4.0,
+    "EnterAnimStart": 37,
+    "EnterAnimLoop": 38,
+    "RideAnimStart": -1,
+    "RideAnimLoop": 91,
+    "RideUpperAnimStart": 128,
+    "RideUpperAnimLoop": 123,
+    "ExitSpeed": 10.0,
+    "ExitGravity": 19.29,
+    "ExitMinDuration": 0.6,
+    "ExitMaxDuration": 2.0,
+    "ExitMinArcHeight": 1.5,
+    "ExitMaxArcHeight": 2.0,
+    "ExitAnimStart": 37,
+    "ExitAnimLoop": 38,
+    "ExitAnimEnd": 39,
+    "PassengerAttachmentID": -1,
+    "VehicleEnterAnim": 226,
+    "VehicleExitAnim": 107,
+    "VehicleRideAnimLoop": 158,
+    "VehicleExitAnimBone": 1,
+    "VehicleEnterAnimBone": 1,
+    "VehicleAbilityDisplay": 1,
 }
 
 
@@ -407,6 +441,29 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                 ],
             )
         )
+
+    # VehicleSeat.dbc：自建乘客位记录（挂点骨骼 + 偏移）。
+    # 官方座位只覆盖到骨骼 21，而载具模型的骨骼可到 50+，想挂在模型后半段必须自建。
+    if vehicle and vehicle.seats:
+        seat_ops = []
+        for spec in vehicle.seats:
+            seat_fields: dict[str, Any] = {
+                "ID": int(spec.id),
+                **CUSTOM_VEHICLE_SEAT_DEFAULTS,
+                "AttachmentID": int(spec.attachment_id),
+                "AttachmentOffset_1": float(spec.offset_x),
+                "AttachmentOffset_2": float(spec.offset_y),
+                "AttachmentOffset_3": float(spec.offset_z),
+            }
+            seat_ops.append(
+                DBCPlanOperation(
+                    action="add",
+                    record_id=int(spec.id),
+                    reason="新增多人骑乘座位记录",
+                    fields=seat_fields,
+                )
+            )
+        plans.append(DBCPlanFile(dbc_file="VehicleSeat.dbc", operations=seat_ops))
 
     return DBCPlan(
         source_dbc_dir=str(settings.project_root / "data" / "wow-dbc" / "src" / "dbc"),
@@ -711,12 +768,33 @@ def list_patch_jobs(
     start = (page - 1) * page_size
     end = start + page_size
 
+    items = []
+    for job in jobs[start:end]:
+        dumped = job.model_dump(exclude_none=False)
+        dumped["has_validation_report"] = has_validation_report(job)
+        items.append(dumped)
+
     return {
         "total": total,
         "page": page,
         "page_size": page_size,
-        "items": [j.model_dump(exclude_none=False) for j in jobs[start:end]],
+        "items": items,
     }
+
+
+def has_validation_report(manifest: PatchJobManifest) -> bool:
+    """该任务是否查得到校验报告。
+
+    查找顺序与 ``load_validation_report_by_job`` 一致：先看任务自己登记的
+    报告路径，登记丢失（任务被重新创建）时再看批次报告是否仍覆盖它。
+
+    界面据此决定要不要给出「查看校验报告」入口——试运行与从未构建的任务
+    没有报告，点进去只会得到 404。
+    """
+    output = manifest.artifacts.output or {}
+    if output.get("validation_report"):
+        return True
+    return find_batch_for_job(manifest.job_id) is not None
 
 
 def get_patch_job(job_id: str) -> PatchJobManifest | None:

@@ -1,6 +1,6 @@
 # DBC 维护职责迁移与同步方案
 
-> **状态**：方案已落地。`patch export` / `patch build` / `patch publish` 三段式工作流已实现（CLI 与 HTTP 端点双入口，Web 导出页 `/export` 提供全流程可视化）；`dbc` 与 `deploy` 命令组尚未在 CLI 中暴露（见第六节待办）。
+> **状态**：方案已落地。`patch` 命令组（export / build / publish / distro-push / list / get / update / audit / delete / clean / db-apply）与 `dbc` 只读命令组（files / query / get / icon-id）均已实现（CLI 与 HTTP 端点双入口，Web 导出页 `/export` 提供全流程可视化）。发布为「本地 publish → 分发端 distro-push」两层模型（见 §十六）；落库走 `patch db-apply`（见 §6.2）。
 
 ## 一、背景与问题
 
@@ -38,13 +38,14 @@ acore-resouces/                          # 资源与 DBC 编辑主仓库
 │   ├── services/
 │   │   ├── patch_exporter.py       # ✅ 补丁任务创建（写 job.json）
 │   │   ├── mount_patch_builder.py  # ✅ DBC/SQL/MPQ 构建
-│   │   └── patch_publisher.py      # ✅ MPQ 发布
-│   └── cli/patch.py        # ✅ patch export/build/publish/list/get/update
+│   │   ├── patch_publisher.py      # ✅ 本地发布（workspace/dist/）
+│   │   └── patch_distro_client.py  # ✅ 分发端推送/下线/改号
+│   └── cli/patch.py        # ✅ patch export/build/publish/distro-push/list/get/update/audit/delete/clean/db-apply
 ├── workspace/
 │   ├── patch-jobs/{job_id}/        # 运行时补丁任务（不入 Git）
 │   ├── mpq/{timestamp}/            # 批次 MPQ 输出
-│   ├── dist/{timestamp}/           # 发布后的 MPQ（连续编号）
-│   └── reports/{timestamp}.json    # 批次校验报告
+│   ├── dist/{timestamp}/           # 本地发布中转（distro-push 成功后副本自动删除）
+│   └── reports/{timestamp}/        # 批次校验/审计报告
 └── docs/arch/              # 维护方案文档
 
 acore-deploy/               # 纯部署仓库
@@ -69,8 +70,10 @@ acore-deploy/               # 纯部署仓库
 data/sql/azerothcore-updates → /Users/deadwalk/Code/azerothcore-wotlk/modules/mod-custom-content/data/sql/db-world/updates
 ```
 
-- 由 `ACORE_SQL_UPDATES_DIR` 环境变量配置（默认值见 `backend/app/config.py`）。
-- `patch build` 生成的 SQL 会按坐骑写入此目录下的 `mounts/{id:04d}_{slug}/{id:04d}_mount_add.sql`（如需掉落另有 `{id:04d}_mount_loot.sql`），AzerothCore 重启时自动加载。
+- 由 `ACORE_SQL_UPDATES_DIR` 环境变量配置（默认值见 `backend/app/core/config.py`）。
+- `patch build` 生成的 SQL 会按坐骑写入此目录下的 `mounts/{id:04d}_{slug}/{id:04d}_mount_add.sql`（如需掉落另有 `{id:04d}_mount_loot.sql`）。
+- **本机 worldserver 的 SQL 自动更新器是关闭的**：重启不会自动加载 updates 目录；落库走
+  `patch db-apply`（见 §6.2），不可用时手工导入。
 - 软链接断开时 `patch build` 会跳过 SQL 同步并记录 warning，但 DBC/MPQ 产物仍正常输出。
 
 ## 四、CLI 命令：`patch` 组（已实现）
@@ -85,7 +88,12 @@ uv run --project backend python -m app.cli patch <command> [options]
 |------|------|---------|
 | `patch export` | 为单个资源创建补丁任务 | `--type`、`--id` |
 | `patch build` | 批量构建 DBC/SQL/MPQ | `--all-requested` 或 `--jobs` 多次；`--dry-run`；`--force`（已存在 DBC 记录强制重写、SQL 跳过历史条目检查） |
-| `patch publish` | 发布 MPQ 到 `workspace/dist/` | `--start-number`、`--dry-run` |
+| `patch publish` | 本地发布 MPQ 到 `workspace/dist/`（可逆） | `--batch`（推荐）、`--start-number`（**必须显式传 ≥6，缺省 5 会覆盖官方补丁**，见 §16.1）、`--dry-run` |
+| `patch distro-push` | 推送 dist MPQ 到分发端（不可逆、对玩家可见） | `--all`、`--batch`、`--base-url`、`--api-key`（见 §十六） |
+| `patch audit` | 查看批次审计报告 | `{job_id\|timestamp}`、`--json` |
+| `patch delete` | 删除补丁任务记录 | `{job_id}`、`--yes`（默认二次确认，见 §十三） |
+| `patch clean` | 清理任务与中间产物（默认 dry-run） | `--execute`、`--older-than N`、`--include-published`（见 §十三） |
+| `patch db-apply` | 对比仓库 SQL 与线上 `updates` 并导入（默认 dry-run） | `--id`、`--execute`、`--include-changed`（见 §6.2） |
 | `patch list` | 分页列出补丁任务 | `--status`、`--type`、`--limit` |
 | `patch get` | 查看单个补丁任务详情 | `{job_id}` |
 | `patch update` | 更新任务状态 | `{job_id}`、`{status}` |
@@ -110,13 +118,19 @@ uv run --project backend python -m app.cli patch build --jobs mount_0003 --jobs 
 # 仅校验冲突，现场生成的计划写入各任务 plans/ 子目录供审查
 uv run --project backend python -m app.cli patch build --all-requested --dry-run
 
-# 4. 发布到 workspace/dist/
-uv run --project backend python -m app.cli patch publish --start-number 5
+# 4. 本地发布（workspace/dist/，可逆；编号必须显式传 ≥6，缺省 5 会覆盖官方 patch-zhCN-5.mpq）
+uv run --project backend python -m app.cli patch publish --batch {batch_dir} --start-number 6
 
-# 5. 同步到 acore-deploy（人工执行）
-# - DBC：bash acore-deploy/scripts/acore-update-dbc.sh --local-path data/wow-dbc/src/dbc
-# - SQL：通过软链接已自动同步，重启 worldserver 即可加载
-# - MPQ：人工拷贝 workspace/dist/{timestamp}/patch-zhCN-*.mpq 到客户端 Data/
+# 5. 推送到分发端（对玩家可见、不可逆；成功后本地 dist 副本自动删除）
+uv run --project backend python -m app.cli patch distro-push --batch {batch_dir}
+
+# 6. 落库与部署（人工执行）
+# - SQL：uv run --project backend python -m app.cli patch db-apply --execute
+#   （经 acore-update-db.sh 导入并登记 updates 表；不可用时手工导入：
+#   docker exec -i -e MYSQL_PWD=<密码> acore-mysql mysql -h127.0.0.1 -uacore_test acore_world < <sql>）
+# - DBC：同步源 DBC 到测试服 data/dbc 并重启 worldserver
+#   （bash acore-deploy/scripts/acore-update-dbc.sh --local-path data/wow-dbc/src/dbc）
+# - MPQ：分发端批次下载 patch-zhCN-*.mpq 放入客户端 Data/（编号规则与下线见 §十六）
 ```
 
 ## 五、`workspace/patch-jobs/` 目录结构
@@ -164,29 +178,27 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | `failed` | 构建过程出错（如 DBC 冲突、资源校验失败）后。 |
 | `applied` | 人工将 SQL 应用到 `acore-world`、MPQ 放入客户端后手动标记（CLI `patch update` / Web 任务列表）。 |
 
-## 六、尚未实现：`dbc` 与 `deploy` 命令组（规划中）
+## 六、DBC 与落库命令现状
 
-`backend/app/cli/` 当前仅注册了 `patch` 命令组。以下两组尚未落地，使用时通过手工命令替代。
+### 6.1 `dbc` 组（已实现：只读查看；子模块管理仍用 git 命令）
 
-### 6.1 `dbc` 组（子模块管理）
+`backend/app/cli/dbc.py` 提供 `dbc files` / `dbc query FILE` / `dbc get FILE ID` / `dbc icon-id <图标名>`（均支持 `--json`，能力定义见 §十五）。子模块管理尚无 CLI 封装：
 
-| 命令 | 用途 | 当前替代方式 |
-|------|------|------------|
-| `dbc status` | 查看 `data/wow-dbc` 子模块状态 | `git submodule status data/wow-dbc` |
-| `dbc pull` | 更新子模块到远程最新 | `git submodule update --remote data/wow-dbc` |
-| `dbc diff` | 查看已修改的 DBC 文件摘要 | `git -C data/wow-dbc status -s` |
+| 用途 | 命令 |
+|------|------|
+| 查看子模块状态 | `git submodule status data/wow-dbc` |
+| 更新子模块到远程最新 | `git submodule update --remote data/wow-dbc` |
+| 查看已修改的 DBC 摘要 | `git -C data/wow-dbc status -s` |
 
-### 6.2 `deploy` 组（同步到 acore-deploy）
+### 6.2 落库：`patch db-apply` 入口存在，本机不可用
 
-| 命令 | 用途 | 当前替代方式 |
-|------|------|------------|
-| `deploy sync-dbc [--dry-run] [--yes]` | 同步 DBC 到 acore-deploy | 手工执行 `acore-update-dbc.sh --local-path data/wow-dbc/src/dbc` |
+`patch db-apply` CLI 已注册，但依赖的 updates 自动加载机制与本机容器环境不匹配，**本机落库一律手工导入**：
 
-`deploy-path` 解析优先级（待实现时的设计）：
+```bash
+docker exec -i -e MYSQL_PWD=<密码> acore-mysql mysql -h127.0.0.1 -uacore_test acore_world < <sql>
+```
 
-1. CLI 参数 `--deploy-path`
-2. 环境变量 `ACORE_DEPLOY_PATH`
-3. 默认值：`../acore-deploy`（相对项目根目录）
+DBC 同步到部署侧沿用 `acore-update-dbc.sh --local-path data/wow-dbc/src/dbc`。updates 目录中已导入文件的登记（`updates` 表）以导入后实际数据库状态为准，不能以文件存在与否判断是否已应用。
 
 ## 七、关键实现文件
 
@@ -197,10 +209,14 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | `backend/app/services/patch_publisher.py` | 发布 MPQ 到 `workspace/dist/{timestamp}/` |
 | `backend/app/services/build_runner.py` | HTTP 侧构建运行器：线程锁串行化 + 状态查询（`POST /api/patches/build` 的后台执行体） |
 | `backend/app/api/patches.py` | REST API：`POST /api/patches/export-request`、`GET /api/patches`、`POST /api/patches/build`、`GET /api/patches/build/status`、`POST /api/patches/publish`、`GET/PUT /api/patches/{job_id}` |
-| `backend/app/cli/patch.py` | `patch export/build/publish/list/get/update` CLI |
+| `backend/app/cli/patch.py` | `patch export/build/publish/distro-push/list/get/update/audit/delete/clean/db-apply` CLI |
+| `backend/app/cli/dbc.py` | `dbc files/query/get/icon-id` 只读 CLI |
 | `backend/app/schemas/patch.py` | `PatchJob`、`PatchJobUpdateRequest` 等 Pydantic 模型 |
+| `backend/app/services/patch_distro_client.py` | 分发端推送 / 状态 / 下线 / 改号（见 §十六） |
+| `backend/app/services/patch_reports.py` | 批次校验报告（`validation-report.json`） |
+| `backend/app/services/changelog_writer.py` | 批次变更日志生成（AI 起草 + 模板回退，dry-run 跳过） |
 | `.claude/skills/build-mount-patch/SKILL.md` | Claude Skill：读取补丁任务（job.json + 真相源 YAML）生成最终 DBC/SQL/MPQ |
-| `docs/arch/07DBC维护与同步方案.md` | 本方案文档 |
+| `docs/arch/05DBC维护与同步方案.md` | 本方案文档 |
 
 ## 八、acore-deploy 侧适配
 
@@ -226,8 +242,9 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 - [x] `patch build --jobs mount_0003` 成功编辑 `data/wow-dbc/src/dbc/`、生成 `data/sql/azerothcore-updates/mounts/0003_{slug}/` SQL、`workspace/mpq/{batch}/patch-mounts.mpq`。
 - [x] `patch publish --start-number N` 将 MPQ 移动发布到 `workspace/dist/{timestamp}/patch-zhCN-N.mpq`（manifest/readme 随附复制，构建侧批次目录发布后清理）。
 - [x] 类型检查与测试通过（`uv run mypy app/`、`uv run ruff check app/`、`uv run pytest`）。
-- [ ] `dbc status/pull/diff` CLI 命令组（待实现，见第六节）。
-- [ ] `deploy sync-dbc` CLI 命令组（待实现，见第六节）。
+- [x] `dbc files/query/get/icon-id` 只读命令组（§6.1 / §十五；子模块管理仍用 git 命令）。
+- [x] `patch publish --batch` + `patch distro-push` 两层发布（§十六）。
+- [x] `patch db-apply` 落库命令（§6.2，默认 dry-run，经 acore-update-db.sh 导入）。
 
 ## 十一、与现有 Skill 的关系
 
@@ -237,7 +254,7 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 | `configure-mount-spell` | 需要调整 Spell.dbc 字段 | 完成后可接 `patch export` |
 | `build-mount-patch` | 已有补丁任务，需要生成最终产物 | 等价于 `patch build --jobs {job_id}` |
 | `export-mount-jobs` | Web 端批量勾选坐骑导出 | 等价于多次 `patch export` |
-| `publish-patch` | 将 `workspace/mpq/` 发布到 `workspace/dist/` | 等价于 `patch publish` |
+| `publish-patch` | 本地 publish + 分发端 distro-push 两层发布（含编号警示与下线/改号） | 覆盖 `patch publish` + `patch distro-push`，见 §十六 |
 
 ## 十二、补丁产物审计记录（已实现）
 
@@ -395,7 +412,31 @@ requested ──patch build──▶ generated ──人工应用 SQL/MPQ──�
 - 4 字节对齐假设：`record_size ≠ field_count × 4` 的文件信任原 header 解析（`header.py:66` 注释），字段展示以 schema 为准。
 - 字符串存储编码为 latin-1 系，界面显示非 ASCII 字符时需按实际编码处理，异常字节显示转义而非报错。
 
-## 十六、相关文档
+## 十六、分发端发布与下线（已实现）
+
+发布为两层模型，`workspace/dist/` 只是本地中转；分发端是玩家实际下载的对外服务。
+
+| 层 | 命令 | 性质 | 说明 |
+|----|------|------|------|
+| 本地 publish | `patch publish --batch {batch}` | 可逆 | 批次 MPQ 复制到 `workspace/dist/`，分配连续编号 `patch-zhCN-{N}.mpq` 并写入 `dist-manifest.json` |
+| 分发端 distro-push | `patch distro-push --batch {batch}` | **不可逆、对玩家可见** | 上传后批次对玩家可下载；成功后本地 dist 副本自动删除，批次记录以分发端 `dist-manifest` 为准 |
+
+### 16.1 编号规则（⚠️ 缺省编号 5 会覆盖官方补丁）
+
+- 编号在本地 publish 时分配，distro-push 沿用不改号。
+- 客户端 MPQ **高编号胜出**：同路径文件以编号最大的补丁为准；同编号重复推送会互相覆盖。
+- 官方客户端 `Data/` 已存在 `patch-zhCN-5.mpq`——2026-11-22 事故：`--start-number` 用缺省值 5 直接覆盖了官方补丁。**必须显式传 `--start-number` 且 ≥6**。
+- 安全值查询：`GET /api/patches/distro/status` 的 `pushed_details[].patch_number` 取最大值 +1。
+
+### 16.2 下线与改号（HTTP API，无 CLI 入口）
+
+| 操作 | 接口 | 说明 |
+|------|------|------|
+| 分发端批次清单与本地差异 | `GET /api/patches/distro/status` | `pushed_details` 含批次、编号、文件 |
+| 下线批次 | `DELETE /api/patches/distro/batches/{batch}` | 从分发端删除批次目录 |
+| 改号 | `PATCH /api/patches/distro/batches/{batch}` | 语义为「删分发端批次 → 本地改名改 manifest → 以新号重推」，对已下载玩家无回收效果 |
+
+## 十七、相关文档
 
 | 文档 | 路径 |
 |------|------|

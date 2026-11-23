@@ -15,8 +15,21 @@ from typing import Any, cast
 from app.core.config import settings
 from app.schemas.patch import PatchBatch, PatchBatchJob, PatchBatchJobAudit, PatchJobStatus
 from app.services.mount_patch_builder import MPQ_OUTPUT_DIR, REPORTS_DIR, load_json
+from app.services.patch_reports import find_batch_for_job
 
 PENDING_BATCH_ID = "pending"
+
+
+def _job_has_validation_report(job: dict[str, Any]) -> bool:
+    """该任务是否查得到校验报告。
+
+    查找顺序与 load_validation_report_by_job 一致：先看任务登记的报告路径，
+    登记丢失（任务被重新创建）时再看批次报告是否仍覆盖它。
+    """
+    output = (job.get("artifacts") or {}).get("output")
+    if isinstance(output, dict) and output.get("validation_report"):
+        return True
+    return find_batch_for_job(str(job.get("job_id") or "")) is not None
 
 
 def _load_job_raw(job_dir: Path) -> dict[str, Any] | None:
@@ -91,18 +104,23 @@ def _batch_output(key: str, jobs: list[dict[str, Any]]) -> dict[str, Any]:
         "validation_report": first.get("validation_report"),
         "audit": first.get("audit"),
     }
-    if key != PENDING_BATCH_ID:
-        mpq_dir = Path("workspace/mpq") / key
-        output["mpq"] = str(mpq_dir / "patch-mounts.mpq")
-        output["manifest"] = str(mpq_dir / "manifest.json")
-        output["changelog"] = str(mpq_dir / "changelog.md")
-        output["readme"] = str(mpq_dir / "readme.txt")
+    if key == PENDING_BATCH_ID:
+        # pending 是「尚未构建」的合成批次，没有批次级报告与补丁包。
+        # 任务上残留的报告路径属于它们各自的历史批次，按 "pending" 查不到，
+        # 挂上去只会让界面点出 404。
+        output["validation_report"] = None
+        output["audit"] = None
+        return output
+
+    mpq_dir = Path("workspace/mpq") / key
+    output["mpq"] = str(mpq_dir / "patch-mounts.mpq")
+    output["manifest"] = str(mpq_dir / "manifest.json")
+    output["changelog"] = str(mpq_dir / "changelog.md")
+    output["readme"] = str(mpq_dir / "readme.txt")
     return output
 
 
-def _job_audit_summaries(
-    key: str, jobs: list[dict[str, Any]]
-) -> dict[str, PatchBatchJobAudit]:
+def _job_audit_summaries(key: str, jobs: list[dict[str, Any]]) -> dict[str, PatchBatchJobAudit]:
     """按批次审计报告（每批次一次文件读）生成 per-job 文件/表级摘要。"""
     if key == PENDING_BATCH_ID:
         return {}
@@ -121,9 +139,7 @@ def _job_audit_summaries(
         job_id = str(entry.get("job_id") or "")
         dbc_counts.setdefault(job_id, Counter())[str(entry.get("dbc_file") or "?")] += 1
 
-    sql_by_job = {
-        str(e.get("job_id")): e for e in report.get("sql", []) if isinstance(e, dict)
-    }
+    sql_by_job = {str(e.get("job_id")): e for e in report.get("sql", []) if isinstance(e, dict)}
     summaries: dict[str, PatchBatchJobAudit] = {}
     for job in jobs:
         job_id = str(job.get("job_id"))
@@ -173,13 +189,12 @@ def list_patch_batches(status: PatchJobStatus | None = None) -> list[PatchBatch]
             PatchBatchJob(
                 job_id=str(j.get("job_id") or "?"),
                 resource_id=int(j.get("resource_id") or 0),
-                resource_name=str(
-                    j.get("resource_name") or j.get("resource_model_folder") or "?"
-                ),
+                resource_name=str(j.get("resource_name") or j.get("resource_model_folder") or "?"),
                 status=cast(PatchJobStatus, str(j.get("status") or "requested")),
                 completed_at=j.get("completed_at"),
                 summary=j.get("summary"),
                 audit=audits.get(str(j.get("job_id"))),
+                has_validation_report=_job_has_validation_report(j),
             )
             for j in sorted(jobs, key=lambda x: int(x.get("resource_id") or 0))
         ]

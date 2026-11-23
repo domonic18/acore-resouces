@@ -15,7 +15,7 @@
 acore-resouces/
 ├── README.md              # 本文件
 ├── CLAUDE.md              # Claude Code AI 上下文文件
-├── docs/                  # 项目文档（需求、架构设计、开发计划）
+├── docs/                  # 项目文档（需求、策划、架构设计、流程手册）
 ├── backend/               # Python FastAPI 后端 + CLI
 ├── apps/web/              # React + Vite 前端（Electron 内嵌）
 ├── apps/desktop/          # Electron 桌面外壳
