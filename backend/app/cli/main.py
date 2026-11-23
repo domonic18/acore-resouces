@@ -3,6 +3,7 @@ import typer
 from app.cli import dbc as dbc_cli
 from app.cli import patch as patch_cli
 from app.cli import resource as resource_cli
+from app.cli import verify as verify_cli
 from app.cli import wago as wago_cli
 from app.cli import wowhead as wowhead_cli
 
@@ -12,6 +13,7 @@ app.add_typer(wowhead_cli.app, name="wowhead", help="Wowhead 官方数据查询"
 app.add_typer(wago_cli.app, name="wago", help="wago.tools 资源查询与下载")
 app.add_typer(patch_cli.app, name="patch", help="补丁任务")
 app.add_typer(dbc_cli.app, name="dbc", help="DBC 只读查询")
+app.add_typer(verify_cli.app, name="verify", help="闭环验证")
 
 
 @app.callback()
