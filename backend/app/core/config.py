@@ -29,6 +29,15 @@ class Settings(BaseSettings):
     acore_sql_updates_dir: Path | None = None
     acore_sql_mounts_subdir: Path = Path("mounts")
 
+    # 仓库内指向 AzerothCore updates 目录的软链接及其坐骑子目录。
+    sql_updates_link_dir: Path = Path("data/sql/azerothcore-updates")
+    sql_mounts_dir: Path = Path("data/sql/azerothcore-updates/mounts")
+
+    # 测试服部署仓库（提供 acore-update-db.sh 与数据库连接串）。
+    acore_deploy_dir: Path = Path("~/Workspace/acore-deploy")
+    acore_mysql_container: str = "acore-mysql"
+    acore_world_database: str = "acore_world"
+
     # 容器部署时宿主侧的项目根（如 /Users/xxx/acore-resouces）。
     # 设置后对外展示的磁盘路径由 /app 前缀映射回宿主真实路径，便于复制/前往。
     host_project_root: str = ""
@@ -57,6 +66,10 @@ class Settings(BaseSettings):
 
         if self.acore_sql_updates_dir is not None:
             self.acore_sql_updates_dir = root / self.acore_sql_updates_dir
+
+        self.sql_updates_link_dir = self.data_dir / "sql" / "azerothcore-updates"
+        self.sql_mounts_dir = self.sql_updates_link_dir / self.acore_sql_mounts_subdir
+        self.acore_deploy_dir = self.acore_deploy_dir.expanduser()
 
 
 settings = Settings()
