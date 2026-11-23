@@ -18,7 +18,7 @@ import json
 import re
 import shutil
 import subprocess
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
@@ -37,6 +37,7 @@ from app.schemas.vehicle import (
     OFFICIAL_REPAIR_NPCS,
     OFFICIAL_VENDOR_NPCS,
 )
+from app.services.icon_infrastructure import stage_icon_infrastructure
 
 WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
 MPQCLI = settings.project_root / "tools" / "wow-mpq-cli" / "build" / "bin" / "mpqcli"
@@ -732,6 +733,7 @@ def build_mpq(
     contexts: list[JobContext],
     sql_files: list[Path],
     dry_run: bool = False,
+    mounts: Sequence[Mount] | None = None,
 ) -> tuple[Path, dict[str, list[Path]], dict[str, Any]]:
     """构建批次 MPQ 并持久化 manifest.json。
 
@@ -739,6 +741,8 @@ def build_mpq(
         contexts: 要处理的任务上下文列表。
         sql_files: 已生成的 SQL 文件路径列表（可能为空，表示所有坐骑 SQL 均已存在）。
         dry_run: 为 True 时只返回路径，不创建文件。
+        mounts: 全量坐骑资源，用于确定图标基础设施要携带的贴图；
+            缺省时从资源仓库加载全部坐骑。
 
     Returns:
         (mpq_path, {job_id: [相对路径列表]}, 批次清单 dict)
@@ -767,14 +771,25 @@ def build_mpq(
     # Vehicle.dbc 不属必需集：仅当批次内存在自建载具记录的计划时才打包，
     # 避免每个 MPQ 无条件携带 412 条官方载具记录。
     dbc_files = list(REQUIRED_DBC_FILES)
-    if any(
-        plan_file.dbc_file == "Vehicle.dbc" for ctx in contexts for plan_file in ctx.dbc_plan.plans
-    ):
+    plan_dbc_names = {plan_file.dbc_file for ctx in contexts for plan_file in ctx.dbc_plan.plans}
+    # Vehicle.dbc / VehicleSeat.dbc 不属必需集：仅当批次内存在自建载具记录
+    # （或自建座位记录）的计划时才打包，避免每个 MPQ 无条件携带官方载具数据。
+    if "Vehicle.dbc" in plan_dbc_names:
         dbc_files.append("Vehicle.dbc")
+    if "VehicleSeat.dbc" in plan_dbc_names:
+        dbc_files.append("VehicleSeat.dbc")
     for dbc_name in dbc_files:
         src = WOW_DBC_DIR / dbc_name
         if src.exists():
             shutil.copy2(src, dbc_staging / dbc_name)
+
+    if mounts is None:
+        from app.services.resource_store import list_resources
+
+        mounts = cast(list[Mount], list_resources("mount"))
+    icon_infra = stage_icon_infrastructure(staging, mounts)
+    if icon_infra["missing"]:
+        manifest["missing_icons"] = icon_infra["missing"]
 
     job_assets: dict[str, list[Path]] = {}
     for ctx in contexts:
@@ -885,9 +900,7 @@ def find_existing_dbc_records(
     cache = id_cache if id_cache is not None else {}
     for plan_file in dbc_plan.plans:
         if plan_file.dbc_file not in cache:
-            cache[plan_file.dbc_file] = load_dbc_record_ids(
-                WOW_DBC_DIR / plan_file.dbc_file
-            )
+            cache[plan_file.dbc_file] = load_dbc_record_ids(WOW_DBC_DIR / plan_file.dbc_file)
         occupied = cache[plan_file.dbc_file]
         for op in plan_file.operations:
             result.append(
@@ -1116,7 +1129,7 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
         actual_seat_count = (
             official_seat_count
             if vehicle.vehicle_id in OFFICIAL_MULTI_SEAT_VEHICLE_IDS
-            else len(vehicle.seat_ids)
+            else len(vehicle.passenger_seat_ids)
         )
         if expected_seats is None:
             checks.append(
@@ -1441,9 +1454,7 @@ def _build_mount_patches_impl(
 
     if dry_run:
         _dump_plans(contexts)
-        _log(
-            f"审查计划已写入各任务目录 plans/ 子目录（共 {len(contexts)} 个任务）。"
-        )
+        _log(f"审查计划已写入各任务目录 plans/ 子目录（共 {len(contexts)} 个任务）。")
         _log("本次是试运行：没有修改任何源文件。确认无误后再执行正式构建。\n")
     else:
         _clear_plans(contexts)
