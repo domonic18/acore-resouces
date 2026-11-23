@@ -347,6 +347,7 @@ class PatchBatchJob(BaseModel):
     completed_at: str | None = None
     summary: str | None = None
     audit: PatchBatchJobAudit | None = None
+    has_validation_report: bool = False
 
 
 class PatchBatch(BaseModel):

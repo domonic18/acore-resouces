@@ -21,6 +21,7 @@ from app.schemas.patch import (
     JobArtifactsOut,
     JobPlansOut,
     MountPatchPreview,
+    PatchJobManifest,
     PatchJobStatus,
     PatchJobUpdateRequest,
     ValidationReportOut,
@@ -49,6 +50,7 @@ from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
     get_patch_job,
+    has_validation_report,
     list_patch_jobs,
     update_patch_job_status,
 )
@@ -69,6 +71,13 @@ from app.services.workspace_cleaner import (
 )
 
 router = APIRouter(prefix="/api/patches", tags=["patches"])
+
+
+def _job_payload(manifest: PatchJobManifest) -> dict[str, Any]:
+    """任务响应体：清单字段 + 是否查得到校验报告。"""
+    payload = manifest.model_dump(exclude_none=False)
+    payload["has_validation_report"] = has_validation_report(manifest)
+    return payload
 
 
 class PatchExportRequest(BaseModel):
@@ -103,7 +112,7 @@ def export_request(body: PatchExportRequest) -> dict[str, Any]:
             raise HTTPException(400, f"资源 {rid} 导出失败: {e}") from e
 
     return {
-        "jobs": [j.model_dump(exclude_none=False) for j in jobs],
+        "jobs": [_job_payload(j) for j in jobs],
         "total": len(jobs),
     }
 
@@ -202,9 +211,7 @@ def delete_batch(batch_id: str) -> dict[str, Any]:
 
     仅移除任务目录，不影响真相源与已生成的 DBC/SQL/MPQ 产物。
     """
-    batch = next(
-        (b for b in list_patch_batches() if b.batch_id == batch_id), None
-    )
+    batch = next((b for b in list_patch_batches() if b.batch_id == batch_id), None)
     if batch is None or not batch.jobs:
         raise HTTPException(404, f"批次 {batch_id} 下没有可删除的任务")
 
@@ -292,9 +299,7 @@ def distro_push(body: DistroPushRequest) -> DistroPushResult:
     推送才会让补丁对玩家可见、公告同步发布——不可撤销，因此必须显式触发。
     """
     try:
-        result = push_batches(
-            batch_ids=body.batch_ids or None, dry_run=body.dry_run
-        )
+        result = push_batches(batch_ids=body.batch_ids or None, dry_run=body.dry_run)
     except PatchPublisherError as e:
         return DistroPushResult(configured=False, reachable=False, error=str(e))
     except DistroPushError as e:
@@ -316,9 +321,7 @@ def distro_push(body: DistroPushRequest) -> DistroPushResult:
             for item in result["preview"]
         ],
         cleaned=[
-            DistroPushCleaned(
-                batch=item["batch"], freed_bytes=int(item.get("freed_bytes") or 0)
-            )
+            DistroPushCleaned(batch=item["batch"], freed_bytes=int(item.get("freed_bytes") or 0))
             for item in result.get("cleaned", [])
         ],
     )
@@ -327,18 +330,20 @@ def distro_push(body: DistroPushRequest) -> DistroPushResult:
 @router.get("/distro/status", response_model=DistroStatusOut)
 def distro_status() -> DistroStatusOut:
     """对比本地已发布批次与分发端已推送批次。"""
-    local = sorted(
-        d.name
-        for d in settings.workspace_dir.joinpath("dist").iterdir()
-        if d.is_dir() and list(d.glob("patch-zhCN-*.mpq"))
-    ) if settings.workspace_dir.joinpath("dist").exists() else []
+    local = (
+        sorted(
+            d.name
+            for d in settings.workspace_dir.joinpath("dist").iterdir()
+            if d.is_dir() and list(d.glob("patch-zhCN-*.mpq"))
+        )
+        if settings.workspace_dir.joinpath("dist").exists()
+        else []
+    )
 
     try:
         details = fetch_dist_batches()
     except DistroPushError as e:
-        return DistroStatusOut(
-            local_batches=local, reachable=False, error=str(e)
-        )
+        return DistroStatusOut(local_batches=local, reachable=False, error=str(e))
 
     pushed = sorted(d["batch"] for d in details)
     return DistroStatusOut(
@@ -466,7 +471,7 @@ def get_job(job_id: str) -> dict[str, Any]:
     manifest = get_patch_job(job_id)
     if manifest is None:
         raise HTTPException(404, f"任务 {job_id} 不存在")
-    return manifest.model_dump(exclude_none=False)
+    return _job_payload(manifest)
 
 
 @router.get("/{job_id}/audit")

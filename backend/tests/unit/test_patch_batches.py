@@ -200,3 +200,18 @@ def test_sort_by_created_at_desc(batch_dirs: Path) -> None:
 
     batches = patch_batches.list_patch_batches()
     assert [b.batch_id for b in batches] == ["pending", BATCH_TS]
+
+
+def test_pending_batch_has_no_batch_level_report(batch_dirs: Path) -> None:
+    """pending 是合成批次：任务上残留的报告路径属于历史批次，不能挂上去。
+
+    挂上去会让界面渲染出「校验报告」按钮，点下去按 "pending" 查报告必然 404。
+    """
+    _write_job(batch_dirs, "mount_0009", status="requested", mpq=None)
+
+    batches = {b.batch_id: b for b in patch_batches.list_patch_batches()}
+
+    pending = batches[patch_batches.PENDING_BATCH_ID]
+    assert pending.output.get("validation_report") is None
+    assert pending.output.get("audit") is None
+    assert pending.output.get("mpq") is None
