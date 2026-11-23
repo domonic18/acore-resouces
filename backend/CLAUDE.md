@@ -127,7 +127,8 @@ uv add --group dev <package>
 
 ## 5. 测试规范
 
-详见：`docs/arch/05测试策略.md`
+测试框架 pytest，用例位于 `backend/tests/`（`unit/` + `integration/`）：
+`uv run pytest`，单个用例 `uv run pytest -xvs tests/unit/test_validators.py`。
 
 ## 6. 任务完成后检查清单
 

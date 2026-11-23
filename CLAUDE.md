@@ -34,8 +34,7 @@ acore-resouces 采用 **Electron 桌面外壳 + Python FastAPI 后端 + React/Vi
 - [数据存储设计](./docs/arch/02数据存储设计.md)
 - [Agent 交互架构](./docs/arch/03Agent交互架构.md)
 - [模型与贴图渲染架构](./docs/arch/04模型与贴图渲染架构.md)
-- [测试策略](./docs/arch/05测试策略.md)
-- [开发计划](./docs/plan/开发计划.md)
+- [DBC 维护与同步方案](./docs/arch/05DBC维护与同步方案.md)
 
 ### 各目录 AI 上下文
 

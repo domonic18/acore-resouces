@@ -51,7 +51,7 @@ npm run lint         # eslint，--max-warnings 0
 npm run format       # prettier --write
 ```
 
-> **没有 `npm run test`**——前端尚未引入 vitest（见 `docs/arch/05测试策略.md`）。
+> **没有 `npm run test`**——前端尚未引入 vitest，UI 行为依赖人工与桌面端实测。
 
 ## 4. 前端规范
 
