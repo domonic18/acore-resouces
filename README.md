@@ -6,8 +6,16 @@
 
 - **资源管理**：坐骑 / 宠物 / NPC 的 CRUD、搜索、筛选、排序、分页，字段校验与跨资源 DBC ID 冲突检测（Web UI + REST API + CLI）。
 - **预览服务**：`.blp` 贴图/图标解码预览、`.m2` 元数据读取、前端 Three.js 原生 M2 3D 渲染与贴图变体切换。
-- **补丁导出**：创建补丁任务 → dry-run 校验 → 构建 DBC 修改 / AzerothCore SQL / MPQ 客户端补丁 → 发布分发（CLI `patch export/build/publish` 与 Web 导出页均可）。
+- **补丁导出与分发**：创建补丁任务 → dry-run 校验 → 构建 DBC 修改 / AzerothCore SQL / MPQ 客户端补丁 → 发布（CLI `patch export/build/publish` 与 Web 导出页均可）。发布即上架：
+  `publish` 把 MPQ 移入 `workspace/dist/{批次}/` 并写入补丁编号，该批次立即出现在玩家
+  「补丁下载」页（`/dist`），无需独立分发站。
 - **Agent 接口**：Typer CLI + YAML/JSON 真相源，配合 `.claude/skills/` 下的数据补全与补丁构建 Skill。
+- **账号鉴权**：独立账号系统（SQLite `local_user` 表 + bcrypt，本系统即账号中心），
+  未登录不可用；两级角色 admin/viewer——管理员可执行导出、发布与账号管理，普通账号
+  （= 玩家）按勾选的查看权限访问页面：下载补丁 / 坐骑查看 / 宠物查看 / NPC查看
+  （在「账号权限」页配置，admin 隐式全量；权限随 JWT 下发，改动后重新登录生效）。
+  首次启动自动用 `AUTH_BOOTSTRAP_ADMIN_PASSWORD` 创建初始 admin；`POST /api/auth/verify`
+  提供委托验证供外部系统（如游戏主站）共用同一套账号。
 
 ## 目录结构
 
@@ -35,7 +43,7 @@ acore-resouces/
     ├── assets/            # BLP → WebP 缩略图缓存
     ├── patch-jobs/        # 补丁任务元数据
     ├── mpq/               # 批次 MPQ 构建产物
-    ├── dist/              # 已发布 MPQ 分发目录
+    ├── dist/              # 已发布 MPQ（发布即上架，玩家「补丁下载」页的数据源）
     └── reports/           # 补丁校验报告
 ```
 
