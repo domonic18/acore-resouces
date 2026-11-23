@@ -7,17 +7,7 @@ from typing import Any
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from app.core.config import settings
 from app.schemas.patch import (
-    DistroAdminBatchesOut,
-    DistroAdminBatchInfo,
-    DistroBatchInfo,
-    DistroDeleteResult,
-    DistroPushCleaned,
-    DistroPushItem,
-    DistroPushRequest,
-    DistroPushResult,
-    DistroStatusOut,
     JobArtifactsOut,
     JobPlansOut,
     MountPatchPreview,
@@ -38,14 +28,6 @@ from app.services.mount_preview import build_mount_preview, build_mount_previews
 from app.services.patch_artifacts import load_job_artifacts
 from app.services.patch_audit import load_audit_by_job
 from app.services.patch_batches import list_patch_batches
-from app.services.patch_distro_client import (
-    DistroPushError,
-    delete_distro_batch,
-    fetch_admin_dist_batches,
-    fetch_dist_batches,
-    is_distro_configured,
-    update_distro_batch_meta,
-)
 from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
@@ -58,7 +40,6 @@ from app.services.patch_plans import build_live_plans, load_stored_plans
 from app.services.patch_publisher import (
     PatchPublisherError,
     publish_patches,
-    push_batches,
 )
 from app.services.patch_reports import (
     load_validation_report_by_batch,
@@ -289,135 +270,6 @@ def preview_patch_batch(body: PatchPreviewBatchRequest) -> list[MountPatchPrevie
         raise HTTPException(404, f"未找到坐骑：{', '.join(str(m) for m in missing)}")
 
     return build_mount_previews(resources)
-
-
-@router.post("/distro-push", response_model=DistroPushResult)
-def distro_push(body: DistroPushRequest) -> DistroPushResult:
-    """把已发布批次推送到分发端。
-
-    与「本地发布」是**两个独立动作**：本地发布只是改名移位（可反悔），
-    推送才会让补丁对玩家可见、公告同步发布——不可撤销，因此必须显式触发。
-    """
-    try:
-        result = push_batches(batch_ids=body.batch_ids or None, dry_run=body.dry_run)
-    except PatchPublisherError as e:
-        return DistroPushResult(configured=False, reachable=False, error=str(e))
-    except DistroPushError as e:
-        return DistroPushResult(reachable=False, error=str(e))
-
-    return DistroPushResult(
-        pushed=list(result["pushed"]),
-        failed=[
-            DistroPushItem(batch=item["batch"], error=item.get("error"))
-            for item in result["failed"]
-        ],
-        preview=[
-            DistroPushItem(
-                batch=item["batch"],
-                path=item.get("path"),
-                patch_number=item.get("patch_number"),
-                size_bytes=item.get("size_bytes"),
-            )
-            for item in result["preview"]
-        ],
-        cleaned=[
-            DistroPushCleaned(batch=item["batch"], freed_bytes=int(item.get("freed_bytes") or 0))
-            for item in result.get("cleaned", [])
-        ],
-    )
-
-
-@router.get("/distro/status", response_model=DistroStatusOut)
-def distro_status() -> DistroStatusOut:
-    """对比本地已发布批次与分发端已推送批次。"""
-    local = (
-        sorted(
-            d.name
-            for d in settings.workspace_dir.joinpath("dist").iterdir()
-            if d.is_dir() and list(d.glob("patch-zhCN-*.mpq"))
-        )
-        if settings.workspace_dir.joinpath("dist").exists()
-        else []
-    )
-
-    try:
-        details = fetch_dist_batches()
-    except DistroPushError as e:
-        return DistroStatusOut(local_batches=local, reachable=False, error=str(e))
-
-    pushed = sorted(d["batch"] for d in details)
-    return DistroStatusOut(
-        local_batches=local,
-        pushed_batches=pushed,
-        pending_batches=[b for b in local if b not in pushed],
-        pushed_details=[
-            DistroBatchInfo(
-                batch=d["batch"],
-                patch_number=d.get("patch_number"),
-                patch_file=d.get("patch_file"),
-                size_bytes=d.get("size_bytes"),
-                mount_count=d.get("mount_count"),
-                file_count=d.get("file_count"),
-                generated_at=d.get("generated_at"),
-            )
-            for d in details
-        ],
-    )
-
-
-@router.get("/distro/batches", response_model=DistroAdminBatchesOut)
-def distro_admin_batches() -> DistroAdminBatchesOut:
-    """分发端全部批次（含 pending 与失败残留），admin 视角。"""
-    if not is_distro_configured():
-        return DistroAdminBatchesOut(reachable=False, error="分发端未配置")
-    try:
-        batches = fetch_admin_dist_batches()
-    except DistroPushError as e:
-        return DistroAdminBatchesOut(reachable=False, error=str(e))
-    return DistroAdminBatchesOut(batches=[DistroAdminBatchInfo.model_validate(b) for b in batches])
-
-
-@router.delete("/distro/batches/{batch}", response_model=DistroDeleteResult)
-def distro_delete_batch(batch: str) -> DistroDeleteResult:
-    """删除分发端上的批次——玩家将不再能下载该补丁。
-
-    与本地删除是两件事：本地副本清理后玩家仍能从分发端拿到补丁，
-    这个端点才是「从分发端下线」的那一步。
-    """
-    if not is_distro_configured():
-        return DistroDeleteResult(batch=batch, reachable=False, error="分发端未配置")
-    try:
-        result = delete_distro_batch(batch)
-    except DistroPushError as e:
-        return DistroDeleteResult(batch=batch, reachable=False, error=str(e))
-    return DistroDeleteResult(
-        batch=str(result.get("batch") or batch),
-        existed=bool(result.get("existed")),
-        freed_bytes=int(result.get("freed_bytes") or 0),
-    )
-
-
-class DistroMetaUpdateRequest(BaseModel):
-    """更新分发端批次元数据的请求。"""
-
-    changelog: str | None = None
-    mount_count: int | None = Field(None, ge=0)
-    file_count: int | None = Field(None, ge=0)
-    generated_at: str | None = None
-
-
-@router.patch("/distro/batches/{batch}")
-def distro_update_batch_meta(batch: str, body: DistroMetaUpdateRequest) -> dict[str, Any]:
-    """改分发端批次的元数据（如 changelog），不动 MPQ、不改可见性。"""
-    if not is_distro_configured():
-        raise HTTPException(502, "分发端未配置")
-    updates = {k: v for k, v in body.model_dump().items() if v is not None}
-    if not updates:
-        raise HTTPException(400, "没有要更新的字段")
-    try:
-        return update_distro_batch_meta(batch, updates)
-    except DistroPushError as e:
-        raise HTTPException(502, str(e)) from e
 
 
 @router.get("/reports/{batch}/validation-report", response_model=ValidationReportOut)

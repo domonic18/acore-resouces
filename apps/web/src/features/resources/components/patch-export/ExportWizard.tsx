@@ -19,15 +19,12 @@ import { useBuildStatus, usePatchBuild } from "@/features/resources/hooks/usePat
 import { usePatchExport } from "@/features/resources/hooks/usePatchExport";
 import { usePatchPublish } from "@/features/resources/hooks/usePatchPublish";
 import {
-  useDistroPush,
-  useDistroStatus,
-} from "@/features/resources/hooks/useDistroPush";
-import {
   useBatchValidationReport,
   useJobArtifacts,
   useJobValidationReport,
 } from "@/features/resources/hooks/usePatchFlow";
 import { useMountPatchJobs } from "@/features/resources/hooks/useMountPatchJobs";
+import { useCanWrite } from "@/features/auth/useAuth";
 import {
   WIZARD_FLOW_STEP_IDS,
   WIZARD_STEP_INDEX,
@@ -115,6 +112,7 @@ export function ExportWizard({
 }) {
   // 内部步骤：0 选择坐骑 / 1 构建 / 2 审查 / 3 发布（完成态由 completed 表示）
   const step = WIZARD_STEP_INDEX[stepId] ?? 0;
+  const canWrite = useCanWrite();
   const setStep = useCallback(
     (next: number) =>
       onStepChange(WIZARD_FLOW_STEP_IDS[next] ?? WIZARD_FLOW_STEP_IDS[0]),
@@ -170,8 +168,6 @@ export function ExportWizard({
   );
   const exportMutation = usePatchExport();
   const publishMutation = usePatchPublish();
-  const pushMutation = useDistroPush();
-  const distroStatus = useDistroStatus();
 
   const building = buildStatus.data?.running ?? false;
   const status = buildStatus.data;
@@ -240,12 +236,6 @@ export function ExportWizard({
     jobIds.length > 0 || buildAll
       ? "继续的做法：取消勾选上面的「先试运行，不改任何文件」，再点「开始构建」；构建完成后这一步就会亮起。"
       : "当前向导没有待构建的坐骑。请在下方「补丁批次列表」里对目标批次点「重建」并选「正式构建」，或回到第 ① 步选择坐骑。";
-
-  // 该批次是否已推送到分发端
-  const batchPushed = Boolean(
-    batchId && distroStatus.data?.pushed_batches.includes(batchId),
-  );
-  const distroReachable = distroStatus.data?.reachable !== false;
 
   // 横幅只在「当前构建范围 == URL 带入的任务」时显示；
   // 用户重新选择并创建任务后，范围已变，就不该再声称是从资源列表带入的
@@ -333,9 +323,11 @@ export function ExportWizard({
                 type="button"
                 className="btn btn-primary"
                 disabled={
+                  !canWrite ||
                   selectedIds.length === 0 ||
                   exportMutation.isPending
                 }
+                title={canWrite ? undefined : "仅管理员可创建补丁任务"}
                 onClick={handleCreateJobs}
               >
                 {exportMutation.isPending ? (
@@ -464,10 +456,12 @@ export function ExportWizard({
                 type="button"
                 onClick={handleBuild}
                 disabled={
+                  !canWrite ||
                   building ||
                   buildMutation.isPending ||
                   (!buildAll && jobIds.length === 0)
                 }
+                title={canWrite ? undefined : "仅管理员可构建补丁"}
                 className="btn btn-primary"
               >
                 {building ? (
@@ -737,7 +731,7 @@ export function ExportWizard({
                 <code className="font-mono text-text-primary">
                   patch-zhCN-编号.mpq
                 </code>
-                。产物就位，客户端可从此处拷贝；玩家还拿不到。
+                。发布即上架：发布后玩家立即可在「补丁下载」页下载该补丁。
               </p>
 
               <div className="flex flex-wrap items-center gap-4 text-sm">
@@ -776,7 +770,8 @@ export function ExportWizard({
                 <button
                   type="button"
                   onClick={handlePublish}
-                  disabled={publishMutation.isPending}
+                  disabled={!canWrite || publishMutation.isPending}
+                  title={canWrite ? undefined : "仅管理员可发布补丁"}
                   className="btn btn-primary"
                 >
                   <UploadCloud className="h-4 w-4" />
@@ -842,97 +837,6 @@ export function ExportWizard({
                 </div>
               )}
             </div>
-
-            {/* ② 推送到分发端：独立且不可撤销的一步 */}
-            <div className="rounded-md border border-border bg-bg-surface p-3">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-border text-[11px] font-semibold text-text-tertiary">
-                  2
-                </span>
-                <span className="text-sm font-semibold text-text-primary">
-                  推送到分发端
-                </span>
-                {batchPushed && (
-                  <span className="badge badge-success ml-auto">已推送</span>
-                )}
-              </div>
-              <p className="mb-2 text-xs text-text-secondary">
-                上传到分发端（acore-patch-distro），玩家才能下载到补丁。
-              </p>
-              <div className="rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
-                推送后补丁对玩家可见、变更公告同步发布，且**无法撤回**。
-                只想自己先测试的话，这一步可以先不做。
-              </div>
-
-              <div className="mt-3 flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() =>
-                    pushMutation.mutate({
-                      batch_ids: batchId ? [batchId] : [],
-                    })
-                  }
-                  disabled={
-                    pushMutation.isPending || batchPushed || !batchId || !distroReachable
-                  }
-                  className="btn btn-primary"
-                >
-                  <UploadCloud className="h-4 w-4" />
-                  {pushMutation.isPending
-                    ? "推送中..."
-                    : batchPushed
-                      ? "已推送到分发端"
-                      : "推送到分发端"}
-                </button>
-                {!distroReachable && (
-                  <span className="text-xs text-warning">
-                    分发端不可达，请检查 DISTRO_BASE_URL 配置
-                  </span>
-                )}
-              </div>
-
-              {pushMutation.isError && (
-                <div className="mt-2 rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
-                  {pushMutation.error instanceof Error
-                    ? pushMutation.error.message
-                    : "推送失败"}
-                </div>
-              )}
-
-              {pushMutation.data && (
-                <div className="mt-2 space-y-1 rounded-md border border-success/30 bg-success/10 px-3 py-2 text-xs text-success">
-                  <div className="font-semibold">
-                    已推送 {pushMutation.data.pushed.length} 个批次
-                  </div>
-                  <ul className="space-y-0.5 text-text-secondary">
-                    {pushMutation.data.preview.map((item) => (
-                      <li key={item.batch} className="break-all">
-                        补丁 #{item.patch_number} · {item.batch}
-                      </li>
-                    ))}
-                  </ul>
-                  {pushMutation.data.cleaned.length > 0 && (
-                    <div className="text-text-secondary">
-                      本地副本已清理（分发端是玩家下载的来源）：
-                      {pushMutation.data.cleaned
-                        .map(
-                          (item) =>
-                            `${item.batch} 释放 ${(item.freed_bytes / 1024 / 1024).toFixed(1)} MB`,
-                        )
-                        .join("；")}
-                    </div>
-                  )}
-                  {pushMutation.data.failed.length > 0 && (
-                    <div className="text-warning">
-                      推送失败：
-                      {pushMutation.data.failed
-                        .map((item) => `${item.batch}（${item.error}）`)
-                        .join("、")}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
           </div>
         )}
 
@@ -972,15 +876,6 @@ export function ExportWizard({
                 还剩 4 步就真正上线（第 9 步）
               </div>
               <ol className="space-y-2">
-                <li className="flex gap-2">
-                  <span className="font-mono text-text-tertiary">0.</span>
-                  <span>
-                    <span className="text-text-primary">推送到分发端（可选）</span>
-                    <br />
-                    只在自己测试时可跳过。推送后玩家即可下载，补丁与公告对玩家可见
-                    且<span className="text-warning">无法撤回</span>。
-                  </span>
-                </li>
                 <li className="flex gap-2">
                   <span className="font-mono text-text-tertiary">1.</span>
                   <span>

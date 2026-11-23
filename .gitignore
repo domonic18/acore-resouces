@@ -68,6 +68,9 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# 后端内嵌的前端构建产物（本地/容器部署时由 dist 拷入，不入 Git）
+backend/app/static/
+
 # 本地环境配置（含分发端推送密钥，不入 Git）
 backend/.env
 
