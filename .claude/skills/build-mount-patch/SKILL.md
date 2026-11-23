@@ -5,7 +5,7 @@ description: >
   批量生成 WoW 3.3.5a 自定义坐骑补丁：直接编辑源 DBC、追加 SQL 到
   AzerothCore updates 目录、生成批次 MPQ。
 argument-hint: <resource-id-or-job-id-or-batch>
-allowed-tools: [Read, Edit, Write, Bash]
+allowed-tools: [Read, Bash]
 model: sonnet
 ---
 
@@ -20,7 +20,8 @@ model: sonnet
 工作流采用**集中编辑、批次输出**：
 
 - DBC 直接修改 `data/wow-dbc/src/dbc/` 下的源文件（wow-dbc 子模块，由用户手动提交）。
-- SQL 追加为单份文件到 AzerothCore updates 目录。
+- SQL 为每只坐骑生成独立文件到 AzerothCore updates 目录
+  （`mounts/{id:04d}_{slug}/{id:04d}_mount_add.sql`）。
 - MPQ 输出为单份文件到 `workspace/mpq/{timestamp}/`。
 
 ## 输入格式
@@ -80,6 +81,18 @@ cd backend
 uv run python -m app.cli patch build --jobs mount_0003
 ```
 
+**多任务传参坑（zsh）**：`--jobs` 必须**重复传参**——逗号分隔无效、空格分隔报
+多余参数。大量任务用：
+
+```bash
+cd backend   # 必须在 backend/ 目录执行，否则 import app 失败
+ls patch-jobs | sed 's/^/--jobs /' | xargs uv run python -m app.cli patch build --force
+```
+
+**改已构建过的坐骑必须加 `--force`**：SQL 生成按 `item_template.entry` 去重，
+历史 SQL 里已有该 entry 时整只跳过；DBC 已有记录也会冲突跳过。`--force`
+强制重写 DBC 记录并重新生成 SQL。只重出 MPQ（不改 DBC/SQL）可不加。
+
 命令内部完成以下步骤：
 
 1. **现场构建上下文**：按 `job.json` 中的资源 ID 读取 `data/resources/` 最新 YAML，
@@ -92,6 +105,10 @@ uv run python -m app.cli patch build --jobs mount_0003
    - 若某个坐骑的 `item_template.entry` 已存在，则跳过该坐骑，避免重复生成 SQL。
    - 仅对真正新增的坐骑写入 `DELETE` + `INSERT` 语句，保证幂等。
 6. **构建批次 MPQ**：在 `workspace/mpq/YYYYMMDD_HHMMSS/` 下创建 `patch-mounts.mpq` 与 `readme.txt`，包含编辑后的 DBC 与各任务的客户端资源。
+   - **图标基础设施随包**（2026-11-23 起）：每个 MPQ 自动携带全量
+     `DBFilesClient/SpellIcon.dbc` + `ItemDisplayInfo.dbc` 与全部坐骑引用到的
+     `Interface/icons/*.blp`——DBC 整文件覆盖、高编号胜出，逐补丁带全量表是幂等的。
+     玩家无需再装图标包。缺失引用记入 manifest 的 `missing_icons`（不阻断构建）。
 7. **一致性校验**：生成校验报告 `workspace/reports/YYYYMMDD_HHMMSS/validation-report.json`，检查 DBC/SQL/MPQ 之间的 ID 与路径一致性。
 8. **生成变更日志**：校验后自动生成批次 `changelog.md`（中文两段式：玩家公告 + 维护摘要）；设置页已配置 AI 时由 LLM 起草（OpenAI 兼容或 Anthropic 协议），失败回退代码模板，不阻塞构建；dry-run 跳过。
 9. **更新任务状态**：将参与批次的每个任务 `status` 改为 `generated`，`artifacts.output` 指向批次 SQL/MPQ/报告路径。
@@ -136,8 +153,12 @@ cat workspace/reports/YYYYMMDD_HHMMSS/validation-report.json
 - 生成的校验报告路径
 - 下一步建议：
   - 手动提交 `data/wow-dbc` 子模块的 DBC 改动。
-  - 将 `workspace/mpq/YYYYMMDD_HHMMSS/patch-mounts.mpq` 放入客户端 `Data/` 目录。
-  - 在 AzerothCore 数据库中执行 SQL 文件（或依赖自动更新器）。
+  - **先跑 `/verify-model`**（层 A 静态审计 + 层 B 落地比对），白模/贴图/落库
+    问题在发布前挡住。
+  - 落库：本机 `patch db-apply` 不可用，用手工导入
+    `docker exec -i -e MYSQL_PWD=<密码> acore-mysql mysql -h127.0.0.1 -uacore_test acore_world < <sql>`
+    （本机 worldserver 的 SQL 自动更新器是关闭的，重启不会自动加载）。
+  - 发布走 `/publish-patch`（先本地 publish 再 distro-push，编号规则见该 skill）。
   - 人工确认 `workspace/reports/YYYYMMDD_HHMMSS/validation-report.json` 中的校验结果。
 
 ## 输出产物示例

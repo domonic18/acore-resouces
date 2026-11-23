@@ -6,8 +6,7 @@ description: >
   for Mechanic, Attributes, Aura effects, and server-side rules.
   Note: the production pipeline generates Spell.dbc records automatically
   from the resource YAML; this skill documents the field semantics.
-argument-hint: <mount-type> [constraints...]
-allowed-tools: [Read, Edit, Write, Bash]
+allowed-tools: [Read, Bash]
 model: sonnet
 ---
 
@@ -149,6 +148,17 @@ cat workspace/patch-jobs/mount_0003/plans/dbc-plan.yaml
 - 特性叠加（水面行走 / 水下骑乘）会占用 `Effect_3` 槽位，
   两者不能同时标注——构建期会直接报错
 - 修改后务必 diff 对比，确认只修改了预期字段
+
+## 详细参考文件
+
+排查具体字段时按需读取（字段名以 schema 为准，注意下划线与槽位后缀）：
+
+- [references/spell-dbc-fields.md](references/spell-dbc-fields.md)——Spell.dbc 坐骑相关
+  字段全表，含 3.3.5.12340 schema 的准确字段名与易错点。
+- [references/attributes-reference.md](references/attributes-reference.md)——Attributes
+  系列标志位明细（含 AttributesExD 的 ONLY_FLYING_AREAS 等）。
+- [examples/land-mount.json](examples/land-mount.json) / [examples/flying-mount.json](examples/flying-mount.json)——
+  陆地/飞行坐骑的完整生成记录样例，可对照排查构建产物。
 
 ## 相关文档
 
