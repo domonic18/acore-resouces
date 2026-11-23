@@ -101,7 +101,9 @@ def test_login_unknown_account(db: Session, configured: None) -> None:
         auth_service.login(db, "ghost", "password-123")
 
 
-def test_login_requires_jwt_secret(db: Session, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_login_requires_jwt_secret(
+    db: Session, configured: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setattr(settings, "auth_jwt_secret", "")
     auth_service.ensure_bootstrapped(db)
     with pytest.raises(AuthError, match="AUTH_JWT_SECRET"):
