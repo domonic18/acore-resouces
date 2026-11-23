@@ -38,6 +38,9 @@ Desktop.ini
 # 本地参考文档/下载资料
 /docs/references/
 
+# 过渡性计划文档（本地维护，不入 Git）
+/docs/plan/
+
 # 本地开发环境软链接（AzerothCore updates 目录）
 /data/sql/azerothcore-updates
 
