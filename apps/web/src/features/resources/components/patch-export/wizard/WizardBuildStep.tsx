@@ -22,6 +22,8 @@ export function WizardBuildStep({
   onDryRunChange,
   force,
   onForceChange,
+  obfuscation,
+  onObfuscationChange,
   buildAll,
   onBuildAllChange,
   building,
@@ -116,6 +118,22 @@ export function WizardBuildStep({
           <span className="text-text-primary">先试运行，不改任何文件</span>
           <span className="ml-2 text-xs text-text-tertiary">
             只检查 ID 冲突并把构建计划写进任务目录，确认没问题后再正式构建
+          </span>
+        </span>
+      </label>
+
+      <label className="flex cursor-pointer items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={obfuscation === "basic"}
+          onChange={(e) => onObfuscationChange(e.target.checked ? "basic" : "none")}
+          className="mt-0.5 h-4 w-4 shrink-0 accent-blue-500"
+        />
+        <span>
+          <span className="text-text-primary">生成混淆补丁包</span>
+          <span className="ml-2 text-xs text-text-tertiary">
+            打包后剥除档案内的文件清单（listfile），第三方工具无法枚举补丁内容；
+            游戏客户端加载不受影响，混淆后不可逆
           </span>
         </span>
       </label>
@@ -270,6 +288,9 @@ export function WizardBuildStep({
               <li className="break-all">
                 客户端补丁包：{buildResult.mpq_path}
               </li>
+            )}
+            {buildResult.obfuscation === "basic" && (
+              <li>已启用 basic 混淆：档案内文件清单已剥除（不可逆）。</li>
             )}
             {buildResult.dry_run ? (
               <li>

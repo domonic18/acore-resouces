@@ -88,6 +88,7 @@ def start_build(
     job_ids: list[str] | None,
     dry_run: bool,
     force: bool,
+    obfuscation: str = "none",
 ) -> None:
     """获取构建锁并标记运行中；已有构建在跑时抛 BuildAlreadyRunningError。
 
@@ -114,6 +115,7 @@ def run_build(
     job_ids: list[str] | None,
     dry_run: bool,
     force: bool,
+    obfuscation: str = "none",
 ) -> None:
     """后台执行构建：成功写 result，失败写 error，最终必然释放锁。"""
     try:
@@ -122,6 +124,7 @@ def run_build(
             job_ids=job_ids,
             dry_run=dry_run,
             force=force,
+            obfuscation=obfuscation,
             log=_emit_log,
             progress=_emit_progress,
             phase=_emit_phase,
@@ -134,6 +137,7 @@ def run_build(
             "audit_path": str(result.get("audit_path") or ""),
             "manifest_path": str(result.get("manifest_path") or ""),
             "dry_run": result.get("dry_run", False),
+            "obfuscation": obfuscation,
         }
         _emit_log("构建完成。")
     except DBCConflictError as e:

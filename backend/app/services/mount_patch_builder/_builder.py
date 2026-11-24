@@ -26,6 +26,7 @@ def build_mount_patches(
     job_ids: list[str] | None = None,
     dry_run: bool = False,
     force: bool = False,
+    obfuscation: str = "none",
     log: Callable[[str], None] | None = None,
     progress: Callable[[int, int, str | None], None] | None = None,
     phase: Callable[[str], None] | None = None,
@@ -37,6 +38,7 @@ def build_mount_patches(
         job_ids: 指定任务 ID 列表。
         dry_run: 为 True 时只做校验并把计划写入任务目录 plans/，不修改任何源文件。
         force: 为 True 时已存在的 DBC 记录按计划强制重写，SQL 跳过历史条目检查，用于全量重建。
+        obfuscation: MPQ 混淆等级，"none" 或 "basic"（剥除档案内清单）。
         log: 可选日志回调，接收构建进度文本（如 web 端构建日志缓冲）。
         progress: 可选进度回调，签名 (current, total, job_id)。
         phase: 可选阶段回调，签名 (phase_name)，上报整体构建阶段。
@@ -50,7 +52,7 @@ def build_mount_patches(
     """
     set_callbacks(log, progress, phase)
     try:
-        return _build_mount_patches_impl(all_requested, job_ids, dry_run, force)
+        return _build_mount_patches_impl(all_requested, job_ids, dry_run, force, obfuscation)
     except MountPatchBuilderError as exc:
         # 构建中断时把涉及的任务带出来，调用方据此把任务标记为 failed
         if not exc.job_ids:
@@ -65,6 +67,7 @@ def _build_mount_patches_impl(
     job_ids: list[str] | None,
     dry_run: bool,
     force: bool,
+    obfuscation: str = "none",
 ) -> dict[str, Any]:
     _phase("load")
     contexts, rebuild_jobs = find_jobs(settings.patch_jobs_dir, all_requested, job_ids)
@@ -129,7 +132,9 @@ def _build_mount_patches_impl(
 
     _phase("build_mpq")
     _log("构建 MPQ...")
-    mpq_path, job_assets, mpq_manifest = build_mpq(contexts, sql_files, dry_run=dry_run)
+    mpq_path, job_assets, mpq_manifest = build_mpq(
+        contexts, sql_files, dry_run=dry_run, obfuscation=obfuscation
+    )
     _log(f"  {mpq_path}\n")
 
     timestamp = mpq_path.parent.name

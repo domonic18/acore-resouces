@@ -6,7 +6,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.services import dbc_reader, mpq_inspector
+from app.services import dbc_reader, mpq_inspector, mpq_obfuscator
 
 router = APIRouter(prefix="/api/mpq", tags=["mpq"])
 
@@ -28,6 +28,23 @@ def delete_mpq_archive(archive: str) -> dict[str, Any]:
         return mpq_inspector.delete_archive(archive)
     except mpq_inspector.MpqArchiveNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.post("/archives/{archive:path}/obfuscate")
+def obfuscate_mpq_archive(archive: str) -> dict[str, Any]:
+    """对 workspace/mpq 下的一个批次档案执行 basic 混淆（剥除内部清单）。
+
+    dist 已上架档案拒绝混淆：发布后构建侧档案已移走，须重新构建
+    （勾选混淆）并发布新补丁，再下架旧批次。
+    """
+    try:
+        return mpq_obfuscator.obfuscate_archive(archive)
+    except mpq_inspector.MpqArchiveNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except mpq_obfuscator.MpqObfuscationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except mpq_inspector.MpqInspectionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @router.get("/files")

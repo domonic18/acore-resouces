@@ -45,6 +45,8 @@ export interface PatchBuildRequest {
   job_ids?: string[];
   dry_run?: boolean;
   force?: boolean;
+  /** 混淆等级：basic 在打包后剥除档案内 (listfile)/(attributes) */
+  obfuscation?: "none" | "basic";
 }
 
 export function buildPatches(
@@ -150,6 +152,22 @@ export function deleteMpqArchive(
         source: string;
         size_bytes: number;
         reset_jobs: string[];
+      }>,
+  );
+}
+
+/** 对一个构建侧 MPQ 档案执行 basic 混淆（dist 已上架档案会被后端拒绝） */
+export function obfuscateMpqArchive(
+  archive: string,
+): Promise<{ rel_path: string; obfuscation: string; obfuscated_at: string }> {
+  return apiFetch(`/api/mpq/archives/${archive}/obfuscate`, {
+    method: "POST",
+  }).then(
+    (res) =>
+      res.json() as Promise<{
+        rel_path: string;
+        obfuscation: string;
+        obfuscated_at: string;
       }>,
   );
 }

@@ -46,6 +46,7 @@ export function ExportWizard({
   const [jobIds, setJobIds] = useState<string[]>([]);
   const [dryRun, setDryRun] = useState(true);
   const [force, setForce] = useState(false);
+  const [obfuscation, setObfuscation] = useState<"none" | "basic">("none");
   const [buildAll, setBuildAll] = useState(false);
   const [startNumber, setStartNumber] = useState(5);
   const [publishDryRun, setPublishDryRun] = useState(true);
@@ -172,8 +173,8 @@ export function ExportWizard({
   const handleBuild = () => {
     // 本批任务范围：默认只构建本次创建的任务；显式勾选才构建全部待处理任务
     const body = buildAll
-      ? { all_requested: true, dry_run: dryRun, force }
-      : { job_ids: jobIds, dry_run: dryRun, force };
+      ? { all_requested: true, dry_run: dryRun, force, obfuscation }
+      : { job_ids: jobIds, dry_run: dryRun, force, obfuscation };
     buildMutation.mutate(body);
   };
 
@@ -182,8 +183,8 @@ export function ExportWizard({
     setDryRun(false);
     buildMutation.mutate(
       buildAll
-        ? { all_requested: true, dry_run: false, force }
-        : { job_ids: jobIds, dry_run: false, force },
+        ? { all_requested: true, dry_run: false, force, obfuscation }
+        : { job_ids: jobIds, dry_run: false, force, obfuscation },
     );
   };
 
@@ -240,6 +241,8 @@ export function ExportWizard({
             onDryRunChange={setDryRun}
             force={force}
             onForceChange={setForce}
+            obfuscation={obfuscation}
+            onObfuscationChange={setObfuscation}
             buildAll={buildAll}
             onBuildAllChange={setBuildAll}
             building={building}
