@@ -129,9 +129,11 @@ def test_groups_jobs_by_mpq_batch(batch_dirs: Path) -> None:
     assert real.created_at == "2026-09-06T01:05:00+00:00"
     # sql_files 并集去重
     assert real.output["sql_files"] == ["data/sql/a.sql", "data/sql/b.sql"]
-    assert real.output["mpq"] == MPQ_REL
-    assert real.output["manifest"] == f"workspace/mpq/{BATCH_TS}/manifest.json"
-    assert real.output["changelog"] == f"workspace/mpq/{BATCH_TS}/changelog.md"
+    # 产物路径由配置的 MPQ_OUTPUT_DIR 推导（fixture 指向临时目录）
+    batch_dir = str(patch_batches.MPQ_OUTPUT_DIR / BATCH_TS)
+    assert real.output["mpq"] == f"{batch_dir}/patch-mounts.mpq"
+    assert real.output["manifest"] == f"{batch_dir}/manifest.json"
+    assert real.output["changelog"] == f"{batch_dir}/changelog.md"
 
     pending = by_id["pending"]
     assert pending.job_count == 1

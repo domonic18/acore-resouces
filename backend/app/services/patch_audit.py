@@ -15,6 +15,7 @@ from typing import Any
 
 from app.core.config import settings
 from app.services.mount_patch_builder import (
+    MPQ_FILENAME,
     MPQ_OUTPUT_DIR,
     REPORTS_DIR,
     JobContext,
@@ -103,7 +104,7 @@ def write_audit_report(
         "sql": sql_entries,
         "mpq": {
             "batch": manifest.get("batch", batch),
-            "path": manifest.get("mpq", "patch-mounts.mpq"),
+            "path": manifest.get("mpq", MPQ_FILENAME),
             "obfuscation": manifest.get("obfuscation", "none"),
             "file_count": len(files),
             "counts_by_kind": counts_by_kind,

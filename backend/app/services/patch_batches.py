@@ -14,7 +14,12 @@ from typing import Any, cast
 
 from app.core.config import settings
 from app.schemas.patch import PatchBatch, PatchBatchJob, PatchBatchJobAudit, PatchJobStatus
-from app.services.mount_patch_builder import MPQ_OUTPUT_DIR, REPORTS_DIR, load_json
+from app.services.mount_patch_builder import (
+    MPQ_FILENAME,
+    MPQ_OUTPUT_DIR,
+    REPORTS_DIR,
+    load_json,
+)
 from app.services.patch_reports import find_batch_for_job
 
 PENDING_BATCH_ID = "pending"
@@ -112,8 +117,8 @@ def _batch_output(key: str, jobs: list[dict[str, Any]]) -> dict[str, Any]:
         output["audit"] = None
         return output
 
-    mpq_dir = Path("workspace/mpq") / key
-    output["mpq"] = str(mpq_dir / "patch-mounts.mpq")
+    mpq_dir = MPQ_OUTPUT_DIR / key
+    output["mpq"] = str(mpq_dir / MPQ_FILENAME)
     output["manifest"] = str(mpq_dir / "manifest.json")
     output["changelog"] = str(mpq_dir / "changelog.md")
     output["readme"] = str(mpq_dir / "readme.txt")
