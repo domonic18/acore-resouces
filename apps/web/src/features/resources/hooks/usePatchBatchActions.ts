@@ -1,29 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  buildPatches,
-  deletePatchBatch,
-  publishPatches,
-} from "@/shared/patches";
-
-/** 重建一个批次下的任务 */
-export function useBatchBuild() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      jobIds,
-      dryRun,
-      force,
-    }: {
-      jobIds: string[];
-      dryRun: boolean;
-      force?: boolean;
-    }) => buildPatches({ job_ids: jobIds, dry_run: dryRun, force }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["build-status"] });
-      queryClient.invalidateQueries({ queryKey: ["patch-batches"] });
-    },
-  });
-}
+import { deletePatchBatch, publishPatches } from "@/shared/patches";
 
 /** 发布指定批次 */
 export function useBatchPublish() {

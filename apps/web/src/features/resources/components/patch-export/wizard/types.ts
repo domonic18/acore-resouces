@@ -43,6 +43,11 @@ export type JobArtifactsQuery = UseQueryResult<JobArtifactsOut, Error>;
 
 /* ---------- 各步骤组件的 props ---------- */
 
+/** 批次列表「重建」交给向导时的交接物：该批次包含的补丁任务 */
+export interface WizardHandover {
+  jobIds: string[];
+}
+
 export interface ScopeOptionProps {
   checked: boolean;
   onChange: () => void;
@@ -67,6 +72,8 @@ export interface WizardBuildStepProps {
   incomingJobIds: string[] | null;
   /** 当前构建范围 == URL 带入的任务时才显示带入横幅 */
   showingIncoming: boolean;
+  /** 批次列表「重建」带入的任务数；当前构建范围与之不符时为 null */
+  handoverCount: number | null;
   /** 本次创建的任务 ID 范围 */
   jobIds: string[];
   /** 任务 ID → 坐骑名，用于把「mount_0466」显示成「幼年商队雷龙」 */

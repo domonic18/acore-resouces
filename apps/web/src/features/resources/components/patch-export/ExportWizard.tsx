@@ -6,12 +6,21 @@ import { usePatchPublish } from "@/features/resources/hooks/usePatchPublish";
 import { useBatchValidationReport, useJobArtifacts, useJobValidationReport } from "@/features/resources/hooks/usePatchFlow";
 import { useMountPatchJobs } from "@/features/resources/hooks/useMountPatchJobs";
 import { useCanWrite } from "@/features/auth/useAuth";
-import { WIZARD_FLOW_STEP_IDS, WIZARD_STEP_INDEX } from "@/features/resources/lib/patch-flow";
+import { StepIndicator } from "@/shared/components/ui/StepIndicator";
+import {
+  getWizardFlowSteps,
+  WIZARD_FLOW_STEP_IDS,
+  WIZARD_STEP_INDEX,
+} from "@/features/resources/lib/patch-flow";
 import { WizardSelectStep } from "./wizard/WizardSelectStep";
 import { WizardBuildStep } from "./wizard/WizardBuildStep";
 import { WizardReviewStep } from "./wizard/WizardReviewStep";
 import { WizardPublishStep } from "./wizard/WizardPublishStep";
 import { WizardCompletedView } from "./wizard/WizardCompletedView";
+import type { WizardHandover } from "./wizard/types";
+
+/** 向导四个步骤的展示数据（全流程编号 ⑥~⑨），只取一次即可 */
+const WIZARD_INDICATOR_STEPS = getWizardFlowSteps();
 
 /**
  * 导出向导覆盖全流程的第 6~9 步：创建补丁任务 → 构建补丁 → 审查产物 → 发布补丁。
@@ -24,6 +33,8 @@ export function ExportWizard({
   onStepChange,
   completed,
   onCompleted,
+  handover,
+  onHandoverConsumed,
 }: {
   /** 当前流程步骤 id（受控），由页面级流程上下文条持有 */
   stepId: string;
@@ -33,6 +44,10 @@ export function ExportWizard({
   completed: boolean;
   /** 发布成功后切换到完成页 */
   onCompleted: () => void;
+  /** 批次列表「重建」带入的任务范围；消费后由页面置 null */
+  handover: WizardHandover | null;
+  /** 向导已承接 handover 后通知页面清空 */
+  onHandoverConsumed: () => void;
 }) {
   // 内部步骤：0 选择坐骑 / 1 构建 / 2 审查 / 3 发布（完成态由 completed 表示）
   const step = WIZARD_STEP_INDEX[stepId] ?? 0;
@@ -123,8 +138,9 @@ export function ExportWizard({
   }, [patchJobsQuery.data]);
 
   useEffect(() => {
-    if (status?.running) setStep(1);
-  }, [status?.running, setStep]);
+    // 发布步进行中不被抢跳：后台若有别的构建在跑，用户不该被从发布页拽走
+    if (status?.running && step !== 3) setStep(1);
+  }, [status?.running, step, setStep]);
 
   // 承接资源列表带来的任务：填入构建范围并跳过选择步骤。
   // 只在首次到达时应用一次——否则用户点「重新选择坐骑」回到选择步骤时，
@@ -139,6 +155,19 @@ export function ExportWizard({
     if (stepId === "create-jobs") setStep(1);
   }, [incomingJobIds, stepId, setStep]);
 
+  // 承接批次列表「重建」带来的任务：同样跳到构建步骤。
+  // handover 在承接后即被页面置 null，不需要 ref 防重放；
+  // 记录承接结果（handoverJobIds）用于构建步的来源横幅。
+  const [handoverJobIds, setHandoverJobIds] = useState<string[] | null>(null);
+  useEffect(() => {
+    if (!handover) return;
+    setHandoverJobIds(handover.jobIds);
+    setJobIds(handover.jobIds);
+    setBuildAll(false);
+    setStep(1);
+    onHandoverConsumed();
+  }, [handover, onHandoverConsumed, setStep]);
+
   // 试运行不落盘校验报告与产物——审查与发布都无从谈起，必须先正式构建。
   const hasBuildArtifacts =
     buildResult !== null && buildError === null && !buildResult.dry_run;
@@ -146,6 +175,11 @@ export function ExportWizard({
   // 横幅只在「当前构建范围 == URL 带入的任务」时显示；用户重新选择并创建任务后，范围已变，就不该再声称是从资源列表带入的
   const showingIncoming =
     incomingJobIds !== null && incomingJobIds.join(",") === jobIds.join(",");
+  // 批次列表「重建」带入的来源横幅，显示条件同理
+  const showingHandover =
+    handoverJobIds !== null &&
+    handoverJobIds.length > 0 &&
+    handoverJobIds.join(",") === jobIds.join(",");
 
   const handleCreateJobs = () => {
     if (selectedIds.length === 0) return;
@@ -154,6 +188,7 @@ export function ExportWizard({
       {
         onSuccess: (data) => {
           setJobIds(data.jobs.map((job) => job.job_id));
+          setHandoverJobIds(null);
           setReviewJobId(null);
           setStep(1);
         },
@@ -204,6 +239,7 @@ export function ExportWizard({
   const handleReset = () => {
     setSelectedIds([]);
     setJobIds([]);
+    setHandoverJobIds(null);
     setReviewJobId(null);
     setStep(0);
   };
@@ -211,11 +247,18 @@ export function ExportWizard({
   return (
     <div className="card">
       <div className="card-header">
-        <div>
-          <div className="card-title">制作补丁包</div>
-          <div className="card-subtitle">
-            全流程第 6~9 步：创建补丁任务 → 构建补丁 → 审查产物 → 发布补丁
+        <div className="space-y-2.5">
+          <div>
+            <div className="card-title">制作补丁包</div>
+            <div className="card-subtitle">
+              选择坐骑 → 构建 → 审查 → 发布；历史批次的「重建」也会汇入这条向导
+            </div>
           </div>
+          <StepIndicator
+            steps={WIZARD_INDICATOR_STEPS}
+            current={completed ? WIZARD_INDICATOR_STEPS.length : step}
+            onSelect={!completed ? setStep : undefined}
+          />
         </div>
       </div>
       <div className="card-body space-y-4">
@@ -234,6 +277,7 @@ export function ExportWizard({
             canWrite={canWrite}
             incomingJobIds={incomingJobIds}
             showingIncoming={showingIncoming}
+            handoverCount={showingHandover ? handoverJobIds.length : null}
             jobIds={jobIds}
             jobNameById={jobNameById}
             allPendingCount={allPendingCount}
