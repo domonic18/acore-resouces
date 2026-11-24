@@ -213,7 +213,7 @@ export function ResourceListPage() {
           onSelect={isAdmin ? handleSelect : undefined}
           onSelectAll={isAdmin ? handleSelectAll : undefined}
           showFeatures={typeParam === "mount" || typeParam === "all"}
-          showItemColumn={typeParam === "mount"}
+          showItemColumn={typeParam === "mount" || typeParam === "pet"}
           showPatchStatus={typeParam === "mount" && isAdmin}
           patchJobs={patchJobMap}
         />
