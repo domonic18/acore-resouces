@@ -3,20 +3,22 @@ import { ResourceStatusBadge } from "@/components/badges/ResourceStatusBadge";
 import { SpecialFeatureBadge } from "@/components/badges/SpecialFeatureBadge";
 import type { Resource } from "@/shared/types";
 
-interface MountSelectRowProps {
+interface ResourceSelectRowProps {
   resource: Resource;
   selected: boolean;
   onToggle: (id: number) => void;
 }
 
-/** 向导坐骑多选的网格单元格：缩略图 + 名称 + 状态/星级/载具/特殊功能徽标 */
-export function MountSelectRow({
+/** 向导资源多选的网格单元格：缩略图 + 名称 + 状态徽标（徽标按类型区分） */
+export function ResourceSelectRow({
   resource,
   selected,
   onToggle,
-}: MountSelectRowProps) {
+}: ResourceSelectRowProps) {
   const label = resource.name || resource.model_folder;
-  const features = resource.special_features ?? [];
+  const isMount = resource.resource_type === "mount";
+  const isPet = resource.resource_type === "pet";
+  const features = isMount ? (resource.special_features ?? []) : [];
   const visibleFeatures = features.slice(0, 2);
   const restFeatures = features.length - visibleFeatures.length;
 
@@ -38,15 +40,15 @@ export function MountSelectRow({
         </span>
         <span className="mt-0.5 flex flex-wrap items-center gap-1">
           <ResourceStatusBadge resource={resource} />
-          {resource.star_rating && (
+          {(resource.star_rating || resource.rarity) && (
             <span
               className="shrink-0 text-xs text-text-tertiary"
               title="星级/稀有度"
             >
-              {resource.star_rating}
+              {resource.star_rating || resource.rarity}
             </span>
           )}
-          {resource.vehicle && (
+          {isMount && resource.vehicle && (
             <span
               className="badge badge-blue shrink-0"
               title="已配置载具：导出时将生成 Vehicle.dbc / npc_spellclick_spells 产物"
@@ -63,7 +65,11 @@ export function MountSelectRow({
             </span>
           )}
           <span className="shrink-0 text-xs text-text-tertiary">
-            {resource.mount_type || ""}
+            {isMount
+              ? (resource.mount_type || "")
+              : isPet
+                ? (resource.pet_type || "")
+                : ""}
           </span>
         </span>
       </span>

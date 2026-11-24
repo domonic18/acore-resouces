@@ -1,12 +1,14 @@
 import { Search } from "lucide-react";
 
-export type MountStatusFilter = "" | "added" | "not_added";
+export type ResourceStatusFilter = "" | "added" | "not_added";
 
-interface MountSelectFiltersProps {
+interface ResourceSelectFiltersProps {
+  /** 资源类型：星级/仅载具筛选仅坐骑展示 */
+  resourceType: string;
   search: string;
   onSearchChange: (value: string) => void;
-  status: MountStatusFilter;
-  onStatusChange: (value: MountStatusFilter) => void;
+  status: ResourceStatusFilter;
+  onStatusChange: (value: ResourceStatusFilter) => void;
   tier: string;
   onTierChange: (value: string) => void;
   tierOptions: string[];
@@ -18,8 +20,9 @@ interface MountSelectFiltersProps {
   onClear: () => void;
 }
 
-/** 向导坐骑多选的筛选行：搜索 + 状态/星级/载具 + 全选/清空/计数 */
-export function MountSelectFilters({
+/** 向导资源多选的筛选行：搜索 + 状态（通用）；星级/载具仅坐骑 + 全选/清空/计数 */
+export function ResourceSelectFilters({
+  resourceType,
   search,
   onSearchChange,
   status,
@@ -33,7 +36,8 @@ export function MountSelectFilters({
   selectedCount,
   onSelectFiltered,
   onClear,
-}: MountSelectFiltersProps) {
+}: ResourceSelectFiltersProps) {
+  const isMount = resourceType === "mount";
   return (
     <div className="mb-3 space-y-2">
       <div className="flex flex-wrap items-center gap-2">
@@ -49,35 +53,39 @@ export function MountSelectFilters({
         <select
           className="filter-select"
           value={status}
-          onChange={(e) => onStatusChange(e.target.value as MountStatusFilter)}
+          onChange={(e) => onStatusChange(e.target.value as ResourceStatusFilter)}
           title="按上线状态过滤"
         >
           <option value="">全部状态</option>
           <option value="added">已添加</option>
           <option value="not_added">未添加</option>
         </select>
-        <select
-          className="filter-select"
-          value={tier}
-          onChange={(e) => onTierChange(e.target.value)}
-          title="按星级/稀有度过滤"
-        >
-          <option value="">所有星级</option>
-          {tierOptions.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-        <label className="flex cursor-pointer items-center gap-1.5 text-xs text-text-secondary">
-          <input
-            type="checkbox"
-            checked={vehicleOnly}
-            onChange={(e) => onVehicleOnlyChange(e.target.checked)}
-            className="h-3.5 w-3.5 accent-blue-500"
-          />
-          仅载具
-        </label>
+        {isMount && (
+          <>
+            <select
+              className="filter-select"
+              value={tier}
+              onChange={(e) => onTierChange(e.target.value)}
+              title="按星级/稀有度过滤"
+            >
+              <option value="">所有星级</option>
+              {tierOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <label className="flex cursor-pointer items-center gap-1.5 text-xs text-text-secondary">
+              <input
+                type="checkbox"
+                checked={vehicleOnly}
+                onChange={(e) => onVehicleOnlyChange(e.target.checked)}
+                className="h-3.5 w-3.5 accent-blue-500"
+              />
+              仅载具
+            </label>
+          </>
+        )}
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <button type="button" className="btn btn-sm" onClick={onSelectFiltered}>

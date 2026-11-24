@@ -22,11 +22,12 @@ export interface PreflightSummary {
 export function usePatchPreflight(
   resourceIds: number[],
   enabled: boolean,
+  resourceType = "mount",
 ) {
   return useQuery({
-    queryKey: ["patch-preflight", resourceIds],
+    queryKey: ["patch-preflight", resourceType, resourceIds],
     queryFn: async () => {
-      const previews = await previewPatchBatch(resourceIds);
+      const previews = await previewPatchBatch(resourceIds, resourceType);
       const map = new Map<number, PreflightSummary>();
       for (const preview of previews) {
         map.set(preview.resource_id, summarize(preview));

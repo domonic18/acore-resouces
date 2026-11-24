@@ -17,7 +17,7 @@ from app.schemas.patch import (
     PatchJobUpdateRequest,
     ValidationReportOut,
 )
-from app.schemas.resource import Mount
+from app.schemas.resource import Resource
 from app.services.build_runner import (
     BuildAlreadyRunningError,
     get_build_status,
@@ -25,12 +25,13 @@ from app.services.build_runner import (
     start_build,
 )
 from app.services.mount_patch_builder import MountPatchBuilderError
-from app.services.mount_preview import build_mount_preview, build_mount_previews
+from app.services.mount_preview import build_patch_preview, build_patch_previews
 from app.services.patch_artifacts import load_job_artifacts
 from app.services.patch_audit import load_audit_by_job
 from app.services.patch_batches import list_patch_batches
 from app.services.patch_compare import compare_batches
 from app.services.patch_exporter import (
+    SUPPORTED_PATCH_RESOURCE_TYPES,
     create_patch_job,
     delete_patch_job,
     get_patch_job,
@@ -74,6 +75,7 @@ class PatchExportRequest(BaseModel):
 class PatchPreviewBatchRequest(BaseModel):
     """批量补丁预览请求。"""
 
+    resource_type: str = "mount"
     resource_ids: list[int] = Field(default_factory=list)
 
 
@@ -81,10 +83,13 @@ class PatchPreviewBatchRequest(BaseModel):
 def export_request(body: PatchExportRequest) -> dict[str, Any]:
     """批量导出补丁原料包。
 
-    第一阶段仅支持 mount 类型。
+    仅支持 SUPPORTED_PATCH_RESOURCE_TYPES 中的类型（mount / pet）。
     """
-    if body.resource_type != "mount":
-        raise HTTPException(400, "第一阶段仅支持 mount 类型")
+    if body.resource_type not in SUPPORTED_PATCH_RESOURCE_TYPES:
+        raise HTTPException(
+            400,
+            f"补丁任务仅支持 {'、'.join(SUPPORTED_PATCH_RESOURCE_TYPES)} 类型",
+        )
     if not body.resource_ids:
         raise HTTPException(400, "resource_ids 不能为空")
 
@@ -255,43 +260,51 @@ def clean(body: WorkspaceCleanRequest) -> dict[str, Any]:
 
 @router.get("/preview/{resource_type}/{resource_id}", response_model=MountPatchPreview)
 def preview_patch(resource_type: str, resource_id: int) -> MountPatchPreview:
-    """坐骑补丁预览（所见即所得）。
+    """补丁预览（所见即所得）。
 
     纯读：在创建补丁任务之前计算「这次构建会往 DBC/SQL 写入什么」，
     并列出关联不一致、ID 冲突、资源缺失等问题，不落盘。
     """
+    if resource_type not in SUPPORTED_PATCH_RESOURCE_TYPES:
+        raise HTTPException(
+            400,
+            f"补丁任务仅支持 {'、'.join(SUPPORTED_PATCH_RESOURCE_TYPES)} 类型",
+        )
     resource = load_resource(resource_type, resource_id)
     if resource is None:
         raise HTTPException(404, f"未找到 {resource_type} ID={resource_id}")
-    if resource.resource_type != "mount":
-        raise HTTPException(400, "第一阶段仅支持 mount 类型")
-    return build_mount_preview(resource)
+    return build_patch_preview(resource)
 
 
 @router.post("/preview/batch", response_model=list[MountPatchPreview])
 def preview_patch_batch(body: PatchPreviewBatchRequest) -> list[MountPatchPreview]:
-    """批量坐骑补丁预览。
+    """批量补丁预览。
 
     与逐个调用 /preview/{type}/{id} 等价，但共享 DBC 占用 ID 缓存——
     每个 DBC 文件只加载一次。
     """
+    if body.resource_type not in SUPPORTED_PATCH_RESOURCE_TYPES:
+        raise HTTPException(
+            400,
+            f"补丁任务仅支持 {'、'.join(SUPPORTED_PATCH_RESOURCE_TYPES)} 类型",
+        )
     if not body.resource_ids:
         raise HTTPException(400, "resource_ids 不能为空")
     if len(body.resource_ids) > 100:
         raise HTTPException(400, "一次最多预览 100 个资源")
 
-    resources: list[Mount] = []
+    resources: list[Resource] = []
     missing = []
     for rid in body.resource_ids:
-        resource = load_resource("mount", rid)
+        resource = load_resource(body.resource_type, rid)
         if resource is None:
             missing.append(rid)
-        elif resource.resource_type == "mount":
+        elif resource.resource_type == body.resource_type:
             resources.append(resource)
     if missing:
-        raise HTTPException(404, f"未找到坐骑：{', '.join(str(m) for m in missing)}")
+        raise HTTPException(404, f"未找到资源：{', '.join(str(m) for m in missing)}")
 
-    return build_mount_previews(resources)
+    return build_patch_previews(resources)
 
 
 @router.get("/reports/{batch}/validation-report", response_model=ValidationReportOut)

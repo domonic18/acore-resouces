@@ -72,7 +72,7 @@ def _build_mount_patches_impl(
     _phase("load")
     contexts, rebuild_jobs = find_jobs(settings.patch_jobs_dir, all_requested, job_ids)
 
-    _log(f"将处理 {len(contexts)} 个坐骑：")
+    _log(f"将处理 {len(contexts)} 个资源：")
     for ctx in contexts:
         marker = "（重建：覆盖已有 DBC 记录）" if ctx.job_id in rebuild_jobs else ""
         name = ctx.resource.official_db.name or ctx.resource.model_folder
@@ -107,16 +107,16 @@ def _build_mount_patches_impl(
     dbc_audit_records = apply_dbc_operations(grouped_ops, dry_run=dry_run, force=force)
 
     _phase("gen_sql")
-    _log("生成坐骑 SQL（每只坐骑独立目录）...")
+    _log("生成资源 SQL（每任务独立目录）...")
     sql_files: list[Path] = []
     sql_entries: list[dict[str, Any]] = []
     _progress(0, len(contexts), None)
     for index, ctx in enumerate(contexts, start=1):
         _progress(index, len(contexts), ctx.job_id)
         written = generate_sql(ctx, dry_run=dry_run, force=force)
-        mount_name = ctx.resource.official_db.name or ctx.resource.model_folder
+        resource_name = ctx.resource.official_db.name or ctx.resource.model_folder
         for f in written:
-            _log(f"  {mount_name}：{f}")
+            _log(f"  {resource_name}：{f}")
             sql_files.append(f)
         sql_entries.append(
             {
@@ -127,7 +127,7 @@ def _build_mount_patches_impl(
             }
         )
     if not sql_files:
-        _log("  无新增 SQL（所有坐骑均已存在 SQL 文件）。")
+        _log("  无新增 SQL（所有资源均已存在 SQL 文件）。")
     _log()
 
     _phase("build_mpq")

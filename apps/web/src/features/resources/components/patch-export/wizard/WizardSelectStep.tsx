@@ -1,22 +1,47 @@
 import { Loader2, PackagePlus } from "lucide-react";
-import { MountMultiSelect } from "@/features/resources/components/patch-export/MountMultiSelect";
-import type { WizardSelectStepProps } from "./types";
+import { ResourceMultiSelect } from "@/features/resources/components/patch-export/ResourceMultiSelect";
+import type { PatchResourceType, WizardSelectStepProps } from "./types";
 
-/** 向导第 0 步（全流程第 ⑥ 步）：选择坐骑并创建补丁任务。 */
+/** 向导第 0 步（全流程第 ⑥ 步）：选择资源（坐骑/小宠物）并创建补丁任务。 */
 export function WizardSelectStep({
   selectedIds,
   onSelectedIdsChange,
+  resourceType,
+  onResourceTypeChange,
   canWrite,
   exportMutation,
   onCreateJobs,
 }: WizardSelectStepProps) {
+  const handleTypeChange = (type: string) => {
+    const next = type === "pet" ? "pet" : "mount";
+    if (next === resourceType) return;
+    onSelectedIdsChange([]);
+    onResourceTypeChange(next as PatchResourceType);
+  };
+
   return (
     <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs text-text-secondary">资源类型</span>
+        <select
+          className="filter-select"
+          value={resourceType}
+          onChange={(e) => handleTypeChange(e.target.value)}
+          title="切换资源类型会清空当前勾选与筛选"
+        >
+          <option value="mount">坐骑</option>
+          <option value="pet">小宠物</option>
+        </select>
+      </div>
       <p className="text-xs text-text-tertiary">
-        这里是创建补丁任务的唯一入口：勾选坐骑（支持按状态 / 星级 / 载具筛选），
+        这里是创建补丁任务的唯一入口：勾选资源（坐骑支持按状态 / 星级 / 载具筛选），
         点「创建补丁任务」进入构建。资源管理页的「制作补丁」也会跳转到这里。
       </p>
-      <MountMultiSelect selected={selectedIds} onChange={onSelectedIdsChange} />
+      <ResourceMultiSelect
+        resourceType={resourceType}
+        selected={selectedIds}
+        onChange={onSelectedIdsChange}
+      />
       <div className="flex items-center gap-3">
         <button
           type="button"
@@ -43,7 +68,7 @@ export function WizardSelectStep({
         </span>
       </div>
       <p className="text-xs text-text-tertiary">
-        追加坐骑：直接在这里勾选新坐骑再构建即可——产物是编号更高的新补丁包，
+        追加资源：直接在这里勾选新资源再构建即可——产物是编号更高的新补丁包，
         与已发布的旧包叠加生效，客户端需同时保留旧全量包和新包。
       </p>
       <p className="text-xs text-text-tertiary">

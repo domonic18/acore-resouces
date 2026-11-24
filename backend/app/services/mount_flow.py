@@ -17,7 +17,7 @@ from app.schemas.flow import (
     ResourceFlowState,
 )
 from app.schemas.resource import Mount
-from app.services.mount_preview import build_mount_preview
+from app.services.mount_preview import build_patch_preview
 from app.services.patch_exporter import get_patch_job
 from app.services.patch_reports import load_validation_report_by_job
 from app.services.resource_validation import compute_required_fields
@@ -45,7 +45,7 @@ def get_mount_flow_state(resource: Mount) -> ResourceFlowState:
     steps.append({"completed": True, "message": "已入册"})
 
     # 2 模型贴图就位
-    assets = build_mount_preview(resource).assets
+    assets = build_patch_preview(resource).assets
     assets_ready = bool(assets.exists and assets.m2_files and assets.matched_textures)
     steps.append(
         {
@@ -94,7 +94,7 @@ def get_mount_flow_state(resource: Mount) -> ResourceFlowState:
     )
 
     # 5 预检
-    preview = build_mount_preview(resource)
+    preview = build_patch_preview(resource)
     steps.append(
         {
             "completed": preview.ready,

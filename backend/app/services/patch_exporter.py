@@ -119,6 +119,40 @@ SPELL_DESCRIPTION_FALLBACKS: dict[str, str] = {
     "水上坐骑": "这种坐骑在陆地上行动不是很快，但是在水里就大不一样了！",
 }
 
+# 宠物召唤法术模板：取基线 Spell.dbc 官方观赏宠物召唤法术族
+# （Effect_1=28 + EffectMiscValueB_1=41，共 206 条）众数字段，参考样本 61991（小鹿）。
+# 与坐骑法术结构完全不同：不做任何光环叠加，召唤目标由 EffectMiscValue_1
+# 挂 creature_template.entry（与坐骑约定一致）；SpellVisualID_1 各宠物各异，
+# 取 61991 的 353 作缺省，YAML spell_visual_id 可覆盖。
+PET_SPELL_TEMPLATE: dict[str, Any] = {
+    "Attributes": 262416,
+    "CastingTimeIndex": 1,
+    "DurationIndex": 21,
+    "RangeIndex": 1,
+    "InterruptFlags": 31,
+    "ProcChance": 101,
+    "StartRecoveryCategory": 133,
+    "StartRecoveryTime": 1500,
+    "EquippedItemClass": -1,
+    "Effect_1": 28,  # SPELL_EFFECT_SUMMON_PET（观赏宠物召唤）
+    "EffectDieSides_1": 1,
+    "EffectAmplitude_1": 1000.0,
+    "ImplicitTargetA_1": 32,
+    "EffectMiscValueB_1": 41,
+    "EffectChainAmplitude_1": 1.0,
+    "EffectChainAmplitude_2": 1.0,
+    "EffectChainAmplitude_3": 1.0,
+    "SchoolMask": 1,
+    "SpellVisualID_1": 353,
+    "Name_Lang_Mask": 16712190,
+    "Description_Lang_Mask": 16712190,
+    "NameSubtext_Lang_Mask": 16712188,
+    "AuraDescription_Lang_Mask": 16712188,
+}
+
+# 补丁任务支持的资源类型；npc 无召唤法术/物品链，不支持。
+SUPPORTED_PATCH_RESOURCE_TYPES: tuple[str, ...] = ("mount", "pet")
+
 # 速度百分比覆盖：YAML 字段 → 光环类型，写入对应效果槽位的 EffectBasePoints（值 - 1）
 SPELL_SPEED_AURA_FIELDS: dict[str, int] = {
     "speed": 32,  # SPELL_AURA_MOD_INCREASE_SPEED 移动速度
@@ -242,10 +276,23 @@ def build_assets_json(resource: Resource) -> dict[str, Any]:
     }
 
 
-def build_dbc_plan(resource: Mount) -> DBCPlan:
-    """根据坐骑资源生成 DBC 修改计划。"""
-    mount_type = resource.mount_type or "陆地坐骑"
-    spell_template = SPELL_TYPE_TEMPLATES.get(mount_type, SPELL_TYPE_TEMPLATES["陆地坐骑"]).copy()
+def build_dbc_plan(resource: Resource) -> DBCPlan:
+    """根据资源生成 DBC 修改计划。
+
+    mount/pet 共用：CreatureModelData / CreatureDisplayInfo / Spell / Item
+    四块按资源现场生成；Spell 字段模板按资源类型选择（坐骑按 mount_type
+    分模板并注入特性效果，宠物用官方观赏宠物族模板）；载具相关两块
+    （Vehicle / VehicleSeat）仅坐骑配置了 vehicle 时生成。
+    """
+    mount = resource if isinstance(resource, Mount) else None
+    # pet 无 mount_type；取「陆地坐骑」仅作 dict.get 的占位键，pet 分支不使用
+    mount_type = (mount.mount_type or "陆地坐骑") if mount else "陆地坐骑"
+    spell_template: dict[str, Any] = (
+        SPELL_TYPE_TEMPLATES.get(mount_type, SPELL_TYPE_TEMPLATES["陆地坐骑"]).copy()
+        if mount
+        else {}
+    )
+    vehicle = mount.vehicle if mount else None
 
     plans: list[DBCPlanFile] = []
 
@@ -328,56 +375,68 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
     spell = resource.dbc.spell.model_dump(exclude_none=True)
     ct_entry = resource.db.creature_template.entry
     if spell and spell.get("id") and ct_entry:
-        # 特性第三效果组注入（水面行走/水下骑乘）。水上模板槽 2 已带游泳光环时
-        # 无需追加（swim_speed 覆盖写槽 2）；地面双标签会争抢槽 3，显式报错。
-        features = resource.special_features
-        has_swim_aura = 58 in (
-            spell_template.get("EffectAura_2"),
-            spell_template.get("EffectAura_3"),
-        )
-        if "水面行走" in features and "水下骑乘" in features and not has_swim_aura:
-            raise ValueError(f"坐骑 {resource.id} 同时标注水面行走与水下骑乘，第三效果槽位冲突")
-        if "水面行走" in features:
-            spell_template.update(WATER_WALK_EFFECT_FIELDS)
-        if "水下骑乘" in features and not has_swim_aura:
-            spell_template.update(SWIM_SPEED_EFFECT_FIELDS)
-        aura_desc_text, aura_desc_mask = SPELL_AURA_DESCRIPTIONS.get(
-            mount_type, SPELL_AURA_DESCRIPTIONS["陆地坐骑"]
-        )
-        description = str(spell.get("description", "")).strip()
-        if not description:
-            # 描述为空时按类型自动生成，与 MCC 已部署法术的文案结构一致
-            fallback = SPELL_DESCRIPTION_FALLBACKS.get(
-                mount_type, SPELL_DESCRIPTION_FALLBACKS["陆地坐骑"]
+        spell_name = str(spell.get("name") or resource.official_db.name or resource.model_folder)
+        if mount is not None:
+            # 特性第三效果组注入（水面行走/水下骑乘）。水上模板槽 2 已带游泳光环时
+            # 无需追加（swim_speed 覆盖写槽 2）；地面双标签会争抢槽 3，显式报错。
+            features = mount.special_features
+            has_swim_aura = 58 in (
+                spell_template.get("EffectAura_2"),
+                spell_template.get("EffectAura_3"),
             )
-            spell_name = str(
-                spell.get("name") or resource.official_db.name or resource.model_folder
+            if "水面行走" in features and "水下骑乘" in features and not has_swim_aura:
+                raise ValueError(f"坐骑 {resource.id} 同时标注水面行走与水下骑乘，第三效果槽位冲突")
+            if "水面行走" in features:
+                spell_template.update(WATER_WALK_EFFECT_FIELDS)
+            if "水下骑乘" in features and not has_swim_aura:
+                spell_template.update(SWIM_SPEED_EFFECT_FIELDS)
+            aura_desc_text, aura_desc_mask = SPELL_AURA_DESCRIPTIONS.get(
+                mount_type, SPELL_AURA_DESCRIPTIONS["陆地坐骑"]
             )
-            description = f"召唤或解散一只可供骑乘的{spell_name}。{fallback}"
-        spell_fields: dict[str, Any] = {
-            "ID": int(spell["id"]),
-            **SPELL_COMMON_FIELDS,
-            **spell_template,
-            "EffectMiscValue_1": int(ct_entry),
-            "SpellIconID": int(spell.get("icon_id", 0)),
-            "Name_Lang_deDE": str(
-                spell.get("name") or resource.official_db.name or resource.model_folder
-            ),
-            "Description_Lang_deDE": description,
-            "AuraDescription_Lang_deDE": aura_desc_text,
-            "AuraDescription_Lang_Mask": aura_desc_mask,
-        }
+            description = str(spell.get("description", "")).strip()
+            if not description:
+                # 描述为空时按类型自动生成，与 MCC 已部署法术的文案结构一致
+                fallback = SPELL_DESCRIPTION_FALLBACKS.get(
+                    mount_type, SPELL_DESCRIPTION_FALLBACKS["陆地坐骑"]
+                )
+                description = f"召唤或解散一只可供骑乘的{spell_name}。{fallback}"
+            spell_fields: dict[str, Any] = {
+                "ID": int(spell["id"]),
+                **SPELL_COMMON_FIELDS,
+                **spell_template,
+                "EffectMiscValue_1": int(ct_entry),
+                "SpellIconID": int(spell.get("icon_id", 0)),
+                "Name_Lang_deDE": spell_name,
+                "Description_Lang_deDE": description,
+                "AuraDescription_Lang_deDE": aura_desc_text,
+                "AuraDescription_Lang_Mask": aura_desc_mask,
+            }
+            # 速度百分比覆盖：按光环类型定位效果槽位（如飞行坐骑 310% → 207 光环槽位 309）
+            for speed_field, aura_id in SPELL_SPEED_AURA_FIELDS.items():
+                speed_value = spell.get(speed_field)
+                if not speed_value:
+                    continue
+                for slot in (1, 2, 3):
+                    if spell_template.get(f"EffectAura_{slot}") == aura_id:
+                        spell_fields[f"EffectBasePoints_{slot}"] = int(speed_value) - 1
+            spell_reason = "新增坐骑召唤法术"
+        else:
+            # 宠物：官方观赏宠物族模板，无光环叠加；描述沿用官方「右键点击以召唤」句式
+            description = str(spell.get("description", "")).strip()
+            if not description:
+                description = f"右键点击以召唤或解散你的{spell_name}。"
+            spell_fields = {
+                "ID": int(spell["id"]),
+                **PET_SPELL_TEMPLATE,
+                "EffectMiscValue_1": int(ct_entry),
+                "SpellIconID": int(spell.get("icon_id", 0)),
+                "Name_Lang_deDE": spell_name,
+                "Description_Lang_deDE": description,
+            }
+            spell_reason = "新增宠物召唤法术"
         # 真正的 SpellVisualID_1 覆盖（visual_id 字段存的是挂载生物 entry，与此无关）
         if spell.get("spell_visual_id"):
             spell_fields["SpellVisualID_1"] = int(spell["spell_visual_id"])
-        # 速度百分比覆盖：按光环类型定位效果槽位（如飞行坐骑 310% → 207 光环槽位 309）
-        for speed_field, aura_id in SPELL_SPEED_AURA_FIELDS.items():
-            speed_value = spell.get(speed_field)
-            if not speed_value:
-                continue
-            for slot in (1, 2, 3):
-                if spell_template.get(f"EffectAura_{slot}") == aura_id:
-                    spell_fields[f"EffectBasePoints_{slot}"] = int(speed_value) - 1
         plans.append(
             DBCPlanFile(
                 dbc_file="Spell.dbc",
@@ -385,7 +444,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
                     DBCPlanOperation(
                         action="add",
                         record_id=int(spell["id"]),
-                        reason="新增坐骑召唤法术",
+                        reason=spell_reason,
                         fields=spell_fields,
                     )
                 ],
@@ -419,8 +478,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         )
 
     # Vehicle.dbc：仅自建载具记录（vehicle_id 非官方 312/315）时生成；
-    # 复用官方多座载具时零 DBC 改动。
-    vehicle = resource.vehicle
+    # 复用官方多座载具时零 DBC 改动。pet 无 vehicle 概念（顶部已按类型守卫）。
     if vehicle and vehicle.vehicle_id not in OFFICIAL_MULTI_SEAT_VEHICLE_IDS:
         vehicle_fields: dict[str, Any] = {
             "ID": int(vehicle.vehicle_id),
@@ -465,19 +523,27 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
             )
         plans.append(DBCPlanFile(dbc_file="VehicleSeat.dbc", operations=seat_ops))
 
+    spell_profile: dict[str, Any] = {"resource_type": resource.resource_type}
+    if mount is not None:
+        spell_profile["mount_type"] = mount_type
+    spell_profile.update(spell_template if mount is not None else PET_SPELL_TEMPLATE)
     return DBCPlan(
         source_dbc_dir=str(settings.wow_dbc_dir),
         output_dbc_dir="output/dbc",
-        spell_profile={
-            "mount_type": mount_type,
-            **spell_template,
-        },
+        spell_profile=spell_profile,
         plans=plans,
     )
 
 
-def build_sql_plan(resource: Mount) -> SQLPlan:
-    """根据坐骑资源生成 SQL 计划。"""
+def build_sql_plan(resource: Resource) -> SQLPlan:
+    """根据资源生成 SQL 计划。
+
+    mount/pet 共用：creature_model_info / creature_template / item_template /
+    creature_template_model / 掉落表按资源现场生成；载具相关两表
+    （npc_spellclick_spells / vehicle_template_accessory）仅坐骑配置了
+    vehicle 时生成。
+    """
+    vehicle = resource.vehicle if isinstance(resource, Mount) else None
     tables: list[SQLPlanTable] = []
 
     # creature_model_info
@@ -501,7 +567,6 @@ def build_sql_plan(resource: Mount) -> SQLPlan:
 
     # creature_template
     ct = resource.db.creature_template.model_dump(exclude_none=True)
-    vehicle = resource.vehicle
     if ct and ct.get("entry"):
         # 保持 entry 在首位，便于阅读；其余字段顺序由 YAML 决定。
         ct_record: dict[str, Any] = {"entry": int(ct["entry"])}
@@ -676,8 +741,11 @@ def create_patch_job(resource_type: str, resource_id: int) -> PatchJobManifest:
         raise ValueError(f"未找到 {resource_type} ID={resource_id}")
     if resource.resource_type != resource_type:
         raise ValueError(f"资源类型不匹配：期望 {resource_type}，实际 {resource.resource_type}")
-    if resource.resource_type != "mount":
-        raise ValueError(f"第一阶段仅支持 mount，当前类型 {resource.resource_type}")
+    if resource.resource_type not in SUPPORTED_PATCH_RESOURCE_TYPES:
+        raise ValueError(
+            f"补丁任务仅支持 {'、'.join(SUPPORTED_PATCH_RESOURCE_TYPES)}，"
+            f"当前类型 {resource.resource_type}"
+        )
 
     job_id = _build_job_id(resource)
     job_dir = settings.patch_jobs_dir / job_id

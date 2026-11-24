@@ -18,7 +18,7 @@ import yaml
 import app.services.mount_patch_builder as _facade
 from app.core.config import settings
 from app.schemas.patch import DBCPlan, SQLPlan
-from app.schemas.resource import Mount
+from app.schemas.resource import Resource
 
 from ._errors import MountPatchBuilderError
 from ._logging import _log
@@ -103,7 +103,7 @@ class JobContext:
     job_dir: Path
     job_id: str
     manifest: dict[str, Any]
-    resource: Mount
+    resource: Resource
     dbc_plan: DBCPlan
     sql_plan: SQLPlan
     assets: dict[str, Any]
@@ -147,9 +147,9 @@ def build_job_context(job_dir: Path) -> JobContext:
         job_dir=job_dir,
         job_id=job_id,
         manifest=manifest,
-        resource=cast(Mount, resource),
-        dbc_plan=build_dbc_plan(cast(Mount, resource)),
-        sql_plan=build_sql_plan(cast(Mount, resource)),
+        resource=resource,
+        dbc_plan=build_dbc_plan(resource),
+        sql_plan=build_sql_plan(resource),
         assets=build_assets_json(resource),
     )
 

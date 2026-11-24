@@ -41,10 +41,21 @@ def test_preview_returns_plan_and_readiness() -> None:
     assert isinstance(data["issues"], list)
 
 
+def test_preview_rejects_unsupported_type() -> None:
+    """npc 不在补丁支持类型白名单内。"""
+    response = client.get("/api/patches/preview/npc/1")
+    assert response.status_code == 400
+
+
 @_requires_mount
-def test_preview_rejects_non_mount_type() -> None:
+def test_preview_accepts_pet_type() -> None:
+    """pet 已进入补丁支持范围；数据不全时返回 200 + issue 清单。"""
     response = client.get("/api/patches/preview/pet/1")
-    assert response.status_code in (400, 404)
+    if response.status_code == 404:
+        pytest.skip("本地 pet 资源不存在")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["resource_type"] == "pet"
 
 
 @_requires_mount
