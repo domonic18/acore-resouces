@@ -10,7 +10,7 @@ interface PatchExportButtonProps {
 }
 
 /**
- * 为单只坐骑创建补丁任务（生产流程第 6 步）。
+ * 为单只坐骑进入补丁制作流程（跳转向导第⑥步，任务创建统一在向导里）。
  *
  * 与列表页的批量入口共用同一个对话框，交互保持一致。
  */
@@ -34,12 +34,12 @@ export function PatchExportButton({
         }
         title={
           canWrite
-            ? `为 ${resource.name || resource.model_folder} 创建补丁任务（生产流程第 6 步）`
-            : "仅管理员可创建补丁任务"
+            ? `带着 ${resource.name || resource.model_folder} 进入补丁向导`
+            : "仅管理员可制作补丁"
         }
       >
         <PackagePlus className="h-4 w-4" />
-        创建补丁任务
+        制作补丁
       </button>
 
       <CreatePatchJobsDialog

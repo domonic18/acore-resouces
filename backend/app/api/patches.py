@@ -8,6 +8,7 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from app.schemas.patch import (
+    BatchCompareResult,
     JobArtifactsOut,
     JobPlansOut,
     MountPatchPreview,
@@ -28,6 +29,7 @@ from app.services.mount_preview import build_mount_preview, build_mount_previews
 from app.services.patch_artifacts import load_job_artifacts
 from app.services.patch_audit import load_audit_by_job
 from app.services.patch_batches import list_patch_batches
+from app.services.patch_compare import compare_batches
 from app.services.patch_exporter import (
     create_patch_job,
     delete_patch_job,
@@ -177,6 +179,20 @@ def list_batches(
         "total": len(items),
         "items": [b.model_dump(exclude_none=False) for b in items],
     }
+
+
+@router.get("/batches/{batch_id}/compare", response_model=BatchCompareResult)
+def compare_batch(
+    batch_id: str,
+    against: str = Query(..., description="对比的目标批次"),
+) -> BatchCompareResult:
+    """任选两批次产物对比（基于审计报告的文件清单 + 任务集合）。"""
+    try:
+        return compare_batches(batch_id, against)
+    except ValueError as e:
+        raise HTTPException(400, str(e)) from e
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e)) from e
 
 
 @router.post("/publish")

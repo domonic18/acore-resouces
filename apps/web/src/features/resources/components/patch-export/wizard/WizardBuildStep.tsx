@@ -121,6 +121,11 @@ export function WizardBuildStep({
             如果只是想验证本次改动，请取消勾选，改用上面的「本次选中的坐骑」。
           </div>
         )}
+
+        <p className="text-xs text-text-tertiary">
+          构建基于累积的工作区 DBC：只写本次范围任务的记录，不影响已发布批次的补丁包；
+          已在库中的记录默认跳过，需要重写请用下方「覆盖已存在的 DBC 记录」。
+        </p>
       </fieldset>
 
       <label className="flex cursor-pointer items-start gap-2 text-sm">

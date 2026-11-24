@@ -1,31 +1,52 @@
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import { useResourceListData } from "@/features/resources/hooks/useResourceListData";
-import { SpecialFeatureBadge } from "@/components/badges/SpecialFeatureBadge";
+import { MountSelectRow } from "./MountSelectRow";
+import { MountSelectFilters } from "./MountSelectFilters";
+import type { MountStatusFilter } from "./MountSelectFilters";
 
 interface MountMultiSelectProps {
   selected: number[];
   onChange: (ids: number[]) => void;
 }
 
+/** 向导第⑥步的坐骑多选：富信息行（缩略图/状态/星级/载具/功能）+ 精细筛选。 */
 export function MountMultiSelect({
   selected,
   onChange,
 }: MountMultiSelectProps) {
   const { allItems: mounts, isLoading } = useResourceListData("mount");
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<MountStatusFilter>("");
+  const [tier, setTier] = useState("");
+  const [vehicleOnly, setVehicleOnly] = useState(false);
+
+  const tierOptions = useMemo(() => {
+    const values = new Set<string>();
+    for (const m of mounts ?? []) {
+      if (m.star_rating) values.add(m.star_rating);
+    }
+    return [...values].sort();
+  }, [mounts]);
 
   const filtered = useMemo(() => {
     if (!mounts) return [];
     const q = search.trim().toLowerCase();
-    if (!q) return mounts;
-    return mounts.filter(
-      (m) =>
-        (m.name ?? "").toLowerCase().includes(q) ||
-        m.model_folder.toLowerCase().includes(q) ||
-        String(m.id).includes(q),
-    );
-  }, [mounts, search]);
+    return mounts.filter((m) => {
+      if (q) {
+        const haystack = [
+          m.name ?? "",
+          m.model_folder,
+          String(m.id),
+        ].join(" ");
+        if (!haystack.toLowerCase().includes(q)) return false;
+      }
+      if (status === "added" && !m.added) return false;
+      if (status === "not_added" && m.added) return false;
+      if (tier && m.star_rating !== tier) return false;
+      if (vehicleOnly && m.vehicle == null) return false;
+      return true;
+    });
+  }, [mounts, search, status, tier, vehicleOnly]);
 
   const selectedSet = useMemo(() => new Set(selected), [selected]);
 
@@ -53,38 +74,21 @@ export function MountMultiSelect({
 
   return (
     <div>
-      <p className="mb-2 text-xs text-text-tertiary">
-        第 ⑥ 步 · 勾选要制作补丁的坐骑，点下方「创建补丁任务」进入构建
-      </p>
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <div className="search-box relative min-w-52 flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="搜索名称 / 模型 / ID..."
-          />
-        </div>
-        <button type="button" className="btn btn-sm" onClick={selectFiltered}>
-          全选筛选结果
-        </button>
-        <button
-          type="button"
-          className="btn btn-sm"
-          onClick={() => onChange([])}
-          disabled={selected.length === 0}
-        >
-          清空
-        </button>
-        <span className="text-xs text-text-secondary">
-          已选{" "}
-          <span className="font-semibold text-text-primary">
-            {selected.length}
-          </span>{" "}
-          个
-        </span>
-      </div>
+      <MountSelectFilters
+        search={search}
+        onSearchChange={setSearch}
+        status={status}
+        onStatusChange={setStatus}
+        tier={tier}
+        onTierChange={setTier}
+        tierOptions={tierOptions}
+        vehicleOnly={vehicleOnly}
+        onVehicleOnlyChange={setVehicleOnly}
+        filteredCount={filtered.length}
+        selectedCount={selected.length}
+        onSelectFiltered={selectFiltered}
+        onClear={() => onChange([])}
+      />
 
       <div className="grid max-h-[480px] grid-cols-1 gap-px overflow-y-auto rounded-md border border-border bg-border md:grid-cols-2 2xl:grid-cols-3">
         {isLoading && (
@@ -98,37 +102,12 @@ export function MountMultiSelect({
           </div>
         )}
         {filtered.map((m) => (
-          <label
+          <MountSelectRow
             key={m.id}
-            className="flex cursor-pointer items-center gap-2 bg-bg-surface px-3 py-2 text-sm hover:bg-bg-hover"
-          >
-            <input
-              type="checkbox"
-              checked={selectedSet.has(m.id)}
-              onChange={() => toggle(m.id)}
-              className="h-4 w-4 shrink-0 accent-blue-500"
-            />
-            <span className="shrink-0 font-mono text-xs text-text-tertiary">
-              #{String(m.id).padStart(4, "0")}
-            </span>
-            <span className="min-w-0 flex-1 truncate" title={m.name || m.model_folder}>
-              {m.name || m.model_folder}
-            </span>
-            {m.vehicle && (
-              <span
-                className="badge badge-blue shrink-0"
-                title="已配置载具：导出时将生成 Vehicle.dbc / npc_spellclick_spells 产物"
-              >
-                载具
-              </span>
-            )}
-            {m.special_features?.map((feature) => (
-              <SpecialFeatureBadge key={feature} feature={feature} />
-            ))}
-            <span className="shrink-0 text-xs text-text-tertiary">
-              {m.mount_type || "—"}
-            </span>
-          </label>
+            resource={m}
+            selected={selectedSet.has(m.id)}
+            onToggle={toggle}
+          />
         ))}
       </div>
 

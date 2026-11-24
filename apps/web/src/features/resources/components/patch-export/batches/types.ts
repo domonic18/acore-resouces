@@ -18,6 +18,8 @@ export interface BatchCardProps {
   onRebuild: (batch: PatchBatch) => void;
   onPublish: (batch: PatchBatch) => void;
   onDeleteBatch: (batch: PatchBatch) => void;
+  /** 打开「任选两批次对比」对话框（基准为该批次） */
+  onCompare: (batch: PatchBatch) => void;
 }
 
 export interface BatchDetailProps {
