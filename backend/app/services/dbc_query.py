@@ -18,7 +18,7 @@ from app.schemas.dbc import ItemDisplayInfoEntry
 
 logger = logging.getLogger(__name__)
 
-WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
+WOW_DBC_DIR = settings.wow_dbc_dir
 ITEM_DISPLAY_INFO_PATH = WOW_DBC_DIR / "ItemDisplayInfo.dbc"
 SPELL_ICON_PATH = WOW_DBC_DIR / "SpellIcon.dbc"
 

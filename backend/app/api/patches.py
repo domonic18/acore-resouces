@@ -38,6 +38,7 @@ from app.services.patch_exporter import (
 )
 from app.services.patch_plans import build_live_plans, load_stored_plans
 from app.services.patch_publisher import (
+    DEFAULT_START_NUMBER,
     PatchPublisherError,
     publish_patches,
 )
@@ -128,7 +129,7 @@ class PatchBuildRequest(BaseModel):
 class PatchPublishRequest(BaseModel):
     """MPQ 发布请求。"""
 
-    start_number: int = 5
+    start_number: int = DEFAULT_START_NUMBER
     dry_run: bool = False
     batch_ids: list[str] | None = Field(
         default=None, description="指定要发布的批次；为空则发布所有未发布批次"

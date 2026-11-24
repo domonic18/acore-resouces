@@ -466,7 +466,7 @@ def build_dbc_plan(resource: Mount) -> DBCPlan:
         plans.append(DBCPlanFile(dbc_file="VehicleSeat.dbc", operations=seat_ops))
 
     return DBCPlan(
-        source_dbc_dir=str(settings.project_root / "data" / "wow-dbc" / "src" / "dbc"),
+        source_dbc_dir=str(settings.wow_dbc_dir),
         output_dbc_dir="output/dbc",
         spell_profile={
             "mount_type": mount_type,
