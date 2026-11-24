@@ -7,11 +7,11 @@ import {
   useDistChangelog,
   useDistTree,
 } from "@/features/dist/hooks/useDist";
-import { distDownloadUrl } from "@/shared/dist";
+import { downloadDistFile } from "@/shared/dist";
 import { markdownComponents } from "@/shared/markdown";
 import { Dialog } from "@/shared/components/ui/Dialog";
-import { getAccessToken } from "@/shared/auth";
-import { formatBytes } from "@/features/dbc/lib/columns";
+import { useClipboard } from "@/shared/useClipboard";
+import { formatBytes } from "@/shared/format";
 import type { DistBatchMeta, DistTreeNode } from "@/shared/dist";
 import "@/features/dist/dist-wow.css";
 
@@ -61,18 +61,13 @@ function TitleOrnament() {
 }
 
 function Md5Chip({ md5, compact = false }: { md5: string; compact?: boolean }) {
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useClipboard();
   return (
     <button
       type="button"
       className={`md5-chip${copied ? " copied" : ""}${compact ? " md5-chip-compact" : ""}`}
       title={compact ? `MD5 ${md5}（点击复制）` : "点击复制 MD5"}
-      onClick={() => {
-        void navigator.clipboard.writeText(md5).then(() => {
-          setCopied(true);
-          window.setTimeout(() => setCopied(false), 1500);
-        });
-      }}
+      onClick={() => copy(md5)}
     >
       {!compact && <span className="md5-label">🔑 MD5</span>}
       <code>{compact ? `${md5.slice(0, 8)}…` : md5}</code>
@@ -101,6 +96,7 @@ interface PatchCardProps {
   entry: BatchEntry;
   isLatest: boolean;
   isAdmin: boolean;
+  onDownload: (path: string) => void;
   onChangelog: (batch: string) => void;
   onOffline: (batch: string) => void;
 }
@@ -109,14 +105,12 @@ function PatchCard({
   entry,
   isLatest,
   isAdmin,
+  onDownload,
   onChangelog,
   onOffline,
 }: PatchCardProps) {
-  const token = getAccessToken();
   const meta = entry.meta;
-  const downloadHref = entry.mpqPath && token
-    ? distDownloadUrl(entry.mpqPath, token)
-    : undefined;
+  const downloadable = entry.mpqPath !== null;
   return (
     <article className="patch-card">
       <div className="patch-medal">
@@ -125,10 +119,14 @@ function PatchCard({
       </div>
       <div className="patch-info">
         <div className="patch-name-row">
-          {downloadHref ? (
-            <a className="patch-name" href={downloadHref} download>
+          {downloadable ? (
+            <button
+              type="button"
+              className="patch-name"
+              onClick={() => entry.mpqPath && onDownload(entry.mpqPath)}
+            >
               {entry.mpqPath?.split("/").pop()}
-            </a>
+            </button>
           ) : (
             <span className="patch-name">{meta.patch_file ?? meta.batch}</span>
           )}
@@ -142,10 +140,14 @@ function PatchCard({
         )}
       </div>
       <div className="patch-actions">
-        {downloadHref && (
-          <a className="btn-wow" href={downloadHref} download>
+        {downloadable && (
+          <button
+            type="button"
+            className="btn-wow"
+            onClick={() => entry.mpqPath && onDownload(entry.mpqPath)}
+          >
             ⬇ 下载补丁
-          </a>
+          </button>
         )}
         {meta.has_changelog && (
           <button
@@ -174,24 +176,32 @@ function PatchCard({
 interface HistoryRowProps {
   entry: BatchEntry;
   isAdmin: boolean;
+  onDownload: (path: string) => void;
   onChangelog: (batch: string) => void;
   onOffline: (batch: string) => void;
 }
 
-function HistoryRow({ entry, isAdmin, onChangelog, onOffline }: HistoryRowProps) {
-  const token = getAccessToken();
+function HistoryRow({
+  entry,
+  isAdmin,
+  onDownload,
+  onChangelog,
+  onOffline,
+}: HistoryRowProps) {
   const meta = entry.meta;
-  const downloadHref = entry.mpqPath && token
-    ? distDownloadUrl(entry.mpqPath, token)
-    : undefined;
+  const downloadable = entry.mpqPath !== null;
   return (
     <div className="history-row">
       <span className="hist-number">#{meta.patch_number ?? "?"}</span>
       <div className="hist-main min-w-0">
-        {downloadHref ? (
-          <a className="hist-name" href={downloadHref} download>
+        {downloadable ? (
+          <button
+            type="button"
+            className="hist-name"
+            onClick={() => entry.mpqPath && onDownload(entry.mpqPath)}
+          >
             {entry.mpqPath?.split("/").pop()}
-          </a>
+          </button>
         ) : (
           <span className="hist-name">{meta.patch_file ?? meta.batch}</span>
         )}
@@ -204,10 +214,15 @@ function HistoryRow({ entry, isAdmin, onChangelog, onOffline }: HistoryRowProps)
         {meta.md5 && <Md5Chip md5={meta.md5} compact />}
       </div>
       <div className="hist-actions">
-        {downloadHref && (
-          <a className="hist-btn" href={downloadHref} download title="下载补丁">
+        {downloadable && (
+          <button
+            type="button"
+            className="hist-btn"
+            title="下载补丁"
+            onClick={() => entry.mpqPath && onDownload(entry.mpqPath)}
+          >
             ⬇
-          </a>
+          </button>
         )}
         {meta.has_changelog && (
           <button
@@ -352,12 +367,25 @@ export function DistPage() {
   const treeQuery = useDistTree();
   const [changelogBatch, setChangelogBatch] = useState<string | null>(null);
   const [offlineBatch, setOfflineBatch] = useState<string | null>(null);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   const batches = useMemo(() => collectBatches(treeQuery.data), [treeQuery.data]);
   const latest = batches.slice(0, LATEST_COUNT);
   const history = batches.slice(LATEST_COUNT);
 
-  const shared = { isAdmin, onChangelog: setChangelogBatch, onOffline: setOfflineBatch };
+  const handleDownload = (path: string) => {
+    setDownloadError(null);
+    void downloadDistFile(path).catch((err: unknown) => {
+      setDownloadError(err instanceof Error ? err.message : "下载失败，请稍后重试");
+    });
+  };
+
+  const shared = {
+    isAdmin,
+    onDownload: handleDownload,
+    onChangelog: setChangelogBatch,
+    onOffline: setOfflineBatch,
+  };
 
   return (
     <div className="dist-wow">
@@ -380,6 +408,8 @@ export function DistPage() {
               : "未知错误"}
           </p>
         )}
+
+        {downloadError && <p className="error-box">下载失败：{downloadError}</p>}
 
         {!treeQuery.isLoading && !treeQuery.isError && batches.length === 0 && (
           <div className="empty-state">
