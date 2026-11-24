@@ -93,7 +93,11 @@ export function useResourceUpdate(resourceType: string, resourceId: number) {
     const dropUpdate: ResourceUpdate["drop"] = {};
     const entry = normalizeInt(form.drop_entry);
     if (entry !== resource.drop.entry) dropUpdate.entry = entry;
-    const rate = normalizeFloat(form.drop_rate);
+    // 表单中 drop_rate 是百分比表示（1 = 1%），写回 YAML 时转为小数（0.01）；
+    // toFixed(10) 避免 0.35/100 的 1-ulp 偏差把未改动的掉率写脏
+    const ratePercent = normalizeFloat(form.drop_rate);
+    const rate =
+      ratePercent === null ? null : Number((ratePercent / 100).toFixed(10));
     if (rate !== resource.drop.rate) dropUpdate.rate = rate;
     if (form.drop_instance !== (resource.drop.instance ?? "")) {
       dropUpdate.instance = form.drop_instance || null;

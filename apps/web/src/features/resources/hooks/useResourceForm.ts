@@ -20,6 +20,7 @@ export interface FormState {
 }
 
 export function buildForm(resource?: Resource): FormState {
+  const rateDecimal = resource?.drop.rate;
   return {
     name: resource?.official_db.name || resource?.name || "",
     mount_type: resource?.mount_type || "",
@@ -32,7 +33,12 @@ export function buildForm(resource?: Resource): FormState {
     drop_entry: resource?.drop.entry ?? "",
     drop_instance: resource?.drop.instance ?? "",
     drop_boss: resource?.drop.boss ?? "",
-    drop_rate: resource?.drop.rate ?? "",
+    // YAML 中 rate 是小数表示（0.01 = 1%），UI 用百分比展示（1 = 1%），保存时再除 100；
+    // toFixed(4) 抹掉 0.035*100=3.5000000000000004 这类浮点残渣
+    drop_rate:
+      rateDecimal === null || rateDecimal === undefined
+        ? ""
+        : Number((rateDecimal * 100).toFixed(4)),
     debug_passed: resource?.debug_passed ?? false,
     added: resource?.added ?? false,
     notes: resource?.notes || "",

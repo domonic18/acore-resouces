@@ -50,14 +50,16 @@ export function DropSection({ form, updateField, compact }: DropSectionProps) {
           />
         </FormGroup>
         <FormGroup
-          label="掉率"
+          label="掉率 (%)"
           hint={
-            <FieldHint description="掉落概率，范围 0~1（如 0.0001 表示万分之一），导出时写入 loot 表 Chance 字段" />
+            <FieldHint description="百分比数值，如 1 表示 1% 掉率；保存时自动转为 YAML 小数（0.01），导出时写入 loot 表 Chance 字段" />
           }
         >
           <input
             type="number"
-            step="0.0001"
+            step="0.1"
+            min="0"
+            max="100"
             className="form-input"
             value={form.drop_rate}
             onChange={(e) => updateField("drop_rate", e.target.value)}
