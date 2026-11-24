@@ -3,7 +3,7 @@ import type { PatchBatch } from "@/shared/types";
 
 interface BatchRebuildDialogProps {
   batch: PatchBatch;
-  /** 确认后把该批任务带入上方向导的构建步骤 */
+  /** 确认后把该批任务带入左侧向导的构建步骤 */
   onConfirm: (jobIds: string[]) => void;
   onClose: () => void;
 }
@@ -43,7 +43,7 @@ export function BatchRebuildDialog({
       }
     >
       <p className="text-sm text-text-secondary">
-        确认后这 {batch.job_count} 只坐骑的任务会带入上方「制作补丁包」向导并跳到构建步骤，构建日志、产物审查与发布都在向导里完成。
+        确认后这 {batch.job_count} 只坐骑的任务会带入左侧「制作补丁包」向导并跳到构建步骤，构建日志、产物审查与发布都在向导里完成。
       </p>
       <p className="mt-2 text-xs text-text-tertiary">
         构建默认先试运行（不改任何文件），只处理这一批任务，不影响其它待处理任务。

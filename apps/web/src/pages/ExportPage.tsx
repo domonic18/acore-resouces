@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { ListChecks, Trash2 } from "lucide-react";
 import { ExportWizard } from "@/features/resources/components/patch-export/ExportWizard";
-import { FlowContextBar } from "@/features/resources/components/patch-export/FlowContextBar";
 import { JobAuditCard } from "@/features/resources/components/patch-export/JobAuditCard";
 import { ValidationReportDialog } from "@/features/resources/components/patch-export/ValidationReportDialog";
 import { PatchBatchesTable } from "@/features/resources/components/patch-export/PatchBatchesTable";
@@ -15,7 +14,7 @@ export function ExportPage() {
   const [auditJobId, setAuditJobId] = useState<string | null>(null);
   const [cleanOpen, setCleanOpen] = useState(false);
   const canWrite = useCanWrite();
-  // 当前所处流程步骤与完成态由页面持有——流程上下文条与向导共用同一份状态
+  // 当前所处流程步骤与完成态由页面持有，驱动向导（步骤指示在向导卡头）
   const [flowStepId, setFlowStepId] = useState<string>(
     WIZARD_FLOW_STEP_IDS[0],
   );
@@ -63,49 +62,44 @@ export function ExportPage() {
         </div>
       </header>
 
-      <div className="card mb-4">
-        <div className="card-body py-2.5">
-          <FlowContextBar currentStepId={flowStepId} />
-        </div>
-      </div>
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-start">
+        <ExportWizard
+          stepId={flowStepId}
+          onStepChange={handleStepChange}
+          completed={completed}
+          onCompleted={handleCompleted}
+          handover={handover}
+          onHandoverConsumed={handleHandoverConsumed}
+        />
 
-      <ExportWizard
-        stepId={flowStepId}
-        onStepChange={handleStepChange}
-        completed={completed}
-        onCompleted={handleCompleted}
-        handover={handover}
-        onHandoverConsumed={handleHandoverConsumed}
-      />
-
-      <div className="card mt-6">
-        <div className="card-header">
-          <div>
-            <div className="card-title flex items-center gap-2">
-              <ListChecks className="h-4 w-4" /> 已有批次（产物审查 / 重建 /
-              发布）
+        <div className="card">
+          <div className="card-header">
+            <div>
+              <div className="card-title flex items-center gap-2">
+                <ListChecks className="h-4 w-4" /> 已有批次
+              </div>
+              <div className="card-subtitle">
+                历史批次的产物档案；点「重建」会带入左侧向导继续
+              </div>
             </div>
-            <div className="card-subtitle">
-              历史导出批次的产物档案：展开查看每只坐骑的 DBC/SQL 变更；点「重建」会把该批任务带入上方向导继续，构建、审查、发布都在向导里完成
-            </div>
+            <button
+              type="button"
+              className="btn btn-sm"
+              disabled={!canWrite}
+              title={canWrite ? "清理补丁工作区" : "仅管理员可清理工作区"}
+              onClick={() => setCleanOpen(true)}
+            >
+              <Trash2 className="h-3.5 w-3.5" /> 清理
+            </button>
           </div>
-          <button
-            type="button"
-            className="btn btn-sm"
-            disabled={!canWrite}
-            title={canWrite ? "清理补丁工作区" : "仅管理员可清理工作区"}
-            onClick={() => setCleanOpen(true)}
-          >
-            <Trash2 className="h-3.5 w-3.5" /> 清理工作区
-          </button>
-        </div>
-        <div className="card-body">
-          <PatchBatchesTable
-            building={building}
-            onAudit={setAuditJobId}
-            onShowValidation={setValidationTarget}
-            onRebuildHandover={handleRebuildHandover}
-          />
+          <div className="card-body">
+            <PatchBatchesTable
+              building={building}
+              onAudit={setAuditJobId}
+              onShowValidation={setValidationTarget}
+              onRebuildHandover={handleRebuildHandover}
+            />
+          </div>
         </div>
       </div>
 

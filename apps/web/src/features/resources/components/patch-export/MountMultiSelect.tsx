@@ -86,35 +86,37 @@ export function MountMultiSelect({
         </span>
       </div>
 
-      <div className="max-h-72 overflow-y-auto rounded-md border border-border">
+      <div className="grid max-h-[480px] grid-cols-1 gap-px overflow-y-auto rounded-md border border-border bg-border md:grid-cols-2 2xl:grid-cols-3">
         {isLoading && (
-          <div className="py-8 text-center text-sm text-text-tertiary">
+          <div className="bg-bg-surface py-8 text-center text-sm text-text-tertiary md:col-span-2 2xl:col-span-3">
             加载中...
           </div>
         )}
         {!isLoading && filtered.length === 0 && (
-          <div className="py-8 text-center text-sm text-text-tertiary">
+          <div className="bg-bg-surface py-8 text-center text-sm text-text-tertiary md:col-span-2 2xl:col-span-3">
             无匹配坐骑
           </div>
         )}
         {filtered.map((m) => (
           <label
             key={m.id}
-            className="flex cursor-pointer items-center gap-2.5 border-b border-border px-3 py-2 text-sm last:border-b-0 hover:bg-bg-hover"
+            className="flex cursor-pointer items-center gap-2 bg-bg-surface px-3 py-2 text-sm hover:bg-bg-hover"
           >
             <input
               type="checkbox"
               checked={selectedSet.has(m.id)}
               onChange={() => toggle(m.id)}
-              className="h-4 w-4 accent-blue-500"
+              className="h-4 w-4 shrink-0 accent-blue-500"
             />
-            <span className="font-mono text-xs text-text-tertiary">
+            <span className="shrink-0 font-mono text-xs text-text-tertiary">
               #{String(m.id).padStart(4, "0")}
             </span>
-            <span className="flex-1 truncate">{m.name || m.model_folder}</span>
+            <span className="min-w-0 flex-1 truncate" title={m.name || m.model_folder}>
+              {m.name || m.model_folder}
+            </span>
             {m.vehicle && (
               <span
-                className="badge badge-blue"
+                className="badge badge-blue shrink-0"
                 title="已配置载具：导出时将生成 Vehicle.dbc / npc_spellclick_spells 产物"
               >
                 载具
@@ -123,7 +125,7 @@ export function MountMultiSelect({
             {m.special_features?.map((feature) => (
               <SpecialFeatureBadge key={feature} feature={feature} />
             ))}
-            <span className="text-xs text-text-tertiary">
+            <span className="shrink-0 text-xs text-text-tertiary">
               {m.mount_type || "—"}
             </span>
           </label>
