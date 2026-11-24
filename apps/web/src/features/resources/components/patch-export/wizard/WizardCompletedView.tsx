@@ -111,7 +111,7 @@ export function WizardCompletedView({
           className="btn btn-sm"
           onClick={onGoToResources}
         >
-          去资源列表勾选「调试通过」
+          去资源管理勾选「调试通过」
         </button>
       </div>
     </div>

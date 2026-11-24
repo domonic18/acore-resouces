@@ -187,7 +187,7 @@ export function ResourceFolderPage() {
   return (
     <div className="content">
       <header className="topbar">
-        <h1 className="page-title">资源列表</h1>
+        <h1 className="page-title">资源目录</h1>
         <div className="topbar-actions flex items-center gap-3">
           <select
             className="h-9 rounded-md border border-border bg-bg-surface px-3 text-sm text-text-primary"

@@ -113,7 +113,7 @@ export function ResourceListPage() {
   return (
     <div className="content">
       <header className="topbar">
-        <h1 className="page-title">资源表格</h1>
+        <h1 className="page-title">资源管理</h1>
         <div className="topbar-actions">
           <div className={cn("search-box", searchInput && "has-clear")}>
             <input

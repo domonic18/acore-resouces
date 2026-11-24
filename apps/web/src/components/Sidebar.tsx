@@ -25,82 +25,122 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
+interface NavGroup {
+  label: string;
+  items: NavItem[];
+}
+
 const RESOURCE_TYPE_LABEL: Record<string, string> = {
   mount: "坐骑",
   pet: "宠物",
   npc: "NPC",
 };
 
-function buildPlayerNav(hasPerm: (code: string) => boolean, perms: string[]): NavItem[] {
-  const items: NavItem[] = [];
-  if (hasPerm("dist")) {
-    items.push({
-      label: "补丁下载",
-      path: "/dist",
-      icon: <HardDriveDownload className="h-[18px] w-[18px]" />,
-    });
-  }
+function buildViewerNavGroups(
+  hasPerm: (code: string) => boolean,
+  perms: string[],
+): NavGroup[] {
+  const groups: NavGroup[] = [];
   if (perms.length > 0) {
-    items.push({
-      label:
-        perms.length === 1
-          ? `${RESOURCE_TYPE_LABEL[perms[0]] ?? ""}资源`
-          : "资源表格",
-      path: "/resources",
-      icon: <Boxes className="h-[18px] w-[18px]" />,
+    groups.push({
+      label: "资源浏览",
+      items: [
+        {
+          label:
+            perms.length === 1
+              ? `${RESOURCE_TYPE_LABEL[perms[0]] ?? ""}资源`
+              : "全部资源",
+          path: "/resources",
+          icon: <Boxes className="h-[18px] w-[18px]" />,
+        },
+      ],
     });
   }
-  return items;
+  if (hasPerm("dist")) {
+    groups.push({
+      label: "补丁下载",
+      items: [
+        {
+          label: "补丁下载",
+          path: "/dist",
+          icon: <HardDriveDownload className="h-[18px] w-[18px]" />,
+        },
+      ],
+    });
+  }
+  return groups;
 }
 
-const mainNav: NavItem[] = [
+const adminNavGroups: NavGroup[] = [
   {
-    label: "仪表盘",
-    path: "/",
-    icon: <LayoutDashboard className="h-[18px] w-[18px]" />,
+    label: "概览",
+    items: [
+      {
+        label: "仪表盘",
+        path: "/",
+        icon: <LayoutDashboard className="h-[18px] w-[18px]" />,
+      },
+    ],
   },
   {
-    label: "补丁下载",
-    path: "/dist",
-    icon: <HardDriveDownload className="h-[18px] w-[18px]" />,
+    label: "资源制作",
+    items: [
+      {
+        label: "资源管理",
+        path: "/resources",
+        icon: <Boxes className="h-[18px] w-[18px]" />,
+      },
+      {
+        label: "资源目录",
+        path: "/resources/folders",
+        icon: <FolderTree className="h-[18px] w-[18px]" />,
+      },
+      {
+        label: "DBC 数据",
+        path: "/dbc",
+        icon: <Database className="h-[18px] w-[18px]" />,
+      },
+    ],
   },
   {
-    label: "资源表格",
-    path: "/resources",
-    icon: <Boxes className="h-[18px] w-[18px]" />,
+    label: "补丁工坊",
+    items: [
+      {
+        label: "导出补丁",
+        path: "/export",
+        icon: <Download className="h-[18px] w-[18px]" />,
+      },
+      {
+        label: "MPQ 查看",
+        path: "/mpq",
+        icon: <Package className="h-[18px] w-[18px]" />,
+      },
+    ],
   },
   {
-    label: "导出补丁",
-    path: "/export",
-    icon: <Download className="h-[18px] w-[18px]" />,
+    label: "发布分发",
+    items: [
+      {
+        label: "补丁下载",
+        path: "/dist",
+        icon: <HardDriveDownload className="h-[18px] w-[18px]" />,
+      },
+    ],
   },
   {
-    label: "资源列表",
-    path: "/resources/folders",
-    icon: <FolderTree className="h-[18px] w-[18px]" />,
-  },
-  {
-    label: "DBC 数据",
-    path: "/dbc",
-    icon: <Database className="h-[18px] w-[18px]" />,
-  },
-  {
-    label: "MPQ 查看",
-    path: "/mpq",
-    icon: <Package className="h-[18px] w-[18px]" />,
-  },
-];
-
-const systemNav: NavItem[] = [
-  {
-    label: "设置",
-    path: "/settings",
-    icon: <Settings className="h-[18px] w-[18px]" />,
-  },
-  {
-    label: "账号权限",
-    path: "/accounts",
-    icon: <Users className="h-[18px] w-[18px]" />,
+    label: "系统",
+    items: [
+      {
+        label: "设置",
+        path: "/settings",
+        icon: <Settings className="h-[18px] w-[18px]" />,
+      },
+      {
+        label: "账号权限",
+        path: "/accounts",
+        icon: <Users className="h-[18px] w-[18px]" />,
+      },
+    ],
   },
 ];
 
@@ -129,7 +169,6 @@ export function Sidebar() {
 
   const roleLabel = isAdmin ? "管理员" : "普通账号";
   const initial = (user?.username ?? "?").slice(0, 1).toUpperCase();
-  const playerNav = buildPlayerNav(hasPerm, resourcePermsOf(user));
 
   return (
     <aside className="fixed inset-y-0 left-0 z-50 flex w-60 flex-col border-r border-border bg-bg-elevated">
@@ -153,68 +192,29 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">
-        {!isAdmin && (
-          <>
-            <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
-              补丁
+        {(isAdmin ? adminNavGroups : buildViewerNavGroups(hasPerm, resourcePermsOf(user))).map(
+          (group, groupIndex) => (
+            <div key={group.label} className={groupIndex > 0 ? "mt-4" : ""}>
+              <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+                {group.label}
+              </div>
+              {group.items.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
+                    isActive(item.path, pathname)
+                      ? "bg-accent-soft text-accent"
+                      : "hover:bg-bg-hover hover:text-text-primary",
+                  )}
+                >
+                  {item.icon}
+                  {item.label}
+                </NavLink>
+              ))}
             </div>
-            {playerNav.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
-                  isActive(item.path, pathname)
-                    ? "bg-accent-soft text-accent"
-                    : "hover:bg-bg-hover hover:text-text-primary",
-                )}
-              >
-                {item.icon}
-                {item.label}
-              </NavLink>
-            ))}
-          </>
-        )}
-        {isAdmin && (
-          <>
-            <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
-              主菜单
-            </div>
-            {mainNav.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
-                  isActive(item.path, pathname)
-                    ? "bg-accent-soft text-accent"
-                    : "hover:bg-bg-hover hover:text-text-primary",
-                )}
-              >
-                {item.icon}
-                {item.label}
-              </NavLink>
-            ))}
-
-            <div className="mt-4 px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
-              系统
-            </div>
-            {systemNav.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "mb-0.5 flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium text-text-secondary transition-all",
-                  isActive(item.path, pathname)
-                    ? "bg-accent-soft text-accent"
-                    : "hover:bg-bg-hover hover:text-text-primary",
-                )}
-              >
-                {item.icon}
-                {item.label}
-              </NavLink>
-            ))}
-          </>
+          ),
         )}
       </nav>
 
