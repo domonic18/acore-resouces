@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
 
@@ -10,40 +9,15 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.db.session import Base, SessionLocal, engine
-from app.models.resource import Mount, Npc, Pet
-from app.schemas.resource import Mount as MountSchema
-from app.schemas.resource import Npc as NpcSchema
-from app.schemas.resource import Pet as PetSchema
 from app.schemas.resource import Resource
-
-RESOURCE_TYPE_MAP: dict[str, tuple[Any, type]] = {
-    "mounts": (Mount, MountSchema),
-    "pets": (Pet, PetSchema),
-    "npcs": (Npc, NpcSchema),
-}
-
-TYPE_TO_DIR = {
-    "mount": "mounts",
-    "pet": "pets",
-    "npc": "npcs",
-}
-
-
-def _file_timestamps(path: Path) -> tuple[datetime | None, datetime | None]:
-    """从文件系统读取资源的创建时间与修改时间。
-
-    创建时间优先使用 st_birthtime；在 Linux 等不支持的环境中回退到 st_ctime。
-    返回 (created_at, updated_at) 的 UTC 时间。
-    """
-    try:
-        stat = path.stat()
-        created = getattr(stat, "st_birthtime", stat.st_ctime)
-        return (
-            datetime.fromtimestamp(created, tz=UTC),
-            datetime.fromtimestamp(stat.st_mtime, tz=UTC),
-        )
-    except OSError:
-        return None, None
+from app.services.resource_repository import (
+    RESOURCE_TYPE_MAP,
+    TYPE_TO_DIR,
+    _file_timestamps,
+    _load_yaml,
+    iter_entries,
+    list_resources_cached,
+)
 
 
 def _ensure_dirs() -> None:
@@ -77,11 +51,6 @@ def _yaml_path(resource_type: str, resource_id: int, model_folder: str) -> Path:
     return settings.resources_dir / plural / filename
 
 
-def _load_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8") as f:
-        return cast(dict[str, Any], yaml.safe_load(f) or {})
-
-
 def _save_yaml(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
@@ -112,19 +81,12 @@ def load_resource(resource_type: str, resource_id: int) -> Resource | None:
 
 
 def list_resources(resource_type: str | None = None) -> list[Resource]:
+    """全部资源（进程内缓存，外部 YAML 修改自动感知）。"""
     _ensure_dirs()
     results: list[Resource] = []
     types = [resource_type] if resource_type else ["mount", "pet", "npc"]
     for t in types:
-        plural = TYPE_TO_DIR.get(t, t + "s")
-        _, schema_cls = RESOURCE_TYPE_MAP.get(plural, (None, None))
-        if not schema_cls:
-            continue
-        dir_path = settings.resources_dir / plural
-        for path in sorted(dir_path.glob("*.yaml")):
-            data = _load_yaml(path)
-            data["created_at"], data["updated_at"] = _file_timestamps(path)
-            results.append(cast(Resource, schema_cls(**data)))
+        results.extend(list_resources_cached(t))
     return results
 
 
@@ -156,6 +118,7 @@ def delete_resource(resource_type: str, resource_id: int) -> bool:
 
 
 def _update_registry() -> None:
+    """重建 registry.json（经进程内缓存，仅重析被外部修改的文件）。"""
     registry: dict[str, Any] = {
         "version": "1.0",
         "counts": {"mounts": 0, "pets": 0, "npcs": 0},
@@ -163,13 +126,10 @@ def _update_registry() -> None:
         "pets": [],
         "npcs": [],
     }
-    for plural in ("mounts", "pets", "npcs"):
-        _, schema_cls = RESOURCE_TYPE_MAP[plural]
-        dir_path = settings.resources_dir / plural
-        for path in sorted(dir_path.glob("*.yaml")):
-            data = _load_yaml(path)
-            obj = schema_cls(**data)
-            counts = cast(dict[str, int], registry["counts"])
+    for resource_type in ("mount", "pet", "npc"):
+        plural = TYPE_TO_DIR[resource_type]
+        counts = cast(dict[str, int], registry["counts"])
+        for path, obj in iter_entries(resource_type):
             counts[plural] += 1
             cast(list[dict[str, Any]], registry[plural]).append(
                 {
