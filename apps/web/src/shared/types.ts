@@ -218,6 +218,8 @@ export interface PatchBuildResult {
   audit_path: string;
   manifest_path: string;
   dry_run: boolean;
+  /** 本次构建使用的混淆等级（旧后端无此字段） */
+  obfuscation?: "none" | "basic";
 }
 
 export interface BuildLogEntry {

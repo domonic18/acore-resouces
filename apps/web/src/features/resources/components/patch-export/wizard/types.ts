@@ -77,6 +77,9 @@ export interface WizardBuildStepProps {
   onDryRunChange: (value: boolean) => void;
   force: boolean;
   onForceChange: (value: boolean) => void;
+  /** MPQ 混淆等级；basic 在打包后剥除档案内内容清单（不可逆） */
+  obfuscation: "none" | "basic";
+  onObfuscationChange: (value: "none" | "basic") => void;
   buildAll: boolean;
   onBuildAllChange: (value: boolean) => void;
   /** 构建是否正在进行（轮询状态） */
