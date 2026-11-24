@@ -138,6 +138,7 @@ def validate_resource(
 
     errors: list[str] = []
     relationship_issues: list[str] = []
+    pet_missing_notes: list[str] = []
     for r in resources:
         if r is None:
             continue
@@ -160,9 +161,12 @@ def validate_resource(
                     if v.value is None or v.value == ""
                 ]
                 if missing_fields:
-                    relationship_issues.append(
-                        f"ID={r.id} {check.rule.name} 缺失: {', '.join(missing_fields)}"
-                    )
+                    line = f"ID={r.id} {check.rule.name} 缺失: {', '.join(missing_fields)}"
+                    # 宠物数据补全仍在逐只推进，缺失属常态：提示但不判失败
+                    if r.resource_type == "pet":
+                        pet_missing_notes.append(line)
+                    else:
+                        relationship_issues.append(line)
 
     if errors:
         for err in errors:
@@ -170,6 +174,9 @@ def validate_resource(
     if relationship_issues:
         for issue in relationship_issues:
             console.print(f"[yellow]{issue}[/yellow]")
+    if pet_missing_notes:
+        for note in pet_missing_notes:
+            console.print(f"[dim]{note}[/dim]")
 
     mount_resources = [r for r in resources if isinstance(r, Mount)]
     duplicate_issues = [

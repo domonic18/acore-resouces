@@ -118,7 +118,7 @@ export function ResourceListPage() {
     });
   };
 
-  const canBulkExport = typeParam === "mount";
+  const canBulkExport = typeParam === "mount" || typeParam === "pet";
 
   // 选中的坐骑对象（对话框里要显示名称与预检结果）
   const selectedResources = useMemo(
@@ -218,7 +218,7 @@ export function ResourceListPage() {
                 </>
               ) : (
                 <span className="text-text-tertiary">
-                  勾选坐骑后可批量进入补丁向导
+                  勾选资源后可批量进入补丁向导
                 </span>
               )}
             </div>

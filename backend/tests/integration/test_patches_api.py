@@ -200,13 +200,29 @@ def test_create_patch_job(client: TestClient, patch_jobs_dir: Path) -> None:
     assert not (job_dir / "manifest.json").exists()
 
 
-def test_create_patch_job_non_mount(client: TestClient, patch_jobs_dir: Path) -> None:
-    """测试非 mount 类型被拒绝。"""
+def test_create_patch_job_rejects_npc(client: TestClient, patch_jobs_dir: Path) -> None:
+    """npc 不在补丁支持类型白名单内。"""
+    response = client.post(
+        "/api/patches/export-request",
+        json={"resource_type": "npc", "resource_ids": [1]},
+    )
+    assert response.status_code == 400
+
+
+def test_create_patch_job_pet(client: TestClient, patch_jobs_dir: Path) -> None:
+    """pet 已进入补丁支持范围（数据不全也允许创建，预检负责报缺）。"""
+    from app.core.config import settings as real_settings
+
+    if not (real_settings.resources_dir / "pets").exists():
+        pytest.skip("本地 pet 资源不存在")
     response = client.post(
         "/api/patches/export-request",
         json={"resource_type": "pet", "resource_ids": [1]},
     )
-    assert response.status_code == 400
+    assert response.status_code == 200
+    job = response.json()["jobs"][0]
+    assert job["job_id"] == "pet_0001"
+    assert job["resource_type"] == "pet"
 
 
 def test_create_patch_job_empty_ids(client: TestClient, patch_jobs_dir: Path) -> None:

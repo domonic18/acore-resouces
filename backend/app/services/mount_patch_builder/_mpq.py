@@ -12,11 +12,11 @@ import subprocess
 from collections.abc import Sequence
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import app.services.mount_patch_builder as _facade
 from app.core.config import settings
-from app.schemas.resource import Mount
+from app.schemas.resource import Resource
 from app.services.icon_infrastructure import stage_icon_infrastructure
 from app.services.mpq_obfuscator import MpqObfuscationError, obfuscate_mpq_file
 
@@ -102,17 +102,17 @@ def build_mpq(
     contexts: list[JobContext],
     sql_files: list[Path],
     dry_run: bool = False,
-    mounts: Sequence[Mount] | None = None,
+    resources: Sequence[Resource] | None = None,
     obfuscation: str = "none",
 ) -> tuple[Path, dict[str, list[Path]], dict[str, Any]]:
     """构建批次 MPQ 并持久化 manifest.json。
 
     Args:
         contexts: 要处理的任务上下文列表。
-        sql_files: 已生成的 SQL 文件路径列表（可能为空，表示所有坐骑 SQL 均已存在）。
+        sql_files: 已生成的 SQL 文件路径列表（可能为空，表示所有资源 SQL 均已存在）。
         dry_run: 为 True 时只返回路径，不创建文件。
-        mounts: 全量坐骑资源，用于确定图标基础设施要携带的贴图；
-            缺省时从资源仓库加载全部坐骑。
+        resources: 全量资源（mount + pet），用于确定图标基础设施要携带的贴图；
+            缺省时从资源仓库加载全部受支持类型。
         obfuscation: 混淆等级，"basic" 时打包后剥除档案内 (listfile)/(attributes)。
 
     Returns:
@@ -153,11 +153,16 @@ def build_mpq(
         if src.exists():
             shutil.copy2(src, dbc_staging / dbc_name)
 
-    if mounts is None:
+    if resources is None:
+        from app.services.patch_exporter import SUPPORTED_PATCH_RESOURCE_TYPES
         from app.services.resource_store import list_resources
 
-        mounts = cast(list[Mount], list_resources("mount"))
-    icon_infra = stage_icon_infrastructure(staging, mounts)
+        resources = [
+            resource
+            for resource_type in SUPPORTED_PATCH_RESOURCE_TYPES
+            for resource in list_resources(resource_type)
+        ]
+    icon_infra = stage_icon_infrastructure(staging, resources)
     if icon_infra["missing"]:
         manifest["missing_icons"] = icon_infra["missing"]
 

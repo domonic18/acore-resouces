@@ -7,7 +7,7 @@ from pathlib import Path
 from app.preview.asset_resolver import _extract_texture_variations, _match_texture_files
 from app.schemas.flow import FLOW_STEP_IDS
 from app.schemas.resource import CreatureDisplayInfo, DbcInfo, Mount, OfficialDbInfo
-from app.services.mount_preview import build_mount_preview
+from app.services.mount_preview import build_patch_preview
 
 
 def _mount(**kwargs) -> Mount:
@@ -57,7 +57,7 @@ def test_match_texture_files_dedupes_repeated_variations() -> None:
 
 
 def test_preview_reports_missing_assets_as_error() -> None:
-    preview = build_mount_preview(_mount(model_folder="__missing_for_test__"))
+    preview = build_patch_preview(_mount(model_folder="__missing_for_test__"))
     assert preview.ready is False
     codes = {issue.code for issue in preview.issues}
     assert "assets_missing" in codes
@@ -77,7 +77,7 @@ def test_preview_reports_missing_required_fields() -> None:
     )
     assert resource.db.creature_template.entry in (None, 0)
 
-    preview = build_mount_preview(resource)
+    preview = build_patch_preview(resource)
     missing = {field.path for field in preview.required_fields.missing}
     assert "dbc.spell.id" in missing
     assert "db.creature_template.entry" in missing
@@ -91,6 +91,6 @@ def test_preview_is_read_only() -> None:
 
     jobs_dir = settings.patch_jobs_dir
     before = set(jobs_dir.glob("mount_9*")) if jobs_dir.exists() else set()
-    build_mount_preview(_mount())
+    build_patch_preview(_mount())
     after = set(jobs_dir.glob("mount_9*")) if jobs_dir.exists() else set()
     assert before == after

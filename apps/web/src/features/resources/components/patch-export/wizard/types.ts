@@ -43,6 +43,9 @@ export type JobArtifactsQuery = UseQueryResult<JobArtifactsOut, Error>;
 
 /* ---------- 各步骤组件的 props ---------- */
 
+/** 补丁流水线支持的资源类型（与后端 SUPPORTED_PATCH_RESOURCE_TYPES 对齐） */
+export type PatchResourceType = "mount" | "pet";
+
 /** 批次列表「重建」交给向导时的交接物：该批次包含的补丁任务 */
 export interface WizardHandover {
   jobIds: string[];
@@ -61,6 +64,9 @@ export interface WizardSelectStepProps {
   /** 已勾选的资源 ID（受控） */
   selectedIds: number[];
   onSelectedIdsChange: (ids: number[]) => void;
+  /** 资源类型（坐骑 / 小宠物），切换会清空选择与筛选 */
+  resourceType: PatchResourceType;
+  onResourceTypeChange: (type: PatchResourceType) => void;
   canWrite: boolean;
   exportMutation: ExportJobsMutation;
   onCreateJobs: () => void;

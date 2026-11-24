@@ -1,60 +1,77 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useResourceListData } from "@/features/resources/hooks/useResourceListData";
-import { MountSelectRow } from "./MountSelectRow";
-import { MountSelectFilters } from "./MountSelectFilters";
-import type { MountStatusFilter } from "./MountSelectFilters";
+import { ResourceSelectRow } from "./ResourceSelectRow";
+import { ResourceSelectFilters } from "./ResourceSelectFilters";
+import type { ResourceStatusFilter } from "./ResourceSelectFilters";
+import type { PatchResourceType } from "./wizard/types";
 
-interface MountMultiSelectProps {
+interface ResourceMultiSelectProps {
+  /** 资源类型：坐骑 / 小宠物 */
+  resourceType: PatchResourceType;
   selected: number[];
   onChange: (ids: number[]) => void;
 }
 
-/** 向导第⑥步的坐骑多选：富信息行（缩略图/状态/星级/载具/功能）+ 精细筛选。 */
-export function MountMultiSelect({
+/** 向导第⑥步的资源多选：富信息行（缩略图/状态/星级/载具/功能）+ 精细筛选。 */
+export function ResourceMultiSelect({
+  resourceType,
   selected,
   onChange,
-}: MountMultiSelectProps) {
-  const { allItems: mounts, isLoading } = useResourceListData("mount");
+}: ResourceMultiSelectProps) {
+  const { allItems: resources, isLoading } = useResourceListData(resourceType);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<MountStatusFilter>("");
+  const [status, setStatus] = useState<ResourceStatusFilter>("");
   const [tier, setTier] = useState("");
   const [vehicleOnly, setVehicleOnly] = useState(false);
+  const isMount = resourceType === "mount";
+
+  // 类型切换时筛选条件不再适用，重置（选择集由上层负责清空）
+  useEffect(() => {
+    setSearch("");
+    setStatus("");
+    setTier("");
+    setVehicleOnly(false);
+  }, [resourceType]);
 
   const tierOptions = useMemo(() => {
     const values = new Set<string>();
-    for (const m of mounts ?? []) {
-      if (m.star_rating) values.add(m.star_rating);
+    for (const r of resources ?? []) {
+      const value = resourceType === "pet" ? r.rarity : r.star_rating;
+      if (value) values.add(value);
     }
     return [...values].sort();
-  }, [mounts]);
+  }, [resources, resourceType]);
 
   const filtered = useMemo(() => {
-    if (!mounts) return [];
+    if (!resources) return [];
     const q = search.trim().toLowerCase();
-    return mounts.filter((m) => {
+    return resources.filter((r) => {
       if (q) {
         const haystack = [
-          m.name ?? "",
-          m.model_folder,
-          String(m.id),
+          r.name ?? "",
+          r.model_folder,
+          String(r.id),
         ].join(" ");
         if (!haystack.toLowerCase().includes(q)) return false;
       }
-      if (status === "added" && !m.added) return false;
-      if (status === "not_added" && m.added) return false;
-      if (tier && m.star_rating !== tier) return false;
-      if (vehicleOnly && m.vehicle == null) return false;
+      if (status === "added" && !r.added) return false;
+      if (status === "not_added" && r.added) return false;
+      if (tier) {
+        const value = resourceType === "pet" ? r.rarity : r.star_rating;
+        if (value !== tier) return false;
+      }
+      if (vehicleOnly && r.vehicle == null) return false;
       return true;
     });
-  }, [mounts, search, status, tier, vehicleOnly]);
+  }, [resources, search, status, tier, vehicleOnly, resourceType]);
 
   const selectedSet = useMemo(() => new Set(selected), [selected]);
 
   const vehicleMountCount = useMemo(() => {
-    if (!mounts) return 0;
-    const mountById = new Map(mounts.map((m) => [m.id, m]));
-    return selected.filter((id) => mountById.get(id)?.vehicle != null).length;
-  }, [mounts, selected]);
+    if (!resources) return 0;
+    const resourceById = new Map(resources.map((r) => [r.id, r]));
+    return selected.filter((id) => resourceById.get(id)?.vehicle != null).length;
+  }, [resources, selected]);
 
   const toggle = (id: number) => {
     const next = new Set(selectedSet);
@@ -68,20 +85,21 @@ export function MountMultiSelect({
 
   const selectFiltered = () => {
     const next = new Set(selectedSet);
-    for (const m of filtered) next.add(m.id);
+    for (const r of filtered) next.add(r.id);
     onChange([...next].sort((a, b) => a - b));
   };
 
   return (
     <div>
-      <MountSelectFilters
+      <ResourceSelectFilters
+        resourceType={resourceType}
         search={search}
         onSearchChange={setSearch}
         status={status}
         onStatusChange={setStatus}
         tier={tier}
         onTierChange={setTier}
-        tierOptions={tierOptions}
+        tierOptions={isMount ? tierOptions : []}
         vehicleOnly={vehicleOnly}
         onVehicleOnlyChange={setVehicleOnly}
         filteredCount={filtered.length}
@@ -98,20 +116,20 @@ export function MountMultiSelect({
         )}
         {!isLoading && filtered.length === 0 && (
           <div className="bg-bg-surface py-8 text-center text-sm text-text-tertiary md:col-span-2 2xl:col-span-3">
-            无匹配坐骑
+            无匹配资源
           </div>
         )}
-        {filtered.map((m) => (
-          <MountSelectRow
-            key={m.id}
-            resource={m}
-            selected={selectedSet.has(m.id)}
+        {filtered.map((r) => (
+          <ResourceSelectRow
+            key={r.id}
+            resource={r}
+            selected={selectedSet.has(r.id)}
             onToggle={toggle}
           />
         ))}
       </div>
 
-      {vehicleMountCount > 0 && (
+      {isMount && vehicleMountCount > 0 && (
         <p className="mt-2 text-xs text-text-secondary">
           批次内{" "}
           <span className="font-semibold text-blue-500">

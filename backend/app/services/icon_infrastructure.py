@@ -9,7 +9,7 @@
 本模块在每个补丁 MPQ 中写入：
 1. 全量 ``DBFilesClient/SpellIcon.dbc`` 与 ``DBFilesClient/ItemDisplayInfo.dbc``
    （本地 wow-dbc 已是 3.3.5 格式的扩展表）；
-2. 全部坐骑 YAML（``dbc.spell.icon_id`` / ``dbc.item.display_id`` /
+2. 全部资源 YAML（``dbc.spell.icon_id`` / ``dbc.item.display_id`` /
    ``db.item_template.displayid``）引用到的图标贴图 ``Interface/icons/*.blp``。
 
 注意 DBC 在 MPQ 里是整文件覆盖（编号高的补丁胜出），因此两个补丁都带全量表
@@ -26,7 +26,7 @@ from typing import Any
 
 from app.core.config import settings
 from app.preview.icon_index import find_icon_path
-from app.schemas.resource import Mount
+from app.schemas.resource import Resource
 from app.services.dbc_query import load_item_display_icons, load_spell_icon_names
 
 WOW_DBC_DIR = settings.wow_dbc_dir
@@ -41,7 +41,7 @@ MPQ_DBC_DIR = Path("DBFilesClient")
 
 @dataclass
 class ReferencedIcons:
-    """坐骑资源引用到的图标收集结果。
+    """资源引用到的图标收集结果。
 
     Attributes:
         icon_names: 引用到的图标名集合（去路径前缀、小写）。
@@ -53,11 +53,11 @@ class ReferencedIcons:
 
 
 def collect_referenced_icon_names(
-    mounts: Sequence[Mount],
+    resources: Sequence[Resource],
     spell_icon_names: dict[int, str] | None = None,
     item_display_icons: dict[int, str] | None = None,
 ) -> ReferencedIcons:
-    """收集全部坐骑 YAML 引用到的图标名。
+    """收集全部资源 YAML 引用到的图标名。
 
     引用来源（YAML 为真相源）：
     - ``dbc.spell.icon_id`` → SpellIcon.dbc 行号；
@@ -65,7 +65,7 @@ def collect_referenced_icon_names(
       行号（两处填同一值，任一非零都收）。
 
     Args:
-        mounts: 坐骑资源列表。
+        resources: 资源列表（mount + pet）。
         spell_icon_names: SpellIcon 行号 → 图标名；缺省时从本地 DBC 加载。
         item_display_icons: ItemDisplayInfo 行号 → 图标名；缺省时从本地 DBC 加载。
 
@@ -78,8 +78,8 @@ def collect_referenced_icon_names(
         item_display_icons = load_item_display_icons()
 
     result = ReferencedIcons()
-    for mount in mounts:
-        spell = mount.dbc.spell
+    for resource in resources:
+        spell = resource.dbc.spell
         icon_id = int(spell.icon_id or 0)
         if icon_id:
             name = spell_icon_names.get(icon_id)
@@ -88,14 +88,14 @@ def collect_referenced_icon_names(
             else:
                 result.missing.append(
                     {
-                        "source": f"mount_{mount.id:04d} spell.icon_id",
+                        "source": f"{resource.resource_type}_{resource.id:04d} spell.icon_id",
                         "ref_id": icon_id,
                         "reason": "SpellIcon.dbc 中不存在该行",
                     }
                 )
 
-        display_id = int(mount.dbc.item.display_id or 0)
-        item_template = mount.db.item_template
+        display_id = int(resource.dbc.item.display_id or 0)
+        item_template = resource.db.item_template
         if not display_id and item_template is not None:
             display_id = int(getattr(item_template, "displayid", 0) or 0)
         if display_id:
@@ -105,7 +105,7 @@ def collect_referenced_icon_names(
             else:
                 result.missing.append(
                     {
-                        "source": f"mount_{mount.id:04d} display_id",
+                        "source": f"{resource.resource_type}_{resource.id:04d} display_id",
                         "ref_id": display_id,
                         "reason": "ItemDisplayInfo.dbc 中不存在该行",
                     }
@@ -115,7 +115,7 @@ def collect_referenced_icon_names(
 
 def stage_icon_infrastructure(
     staging: Path,
-    mounts: Sequence[Mount],
+    resources: Sequence[Resource],
     dbc_dir: Path | None = None,
     icon_lookup: Callable[[str | None], Path | None] = find_icon_path,
     spell_icon_names: dict[int, str] | None = None,
@@ -125,7 +125,7 @@ def stage_icon_infrastructure(
 
     Args:
         staging: MPQ staging 根目录。
-        mounts: 坐骑资源列表（用于确定要携带哪些图标贴图）。
+        resources: 资源列表（mount + pet，用于确定要携带哪些图标贴图）。
         dbc_dir: 源 DBC 目录；缺省用 data/wow-dbc/src/dbc。
         icon_lookup: 图标名 → 本地 .blp 路径；缺省用图标索引。
         spell_icon_names: SpellIcon 行号 → 图标名；缺省时从本地 DBC 加载。
@@ -137,7 +137,7 @@ def stage_icon_infrastructure(
     """
     dbc_dir = dbc_dir or WOW_DBC_DIR
     referenced = collect_referenced_icon_names(
-        mounts, spell_icon_names=spell_icon_names, item_display_icons=item_display_icons
+        resources, spell_icon_names=spell_icon_names, item_display_icons=item_display_icons
     )
 
     dbc_written: list[Path] = []

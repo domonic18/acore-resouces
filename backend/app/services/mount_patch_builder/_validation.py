@@ -9,6 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import app.services.mount_patch_builder as _facade
+from app.schemas.resource import Mount
 
 from ._checks import (
     JobValidation,
@@ -162,9 +163,13 @@ def validate_job(ctx: JobContext, mpq_assets: list[Path]) -> JobValidation:
         )
     )
 
-    _check_vehicle_consistency(resource, sql_plan, checks)
-    _check_accessory_tag_consistency(resource, resource.vehicle, checks)
-    _check_spell_feature_effects(resource, checks)
+    # 载具/挂件/特性校验依赖 Mount 专属字段（vehicle / special_features），
+    # pet 任务没有这些概念，跳过该组。
+    mount = resource if isinstance(resource, Mount) else None
+    if mount is not None:
+        _check_vehicle_consistency(mount, sql_plan, checks)
+        _check_accessory_tag_consistency(mount, mount.vehicle, checks)
+        _check_spell_feature_effects(mount, checks)
 
     passed = all(c.passed or c.severity == "warning" for c in checks)
     return JobValidation(

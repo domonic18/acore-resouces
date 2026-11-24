@@ -37,12 +37,16 @@ export function CreatePatchJobsDialog({
     () => resources.map((resource) => resource.id),
     [resources],
   );
+  // 列表页按类型分页签勾选，选中资源必然同类型
+  const resourceType = resources[0]?.resource_type ?? "mount";
 
-  const preflight = usePatchPreflight(resourceIds, open);
+  const preflight = usePatchPreflight(resourceIds, open, resourceType);
 
   const goWizard = () => {
     if (resourceIds.length === 0) return;
-    navigate(`/export?select=${encodeURIComponent(resourceIds.join(","))}`);
+    navigate(
+      `/export?select=${encodeURIComponent(resourceIds.join(","))}&type=${resourceType}`,
+    );
     onClose();
   };
 
@@ -57,7 +61,7 @@ export function CreatePatchJobsDialog({
       open={open}
       onClose={onClose}
       title="去制作补丁"
-      subtitle="制作补丁统一在「导出补丁」页的向导里进行；确认后跳到第⑥步，勾选的坐骑会预填进选择列表"
+      subtitle="制作补丁统一在「导出补丁」页的向导里进行；确认后跳到第⑥步，勾选的资源会预填进选择列表"
       size="lg"
       footer={
         <div className="flex items-center justify-between gap-3">
@@ -70,7 +74,7 @@ export function CreatePatchJobsDialog({
             onClick={goWizard}
             disabled={resourceIds.length === 0 || preflight.isLoading}
           >
-            去制作补丁（{resourceIds.length} 只）
+            去制作补丁（{resourceIds.length} 个）
             <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -78,14 +82,14 @@ export function CreatePatchJobsDialog({
     >
       <div className="space-y-3">
         <div className="text-sm text-text-secondary">
-          将带着以下 {resources.length} 只坐骑进入补丁向导：
+          将带着以下 {resources.length} 个资源进入补丁向导：
         </div>
 
         <div className="overflow-hidden rounded-md border border-border">
           <table className="data-table w-full">
             <thead>
               <tr>
-                <th>坐骑</th>
+                <th>资源</th>
                 <th style={{ width: 160 }}>预检</th>
               </tr>
             </thead>
@@ -133,7 +137,7 @@ export function CreatePatchJobsDialog({
           <div className="rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
             <div className="mb-1 flex items-center gap-1.5 font-medium">
               <AlertTriangle className="h-3.5 w-3.5" />
-              {blockedCount} 只坐骑预检未通过
+              {blockedCount} 个资源预检未通过
             </div>
             <ul className="space-y-0.5 text-text-secondary">
               {blocked.map((item) => {

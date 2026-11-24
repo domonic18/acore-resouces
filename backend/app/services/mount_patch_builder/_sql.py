@@ -1,6 +1,6 @@
-"""坐骑 SQL 文件生成。
+"""补丁 SQL 文件生成。
 
-按现场构建的 SQL 计划，为每只坐骑在 mounts/{id:04d}_{slug}/ 子目录下
+按现场构建的 SQL 计划，为每个资源在 {type}/{id:04d}_{slug}/ 子目录下
 生成 add / loot 两个 SQL 文件，并保持与历史 SQL 的幂等。
 """
 
@@ -15,6 +15,10 @@ import app.services.mount_patch_builder as _facade
 
 from ._context import JobContext, sanitize_model_folder
 from ._logging import _log
+
+# SQL 生成文案：子目录名 / 文件名后缀 / 标题标签按资源类型区分。
+# mount 沿用历史「mounts/0001_x/0001_mount_add.sql」命名，不破坏幂等扫描。
+SQL_TYPE_LABELS: dict[str, str] = {"mount": "坐骑", "pet": "小宠物"}
 
 
 def _sql_value(value: Any) -> str:
@@ -65,20 +69,20 @@ def _job_item_entry(ctx: JobContext) -> int | None:
 
 
 def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) -> list[Path]:
-    """为单个坐骑生成 SQL 文件，写入 mounts/{id:04d}_{slug}/ 子目录。
+    """为单个资源生成 SQL 文件，写入 {type}/{id:04d}_{slug}/ 子目录。
 
     生成的文件：
-    - {id:04d}_mount_add.sql：creature_model_info / creature_template / item_template
-    - {id:04d}_mount_loot.sql：creature_loot_template（仅当 DropInfo.entry 存在）
+    - {id:04d}_{type}_add.sql：creature_model_info / creature_template / item_template
+    - {id:04d}_{type}_loot.sql：creature_loot_template（仅当 DropInfo.entry 存在）
 
     Args:
         ctx: 任务上下文（含现场构建的 SQL 计划）。
         dry_run: 为 True 时只返回预期路径，不写入文件。
         force: 为 True 时跳过幂等检查，即使 item_template entry 已存在于历史 SQL 也强制生成。
-            用于迁移场景（把历史 batch 中的坐骑搬到新结构）。默认 False 保留幂等行为。
+            用于迁移场景（把历史 batch 中的资源搬到新结构）。默认 False 保留幂等行为。
 
     Returns:
-        生成的 SQL 文件路径列表；若该坐骑 SQL 已存在且 force=False 则返回空列表。
+        生成的 SQL 文件路径列表；若该资源 SQL 已存在且 force=False 则返回空列表。
     """
     _facade.ensure_sql_symlink()
 
@@ -91,12 +95,19 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
         return []
 
     slug = sanitize_model_folder(str(resource.model_folder or ctx.job_id))
-    mount_dir = _facade.SQL_MOUNTS_DIR / f"{mount_id:04d}_{slug}"
+    resource_type = resource.resource_type
+    # mount 走历史 mounts/ 目录；其余类型放 {type}s/ 同级目录
+    type_root = (
+        _facade.SQL_MOUNTS_DIR
+        if resource_type == "mount"
+        else _facade.SQL_LINK_DIR / f"{resource_type}s"
+    )
+    mount_dir = type_root / f"{mount_id:04d}_{slug}"
     mount_name = resource.official_db.name or ctx.job_id
 
     item_entry = _job_item_entry(ctx)
     if item_entry is not None and item_entry in existing_entries:
-        _log(f"  跳过已有 SQL 的坐骑: {mount_name} (item_template entry={item_entry})")
+        _log(f"  跳过已有 SQL 的资源: {mount_name} (item_template entry={item_entry})")
         return []
 
     add_tables: list[dict[str, Any]] = []
@@ -108,8 +119,8 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
         else:
             add_tables.append(table_dict)
 
-    add_file = mount_dir / f"{mount_id:04d}_mount_add.sql"
-    loot_file = mount_dir / f"{mount_id:04d}_mount_loot.sql" if loot_tables else None
+    add_file = mount_dir / f"{mount_id:04d}_{resource_type}_add.sql"
+    loot_file = mount_dir / f"{mount_id:04d}_{resource_type}_loot.sql" if loot_tables else None
 
     if dry_run:
         expected: list[Path] = [add_file]
@@ -119,9 +130,10 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
 
     mount_dir.mkdir(parents=True, exist_ok=True)
     now_iso = datetime.now(UTC).strftime("%Y-%m-%d")
+    type_label = SQL_TYPE_LABELS.get(resource_type, resource_type)
 
     add_content = _build_sql_file_content(
-        title=f"自定义坐骑：{mount_name}",
+        title=f"自定义{type_label}：{mount_name}",
         mount_id=mount_id,
         job_id=ctx.job_id,
         date_iso=now_iso,
@@ -132,7 +144,7 @@ def generate_sql(ctx: JobContext, dry_run: bool = False, force: bool = False) ->
 
     if loot_file is not None:
         loot_content = _build_sql_file_content(
-            title=f"坐骑掉落：{mount_name}",
+            title=f"{type_label}掉落：{mount_name}",
             mount_id=mount_id,
             job_id=ctx.job_id,
             date_iso=now_iso,
@@ -155,7 +167,7 @@ def _build_sql_file_content(
     lines = [
         "-- ============================================================",
         f"-- mod-custom-content: {title}",
-        f"-- Mount ID: {mount_id:04d}",
+        f"-- Resource ID: {mount_id:04d}",
         f"-- Job: {job_id}",
         f"-- Date: {date_iso}",
         "-- Author: acore-resouces build-mount-patch",

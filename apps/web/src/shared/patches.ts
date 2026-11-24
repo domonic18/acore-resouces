@@ -226,14 +226,15 @@ export function getPatchPreview(
   );
 }
 
-/** 批量补丁预览：与逐个调用等价，但 DBC 只加载一次 */
+/** 批量补丁预览：与逐个调用等价，但 DBC 只加载一次（resource_type 默认坐骑，向后兼容） */
 export function previewPatchBatch(
   resourceIds: number[],
+  resourceType = "mount",
 ): Promise<MountPatchPreview[]> {
   return apiFetch("/api/patches/preview/batch", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ resource_ids: resourceIds }),
+    body: JSON.stringify({ resource_ids: resourceIds, resource_type: resourceType }),
   }).then((res) => res.json() as Promise<MountPatchPreview[]>);
 }
 

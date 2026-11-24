@@ -17,7 +17,7 @@ import { WizardBuildStep } from "./wizard/WizardBuildStep";
 import { WizardReviewStep } from "./wizard/WizardReviewStep";
 import { WizardPublishStep } from "./wizard/WizardPublishStep";
 import { WizardCompletedView } from "./wizard/WizardCompletedView";
-import type { WizardHandover } from "./wizard/types";
+import type { PatchResourceType, WizardHandover } from "./wizard/types";
 
 /** 向导四个步骤的展示数据（全流程编号 ⑥~⑨），只取一次即可 */
 const WIZARD_INDICATOR_STEPS = getWizardFlowSteps();
@@ -49,7 +49,7 @@ export function ExportWizard({
   /** 向导已承接 handover 后通知页面清空 */
   onHandoverConsumed: () => void;
 }) {
-  // 内部步骤：0 选择坐骑 / 1 构建 / 2 审查 / 3 发布（完成态由 completed 表示）
+  // 内部步骤：0 选择资源 / 1 构建 / 2 审查 / 3 发布（完成态由 completed 表示）
   const step = WIZARD_STEP_INDEX[stepId] ?? 0;
   const canWrite = useCanWrite();
   const setStep = useCallback(
@@ -58,6 +58,7 @@ export function ExportWizard({
     [onStepChange],
   );
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [resourceType, setResourceType] = useState<PatchResourceType>("mount");
   const [jobIds, setJobIds] = useState<string[]>([]);
   const [dryRun, setDryRun] = useState(true);
   const [force, setForce] = useState(false);
@@ -79,7 +80,7 @@ export function ExportWizard({
     return ids.length > 0 ? ids : null;
   }, [searchParams]);
 
-  // 从资源列表「制作补丁」跳转过来时带上坐骑 ID：只预填第⑥步的选择，不跳步。
+  // 从资源列表「制作补丁」跳转过来时带上资源 ID 与类型：只预填第⑥步的选择，不跳步。
   // 任务创建统一发生在向导里，资源页入口不再产生 ?jobs=（保留解析兼容旧链接）。
   const incomingSelectIds = useMemo(() => {
     const raw = searchParams.get("select");
@@ -89,6 +90,10 @@ export function ExportWizard({
       .map((id) => Number.parseInt(id.trim(), 10))
       .filter((id) => Number.isFinite(id) && id > 0);
     return ids.length > 0 ? [...new Set(ids)].sort((a, b) => a - b) : null;
+  }, [searchParams]);
+  const incomingSelectType = useMemo(() => {
+    const raw = searchParams.get("type");
+    return raw === "pet" || raw === "mount" ? raw : null;
   }, [searchParams]);
 
   const buildStatus = useBuildStatus();
@@ -167,19 +172,20 @@ export function ExportWizard({
     if (stepId === "create-jobs") setStep(1);
   }, [incomingJobIds, stepId, setStep]);
 
-  // 承接资源列表「制作补丁」带入的坐骑：合并进第⑥步的选择集合并回到选择步骤。
+  // 承接资源列表「制作补丁」带入的资源：合并进第⑥步的选择集合并回到选择步骤。
   // 与 ?jobs= 一样只应用一次，避免用户手动改选后被 URL 重放覆盖。
   const appliedSelectRef = useRef<string | null>(null);
   useEffect(() => {
     if (!incomingSelectIds) return;
-    const key = incomingSelectIds.join(",");
+    const key = `${incomingSelectType ?? "mount"}:${incomingSelectIds.join(",")}`;
     if (appliedSelectRef.current === key) return;
     appliedSelectRef.current = key;
+    if (incomingSelectType) setResourceType(incomingSelectType);
     setSelectedIds((prev) =>
       [...new Set([...prev, ...incomingSelectIds])].sort((a, b) => a - b),
     );
     setStep(0);
-  }, [incomingSelectIds, setStep]);
+  }, [incomingSelectIds, incomingSelectType, setStep]);
 
   // 承接批次列表「重建」带来的任务：同样跳到构建步骤。
   // handover 在承接后即被页面置 null，不需要 ref 防重放；
@@ -210,7 +216,7 @@ export function ExportWizard({
   const handleCreateJobs = () => {
     if (selectedIds.length === 0) return;
     exportMutation.mutate(
-      { resourceType: "mount", resourceIds: selectedIds },
+      { resourceType, resourceIds: selectedIds },
       {
         onSuccess: (data) => {
           setJobIds(data.jobs.map((job) => job.job_id));
@@ -222,12 +228,18 @@ export function ExportWizard({
     );
   };
 
-  /** 返回选择步骤，并把带入的任务对应的坐骑回填到多选器 */
+  /** 返回选择步骤，把带入任务对应的资源回填到多选器（类型按 job_id 前缀推导） */
   const handleBackToSelection = () => {
     const resourceIds = jobIds
       .map((jobId) => jobResourceIdById.get(jobId))
       .filter((id): id is number => id !== undefined);
     if (resourceIds.length > 0) setSelectedIds(resourceIds);
+    const typeFromJobs = jobIds[0]?.startsWith("pet_")
+      ? "pet"
+      : jobIds[0]?.startsWith("mount_")
+        ? "mount"
+        : null;
+    if (typeFromJobs) setResourceType(typeFromJobs);
     setStep(0);
   };
 
@@ -292,6 +304,8 @@ export function ExportWizard({
           <WizardSelectStep
             selectedIds={selectedIds}
             onSelectedIdsChange={setSelectedIds}
+            resourceType={resourceType}
+            onResourceTypeChange={setResourceType}
             canWrite={canWrite}
             exportMutation={exportMutation}
             onCreateJobs={handleCreateJobs}

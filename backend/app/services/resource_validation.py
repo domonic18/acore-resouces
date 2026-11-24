@@ -117,10 +117,13 @@ def _get_field_value(
     return table_data.get(field)
 
 
-def check_mount_relationships(resource: Resource) -> list[RelationshipCheck]:
-    """检查坐骑资源的跨数据源关联关系。"""
+def _run_relationship_rules(
+    resource: Resource,
+    rules: list[RelationshipRule],
+) -> list[RelationshipCheck]:
+    """按规则表逐条检查跨数据源关联。"""
     results: list[RelationshipCheck] = []
-    for rule in MOUNT_RELATIONSHIPS:
+    for rule in rules:
         values = [
             RelationshipField(
                 source=field["source"],
@@ -161,10 +164,30 @@ def check_mount_relationships(resource: Resource) -> list[RelationshipCheck]:
     return results
 
 
+def check_mount_relationships(resource: Resource) -> list[RelationshipCheck]:
+    """检查坐骑资源的跨数据源关联关系。"""
+    return _run_relationship_rules(resource, MOUNT_RELATIONSHIPS)
+
+
+# 宠物共享坐骑的召唤链路三组关联；无 entry↔visual 载具链路。
+PET_RELATIONSHIPS: list[RelationshipRule] = [
+    rule
+    for rule in MOUNT_RELATIONSHIPS
+    if rule.key in ("spell_item", "model_display", "display_template_info")
+]
+
+
+def check_pet_relationships(resource: Resource) -> list[RelationshipCheck]:
+    """检查宠物资源的跨数据源关联关系。"""
+    return _run_relationship_rules(resource, PET_RELATIONSHIPS)
+
+
 def check_resource_relationships(resource: Resource) -> list[RelationshipCheck]:
     """根据资源类型执行关联校验。"""
     if resource.resource_type == "mount":
         return check_mount_relationships(resource)
+    if resource.resource_type == "pet":
+        return check_pet_relationships(resource)
     return []
 
 
