@@ -64,9 +64,9 @@ export function PreviewPage() {
         <div className="empty-state">
           <FolderOpen className="mb-5 h-16 w-16 text-text-tertiary" />
           <h3>未选择资源</h3>
-          <p>请从资源列表选择一个资源进入预览页面。</p>
+          <p>请从资源管理选择一个资源进入预览页面。</p>
           <Link to="/resources" className="btn btn-primary mt-4">
-            前往资源列表
+            前往资源管理
           </Link>
         </div>
       </div>

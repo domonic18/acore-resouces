@@ -58,7 +58,7 @@ export function WizardBuildStep({
       {showingIncoming && incomingJobIds && (
         <div className="flex flex-wrap items-center gap-2 rounded-md border border-accent/30 bg-accent/10 px-3 py-2 text-xs text-accent">
           <PackagePlus className="h-3.5 w-3.5" />
-          已从资源列表带入 {incomingJobIds.length} 个补丁任务，直接进入构建步骤。
+          已从资源管理带入 {incomingJobIds.length} 个补丁任务，直接进入构建步骤。
           <button
             type="button"
             className="ml-auto flex items-center gap-1 font-normal hover:underline"
