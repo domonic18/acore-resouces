@@ -20,6 +20,7 @@ import { SpecialFeatureBadge } from "@/components/badges/SpecialFeatureBadge";
 import { PatchJobStatusBadge } from "@/components/badges/PatchJobStatusBadge";
 import { SortHeader } from "@/components/table/SortHeader";
 import { formatDateTime } from "@/shared/format";
+import { ItemCell } from "./ItemCell";
 import { formatDrop } from "../lib/resource-list";
 import { getMissingRequiredFields } from "../requiredFields";
 import type { PatchJob, Resource } from "@/shared/types";
@@ -79,6 +80,8 @@ interface ResourceTableProps {
   onSelect?: (id: number, selected: boolean) => void;
   onSelectAll?: (selected: boolean) => void;
   showFeatures?: boolean;
+  /** 物品列（坐骑 .additem 速览）；坐骑页签开启 */
+  showItemColumn?: boolean;
   /** 补丁任务索引（资源 ID → 任务），用于显示流水线位置 */
   patchJobs?: Map<number, PatchJob>;
   showPatchStatus?: boolean;
@@ -117,6 +120,7 @@ export function ResourceTable({
   onSelect,
   onSelectAll,
   showFeatures = false,
+  showItemColumn = false,
   patchJobs,
   showPatchStatus = false,
 }: ResourceTableProps) {
@@ -159,6 +163,7 @@ export function ResourceTable({
   const colSpan =
     (selectable ? 12 : 11) +
     (showFeatures ? 1 : 0) +
+    (showItemColumn ? 1 : 0) +
     (showPatchStatus ? 1 : 0);
 
   return (
@@ -208,6 +213,7 @@ export function ResourceTable({
               order={sortOrder}
               onClick={() => setSort("drop")}
             />
+            {showItemColumn && <th>物品</th>}
             <th>状态</th>
             {showPatchStatus && <th>补丁任务</th>}
             <th>标签</th>
@@ -270,6 +276,11 @@ export function ResourceTable({
                 </td>
                 <td>{resource.star_rating || resource.rarity || "—"}</td>
                 <td>{formatDrop(resource.drop)}</td>
+                {showItemColumn && (
+                  <td>
+                    <ItemCell resource={resource} />
+                  </td>
+                )}
                 <td>
                   <ResourceStatusBadge resource={resource} />
                   <MissingRequiredBadge resource={resource} />
