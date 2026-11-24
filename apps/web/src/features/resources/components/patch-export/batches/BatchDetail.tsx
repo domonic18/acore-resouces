@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
-import { ExternalLink, Trash2 } from "lucide-react";
+import {
+  ExternalLink,
+  FileCheck2,
+  FileSearch,
+  Trash2,
+} from "lucide-react";
 import { useCanWrite } from "@/features/auth/useAuth";
 import { artifactUrl } from "@/shared/patches";
 import { auditSummaryText, STATUS_BADGE, STATUS_LABEL } from "./batchStatus";
 import { PathLine } from "./PathLine";
 import type { BatchDetailProps } from "./types";
 
-/** 展开后的批次详情：产物路径清单 + 任务子表 */
+/** 展开后的批次详情：产物路径清单 + 任务紧凑列表（侧栏宽度友好） */
 export function BatchDetail({
   batch,
   building,
@@ -18,7 +23,7 @@ export function BatchDetail({
   const sqlFiles = batch.output.sql_files ?? [];
   const canWrite = useCanWrite();
   return (
-    <div className="space-y-3 py-2">
+    <div className="space-y-3 pt-1">
       {!isPending && (
         <div className="space-y-0.5">
           <PathLine label="补丁包" value={batch.output.mpq} />
@@ -52,100 +57,100 @@ export function BatchDetail({
         </div>
       )}
 
-      <table className="data-table w-full">
-        <thead>
-          <tr>
-            <th>资源</th>
-            <th>状态</th>
-            <th>完成时间</th>
-            <th>变更摘要（DBC / SQL）</th>
-            <th style={{ textAlign: "right" }}>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {batch.jobs.map((job) => (
-            <tr key={job.job_id}>
-              <td>
-                <span className="font-mono text-xs text-text-tertiary">
+      <div className="space-y-1.5">
+        {batch.jobs.map((job) => {
+          const summary = auditSummaryText(job.audit);
+          return (
+            <div
+              key={job.job_id}
+              className="rounded border border-border px-2 py-1.5"
+            >
+              <div className="flex items-center gap-2">
+                <span className="shrink-0 font-mono text-xs text-text-tertiary">
                   #{String(job.resource_id).padStart(4, "0")}
-                </span>{" "}
-                {job.resource_name}
-              </td>
-              <td>
+                </span>
+                <span
+                  className="min-w-0 flex-1 truncate text-sm text-text-primary"
+                  title={job.resource_name}
+                >
+                  {job.resource_name}
+                </span>
                 <span className={`badge ${STATUS_BADGE[job.status]}`}>
                   {STATUS_LABEL[job.status]}
                 </span>
-              </td>
-              <td className="text-xs text-text-tertiary">
-                {job.completed_at
-                  ? new Date(job.completed_at).toLocaleString()
-                  : "—"}
-              </td>
-              <td
-                className="max-w-72 truncate text-xs text-text-secondary"
-                title={auditSummaryText(job.audit)}
-              >
-                {auditSummaryText(job.audit)}
-              </td>
-              <td>
-                <div className="flex items-center justify-end gap-1.5">
-                  {job.has_validation_report ? (
-                    <button
-                      type="button"
-                      className="btn btn-sm"
-                      title="查看这个任务的校验报告"
-                      onClick={() => onShowValidation({ jobId: job.job_id })}
-                    >
-                      校验
-                    </button>
-                  ) : (
-                    <span
-                      className="text-xs text-text-tertiary"
-                      title="该任务没有校验报告——它从未成功构建过（试运行不产出报告）"
-                    >
-                      校验—
-                    </span>
-                  )}
-                  {job.audit ? (
-                    <button
-                      type="button"
-                      className="btn btn-sm"
-                      onClick={() => onAudit(job.job_id)}
-                    >
-                      审计
-                    </button>
-                  ) : (
-                    <span className="text-xs text-text-tertiary">—</span>
-                  )}
-                  <Link
-                    to={`/resources/mount/${job.resource_id}`}
-                    className="btn btn-sm"
-                    title="打开资源详情页"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    详情
-                  </Link>
+              </div>
+              <div className="mt-1 flex items-center gap-1.5">
+                <span
+                  className="min-w-0 flex-1 truncate text-xs text-text-tertiary"
+                  title={`变更摘要：${summary || "—"}${
+                    job.completed_at
+                      ? `\n完成于 ${new Date(job.completed_at).toLocaleString()}`
+                      : ""
+                  }`}
+                >
+                  {summary || "—"}
+                </span>
+                {job.has_validation_report ? (
                   <button
                     type="button"
-                    className="btn btn-sm btn-danger"
-                    disabled={!canWrite || building}
-                    onClick={() => onDelete(job)}
-                    title={
-                      !canWrite
-                        ? "仅管理员可删除"
-                        : building
-                          ? "构建运行中，禁止删除"
-                          : "删除任务"
-                    }
+                    className="btn btn-sm shrink-0 px-1.5"
+                    title="查看这个任务的校验报告"
+                    onClick={() => onShowValidation({ jobId: job.job_id })}
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <FileCheck2 className="h-3.5 w-3.5" />
                   </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                ) : (
+                  <span
+                    className="shrink-0 px-1.5 text-xs text-text-tertiary"
+                    title="该任务没有校验报告——它从未成功构建过（试运行不产出报告）"
+                  >
+                    <FileCheck2 className="h-3.5 w-3.5 opacity-40" />
+                  </span>
+                )}
+                {job.audit ? (
+                  <button
+                    type="button"
+                    className="btn btn-sm shrink-0 px-1.5"
+                    title="查看这个任务的 DBC/SQL 审计"
+                    onClick={() => onAudit(job.job_id)}
+                  >
+                    <FileSearch className="h-3.5 w-3.5" />
+                  </button>
+                ) : (
+                  <span
+                    className="shrink-0 px-1.5"
+                    title="该任务没有审计数据"
+                  >
+                    <FileSearch className="h-3.5 w-3.5 opacity-40" />
+                  </span>
+                )}
+                <Link
+                  to={`/resources/mount/${job.resource_id}`}
+                  className="btn btn-sm shrink-0 px-1.5"
+                  title="打开资源详情页"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </Link>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger shrink-0 px-1.5"
+                  disabled={!canWrite || building}
+                  onClick={() => onDelete(job)}
+                  title={
+                    !canWrite
+                      ? "仅管理员可删除"
+                      : building
+                        ? "构建运行中，禁止删除"
+                        : "删除任务"
+                  }
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

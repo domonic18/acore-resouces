@@ -251,7 +251,7 @@ export function ExportWizard({
           <div>
             <div className="card-title">制作补丁包</div>
             <div className="card-subtitle">
-              选择坐骑 → 构建 → 审查 → 发布；历史批次的「重建」也会汇入这条向导
+              ①~⑤ 的资源准备在「资源管理」页完成；右侧批次列表的「重建」也会汇入这条向导
             </div>
           </div>
           <StepIndicator

@@ -6,7 +6,7 @@ export interface ShowValidationTarget {
   jobId?: string;
 }
 
-export interface BatchRowProps {
+export interface BatchCardProps {
   batch: PatchBatch;
   isOpen: boolean;
   sqlCount: number;
