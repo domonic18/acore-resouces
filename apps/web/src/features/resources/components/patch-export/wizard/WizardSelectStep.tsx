@@ -38,6 +38,9 @@ export function WizardSelectStep({
           创建后进入构建步骤；本次任务范围会带入构建，不会波及其它待处理任务。
         </span>
       </div>
+      <p className="text-xs text-text-tertiary">
+        已有历史批次？到下方「已有批次」列表对目标批次点「重建」，会直接带入构建步骤。
+      </p>
       {exportMutation.isError && (
         <div className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
           {exportMutation.error instanceof Error

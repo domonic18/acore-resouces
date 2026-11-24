@@ -16,6 +16,8 @@ interface PatchBatchesTableProps {
   onAudit: (jobId: string) => void;
   /** 打开校验报告：传批次号或任务 ID */
   onShowValidation: (target: ShowValidationTarget) => void;
+  /** 批次「重建」确认后把任务带入上方向导的构建步骤 */
+  onRebuildHandover: (jobIds: string[]) => void;
 }
 
 /** 补丁批次管理表格（admin 视角）：状态筛选 + 批次列表 + 操作对话框编排骨架。 */
@@ -23,6 +25,7 @@ export function PatchBatchesTable({
   building,
   onAudit,
   onShowValidation,
+  onRebuildHandover,
 }: PatchBatchesTableProps) {
   const [status, setStatus] = useState("");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -147,6 +150,7 @@ export function PatchBatchesTable({
       {rebuildTarget && (
         <BatchRebuildDialog
           batch={rebuildTarget}
+          onConfirm={onRebuildHandover}
           onClose={() => setRebuildTarget(null)}
         />
       )}
