@@ -205,7 +205,7 @@ export function PreviewPage() {
                 onClick={() => setActiveTab("model")}
                 className={`flex items-center gap-1 rounded-md px-3 py-1 text-sm ${
                   activeTab === "model"
-                    ? "bg-accent text-white"
+                    ? "bg-accent text-[color:var(--gold-btn-text)]"
                     : "text-text-secondary hover:bg-bg-elevated"
                 }`}
               >
@@ -218,7 +218,7 @@ export function PreviewPage() {
                 onClick={() => setActiveTab("image")}
                 className={`flex items-center gap-1 rounded-md px-3 py-1 text-sm ${
                   activeTab === "image"
-                    ? "bg-accent text-white"
+                    ? "bg-accent text-[color:var(--gold-btn-text)]"
                     : "text-text-secondary hover:bg-bg-elevated"
                 }`}
               >

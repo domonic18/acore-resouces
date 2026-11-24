@@ -1,27 +1,36 @@
 :root {
-  --bg: #0b0d10;
-  --bg-elevated: #101219;
-  --bg-surface: #161922;
-  --bg-hover: #1c1f29;
-  --bg-input: #0f1118;
-  --border: #252a35;
-  --border-hover: #343a49;
-  --border-focus: #6366f1;
-  --text-primary: #f0f1f5;
-  --text-secondary: #9ca3af;
-  --text-tertiary: #6b7280;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --accent-soft: rgba(99, 102, 241, 0.12);
+  /* WoW 暖色石质主题：与 /dist 分发页（features/dist/dist-wow.css）同源配色 */
+  --bg: #0c0906;
+  --bg-elevated: #1d160d;
+  --bg-surface: #221a10;
+  --bg-hover: #2a2013;
+  --bg-input: #161009;
+  --border: #4d3b1c;
+  --border-hover: #8a6d3b;
+  --border-focus: #c8a951;
+  --text-primary: #e8dcc0;
+  --text-secondary: #a89878;
+  --text-tertiary: #7a6a50;
+  --accent: #eab53c;
+  --accent-hover: #f7d774;
+  --accent-soft: rgba(234, 181, 60, 0.12);
   --success: #22c55e;
   --warning: #f59e0b;
-  --danger: #ef4444;
+  --danger: #ff6a5e;
   --info: #3b82f6;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+  /* 标题/按钮衬线字体（与 dist-wow 一致） */
+  --font-display:
+    "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Songti SC",
+    "STSong", "SimSun", serif;
+  /* 石面颗粒噪点（feTurbulence 灰噪，低透明度叠加） */
+  --noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="200" height="200" filter="url(%23n)" opacity="0.05"/></svg>');
+  --gold-btn-text: #3a2708;
+  --gold-btn-border: #5c430f;
 }
 
 * {
@@ -44,6 +53,12 @@ body {
     "Segoe UI",
     sans-serif;
   background-color: var(--bg);
+  background-image:
+    var(--noise),
+    radial-gradient(ellipse 120% 60% at 50% -10%, #221a10 0%, transparent 60%),
+    radial-gradient(ellipse 90% 50% at 50% 115%, #191207 0%, transparent 65%),
+    linear-gradient(180deg, #120d07 0%, var(--bg) 100%);
+  background-attachment: fixed;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
@@ -74,8 +89,21 @@ input[type="number"] {
 @tailwind utilities;
 
 @layer components {
+  /* 页面大标题：金色渐变衬线字（与 dist-wow .page-title 同款） */
+  .display-title {
+    @apply font-bold tracking-[0.08em];
+    font-family: var(--font-display);
+    background: linear-gradient(180deg, #ffe370 0%, #ffd100 40%, #b8860b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+  }
+
   .btn {
     @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-border bg-bg-surface px-4 text-sm font-semibold text-text-secondary transition-all;
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
   }
   .btn:hover:not(:disabled) {
     @apply border-border-hover bg-bg-hover text-text-primary;
@@ -84,10 +112,17 @@ input[type="number"] {
     @apply cursor-not-allowed opacity-50;
   }
   .btn-primary {
-    @apply border-accent bg-accent text-white;
+    @apply border-[color:var(--gold-btn-border)] font-bold text-[color:var(--gold-btn-text)];
+    background: linear-gradient(180deg, #f7d774 0%, #eab53c 45%, #c68a1f 100%);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
   }
   .btn-primary:hover:not(:disabled) {
-    @apply border-accent-hover bg-accent-hover;
+    @apply border-[color:var(--gold-btn-border)] bg-transparent text-[color:var(--gold-btn-text)];
+    filter: brightness(1.12);
+  }
+  .btn-primary:active:not(:disabled) {
+    @apply bg-transparent text-[color:var(--gold-btn-text)];
+    filter: brightness(0.95);
   }
   .btn-success {
     @apply border-green-500/30 bg-green-500/15 text-green-500;
@@ -125,6 +160,7 @@ input[type="number"] {
   }
   .card-title {
     @apply text-sm font-bold text-text-primary;
+    font-family: var(--font-display);
   }
   .card-subtitle {
     @apply mt-0.5 text-xs text-text-tertiary;
@@ -147,7 +183,7 @@ input[type="number"] {
   .form-textarea:focus,
   .form-input-compact:focus,
   .form-select-compact:focus {
-    @apply border-border-focus shadow-[0_0_0_3px_rgba(99,102,241,0.1)];
+    @apply border-border-focus shadow-[0_0_0_3px_rgba(234,181,60,0.15)];
   }
   .form-input-invalid,
   .form-input-invalid:focus {
