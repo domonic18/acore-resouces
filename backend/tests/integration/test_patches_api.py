@@ -431,3 +431,74 @@ def test_clean_workspace_while_building(
     )
     response = client.post("/api/patches/clean", json={})
     assert response.status_code == 409
+
+
+def _write_compare_reports(tmp_path: Path) -> None:
+    """落两批审计报告供对比端点使用。"""
+
+    def _report(batch: str, files: list[dict[str, str]], job_ids: list[str]) -> None:
+        report_dir = tmp_path / "reports" / batch
+        report_dir.mkdir(parents=True, exist_ok=True)
+        (report_dir / "audit-report.json").write_text(
+            json.dumps(
+                {
+                    "batch": batch,
+                    "generated_at": "2026-11-24T00:00:00+00:00",
+                    "job_ids": job_ids,
+                    "jobs": [
+                        {"job_id": j, "resource_name": f"坐骑{j}", "model_folder": "test"}
+                        for j in job_ids
+                    ],
+                    "mpq": {"files": files},
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+    _report(
+        "20261120_100000",
+        [
+            {"path": "DBC/Mount.dbc", "sha256": "aaa"},
+            {"path": "DBC/Spell.dbc", "sha256": "bbb"},
+        ],
+        ["mount_0001", "mount_0002"],
+    )
+    _report(
+        "20261122_100000",
+        [
+            {"path": "DBC/Mount.dbc", "sha256": "ccc"},
+            {"path": "DBC/Spell.dbc", "sha256": "bbb"},
+        ],
+        ["mount_0002", "mount_0003"],
+    )
+
+
+def test_compare_batches(client: TestClient, audit_env: Path) -> None:
+    """任选两批次对比：文件/坐骑差异与审计报告一致。"""
+    _write_compare_reports(audit_env)
+
+    response = client.get("/api/patches/batches/20261120_100000/compare?against=20261122_100000")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["files_added"] == []
+    assert data["files_removed"] == []
+    assert [e["path"] for e in data["files_replaced"]] == ["DBC/Mount.dbc"]
+    assert data["files_unchanged_count"] == 1
+    assert [j["job_id"] for j in data["jobs_added"]] == ["mount_0003"]
+    assert [j["job_id"] for j in data["jobs_removed"]] == ["mount_0001"]
+    assert [j["job_id"] for j in data["jobs_common"]] == ["mount_0002"]
+
+
+def test_compare_batches_same_batch(client: TestClient, audit_env: Path) -> None:
+    """同批对比返回 400。"""
+    _write_compare_reports(audit_env)
+    response = client.get("/api/patches/batches/20261120_100000/compare?against=20261120_100000")
+    assert response.status_code == 400
+
+
+def test_compare_batches_missing_report(client: TestClient, audit_env: Path) -> None:
+    """任一批次缺审计报告返回 404。"""
+    _write_compare_reports(audit_env)
+    response = client.get("/api/patches/batches/20261120_100000/compare?against=20261125_000000")
+    assert response.status_code == 404

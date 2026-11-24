@@ -3,6 +3,7 @@ import { usePatchJobDelete } from "@/features/resources/hooks/usePatchJobDelete"
 import { usePatchBatches } from "@/features/resources/hooks/usePatchBatches";
 import { useBatchDelete } from "@/features/resources/hooks/usePatchBatchActions";
 import { BatchCard } from "./batches/BatchCard";
+import { BatchCompareDialog } from "./batches/BatchCompareDialog";
 import { BatchDeleteDialog } from "./batches/BatchDeleteDialog";
 import { BatchPublishDialog } from "./batches/BatchPublishDialog";
 import { BatchRebuildDialog } from "./batches/BatchRebuildDialog";
@@ -34,6 +35,7 @@ export function PatchBatchesTable({
     useState<PatchBatch | null>(null);
   const [rebuildTarget, setRebuildTarget] = useState<PatchBatch | null>(null);
   const [publishTarget, setPublishTarget] = useState<PatchBatch | null>(null);
+  const [compareTargetId, setCompareTargetId] = useState<string | null>(null);
 
   const deleteMutation = usePatchJobDelete();
   const batchDeleteMutation = useBatchDelete();
@@ -97,6 +99,7 @@ export function PatchBatchesTable({
               onRebuild={setRebuildTarget}
               onPublish={setPublishTarget}
               onDeleteBatch={setPendingBatchDelete}
+              onCompare={(b) => setCompareTargetId(b.batch_id)}
             />
           );
         })}
@@ -140,6 +143,13 @@ export function PatchBatchesTable({
         <BatchPublishDialog
           batch={publishTarget}
           onClose={() => setPublishTarget(null)}
+        />
+      )}
+
+      {compareTargetId && (
+        <BatchCompareDialog
+          batchId={compareTargetId}
+          onClose={() => setCompareTargetId(null)}
         />
       )}
     </div>

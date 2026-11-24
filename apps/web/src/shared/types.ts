@@ -210,6 +210,31 @@ export interface PatchBatch {
   jobs: PatchBatchJob[];
 }
 
+export interface BatchCompareFileEntry {
+  path: string;
+  sha_base: string | null;
+  sha_against: string | null;
+}
+
+export interface BatchCompareJobEntry {
+  job_id: string;
+  resource_name: string | null;
+}
+
+/** 任选两批次的产物对比结果（基于审计报告的文件清单 + 任务集合） */
+export interface BatchCompareResult {
+  base_batch: string;
+  against_batch: string;
+  generated_at: string;
+  files_added: string[];
+  files_removed: string[];
+  files_replaced: BatchCompareFileEntry[];
+  files_unchanged_count: number;
+  jobs_added: BatchCompareJobEntry[];
+  jobs_removed: BatchCompareJobEntry[];
+  jobs_common: BatchCompareJobEntry[];
+}
+
 export interface PatchBuildResult {
   jobs: string[];
   sql_files: string[];

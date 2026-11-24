@@ -269,3 +269,33 @@ class PatchBatch(BaseModel):
     job_count: int
     output: dict[str, Any] = Field(default_factory=dict)
     jobs: list[PatchBatchJob] = Field(default_factory=list)
+
+
+class BatchCompareFileEntry(BaseModel):
+    """两批次 MPQ 中同路径但内容不同的文件差异。"""
+
+    path: str
+    sha_base: str | None = None
+    sha_against: str | None = None
+
+
+class BatchCompareJobEntry(BaseModel):
+    """两批次坐骑任务对比的单侧条目。"""
+
+    job_id: str
+    resource_name: str | None = None
+
+
+class BatchCompareResult(BaseModel):
+    """任选两批次的产物对比结果（基于审计报告的 JSON 归并，不触碰 MPQ）。"""
+
+    base_batch: str
+    against_batch: str
+    generated_at: str
+    files_added: list[str] = Field(default_factory=list)
+    files_removed: list[str] = Field(default_factory=list)
+    files_replaced: list[BatchCompareFileEntry] = Field(default_factory=list)
+    files_unchanged_count: int = 0
+    jobs_added: list[BatchCompareJobEntry] = Field(default_factory=list)
+    jobs_removed: list[BatchCompareJobEntry] = Field(default_factory=list)
+    jobs_common: list[BatchCompareJobEntry] = Field(default_factory=list)

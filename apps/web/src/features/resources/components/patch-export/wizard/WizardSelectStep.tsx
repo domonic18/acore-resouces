@@ -12,6 +12,10 @@ export function WizardSelectStep({
 }: WizardSelectStepProps) {
   return (
     <div className="space-y-4">
+      <p className="text-xs text-text-tertiary">
+        这里是创建补丁任务的唯一入口：勾选坐骑（支持按状态 / 星级 / 载具筛选），
+        点「创建补丁任务」进入构建。资源管理页的「制作补丁」也会跳转到这里。
+      </p>
       <MountMultiSelect selected={selectedIds} onChange={onSelectedIdsChange} />
       <div className="flex items-center gap-3">
         <button
@@ -38,6 +42,10 @@ export function WizardSelectStep({
           创建后进入构建步骤；本次任务范围会带入构建，不会波及其它待处理任务。
         </span>
       </div>
+      <p className="text-xs text-text-tertiary">
+        追加坐骑：直接在这里勾选新坐骑再构建即可——产物是编号更高的新补丁包，
+        与已发布的旧包叠加生效，客户端需同时保留旧全量包和新包。
+      </p>
       <p className="text-xs text-text-tertiary">
         已有历史批次？到右侧「已有批次」列表对目标批次点「重建」，会直接带入构建步骤。
       </p>

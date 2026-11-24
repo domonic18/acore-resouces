@@ -1,5 +1,6 @@
 import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
 import type {
+  BatchCompareResult,
   BuildStatus,
   CleanResult,
   JobArtifactsOut,
@@ -83,6 +84,16 @@ export function listPatchBatches(params: {
   const suffix = query.size > 0 ? `?${query.toString()}` : "";
   return apiGetJson<{ total: number; items: PatchBatch[] }>(
     `/api/patches/batches${suffix}`,
+  );
+}
+
+/** 任选两批次产物对比（基于审计报告；同批 400，缺审计报告 404） */
+export function compareBatches(
+  batchId: string,
+  againstBatchId: string,
+): Promise<BatchCompareResult> {
+  return apiGetJson<BatchCompareResult>(
+    `/api/patches/batches/${encodeURIComponent(batchId)}/compare?against=${encodeURIComponent(againstBatchId)}`,
   );
 }
 

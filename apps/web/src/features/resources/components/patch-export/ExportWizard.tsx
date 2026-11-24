@@ -79,6 +79,18 @@ export function ExportWizard({
     return ids.length > 0 ? ids : null;
   }, [searchParams]);
 
+  // 从资源列表「制作补丁」跳转过来时带上坐骑 ID：只预填第⑥步的选择，不跳步。
+  // 任务创建统一发生在向导里，资源页入口不再产生 ?jobs=（保留解析兼容旧链接）。
+  const incomingSelectIds = useMemo(() => {
+    const raw = searchParams.get("select");
+    if (!raw) return null;
+    const ids = raw
+      .split(",")
+      .map((id) => Number.parseInt(id.trim(), 10))
+      .filter((id) => Number.isFinite(id) && id > 0);
+    return ids.length > 0 ? [...new Set(ids)].sort((a, b) => a - b) : null;
+  }, [searchParams]);
+
   const buildStatus = useBuildStatus();
   const buildMutation = usePatchBuild();
   // 任务 ID → 坐骑名，用于把「mount_0466」显示成「幼年商队雷龙」
@@ -154,6 +166,20 @@ export function ExportWizard({
     setJobIds(incomingJobIds);
     if (stepId === "create-jobs") setStep(1);
   }, [incomingJobIds, stepId, setStep]);
+
+  // 承接资源列表「制作补丁」带入的坐骑：合并进第⑥步的选择集合并回到选择步骤。
+  // 与 ?jobs= 一样只应用一次，避免用户手动改选后被 URL 重放覆盖。
+  const appliedSelectRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!incomingSelectIds) return;
+    const key = incomingSelectIds.join(",");
+    if (appliedSelectRef.current === key) return;
+    appliedSelectRef.current = key;
+    setSelectedIds((prev) =>
+      [...new Set([...prev, ...incomingSelectIds])].sort((a, b) => a - b),
+    );
+    setStep(0);
+  }, [incomingSelectIds, setStep]);
 
   // 承接批次列表「重建」带来的任务：同样跳到构建步骤。
   // handover 在承接后即被页面置 null，不需要 ref 防重放；

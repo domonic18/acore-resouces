@@ -2,6 +2,7 @@ import {
   ChevronDown,
   ChevronRight,
   FileCheck2,
+  GitCompareArrows,
   Hammer,
   Trash2,
   UploadCloud,
@@ -24,6 +25,7 @@ export function BatchCard({
   onRebuild,
   onPublish,
   onDeleteBatch,
+  onCompare,
 }: BatchCardProps) {
   const isPending = batch.batch_id === "pending";
   const hasMpq = Boolean(batch.output.mpq);
@@ -109,6 +111,20 @@ export function BatchCard({
         >
           <Hammer className="h-3.5 w-3.5" />
           重建
+        </button>
+        <button
+          type="button"
+          className="btn btn-sm"
+          disabled={!batch.output.audit}
+          title={
+            batch.output.audit
+              ? "与任一其它批次对比文件/坐骑差异"
+              : "该批次没有审计报告（审计功能上线前构建），无法对比"
+          }
+          onClick={() => onCompare(batch)}
+        >
+          <GitCompareArrows className="h-3.5 w-3.5" />
+          对比
         </button>
         {hasMpq && batch.status !== "applied" && (
           <button
