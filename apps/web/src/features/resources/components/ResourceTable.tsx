@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { Fragment, useState } from "react";
 import {
   Check,
   Copy,
@@ -10,7 +11,6 @@ import {
   AlertTriangle,
   X,
 } from "lucide-react";
-import { useState } from "react";
 import { useCanWrite } from "@/features/auth/useAuth";
 import { ResourceThumb } from "@/components/ResourceThumb";
 import { ResourceTypeBadge } from "@/components/badges/ResourceTypeBadge";
@@ -23,6 +23,7 @@ import { formatDateTime } from "@/shared/format";
 import { ItemCell } from "./ItemCell";
 import { formatDrop } from "../lib/resource-list";
 import { getMissingRequiredFields } from "../requiredFields";
+import type { ResourceColumnKey } from "../lib/tableColumns";
 import type { PatchJob, Resource } from "@/shared/types";
 import type { SortKey, SortOrder } from "../lib/resource-list";
 
@@ -85,6 +86,8 @@ interface ResourceTableProps {
   /** 补丁任务索引（资源 ID → 任务），用于显示流水线位置 */
   patchJobs?: Map<number, PatchJob>;
   showPatchStatus?: boolean;
+  /** 列显隐：由 ResourceListPage 注入（localStorage 持久化） */
+  isVisible: (key: ResourceColumnKey) => boolean;
 }
 
 function SpecialFeatureBadges({ resource }: { resource: Resource }) {
@@ -109,6 +112,15 @@ function SpecialFeatureBadges({ resource }: { resource: Resource }) {
   );
 }
 
+interface ColumnDef {
+  key: ResourceColumnKey;
+  /** 该列只在对应页签开关开启时存在 */
+  requires?: "item" | "features" | "patch_status";
+  header: React.ReactNode;
+  cell: (resource: Resource) => React.ReactNode;
+  cellClassName?: string;
+}
+
 export function ResourceTable({
   currentItems,
   sortKey,
@@ -123,6 +135,7 @@ export function ResourceTable({
   showItemColumn = false,
   patchJobs,
   showPatchStatus = false,
+  isVisible,
 }: ResourceTableProps) {
   const location = useLocation();
   const canWrite = useCanWrite();
@@ -135,6 +148,149 @@ export function ResourceTable({
   };
 
   const listState = { from: location };
+
+  const sortHeader = (label: string, key: SortKey) => (
+    <SortHeader
+      label={label}
+      active={sortKey === key}
+      order={sortOrder}
+      onClick={() => setSort(key)}
+    />
+  );
+
+  const defs: ColumnDef[] = [
+    {
+      key: "resource",
+      header: sortHeader("资源", "resource"),
+      cell: (resource) => (
+        <div className="flex items-center gap-2">
+          <Link
+            to={`/resources/${resource.resource_type}/${resource.id}`}
+            state={listState}
+            onClick={saveScrollAndNavigate}
+            className="name-cell min-w-0 flex-1"
+            title={resource.name || resource.model_folder}
+          >
+            <ResourceThumb resource={resource} />
+            <div className="min-w-0">
+              <div className="resource-name truncate">
+                {resource.name || resource.model_folder}
+              </div>
+              <div className="resource-meta truncate">
+                id: {String(resource.id).padStart(4, "0")} ·{" "}
+                {resource.model_folder}
+              </div>
+            </div>
+          </Link>
+          <CopyResourceButton resource={resource} />
+        </div>
+      ),
+    },
+    {
+      key: "id",
+      header: sortHeader("ID", "id"),
+      cell: (resource) => String(resource.id).padStart(4, "0"),
+    },
+    {
+      key: "type",
+      header: sortHeader("类型", "resource_type"),
+      cell: (resource) => <ResourceTypeBadge resource={resource} />,
+    },
+    {
+      key: "tier",
+      header: sortHeader("星级/稀有度", "tier"),
+      cell: (resource) => resource.star_rating || resource.rarity || "—",
+    },
+    {
+      key: "drop",
+      header: sortHeader("掉落来源", "drop"),
+      cell: (resource) => {
+        const text = formatDrop(resource.drop);
+        return (
+          <span className="block max-w-[150px] truncate" title={text}>
+            {text}
+          </span>
+        );
+      },
+    },
+    {
+      key: "item",
+      requires: "item",
+      header: <th>物品</th>,
+      cell: (resource) => <ItemCell resource={resource} />,
+      cellClassName: "max-w-[170px]",
+    },
+    {
+      key: "status",
+      header: <th>状态</th>,
+      cell: (resource) => (
+        <>
+          <ResourceStatusBadge resource={resource} />
+          <MissingRequiredBadge resource={resource} />
+        </>
+      ),
+    },
+    {
+      key: "patch_status",
+      requires: "patch_status",
+      header: <th>补丁任务</th>,
+      cell: (resource) => (
+        <PatchJobStatusBadge job={patchJobs?.get(resource.id)} />
+      ),
+    },
+    {
+      key: "tags",
+      header: <th>标签</th>,
+      cell: (resource) => <ResourceTagBadge resource={resource} />,
+    },
+    {
+      key: "features",
+      requires: "features",
+      header: <th>功能</th>,
+      cell: (resource) => <SpecialFeatureBadges resource={resource} />,
+    },
+    {
+      key: "conflicts",
+      header: <th>冲突</th>,
+      cell: (resource) =>
+        resource.duplicate_issues && resource.duplicate_issues.length > 0 ? (
+          <button
+            type="button"
+            onClick={() =>
+              setExpandedId(expandedId === resource.id ? null : resource.id)
+            }
+            className="inline-flex items-center gap-1 rounded bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger hover:bg-danger/20"
+            title="点击查看重复 ID 冲突详情"
+          >
+            <AlertTriangle className="h-3.5 w-3.5" />
+            {resource.duplicate_issues.length}
+          </button>
+        ) : (
+          <span className="text-text-secondary">—</span>
+        ),
+    },
+    {
+      key: "created_at",
+      header: sortHeader("添加时间", "created_at"),
+      cell: (resource) => formatDateTime(resource.created_at),
+      cellClassName: "whitespace-nowrap text-[11px] text-text-secondary",
+    },
+    {
+      key: "updated_at",
+      header: sortHeader("修改时间", "updated_at"),
+      cell: (resource) => formatDateTime(resource.updated_at),
+      cellClassName: "whitespace-nowrap text-[11px] text-text-secondary",
+    },
+  ];
+
+  const requiresMet = (def: ColumnDef) =>
+    !def.requires ||
+    (def.requires === "item" && showItemColumn) ||
+    (def.requires === "features" && showFeatures) ||
+    (def.requires === "patch_status" && showPatchStatus);
+
+  const visibleDefs = defs.filter((d) => isVisible(d.key) && requiresMet(d));
+
   if (isLoading) {
     return (
       <p className="px-5 py-8 text-center text-text-secondary">加载中...</p>
@@ -159,12 +315,8 @@ export function ResourceTable({
     onSelectAll?.(!allSelected);
   };
 
-  // 空态与加载失败时的合并单元格列数（勾选列随 selectable 增减）
-  const colSpan =
-    (selectable ? 12 : 11) +
-    (showFeatures ? 1 : 0) +
-    (showItemColumn ? 1 : 0) +
-    (showPatchStatus ? 1 : 0);
+  // 空态与冲突展开行的合并单元格列数：可见数据列 + 勾选列 + 操作列
+  const colSpan = visibleDefs.length + (selectable ? 1 : 0) + 1;
 
   return (
     <div className="overflow-x-auto">
@@ -183,61 +335,16 @@ export function ResourceTable({
                 />
               </th>
             )}
-            <SortHeader
-              label="资源"
-              active={sortKey === "resource"}
-              order={sortOrder}
-              onClick={() => setSort("resource")}
-            />
-            <SortHeader
-              label="ID"
-              active={sortKey === "id"}
-              order={sortOrder}
-              onClick={() => setSort("id")}
-            />
-            <SortHeader
-              label="类型"
-              active={sortKey === "resource_type"}
-              order={sortOrder}
-              onClick={() => setSort("resource_type")}
-            />
-            <SortHeader
-              label="星级/稀有度"
-              active={sortKey === "tier"}
-              order={sortOrder}
-              onClick={() => setSort("tier")}
-            />
-            <SortHeader
-              label="掉落来源"
-              active={sortKey === "drop"}
-              order={sortOrder}
-              onClick={() => setSort("drop")}
-            />
-            {showItemColumn && <th>物品</th>}
-            <th>状态</th>
-            {showPatchStatus && <th>补丁任务</th>}
-            <th>标签</th>
-            {showFeatures && <th>功能</th>}
-            <th>冲突</th>
-            <SortHeader
-              label="添加时间"
-              active={sortKey === "created_at"}
-              order={sortOrder}
-              onClick={() => setSort("created_at")}
-            />
-            <SortHeader
-              label="修改时间"
-              active={sortKey === "updated_at"}
-              order={sortOrder}
-              onClick={() => setSort("updated_at")}
-            />
+            {visibleDefs.map((def) => (
+              <Fragment key={def.key}>{def.header}</Fragment>
+            ))}
             <th style={{ textAlign: "right" }}>操作</th>
           </tr>
         </thead>
         <tbody>
           {currentItems.map((resource) => (
-            <>
-              <tr key={`${resource.resource_type}-${resource.id}`}>
+            <Fragment key={`${resource.resource_type}-${resource.id}`}>
+              <tr>
                 {selectable && (
                   <td>
                     <input
@@ -247,84 +354,12 @@ export function ResourceTable({
                     />
                   </td>
                 )}
-                <td>
-                  <div className="flex items-center gap-2">
-                    <Link
-                      to={`/resources/${resource.resource_type}/${resource.id}`}
-                      state={listState}
-                      onClick={saveScrollAndNavigate}
-                      className="name-cell min-w-0 flex-1"
-                      title={resource.name || resource.model_folder}
-                    >
-                      <ResourceThumb resource={resource} />
-                      <div className="min-w-0">
-                        <div className="resource-name truncate">
-                          {resource.name || resource.model_folder}
-                        </div>
-                        <div className="resource-meta truncate">
-                          id: {String(resource.id).padStart(4, "0")} ·{" "}
-                          {resource.model_folder}
-                        </div>
-                      </div>
-                    </Link>
-                    <CopyResourceButton resource={resource} />
-                  </div>
-                </td>
-                <td>{String(resource.id).padStart(4, "0")}</td>
-                <td>
-                  <ResourceTypeBadge resource={resource} />
-                </td>
-                <td>{resource.star_rating || resource.rarity || "—"}</td>
-                <td>{formatDrop(resource.drop)}</td>
-                {showItemColumn && (
-                  <td>
-                    <ItemCell resource={resource} />
+                {visibleDefs.map((def) => (
+                  <td key={def.key} className={def.cellClassName}>
+                    {def.cell(resource)}
                   </td>
-                )}
-                <td>
-                  <ResourceStatusBadge resource={resource} />
-                  <MissingRequiredBadge resource={resource} />
-                </td>
-                {showPatchStatus && (
-                  <td>
-                    <PatchJobStatusBadge job={patchJobs?.get(resource.id)} />
-                  </td>
-                )}
-                <td>
-                  <ResourceTagBadge resource={resource} />
-                </td>
-                {showFeatures && (
-                  <td>
-                    <SpecialFeatureBadges resource={resource} />
-                  </td>
-                )}
-                <td>
-                  {resource.duplicate_issues &&
-                  resource.duplicate_issues.length > 0 ? (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setExpandedId(
-                          expandedId === resource.id ? null : resource.id,
-                        )
-                      }
-                      className="inline-flex items-center gap-1 rounded bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger hover:bg-danger/20"
-                      title="点击查看重复 ID 冲突详情"
-                    >
-                      <AlertTriangle className="h-3.5 w-3.5" />
-                      {resource.duplicate_issues.length}
-                    </button>
-                  ) : (
-                    <span className="text-text-secondary">—</span>
-                  )}
-                </td>
-                <td className="text-text-secondary">
-                  {formatDateTime(resource.created_at)}
-                </td>
-                <td className="text-text-secondary">
-                  {formatDateTime(resource.updated_at)}
-                </td>
-                <td className="text-right">
+                ))}
+                <td className="whitespace-nowrap text-right">
                   <div className="inline-flex items-center justify-end gap-1.5">
                     <Link
                       to={`/resources/${resource.resource_type}/${resource.id}`}
@@ -429,7 +464,7 @@ export function ResourceTable({
                     </td>
                   </tr>
                 )}
-            </>
+            </Fragment>
           ))}
           {currentItems.length === 0 && (
             <tr>

@@ -9,7 +9,10 @@ import {
 import { useResourceListData } from "@/features/resources/hooks/useResourceListData";
 import { useResourceListFilters } from "@/features/resources/hooks/useResourceListFilters";
 import { ResourceFilters } from "@/features/resources/components/ResourceFilters";
+import { ResourceColumnConfig } from "@/features/resources/components/ResourceColumnConfig";
 import { ResourceTable } from "@/features/resources/components/ResourceTable";
+import { useResourceColumnVisibility } from "@/features/resources/lib/tableColumns";
+import type { ResourceColumnKey } from "@/features/resources/lib/tableColumns";
 import { ResourcePagination } from "@/features/resources/components/ResourcePagination";
 import { BulkPatchExportButton } from "@/features/resources/components/BulkPatchExportButton";
 import {
@@ -71,6 +74,28 @@ export function ResourceListPage() {
   } = useResourceListFilters(allItems);
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  // 列显隐：按类型持久化在 localStorage（resource-cols:{type}:v1）
+  const columnVisibility = useResourceColumnVisibility(typeParam);
+
+  // 当前页签可配置的列：条件列随页签/权限开关
+  const availableColumnKeys = useMemo(() => {
+    const keys: ResourceColumnKey[] = [
+      "id",
+      "type",
+      "tier",
+      "drop",
+      "status",
+      "tags",
+      "conflicts",
+      "created_at",
+      "updated_at",
+    ];
+    if (typeParam === "mount" || typeParam === "pet") keys.push("item");
+    if (typeParam === "mount") keys.push("features");
+    if (typeParam === "mount" && isAdmin) keys.push("patch_status");
+    return keys;
+  }, [typeParam, isAdmin]);
 
   // 补丁任务状态：让列表页直接显示每只坐骑在补丁流水线上的位置
   const patchJobsQuery = useMountPatchJobs(isAdmin);
@@ -155,6 +180,14 @@ export function ResourceListPage() {
           tagOptions={tagOptions}
           updateParam={updateParam}
           toggleParamValue={toggleParamValue}
+          toolbarActions={
+            <ResourceColumnConfig
+              availableKeys={availableColumnKeys}
+              hidden={columnVisibility.hidden}
+              onToggle={columnVisibility.toggle}
+              onReset={columnVisibility.reset}
+            />
+          }
         />
 
         {/* 批量勾选与补丁导出是编辑者（管理员）的工作流，查看者不展示 */}
@@ -185,7 +218,7 @@ export function ResourceListPage() {
                 </>
               ) : (
                 <span className="text-text-tertiary">
-                  勾选坐骑后即可批量创建补丁任务
+                  勾选坐骑后可批量进入补丁向导
                 </span>
               )}
             </div>
@@ -212,6 +245,7 @@ export function ResourceListPage() {
           showItemColumn={typeParam === "mount" || typeParam === "pet"}
           showPatchStatus={typeParam === "mount" && isAdmin}
           patchJobs={patchJobMap}
+          isVisible={columnVisibility.isVisible}
         />
 
         {!isLoading && !error && (

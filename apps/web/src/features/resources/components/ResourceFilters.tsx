@@ -16,6 +16,8 @@ interface ResourceFiltersProps {
   tagOptions: ResourceTagValue[];
   updateParam: (key: string, value: string) => void;
   toggleParamValue: (key: "status" | "tags" | "features", value: string) => void;
+  /** 右侧工具按钮区的额外操作（如「列设置」），由页面注入 */
+  toolbarActions?: React.ReactNode;
 }
 
 function FilterTag({
@@ -49,6 +51,7 @@ export function ResourceFilters({
   tagOptions,
   updateParam,
   toggleParamValue,
+  toolbarActions,
 }: ResourceFiltersProps) {
   const selectedStatuses = new Set(
     (searchParams.get("status") || "").split(",").filter(Boolean),
@@ -173,6 +176,7 @@ export function ResourceFilters({
         )}
       </div>
       <div className="table-filters">
+        {toolbarActions}
         <button className="btn btn-sm" onClick={() => window.location.reload()}>
           刷新
         </button>
