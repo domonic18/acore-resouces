@@ -53,6 +53,9 @@ export function MountMultiSelect({
 
   return (
     <div>
+      <p className="mb-2 text-xs text-text-tertiary">
+        第 ⑥ 步 · 勾选要制作补丁的坐骑，点下方「创建补丁任务」进入构建
+      </p>
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <div className="search-box relative min-w-52 flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />

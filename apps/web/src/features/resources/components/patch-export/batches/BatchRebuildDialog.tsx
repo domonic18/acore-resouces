@@ -1,17 +1,19 @@
-import { useState } from "react";
-import { useBatchBuild } from "@/features/resources/hooks/usePatchBatchActions";
 import { Dialog } from "@/shared/components/ui/Dialog";
 import type { PatchBatch } from "@/shared/types";
 
 interface BatchRebuildDialogProps {
   batch: PatchBatch;
+  /** 确认后把该批任务带入上方向导的构建步骤 */
+  onConfirm: (jobIds: string[]) => void;
   onClose: () => void;
 }
 
-/** 重建批次：试运行 / 正式构建 */
-export function BatchRebuildDialog({ batch, onClose }: BatchRebuildDialogProps) {
-  const [dryRun, setDryRun] = useState(true);
-  const build = useBatchBuild();
+/** 重建批次：确认框——把该批任务汇入向导，构建 / 审查 / 发布都在向导里继续。 */
+export function BatchRebuildDialog({
+  batch,
+  onConfirm,
+  onClose,
+}: BatchRebuildDialogProps) {
   const jobIds = batch.jobs.map((job) => job.job_id);
 
   return (
@@ -29,63 +31,23 @@ export function BatchRebuildDialog({ batch, onClose }: BatchRebuildDialogProps) 
           <button
             type="button"
             className="btn btn-sm btn-primary"
-            disabled={build.isPending || jobIds.length === 0}
-            onClick={() =>
-              build.mutate(
-                { jobIds, dryRun },
-                { onSuccess: onClose },
-              )
-            }
+            disabled={jobIds.length === 0}
+            onClick={() => {
+              onConfirm(jobIds);
+              onClose();
+            }}
           >
-            {build.isPending ? "启动中..." : dryRun ? "开始试运行" : "开始构建"}
+            带入向导构建
           </button>
         </div>
       }
     >
-      <div className="space-y-2 text-sm">
-        <label className="flex cursor-pointer items-start gap-2">
-          <input
-            type="radio"
-            checked={dryRun}
-            onChange={() => setDryRun(true)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-blue-500"
-          />
-          <span>
-            <span className="text-text-primary">先试运行</span>
-            <span className="ml-2 text-xs text-text-tertiary">
-              只检查 ID 冲突并生成计划，不修改任何文件
-            </span>
-          </span>
-        </label>
-        <label className="flex cursor-pointer items-start gap-2">
-          <input
-            type="radio"
-            checked={!dryRun}
-            onChange={() => setDryRun(false)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-red-500"
-          />
-          <span>
-            <span className="text-danger">正式构建</span>
-            <span className="ml-2 text-xs text-text-tertiary">
-              会改写源 DBC 记录并生成 SQL 补丁
-            </span>
-          </span>
-        </label>
-      </div>
-      {dryRun && (
-        <div className="mt-3 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-warning">
-          试运行不产出校验报告与补丁包，所以构建完仍然无法「审查产物」。
-          想让流程继续往下走，请改选「正式构建」。
-        </div>
-      )}
-      <p className="mt-3 text-xs text-text-tertiary">
-        构建只处理这 {batch.job_count} 只坐骑，不影响其它待处理任务。
+      <p className="text-sm text-text-secondary">
+        确认后这 {batch.job_count} 只坐骑的任务会带入上方「制作补丁包」向导并跳到构建步骤，构建日志、产物审查与发布都在向导里完成。
       </p>
-      {build.isError && (
-        <div className="mt-3 rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
-          {build.error instanceof Error ? build.error.message : "启动构建失败"}
-        </div>
-      )}
+      <p className="mt-2 text-xs text-text-tertiary">
+        构建默认先试运行（不改任何文件），只处理这一批任务，不影响其它待处理任务。
+      </p>
     </Dialog>
   );
 }

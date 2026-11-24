@@ -15,6 +15,7 @@ export function WizardBuildStep({
   canWrite,
   incomingJobIds,
   showingIncoming,
+  handoverCount,
   jobIds,
   jobNameById,
   allPendingCount,
@@ -53,7 +54,7 @@ export function WizardBuildStep({
   const reviewGateAction =
     jobIds.length > 0 || buildAll
       ? "继续的做法：取消勾选上面的「先试运行，不改任何文件」，再点「开始构建」；构建完成后这一步就会亮起。"
-      : "当前向导没有待构建的坐骑。请在下方「补丁批次列表」里对目标批次点「重建」并选「正式构建」，或回到第 ① 步选择坐骑。";
+      : "当前向导没有待构建的坐骑。回到第 ⑥ 步选择坐骑，或到下方「已有批次」列表对目标批次点「重建」。";
 
   return (
     <div className="space-y-4">
@@ -61,6 +62,21 @@ export function WizardBuildStep({
         <div className="flex flex-wrap items-center gap-2 rounded-md border border-accent/30 bg-accent/10 px-3 py-2 text-xs text-accent">
           <PackagePlus className="h-3.5 w-3.5" />
           已从资源管理带入 {incomingJobIds.length} 个补丁任务，直接进入构建步骤。
+          <button
+            type="button"
+            className="ml-auto flex items-center gap-1 font-normal hover:underline"
+            onClick={onBackToSelection}
+          >
+            <ArrowLeft className="h-3 w-3" />
+            重新选择坐骑
+          </button>
+        </div>
+      )}
+
+      {handoverCount !== null && (
+        <div className="flex flex-wrap items-center gap-2 rounded-md border border-accent/30 bg-accent/10 px-3 py-2 text-xs text-accent">
+          <PackagePlus className="h-3.5 w-3.5" />
+          已从下方批次列表带入 {handoverCount} 个补丁任务，直接进入构建步骤。
           <button
             type="button"
             className="ml-auto flex items-center gap-1 font-normal hover:underline"

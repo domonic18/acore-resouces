@@ -9,6 +9,7 @@ import { CleanDialog } from "@/features/resources/components/patch-export/CleanD
 import { useBuildStatus } from "@/features/resources/hooks/usePatchBuild";
 import { useCanWrite } from "@/features/auth/useAuth";
 import { WIZARD_FLOW_STEP_IDS } from "@/features/resources/lib/patch-flow";
+import type { WizardHandover } from "@/features/resources/components/patch-export/wizard/types";
 
 export function ExportPage() {
   const [auditJobId, setAuditJobId] = useState<string | null>(null);
@@ -19,6 +20,8 @@ export function ExportPage() {
     WIZARD_FLOW_STEP_IDS[0],
   );
   const [completed, setCompleted] = useState(false);
+  // 批次列表「重建」→ 向导构建步的交接状态；向导消费后置 null
+  const [handover, setHandover] = useState<WizardHandover | null>(null);
   // 校验报告查看目标：批次号或任务 ID
   const [validationTarget, setValidationTarget] = useState<{
     batchId?: string;
@@ -36,6 +39,19 @@ export function ExportPage() {
     setCompleted(true);
   }, []);
 
+  /** 批次列表「重建」：把任务带入向导并直接跳到构建步骤 */
+  const handleRebuildHandover = useCallback(
+    (jobIds: string[]) => {
+      setHandover({ jobIds });
+      handleStepChange("build-patch");
+    },
+    [handleStepChange],
+  );
+
+  const handleHandoverConsumed = useCallback(() => {
+    setHandover(null);
+  }, []);
+
   return (
     <div className="content">
       <header className="topbar">
@@ -49,11 +65,7 @@ export function ExportPage() {
 
       <div className="card mb-4">
         <div className="card-body py-2.5">
-          <FlowContextBar
-            currentStepId={flowStepId}
-            interactiveStepIds={[...WIZARD_FLOW_STEP_IDS]}
-            onStepSelect={handleStepChange}
-          />
+          <FlowContextBar currentStepId={flowStepId} />
         </div>
       </div>
 
@@ -62,16 +74,19 @@ export function ExportPage() {
         onStepChange={handleStepChange}
         completed={completed}
         onCompleted={handleCompleted}
+        handover={handover}
+        onHandoverConsumed={handleHandoverConsumed}
       />
 
       <div className="card mt-6">
         <div className="card-header">
           <div>
             <div className="card-title flex items-center gap-2">
-              <ListChecks className="h-4 w-4" /> 补丁批次列表
+              <ListChecks className="h-4 w-4" /> 已有批次（产物审查 / 重建 /
+              发布）
             </div>
             <div className="card-subtitle">
-              按导出批次聚合：坐骑数、补丁包与产物路径；展开查看每只坐骑的 DBC/SQL 变更
+              历史导出批次的产物档案：展开查看每只坐骑的 DBC/SQL 变更；点「重建」会把该批任务带入上方向导继续，构建、审查、发布都在向导里完成
             </div>
           </div>
           <button
@@ -89,6 +104,7 @@ export function ExportPage() {
             building={building}
             onAudit={setAuditJobId}
             onShowValidation={setValidationTarget}
+            onRebuildHandover={handleRebuildHandover}
           />
         </div>
       </div>

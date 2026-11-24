@@ -7,119 +7,67 @@ import {
 interface FlowContextBarProps {
   /** 当前所处步骤 id */
   currentStepId: string;
-  /** 交互式步骤（向导覆盖的第 6~9 步）的 id 集合 */
-  interactiveStepIds: string[];
-  /** 点击某个交互式步骤时的回调 */
-  onStepSelect?: (stepId: string) => void;
 }
 
+/** 向导从全流程第 ⑥ 步开始（创建补丁任务） */
+const WIZARD_START_INDEX = 5;
+
 /**
- * 全流程上下文条——界面上唯一的步骤指示器。
- *
- * 让用户始终看到完整的 9 步：已经走过的前置步骤（1~5）用灰色勾号带过，
- * 正在进行的向导步骤（6~9）可点击跳转。这样从资源列表跳进来时，
- * 用户能立刻明白「前面 5 步已经完成了，现在要做的是构建」。
+ * 全流程只读上下文条：前置的资源管理步骤（①~⑤）折叠为一个 chip，
+ * 向导覆盖的 ⑥~⑨ 逐个显示状态（当前步高亮）。步骤跳转入口在
+ * 向导卡内的 StepIndicator——这里只负责「我在全流程的哪个位置」的定位感。
  */
-export function FlowContextBar({
-  currentStepId,
-  interactiveStepIds,
-  onStepSelect,
-}: FlowContextBarProps) {
+export function FlowContextBar({ currentStepId }: FlowContextBarProps) {
   const currentIndex = PATCH_FLOW_STEPS.findIndex(
     (step) => step.id === currentStepId,
   );
+  // 未匹配到时按第一步处理，避免 indexOf -1 造成状态错乱
+  const current = currentIndex < 0 ? 0 : currentIndex;
+  const prepared = PATCH_FLOW_STEPS.slice(0, WIZARD_START_INDEX);
+  const wizardSteps = PATCH_FLOW_STEPS.slice(WIZARD_START_INDEX);
+  const preparedSummary = prepared.map((step) => step.title).join(" → ");
 
   return (
     <div className="flex flex-wrap items-center gap-1.5 text-xs">
       <span className="mr-1 shrink-0 text-text-tertiary">坐骑生产流程</span>
-      {PATCH_FLOW_STEPS.map((step, index) => {
-        const state = resolveState(step, index, currentIndex, interactiveStepIds);
-        return (
-          <StepChip
-            key={step.id}
-            step={step}
-            state={state}
-            onClick={
-              state === "interactive" && onStepSelect
-                ? () => onStepSelect(step.id)
-                : undefined
-            }
-          />
-        );
-      })}
+      <span
+        className="inline-flex items-center gap-1 rounded-full border border-border bg-bg-elevated px-2 py-0.5 text-text-tertiary"
+        title={`①~⑤：${preparedSummary}（在「资源管理」页完成）`}
+      >
+        <Check className="h-3 w-3" />
+        资源管理 ①~⑤
+      </span>
+      {wizardSteps.map((step, i) => (
+        <StepChip
+          key={step.id}
+          step={step}
+          state={i + WIZARD_START_INDEX === current ? "active" : i + WIZARD_START_INDEX < current ? "done" : "todo"}
+        />
+      ))}
     </div>
   );
 }
 
-type StepState = "prerequisite" | "active" | "interactive" | "todo";
+type ChipState = "done" | "active" | "todo";
 
-function resolveState(
-  step: PatchFlowStep,
-  index: number,
-  currentIndex: number,
-  interactiveStepIds: string[],
-): StepState {
-  if (interactiveStepIds.includes(step.id)) {
-    if (index === currentIndex) return "active";
-    return index < currentIndex ? "interactive" : "interactive";
-  }
-  // 非交互步骤：位于当前步骤之前的视为已完成的前置条件
-  return index < currentIndex ? "prerequisite" : "todo";
-}
-
-const STATE_CLASS: Record<StepState, string> = {
-  prerequisite: "border-border bg-bg-elevated text-text-tertiary",
+const CHIP_CLASS: Record<ChipState, string> = {
+  done: "border-border bg-bg-elevated text-text-tertiary",
   active: "border-accent bg-accent text-[color:var(--gold-btn-text)]",
-  interactive: "border-border bg-bg-elevated text-text-secondary hover:border-accent hover:text-accent",
   todo: "border-border bg-bg-elevated text-text-tertiary/60",
 };
 
-function StepChip({
-  step,
-  state,
-  onClick,
-}: {
-  step: PatchFlowStep;
-  state: StepState;
-  onClick?: () => void;
-}) {
-  const title =
-    state === "prerequisite"
-      ? `${step.title}：${step.summary}（已完成）`
-      : state === "todo"
-        ? `${step.title}：${step.summary}`
-        : step.summary;
-
-  const content = (
-    <>
-      {state === "prerequisite" ? (
-        <Check className="h-3 w-3" />
-      ) : (
+function StepChip({ step, state }: { step: PatchFlowStep; state: ChipState }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${CHIP_CLASS[state]}`}
+      title={`${step.title}：${step.summary}`}
+    >
+      {state === "done" ? <Check className="h-3 w-3" /> : (
         <span className="font-mono">{step.index}</span>
       )}
       <span className={state === "active" ? "font-medium" : undefined}>
         {step.title}
       </span>
-    </>
-  );
-
-  const className = `inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${STATE_CLASS[state]}`;
-
-  if (onClick) {
-    return (
-      <button
-        type="button"
-        className={className}
-        title={`${title}（点击回到这一步）`}
-        onClick={onClick}
-      >
-        {content}
-      </button>
-    );
-  }
-  return (
-    <span className={className} title={title}>
-      {content}
     </span>
   );
 }
