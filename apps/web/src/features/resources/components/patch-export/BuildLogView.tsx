@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { formatLogTime } from "@/shared/format";
 import type { BuildLogEntry, BuildProgress } from "@/shared/types";
 
 interface BuildLogViewProps {
@@ -7,11 +8,6 @@ interface BuildLogViewProps {
   progress: BuildProgress;
   /** 任务 ID → 坐骑名，用于把进度栏里的 mount_XXXX 显示成坐骑名 */
   jobName?: string;
-}
-
-function formatTime(ts: string): string {
-  const d = new Date(ts);
-  return Number.isNaN(d.getTime()) ? "" : d.toLocaleTimeString();
 }
 
 export function BuildLogView({
@@ -73,7 +69,7 @@ export function BuildLogView({
           lines.map((entry) => (
             <div key={entry.seq} className="whitespace-pre-wrap break-all">
               <span className="text-text-tertiary">
-                {formatTime(entry.ts)}{" "}
+                {formatLogTime(entry.ts)}{" "}
               </span>
               <span
                 className={

@@ -9,7 +9,7 @@ export function ResourceTypeBadge({ resource }: ResourceTypeBadgeProps) {
   const config: Record<string, { label: string; className: string }> = {
     mount: { label: resource.mount_type || "坐骑", className: "badge-blue" },
     pet: { label: "宠物", className: "badge-orange" },
-    npc: { label: "NPC", className: "badge-green" },
+    npc: { label: "NPC", className: "badge-success" },
   };
   const { label, className } = config[resource.resource_type] || {
     label: resource.resource_type,

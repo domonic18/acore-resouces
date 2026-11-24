@@ -1,16 +1,5 @@
 import type { DbcFieldDef } from "@/shared/types";
 
-export function formatBytes(bytes: number): string {
-  let size = bytes;
-  for (const unit of ["B", "KB", "MB", "GB"]) {
-    if (size < 1024 || unit === "GB") {
-      return unit === "B" ? `${size} B` : `${size.toFixed(1)} ${unit}`;
-    }
-    size /= 1024;
-  }
-  return `${bytes} B`;
-}
-
 /** 默认摘要列：ID + 前 5 个 string 字段（与 CLI 查询一致） */
 export function defaultColumns(fields: DbcFieldDef[]): string[] {
   const columns = fields.filter((f) => f.name === "ID").map((f) => f.name);

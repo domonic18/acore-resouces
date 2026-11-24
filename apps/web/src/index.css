@@ -230,9 +230,6 @@ input[type="number"] {
   .badge-purple {
     @apply bg-purple-500/15 text-purple-400;
   }
-  .badge-green {
-    @apply bg-green-500/15 text-green-400;
-  }
   .badge-orange {
     @apply bg-orange-500/15 text-orange-400;
   }

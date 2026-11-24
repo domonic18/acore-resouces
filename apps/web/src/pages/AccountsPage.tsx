@@ -12,16 +12,12 @@ import { useAuth } from "@/features/auth/useAuth";
 import { Badge, type BadgeTone } from "@/shared/components/ui/Badge";
 import { Dialog } from "@/shared/components/ui/Dialog";
 import { PERMISSION_DEFS, type LocalAccount } from "@/shared/auth";
+import { formatDateTime } from "@/shared/format";
 
 const ROLE_BADGE: Record<string, BadgeTone> = {
   admin: "orange",
   viewer: "gray",
 };
-
-function formatTime(value: string | null): string {
-  if (!value) return "从未登录";
-  return new Date(value).toLocaleString("zh-CN", { hour12: false });
-}
 
 /** 权限勾选组：viewer 行/建号表单共用 */
 function PermissionCheckboxes({
@@ -336,8 +332,8 @@ export function AccountsPage() {
                             />
                           )}
                         </td>
-                        <td className="text-text-tertiary">{formatTime(account.created_at)}</td>
-                        <td className="text-text-tertiary">{formatTime(account.last_login_at)}</td>
+                        <td className="text-text-tertiary">{formatDateTime(account.created_at, "从未登录")}</td>
+                        <td className="text-text-tertiary">{formatDateTime(account.last_login_at, "从未登录")}</td>
                         <td>
                           <div className="flex items-center gap-1.5">
                             <button

@@ -132,16 +132,6 @@ export function formatDrop(drop: Resource["drop"]): string {
   return parts.length > 0 ? parts.join(" · ") : "—";
 }
 
-export function formatDateTime(iso: string | null): string {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleString("zh-CN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export function formatDateInputValue(date: Date): string {
   const year = date.getFullYear();

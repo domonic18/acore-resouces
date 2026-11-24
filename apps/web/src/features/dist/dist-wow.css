@@ -3,20 +3,20 @@
    所有规则作用域在 .dist-wow（页面容器）内，不影响后台其他页面。 */
 
 .dist-wow {
-  /* 石质深色底 */
-  --bg-base: #0c0906;
-  --bg-top: #221a10;
-  --bg-panel: #1d160d;
-  --bg-panel-deep: #161009;
-  /* 黄金系 */
+  /* 石质深色底 —— 与全局 :root token 同源（index.css），此处仅引用防双轨漂移 */
+  --bg-base: var(--bg);
+  --bg-top: var(--bg-surface);
+  --bg-panel: var(--bg-elevated);
+  --bg-panel-deep: var(--bg-input);
+  /* 黄金系：--gold/--gold-soft 为 dist 页专属；暗金三档引用全局 border token */
   --gold: #ffd100;
   --gold-soft: #e6cf9a;
-  --gold-dim: #c8a951;
-  --gold-dark: #8a6d3b;
-  --gold-border: #4d3b1c;
+  --gold-dim: var(--border-focus);
+  --gold-dark: var(--border-hover);
+  --gold-border: var(--border);
   /* 文字（暖色羊皮白） */
-  --dw-text-primary: #e8dcc0;
-  --dw-text-secondary: #a89878;
+  --dw-text-primary: var(--text-primary);
+  --dw-text-secondary: var(--text-secondary);
   /* 传说橙（最新徽记） */
   --legendary: #ff8000;
   /* 牛皮纸 */
@@ -25,14 +25,12 @@
   --parchment-lo: #d3bc8a;
   --parchment-ink: #43301a;
   --parchment-heading: #6b3f10;
-  --error: #ff6a5e;
+  --error: var(--danger);
 
-  --font-display: "Palatino Linotype", "Book Antiqua", Palatino, Georgia,
-    "Songti SC", "STSong", "SimSun", serif;
+  /* --font-display 与 --noise 继承自 :root（index.css），不再本地重复定义 */
   --font-parchment: Georgia, "STKaiti", "Kaiti SC", "KaiTi", "STSong",
     "SimSun", serif;
 
-  --noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="200" height="200" filter="url(%23n)" opacity="0.05"/></svg>');
   --parchment-noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="180" height="180" filter="url(%23n)" opacity="0.09"/></svg>');
 
   flex: 1;
@@ -192,11 +190,16 @@
 }
 
 .dist-wow .patch-name {
-  color: var(--gold-soft);
+  font-family: inherit;
   font-size: 1.08rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  text-decoration: none;
+  color: var(--gold-soft);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   word-break: break-all;
 }
@@ -371,9 +374,14 @@
 }
 
 .dist-wow .hist-name {
+  font-family: inherit;
   font-size: 0.88rem;
   color: #e4d6b4;
-  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
   border-bottom: 1px dotted rgba(200, 169, 81, 0.45);
   word-break: break-all;
   transition: color 0.15s ease;
@@ -441,10 +449,10 @@
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #3a2708;
+  color: var(--gold-btn-text);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
   background: linear-gradient(180deg, #f7d774 0%, #eab53c 45%, #c68a1f 100%);
-  border: 1px solid #5c430f;
+  border: 1px solid var(--gold-btn-border);
   border-radius: 5px;
   padding: 0.55rem 1.35rem;
   cursor: pointer;

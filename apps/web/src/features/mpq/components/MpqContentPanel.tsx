@@ -4,7 +4,7 @@ import {
   getFilePreviewUrl,
 } from "@/shared/resources";
 import { CopyButton } from "@/shared/components/CopyButton";
-import { formatBytes } from "@/features/dbc/lib/columns";
+import { formatBytes } from "@/shared/format";
 import { useMpqFile } from "@/features/mpq/hooks/useMpqViewer";
 import { MpqDbcViewer } from "@/features/mpq/components/MpqDbcViewer";
 

@@ -1,7 +1,7 @@
 import { AlertTriangle, Trash2 } from "lucide-react";
 import type { UseMutationResult } from "@tanstack/react-query";
 import { Dialog } from "@/shared/components/ui/Dialog";
-import { formatBytes } from "@/features/dbc/lib/columns";
+import { formatBytes } from "@/shared/format";
 import type { MpqArchiveItem } from "@/shared/types";
 
 export interface MpqArchiveDeleteResult {

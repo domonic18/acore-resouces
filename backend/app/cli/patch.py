@@ -32,6 +32,7 @@ from app.services.patch_exporter import (
     update_patch_job_status,
 )
 from app.services.patch_publisher import (
+    DEFAULT_START_NUMBER,
     PatchPublisherError,
     publish_patches,
 )
@@ -123,7 +124,7 @@ def build_patch(
 
 @app.command("publish", help="发布 MPQ 补丁到分发目录")
 def publish_patch(
-    start_number: int = typer.Option(5, "--start-number", help="补丁编号起始值"),
+    start_number: int = typer.Option(DEFAULT_START_NUMBER, "--start-number", help="补丁编号起始值"),
     dry_run: bool = typer.Option(False, "--dry-run", help="仅预览，不执行发布"),
     batch: list[str] = typer.Option(
         None, "--batch", help="只发布指定批次（可重复）；不指定则发布全部未发布批次"

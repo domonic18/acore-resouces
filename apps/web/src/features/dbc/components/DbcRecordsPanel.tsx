@@ -15,11 +15,8 @@ import { CopyButton } from "@/shared/components/CopyButton";
 import { useDbcFiles, useDbcRecords } from "@/features/dbc/hooks/useDbcViewer";
 import { DbcColumnConfig } from "@/features/dbc/components/DbcColumnConfig";
 import { DbcTableViewer } from "@/features/dbc/components/DbcTableViewer";
-import {
-  formatBytes,
-  loadColumns,
-  saveColumns,
-} from "@/features/dbc/lib/columns";
+import { loadColumns, saveColumns } from "@/features/dbc/lib/columns";
+import { formatBytes } from "@/shared/format";
 
 const PAGE_SIZE = 20;
 
@@ -129,7 +126,7 @@ export function DbcRecordsPanel({
                 <span
                   className={cn(
                     "badge",
-                    fileInfo.schema_registered ? "badge-green" : "badge-gray",
+                    fileInfo.schema_registered ? "badge-success" : "badge-gray",
                   )}
                 >
                   {fileInfo.schema_registered ? "schema 已注册" : "schema 未注册"}

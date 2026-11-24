@@ -15,12 +15,17 @@ class Settings(BaseSettings):
     sources_dir: Path = Path("sources")
     assets_dir: Path = Path("workspace/assets")
     patch_jobs_dir: Path = Path("workspace/patch-jobs")
+    mpq_output_dir: Path = Path("workspace/mpq")
+    reports_dir: Path = Path("workspace/reports")
 
     db_url: str = ""
 
     registry_file: Path = Path("data/registry.json")
     resources_dir: Path = Path("data/resources")
     schemas_dir: Path = Path("data/schemas")
+
+    # wow-dbc 子模块内的源 DBC 目录（ItemDisplayInfo/SpellIcon 等查询与补丁构建共用）。
+    wow_dbc_dir: Path = Path("data/wow-dbc/src/dbc")
 
     thumbnails_dir: Path = Path("workspace/assets/thumbnails")
     gltf_dir: Path = Path("workspace/assets/gltf")
@@ -60,12 +65,15 @@ class Settings(BaseSettings):
         self.sources_dir = root / "sources"
         self.assets_dir = self.workspace_dir / "assets"
         self.patch_jobs_dir = root / "workspace" / "patch-jobs"
+        self.mpq_output_dir = self.workspace_dir / "mpq"
+        self.reports_dir = self.workspace_dir / "reports"
 
         self.db_url = f"sqlite:///{self.workspace_dir / 'data' / 'acore_resource.db'}"
 
         self.registry_file = self.data_dir / "registry.json"
         self.resources_dir = self.data_dir / "resources"
         self.schemas_dir = self.data_dir / "schemas"
+        self.wow_dbc_dir = self.data_dir / "wow-dbc" / "src" / "dbc"
 
         self.thumbnails_dir = self.assets_dir / "thumbnails"
         self.gltf_dir = self.assets_dir / "gltf"

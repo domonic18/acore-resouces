@@ -16,7 +16,7 @@ export type BadgeTone =
 const TONE_CLASS: Record<BadgeTone, string> = {
   blue: "badge-blue",
   purple: "badge-purple",
-  green: "badge-green",
+  green: "badge-success",
   orange: "badge-orange",
   gray: "badge-gray",
   cyan: "badge-cyan",

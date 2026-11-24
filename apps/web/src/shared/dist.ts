@@ -1,4 +1,4 @@
-import { API_BASE, apiFetch, apiGetJson } from "@/shared/api";
+import { apiFetch, apiGetJson } from "@/shared/api";
 
 /** dist 树节点（与旧分发站 /api/dist/tree 同形） */
 export interface DistTreeNode {
@@ -70,7 +70,24 @@ export function deleteDistBatch(
   );
 }
 
-/** 玩家下载链接：浏览器 <a href> 带不了 Authorization 头，经 ?token= 兜底鉴权 */
-export function distDownloadUrl(relativePath: string, token: string): string {
-  return `${API_BASE}/api/dist/download/${relativePath}?token=${encodeURIComponent(token)}`;
+/**
+ * 玩家下载补丁：fetch + Authorization 头取回后以 blob 触发浏览器保存。
+ * 避免 JWT 进入 URL（服务器访问日志 / 浏览器历史），大文件 blob 由浏览器
+ * 自行落盘缓存，不长期占用 JS 堆。
+ */
+export async function downloadDistFile(relativePath: string): Promise<void> {
+  const response = await apiFetch(`/api/dist/download/${relativePath}`, {
+    headers: { Accept: "*/*" },
+  });
+  const blob = await response.blob();
+  const filename =
+    decodeURIComponent(relativePath.split("/").pop() ?? "") || "patch.mpq";
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
 }

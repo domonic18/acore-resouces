@@ -29,7 +29,7 @@ from app.preview.icon_index import find_icon_path
 from app.schemas.resource import Mount
 from app.services.dbc_query import load_item_display_icons, load_spell_icon_names
 
-WOW_DBC_DIR = settings.project_root / "data" / "wow-dbc" / "src" / "dbc"
+WOW_DBC_DIR = settings.wow_dbc_dir
 
 # 图标基础设施 DBC：客户端解析图标链的必备表，每个补丁都随包分发。
 ICON_INFRA_DBC_FILES = ("SpellIcon.dbc", "ItemDisplayInfo.dbc")
