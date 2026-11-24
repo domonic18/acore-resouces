@@ -3,7 +3,7 @@ import { useClipboard } from "@/shared/useClipboard";
 import { getIconPreviewUrl } from "@/shared/resources";
 import type { Resource } from "@/shared/types";
 
-/** 坐骑行的物品速览：图标 + 物品名 + 一键复制物品 entry（.additem 用）。 */
+/** 坐骑/宠物行的物品速览：图标 + 物品名 + 一键复制物品 entry（.additem 用）。 */
 export function ItemCell({ resource }: { resource: Resource }) {
   const rawId = resource.dbc.item.id;
   const itemId = typeof rawId === "number" ? rawId : null;
@@ -12,7 +12,11 @@ export function ItemCell({ resource }: { resource: Resource }) {
   const iconName = resource.official_db.icon_name;
   const { copied, copy } = useClipboard();
 
-  if (resource.resource_type !== "mount" || itemId === null || itemId <= 0) {
+  if (
+    (resource.resource_type !== "mount" && resource.resource_type !== "pet") ||
+    itemId === null ||
+    itemId <= 0
+  ) {
     return <span className="text-text-secondary">—</span>;
   }
 
