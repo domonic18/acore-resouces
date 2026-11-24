@@ -69,7 +69,7 @@ function resolveState(
 
 const STATE_CLASS: Record<StepState, string> = {
   prerequisite: "border-border bg-bg-elevated text-text-tertiary",
-  active: "border-accent bg-accent text-white",
+  active: "border-accent bg-accent text-[color:var(--gold-btn-text)]",
   interactive: "border-border bg-bg-elevated text-text-secondary hover:border-accent hover:text-accent",
   todo: "border-border bg-bg-elevated text-text-tertiary/60",
 };

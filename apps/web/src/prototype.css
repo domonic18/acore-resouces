@@ -5,6 +5,7 @@
 
 .page-title {
   @apply text-lg font-bold tracking-tight;
+  font-family: var(--font-display);
 }
 
 .topbar-actions {
@@ -17,7 +18,7 @@
 
 .search-box input {
   @apply h-9 w-64 rounded-md border border-border bg-bg-input pl-9 pr-3 text-sm text-text-primary outline-none transition-all placeholder:text-text-tertiary focus:border-border-focus;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 3px rgba(234, 181, 60, 0.15);
 }
 
 .search-box.has-clear input {
@@ -93,7 +94,7 @@
 }
 
 .page-btn.active {
-  @apply border-accent bg-accent text-white;
+  @apply border-accent bg-accent text-[color:var(--gold-btn-text)];
 }
 
 .detail-layout {
@@ -134,7 +135,7 @@
 
 .preview-frame {
   @apply relative flex aspect-video items-center justify-center overflow-hidden rounded-lg border border-border;
-  background: linear-gradient(135deg, #0f1118 0%, #1a1d27 100%);
+  background: linear-gradient(135deg, #161009 0%, #241c10 100%);
 }
 
 .preview-frame::before {
@@ -186,7 +187,7 @@
 
 .viewer-canvas {
   @apply relative flex flex-1 items-center justify-center;
-  background: linear-gradient(135deg, #0f1118 0%, #1a1d27 100%);
+  background: linear-gradient(135deg, #161009 0%, #241c10 100%);
 }
 
 .viewer-canvas::before {
@@ -216,6 +217,8 @@
 
 .panel-header {
   @apply border-b border-border px-4 py-3.5 text-sm font-bold text-text-primary;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
 }
 
 .panel-body {

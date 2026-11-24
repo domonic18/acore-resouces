@@ -57,7 +57,7 @@ export function FieldHint({ description, reference, onApply }: FieldHintProps) {
             {onApply && reference && reference.value !== null && (
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-1 rounded-md bg-accent px-2 py-1 font-medium text-white transition-colors hover:bg-accent/85"
+                className="flex w-full items-center justify-center gap-1 rounded-md bg-accent px-2 py-1 font-medium text-[color:var(--gold-btn-text)] transition-colors hover:brightness-110"
                 onClick={() => {
                   onApply();
                   setOpen(false);

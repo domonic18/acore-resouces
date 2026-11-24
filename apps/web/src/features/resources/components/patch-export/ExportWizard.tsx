@@ -712,7 +712,7 @@ export function ExportWizard({
             {/* ① 本地发布：只改名移位，产物就位但玩家还拿不到 */}
             <div className="rounded-md border border-border bg-bg-surface p-3">
               <div className="mb-2 flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-semibold text-white">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-semibold text-[color:var(--gold-btn-text)]">
                   1
                 </span>
                 <span className="text-sm font-semibold text-text-primary">

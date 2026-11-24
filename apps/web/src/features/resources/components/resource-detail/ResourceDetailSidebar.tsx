@@ -118,7 +118,7 @@ export function ResourceDetailSidebar({
                 onClick={() => setActiveTab("model")}
                 className={`flex flex-1 items-center justify-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                   activeTab === "model"
-                    ? "bg-accent text-white"
+                    ? "bg-accent text-[color:var(--gold-btn-text)]"
                     : "bg-bg-surface text-text-secondary hover:bg-bg-hover"
                 }`}
               >
@@ -131,7 +131,7 @@ export function ResourceDetailSidebar({
                 onClick={() => setActiveTab("image")}
                 className={`flex flex-1 items-center justify-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                   activeTab === "image"
-                    ? "bg-accent text-white"
+                    ? "bg-accent text-[color:var(--gold-btn-text)]"
                     : "bg-bg-surface text-text-secondary hover:bg-bg-hover"
                 }`}
               >

@@ -65,7 +65,7 @@ export function DbcColumnConfig({
                         type="checkbox"
                         checked={checked}
                         onChange={() => onToggle(field.name)}
-                        className="h-3.5 w-3.5 accent-[#6366f1]"
+                        className="h-3.5 w-3.5 accent-[#eab53c]"
                       />
                       <span
                         className={cn(
