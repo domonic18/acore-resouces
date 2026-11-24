@@ -28,6 +28,10 @@ notes: |-
   - 随之删除自建 **Vehicle.dbc 90001** 与 **VehicleSeat.dbc 91001–91007**（换模后无引用；
     Vehicle 90000 归 #0062，保留）。
 
+  ## 缩放修正（2026-11-24）
+  - 本模型是成年体型素体，scale 1.0 召唤出来比常规坐骑大数倍。参照库内大体型
+    坐骑约定（霜原野猪/战车 0.5、饕餮者 0.7）调整为 **0.4**，实测偏大/偏小再微调。
+
   ## 兄弟条目备注
   - #24 雄壮商队雷龙 用 `brontosauruspack.m2`（**带驮架、贴图完好**），
     是库内唯一能撑起商队形态的雷龙模型 —— 别把本条目换成它，两条会撞模型。
@@ -48,7 +52,7 @@ dbc:
     model_id: 104463
     sound_id: 0
     extra_display_information_id: 0
-    scale: 1.0
+    scale: 0.4
     opacity: 255
     texture_variation_1: brontosaurus_green
     texture_variation_2: brontosaurus_green
