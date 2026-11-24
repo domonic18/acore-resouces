@@ -11,12 +11,14 @@ export async function apiFetch(path: string, init?: RequestInit) {
       : `${API_BASE}${path}`;
   const token = getAccessToken();
   const response = await fetch(url, {
+    // 先展开 init 再覆盖 headers：调用方传入的 headers（如 Content-Type）
+    // 必须与 Authorization 合并，而不是整体替换丢失鉴权头
+    ...init,
     headers: {
       Accept: "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(init?.headers || {}),
     },
-    ...init,
   });
 
   if (!response.ok) {
