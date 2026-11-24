@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -124,6 +124,9 @@ class PatchBuildRequest(BaseModel):
     job_ids: list[str] | None = None
     dry_run: bool = False
     force: bool = False
+    obfuscation: Literal["none", "basic"] = Field(
+        default="none", description="混淆等级：basic 剥除档案内 (listfile)/(attributes)"
+    )
 
 
 class PatchPublishRequest(BaseModel):
@@ -148,11 +151,13 @@ def build_patches(background_tasks: BackgroundTasks, body: PatchBuildRequest) ->
         if missing:
             raise HTTPException(404, f"任务不存在：{', '.join(missing)}")
     try:
-        start_build(body.all_requested, body.job_ids, body.dry_run, body.force)
+        start_build(body.all_requested, body.job_ids, body.dry_run, body.force, body.obfuscation)
     except BuildAlreadyRunningError as e:
         raise HTTPException(409, str(e)) from e
 
-    background_tasks.add_task(run_build, body.all_requested, body.job_ids, body.dry_run, body.force)
+    background_tasks.add_task(
+        run_build, body.all_requested, body.job_ids, body.dry_run, body.force, body.obfuscation
+    )
     return {"started": True}
 
 

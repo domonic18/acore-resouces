@@ -18,8 +18,11 @@ import app.services.mount_patch_builder as _facade
 from app.core.config import settings
 from app.schemas.resource import Mount
 from app.services.icon_infrastructure import stage_icon_infrastructure
+from app.services.mpq_obfuscator import MpqObfuscationError, obfuscate_mpq_file
 
 from ._context import JobContext, save_json
+from ._errors import MountPatchBuilderError
+from ._logging import _log
 
 _GAME_ASSET_EXTENSIONS = {".m2", ".blp", ".anim", ".skin", ".phys"}
 _NON_GAME_ASSET_EXTENSIONS = {".png", ".gif", ".jpg", ".jpeg", ".txt", ".md", ".ini"}
@@ -100,6 +103,7 @@ def build_mpq(
     sql_files: list[Path],
     dry_run: bool = False,
     mounts: Sequence[Mount] | None = None,
+    obfuscation: str = "none",
 ) -> tuple[Path, dict[str, list[Path]], dict[str, Any]]:
     """构建批次 MPQ 并持久化 manifest.json。
 
@@ -109,6 +113,7 @@ def build_mpq(
         dry_run: 为 True 时只返回路径，不创建文件。
         mounts: 全量坐骑资源，用于确定图标基础设施要携带的贴图；
             缺省时从资源仓库加载全部坐骑。
+        obfuscation: 混淆等级，"basic" 时打包后剥除档案内 (listfile)/(attributes)。
 
     Returns:
         (mpq_path, {job_id: [相对路径列表]}, 批次清单 dict)
@@ -121,8 +126,7 @@ def build_mpq(
     manifest: dict[str, Any] = {
         "batch": timestamp,
         "mpq": _facade.MPQ_FILENAME,
-        # 4.5 混淆等级开关的挂点，当前恒为 none
-        "obfuscation": "none",
+        "obfuscation": obfuscation,
         "generated_at": datetime.now(UTC).isoformat(),
         "jobs": [ctx.job_id for ctx in contexts],
         "files": [],
@@ -176,6 +180,15 @@ def build_mpq(
         check=True,
     )
     shutil.rmtree(staging, ignore_errors=True)
+
+    if obfuscation == "basic":
+        _log("混淆 MPQ（剥除 (listfile)/(attributes)）...")
+        try:
+            obfuscate_mpq_file(mpq_path)
+        except MpqObfuscationError as exc:
+            raise MountPatchBuilderError(
+                f"MPQ 混淆失败：{exc}", job_ids=[ctx.job_id for ctx in contexts]
+            ) from exc
 
     save_json(mpq_dir / "manifest.json", manifest)
 

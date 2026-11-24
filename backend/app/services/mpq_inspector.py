@@ -21,6 +21,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
@@ -278,6 +279,12 @@ def _normalize_list_lines(stdout: str) -> list[str]:
     return [norm for line in stdout.splitlines() if (norm := line.strip().replace("\\", "/"))]
 
 
+# StormLib 对无 (listfile) 档案枚举时返回的占位名（File00000000.xxx）。
+# mpqcli list 对这类档案退出 0 且输出非空，必须识别后按「无法枚举」处理，
+# 否则混淆档案会在查看页渲染出一堆假文件名。
+_PLACEHOLDER_PATH_RE = re.compile(r"^File\d{8}\.xxx$", re.IGNORECASE)
+
+
 def _list_paths(archive: Path, batch: str) -> tuple[list[dict[str, Any]], str]:
     """三级来源解析文件清单，全部落空时抛「无法枚举」。"""
     manifest = _load_manifest(batch)
@@ -295,7 +302,7 @@ def _list_paths(archive: Path, batch: str) -> tuple[list[dict[str, Any]], str]:
     proc = _run_mpqcli(["list", str(archive)])
     _check_proc(proc, archive.name)
     paths = _normalize_list_lines(proc.stdout)
-    if paths:
+    if paths and not all(_PLACEHOLDER_PATH_RE.match(p) for p in paths):
         return [{"path": p} for p in paths], "mpq"
 
     raise MpqInspectionError("无法枚举档案内容（混淆档案缺少构建清单），请重新构建批次")

@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient
 from wow_dbc_tool import FieldDef, SchemaRegistry
 
 from app.main import app
-from app.services import mpq_inspector
+from app.services import mpq_inspector, mpq_obfuscator
 
 MPQCLI = mpq_inspector.MPQCLI
 
@@ -145,6 +145,49 @@ class TestFilesEndpoint:
         resp = client.get("/api/mpq/files", params={"archive": "mpq/b2/patch-mounts.mpq"})
         assert resp.status_code == 422
         assert "无法枚举" in resp.json()["detail"]
+
+
+class TestObfuscateEndpoint:
+    def test_dist_archive_400(self, client: TestClient, env: dict[str, Path]) -> None:
+        _make_archive(env["dist"], "b1").rename(env["dist"] / "b1" / "patch-zhCN-4.mpq")
+        resp = client.post("/api/mpq/archives/dist/b1/patch-zhCN-4.mpq/obfuscate")
+        assert resp.status_code == 400
+        assert "下架" in resp.json()["detail"]
+
+    def test_success_updates_manifest(
+        self, client: TestClient, env: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        _make_archive(env["mpq"], "b2")
+        (env["mpq"] / "b2" / "manifest.json").write_text(
+            json.dumps({"batch": "b2", "obfuscation": "none"}), encoding="utf-8"
+        )
+
+        def _run(args: list[str]) -> subprocess.CompletedProcess[str]:
+            if args[0] == "obfuscate":
+                return subprocess.CompletedProcess([], 0, "", "")
+            return subprocess.CompletedProcess([], 0, "File00000000.xxx\n", "")
+
+        monkeypatch.setattr(mpq_obfuscator, "_run", _run)
+        resp = client.post("/api/mpq/archives/mpq/b2/patch-mounts.mpq/obfuscate")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["obfuscation"] == "basic"
+        manifest = json.loads((env["mpq"] / "b2" / "manifest.json").read_text(encoding="utf-8"))
+        assert manifest["obfuscation"] == "basic"
+        assert manifest["obfuscated_at"]
+
+    def test_already_obfuscated_400(self, client: TestClient, env: dict[str, Path]) -> None:
+        _make_archive(env["mpq"], "b3")
+        (env["mpq"] / "b3" / "manifest.json").write_text(
+            json.dumps({"obfuscation": "basic"}), encoding="utf-8"
+        )
+        resp = client.post("/api/mpq/archives/mpq/b3/patch-mounts.mpq/obfuscate")
+        assert resp.status_code == 400
+        assert "已是混淆" in resp.json()["detail"]
+
+    def test_archive_not_found(self, client: TestClient, env: dict[str, Path]) -> None:
+        resp = client.post("/api/mpq/archives/mpq/nope/x.mpq/obfuscate")
+        assert resp.status_code == 404
 
 
 class TestFileEndpoint:
@@ -299,3 +342,63 @@ class TestRealMpqcli:
         )
         assert resp.status_code == 200
         assert resp.json()["total"] == 2
+
+    def test_obfuscate_flow(self, client: TestClient, env: dict[str, Path]) -> None:
+        staging = env["mpq"] / "b2" / "staging"
+        (staging / "DBFilesClient").mkdir(parents=True)
+        (staging / "readme.txt").write_text("real archive\n", encoding="utf-8")
+
+        archive = env["mpq"] / "b2" / "patch-mounts.mpq"
+        subprocess.run(
+            [
+                str(MPQCLI),
+                "create",
+                str(staging),
+                "--output",
+                str(archive),
+                "--game",
+                "wow-wotlk",
+            ],
+            check=True,
+            capture_output=True,
+            timeout=30,
+        )
+        (env["mpq"] / "b2" / "manifest.json").write_text(
+            json.dumps({"batch": "b2", "obfuscation": "none"}), encoding="utf-8"
+        )
+
+        # 混淆：API 回写 manifest
+        resp = client.post("/api/mpq/archives/mpq/b2/patch-mounts.mpq/obfuscate")
+        assert resp.status_code == 200
+        assert resp.json()["obfuscation"] == "basic"
+
+        # 真实档案层面：(listfile) 已剥除，mpqcli list 只剩占位名
+        listing = subprocess.run(
+            [str(MPQCLI), "list", str(archive)],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).stdout
+        real_paths = [ln for ln in listing.splitlines() if "/" in ln or "\\" in ln]
+        assert real_paths == []
+
+        # 按显式路径提取不受混淆影响
+        resp = client.get(
+            "/api/mpq/file",
+            params={"archive": "mpq/b2/patch-mounts.mpq", "path": "readme.txt"},
+        )
+        assert resp.status_code == 200
+        assert resp.json()["content"] == "real archive\n"
+
+        # manifest 无 files 明细 → 枚举回退链落空，占位名按「无法枚举」拒绝
+        resp = client.get("/api/mpq/files", params={"archive": "mpq/b2/patch-mounts.mpq"})
+        assert resp.status_code == 422
+        assert "无法枚举" in resp.json()["detail"]
+
+        # 档案列表徽标 + 重复混淆拒绝
+        resp = client.get("/api/mpq/archives")
+        assert resp.json()["items"][0]["obfuscation"] == "basic"
+        resp = client.post("/api/mpq/archives/mpq/b2/patch-mounts.mpq/obfuscate")
+        assert resp.status_code == 400
+        assert "已是混淆" in resp.json()["detail"]
