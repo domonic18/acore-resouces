@@ -27,18 +27,14 @@ export function ResourceListPage() {
   const location = useLocation();
   const { isAdmin } = useAuth();
   const perms = resourcePermsOf(useAuth().user);
-  // 可见页签：admin 全量（含「全部」）；viewer 仅已授权类型，「全部」需三类型齐
-  const visibleTypes = isAdmin
-    ? TYPES
-    : TYPES.filter(
-        (t) => t.key !== "all" || perms.length === RESOURCE_KEYS.length,
-      );
+  // 页签只有具体类型；viewer 仅显示已授权类型
+  const visibleTypes = TYPES.filter(
+    (t) => t.key !== "all" && (isAdmin || perms.includes(t.key)),
+  );
   const allowedKeys = isAdmin
     ? RESOURCE_KEYS
     : RESOURCE_KEYS.filter((k) => perms.includes(k));
   const typeParam = parseResourceType(searchParams.get("type"));
-  const typeAllowed =
-    typeParam === "all" ? visibleTypes.some((t) => t.key === "all") : allowedKeys.includes(typeParam);
 
   useEffect(() => {
     if (location.state?.restoreScroll) {
@@ -105,8 +101,8 @@ export function ResourceListPage() {
     [allItems, selectedIds],
   );
 
-  // viewer 的 ?type= 不在授权集内 → 回到首个允许类型（RequirePerm 已保证至少一项）
-  if (!typeAllowed) {
+  // 无 ?type（parse 回退 "all"）或越权类型 → 落到首个允许类型（admin 即坐骑）
+  if (typeParam === "all" || !allowedKeys.includes(typeParam)) {
     return <Navigate to={`/resources?type=${allowedKeys[0]}`} replace />;
   }
 
@@ -144,7 +140,7 @@ export function ResourceListPage() {
             <button
               key={t.key}
               className={cn("tab", typeParam === t.key && "active")}
-              onClick={() => updateParam("type", t.key === "all" ? "" : t.key)}
+              onClick={() => updateParam("type", t.key)}
             >
               {t.label} ({countMap[t.key] ?? "-"})
             </button>
@@ -212,7 +208,7 @@ export function ResourceListPage() {
           selectedIds={isAdmin ? selectedIds : undefined}
           onSelect={isAdmin ? handleSelect : undefined}
           onSelectAll={isAdmin ? handleSelectAll : undefined}
-          showFeatures={typeParam === "mount" || typeParam === "all"}
+          showFeatures={typeParam === "mount"}
           showItemColumn={typeParam === "mount" || typeParam === "pet"}
           showPatchStatus={typeParam === "mount" && isAdmin}
           patchJobs={patchJobMap}
