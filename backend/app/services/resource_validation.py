@@ -392,3 +392,43 @@ def duplicate_issues_to_out(
             )
         )
     return result
+
+
+def resource_key(resource: Resource) -> tuple[int, str]:
+    """资源的全局唯一 key：(id, model_folder)。"""
+    return (resource.id, resource.model_folder)
+
+
+def build_duplicate_issue_map(
+    resources: list[Resource],
+    issues: list[DuplicateIdIssue],
+) -> dict[tuple[int, str], list[dict[str, Any]]]:
+    """将重复问题按资源 key 分组，并过滤掉自身。
+
+    供列表接口在每行资源上挂载 duplicate_issues 视图数据。
+    """
+    resource_by_key = {resource_key(r): r for r in resources}
+    mapping: dict[tuple[int, str], list[dict[str, Any]]] = {}
+    for issue in issues:
+        for res_key in issue.resources:
+            conflicts = []
+            for other_key in issue.resources:
+                if other_key == res_key:
+                    continue
+                other_resource = resource_by_key.get(other_key)
+                conflicts.append(
+                    {
+                        "id": other_key[0],
+                        "resource_type": "mount",
+                        "model_folder": other_key[1],
+                        "name": other_resource.official_db.name if other_resource else None,
+                    }
+                )
+            mapping.setdefault(res_key, []).append(
+                {
+                    "field": issue.field.path,
+                    "value": issue.value,
+                    "resources": conflicts,
+                }
+            )
+    return mapping
