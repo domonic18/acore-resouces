@@ -1,17 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import {
-  ChevronDown,
-  ChevronRight,
-  Copy,
-  Check,
-  Download,
-  FileText,
-  HardDriveDownload,
-  Loader2,
-  Package,
-  Trash2,
-} from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useAuth } from "@/features/auth/useAuth";
 import {
   useDistBatchDelete,
@@ -24,6 +13,10 @@ import { Dialog } from "@/shared/components/ui/Dialog";
 import { getAccessToken } from "@/shared/auth";
 import { formatBytes } from "@/features/dbc/lib/columns";
 import type { DistBatchMeta, DistTreeNode } from "@/shared/dist";
+import "@/features/dist/dist-wow.css";
+
+/** 最新批次卡片数量，其余进入历史折叠区（与旧分发站一致） */
+const LATEST_COUNT = 5;
 
 interface BatchEntry {
   meta: DistBatchMeta;
@@ -42,23 +35,38 @@ function collectBatches(root: DistTreeNode | undefined): BatchEntry[] {
       mpqPath:
         node.children.find((child) => child.name.endsWith(".mpq"))?.path ?? null,
     }))
-    .sort((a, b) => b.meta.batch.localeCompare(a.meta.batch));
+    .sort((a, b) => (b.meta.patch_number ?? 0) - (a.meta.patch_number ?? 0));
 }
 
-function formatAt(value: string | null): string {
-  if (!value) return "—";
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+/** 批次目录名 20261123_043339 → 2026-11-23 04:33:39 */
+function formatBatchStamp(batch: string): string {
+  const m = /^(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})$/.exec(batch);
+  return m
+    ? `${m[1]}-${m[2]}-${m[3]} ${m[4]}:${m[5]}:${m[6]}`
+    : "";
 }
 
-function CopyMd5Button({ md5 }: { md5: string | null }) {
+function batchStamp(meta: DistBatchMeta): string {
+  return formatBatchStamp(meta.batch) || (meta.generated_at ?? "").slice(0, 10);
+}
+
+function TitleOrnament() {
+  return (
+    <div className="title-ornament">
+      <span />
+      <i>◆</i>
+      <span />
+    </div>
+  );
+}
+
+function Md5Chip({ md5, compact = false }: { md5: string; compact?: boolean }) {
   const [copied, setCopied] = useState(false);
-  if (!md5) return null;
   return (
     <button
       type="button"
-      className="btn btn-sm"
-      title="复制 MD5 校验值"
+      className={`md5-chip${copied ? " copied" : ""}${compact ? " md5-chip-compact" : ""}`}
+      title={compact ? `MD5 ${md5}（点击复制）` : "点击复制 MD5"}
       onClick={() => {
         void navigator.clipboard.writeText(md5).then(() => {
           setCopied(true);
@@ -66,13 +74,163 @@ function CopyMd5Button({ md5 }: { md5: string | null }) {
         });
       }}
     >
-      {copied ? (
-        <Check className="h-3.5 w-3.5 text-success" />
-      ) : (
-        <Copy className="h-3.5 w-3.5" />
-      )}
-      MD5
+      {!compact && <span className="md5-label">🔑 MD5</span>}
+      <code>{compact ? `${md5.slice(0, 8)}…` : md5}</code>
     </button>
+  );
+}
+
+function MetaChips({ meta }: { meta: DistBatchMeta }) {
+  return (
+    <div className="patch-meta">
+      <span className="meta-chip">🗓 {batchStamp(meta)}</span>
+      {meta.size_bytes != null && (
+        <span className="meta-chip">📦 {formatBytes(meta.size_bytes)}</span>
+      )}
+      {meta.file_count != null && (
+        <span className="meta-chip">{meta.file_count} 个文件</span>
+      )}
+      {meta.mount_count != null && (
+        <span className="meta-chip">🐎 {meta.mount_count} 只坐骑</span>
+      )}
+    </div>
+  );
+}
+
+interface PatchCardProps {
+  entry: BatchEntry;
+  isLatest: boolean;
+  isAdmin: boolean;
+  onChangelog: (batch: string) => void;
+  onOffline: (batch: string) => void;
+}
+
+function PatchCard({
+  entry,
+  isLatest,
+  isAdmin,
+  onChangelog,
+  onOffline,
+}: PatchCardProps) {
+  const token = getAccessToken();
+  const meta = entry.meta;
+  const downloadHref = entry.mpqPath && token
+    ? distDownloadUrl(entry.mpqPath, token)
+    : undefined;
+  return (
+    <article className="patch-card">
+      <div className="patch-medal">
+        <span className="medal-label">补丁</span>
+        <span className="medal-number">#{meta.patch_number ?? "?"}</span>
+      </div>
+      <div className="patch-info">
+        <div className="patch-name-row">
+          {downloadHref ? (
+            <a className="patch-name" href={downloadHref} download>
+              {entry.mpqPath?.split("/").pop()}
+            </a>
+          ) : (
+            <span className="patch-name">{meta.patch_file ?? meta.batch}</span>
+          )}
+          {isLatest && <span className="badge-latest">最新</span>}
+        </div>
+        <MetaChips meta={meta} />
+        {meta.md5 && (
+          <div className="md5-row">
+            <Md5Chip md5={meta.md5} />
+          </div>
+        )}
+      </div>
+      <div className="patch-actions">
+        {downloadHref && (
+          <a className="btn-wow" href={downloadHref} download>
+            ⬇ 下载补丁
+          </a>
+        )}
+        {meta.has_changelog && (
+          <button
+            type="button"
+            className="btn-ghost-gold"
+            onClick={() => onChangelog(meta.batch)}
+          >
+            📜 更新公告
+          </button>
+        )}
+        {isAdmin && (
+          <button
+            type="button"
+            className="btn-ghost-danger"
+            title="下线该批次（玩家将无法再下载）"
+            onClick={() => onOffline(meta.batch)}
+          >
+            下线
+          </button>
+        )}
+      </div>
+    </article>
+  );
+}
+
+interface HistoryRowProps {
+  entry: BatchEntry;
+  isAdmin: boolean;
+  onChangelog: (batch: string) => void;
+  onOffline: (batch: string) => void;
+}
+
+function HistoryRow({ entry, isAdmin, onChangelog, onOffline }: HistoryRowProps) {
+  const token = getAccessToken();
+  const meta = entry.meta;
+  const downloadHref = entry.mpqPath && token
+    ? distDownloadUrl(entry.mpqPath, token)
+    : undefined;
+  return (
+    <div className="history-row">
+      <span className="hist-number">#{meta.patch_number ?? "?"}</span>
+      <div className="hist-main min-w-0">
+        {downloadHref ? (
+          <a className="hist-name" href={downloadHref} download>
+            {entry.mpqPath?.split("/").pop()}
+          </a>
+        ) : (
+          <span className="hist-name">{meta.patch_file ?? meta.batch}</span>
+        )}
+        <div className="hist-meta">
+          <span className="hist-chip">🗓 {batchStamp(meta)}</span>
+          {meta.size_bytes != null && (
+            <span className="hist-chip">📦 {formatBytes(meta.size_bytes)}</span>
+          )}
+        </div>
+        {meta.md5 && <Md5Chip md5={meta.md5} compact />}
+      </div>
+      <div className="hist-actions">
+        {downloadHref && (
+          <a className="hist-btn" href={downloadHref} download title="下载补丁">
+            ⬇
+          </a>
+        )}
+        {meta.has_changelog && (
+          <button
+            type="button"
+            className="hist-btn"
+            title="更新公告"
+            onClick={() => onChangelog(meta.batch)}
+          >
+            📜
+          </button>
+        )}
+        {isAdmin && (
+          <button
+            type="button"
+            className="hist-btn"
+            title="下线该批次（玩家将无法再下载）"
+            onClick={() => onOffline(meta.batch)}
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -84,31 +242,55 @@ function ChangelogDialog({
   onClose: () => void;
 }) {
   const { data, isLoading, isError, error } = useDistChangelog(batch);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   return (
-    <Dialog
-      open
-      onClose={onClose}
-      title="更新公告"
-      subtitle={`批次 ${batch}`}
-    >
-      {isLoading && (
-        <div className="py-8 text-center text-sm text-text-secondary">
-          加载中...
+    <div className="changelog-layer" onClick={onClose}>
+      <div
+        className="changelog-dialog"
+        role="dialog"
+        aria-modal="true"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="dialog-close"
+          onClick={onClose}
+          aria-label="关闭"
+        >
+          ✕
+        </button>
+        <div className="dialog-title">更新公告 · 补丁批次 {batch}</div>
+        <div className="dialog-ornament">
+          <span />
+          <i>◆</i>
+          <span />
         </div>
-      )}
-      {isError && (
-        <div className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
-          公告加载失败：{error instanceof Error ? error.message : "未知错误"}
+        <div className="md-body">
+          {isLoading && <p className="loading">加载中...</p>}
+          {isError && (
+            <p className="error-box">
+              公告加载失败：
+              {error instanceof Error ? error.message : "未知错误"}
+            </p>
+          )}
+          {data && (
+            <article>
+              <ReactMarkdown components={markdownComponents}>
+                {data.changelog}
+              </ReactMarkdown>
+            </article>
+          )}
         </div>
-      )}
-      {data && (
-        <article className="markdown-body">
-          <ReactMarkdown components={markdownComponents}>
-            {data.changelog}
-          </ReactMarkdown>
-        </article>
-      )}
-    </Dialog>
+      </div>
+    </div>
   );
 }
 
@@ -154,11 +336,6 @@ function OfflineDialog({
           下线会删除该批次的补丁文件与元数据，玩家将<b>无法再下载</b>，
           已经下载到本地的客户端不受影响。这一步<b>不可撤销</b>。
         </div>
-        {mutation.data && mutation.data.existed && (
-          <div className="rounded-md border border-success/30 bg-success/10 px-3 py-2 text-xs text-success">
-            已下线，释放 {formatBytes(mutation.data.freed_bytes)}。
-          </div>
-        )}
         {mutation.isError && (
           <div className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-xs text-danger">
             下线失败：
@@ -170,175 +347,77 @@ function OfflineDialog({
   );
 }
 
-interface BatchCardProps {
-  entry: BatchEntry;
-  isAdmin: boolean;
-  onChangelog: (batch: string) => void;
-  onOffline: (batch: string) => void;
-}
-
-function BatchCard({ entry, isAdmin, onChangelog, onOffline }: BatchCardProps) {
-  const token = getAccessToken();
-  const meta = entry.meta;
-  return (
-    <div className="card">
-      <div className="card-body">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent">
-            <Package className="h-5 w-5" />
-          </span>
-          <div className="min-w-0">
-            <div className="text-sm font-semibold text-text-primary">
-              补丁 #{meta.patch_number ?? "?"}
-            </div>
-            <div className="font-mono text-[11px] text-text-tertiary">
-              {meta.batch}
-            </div>
-          </div>
-          <div className="ml-auto flex items-center gap-1.5">
-            {entry.mpqPath && token && (
-              <a
-                className="btn btn-sm btn-primary"
-                href={distDownloadUrl(entry.mpqPath, token)}
-                download
-              >
-                <Download className="h-3.5 w-3.5" />
-                下载补丁
-              </a>
-            )}
-            {meta.has_changelog && (
-              <button
-                type="button"
-                className="btn btn-sm"
-                onClick={() => onChangelog(meta.batch)}
-              >
-                <FileText className="h-3.5 w-3.5" />
-                更新公告
-              </button>
-            )}
-            {isAdmin && (
-              <button
-                type="button"
-                className="btn btn-sm text-danger hover:text-danger"
-                title="下线该批次（玩家将无法再下载）"
-                onClick={() => onOffline(meta.batch)}
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-                下线
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-text-tertiary">
-          {meta.size_bytes != null && (
-            <span className="flex items-center gap-1">
-              <HardDriveDownload className="h-3.5 w-3.5" />
-              {formatBytes(meta.size_bytes)}
-            </span>
-          )}
-          {meta.mount_count != null && <span>{meta.mount_count} 只坐骑</span>}
-          <span>构建时间 {formatAt(meta.generated_at)}</span>
-        </div>
-        <div className="mt-1">
-          <CopyMd5Button md5={meta.md5} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function DistPage() {
   const { isAdmin } = useAuth();
   const treeQuery = useDistTree();
   const [changelogBatch, setChangelogBatch] = useState<string | null>(null);
   const [offlineBatch, setOfflineBatch] = useState<string | null>(null);
-  const [historyOpen, setHistoryOpen] = useState(false);
 
   const batches = useMemo(() => collectBatches(treeQuery.data), [treeQuery.data]);
-  const latest = batches.slice(0, 5);
-  const history = batches.slice(5);
+  const latest = batches.slice(0, LATEST_COUNT);
+  const history = batches.slice(LATEST_COUNT);
+
+  const shared = { isAdmin, onChangelog: setChangelogBatch, onOffline: setOfflineBatch };
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-4">
-      <div>
-        <h1 className="text-lg font-bold text-text-primary">补丁下载</h1>
-        <p className="mt-0.5 text-sm text-text-secondary">
-          下载客户端自定义补丁包（MPQ）。下载后放入游戏目录
-          <code className="mx-1 font-mono text-xs">World of Warcraft/Data/</code>
-          ，重启客户端生效。
+    <div className="dist-wow">
+      <div className="dist-wow-inner">
+        <h1 className="page-title">补丁下载</h1>
+        <TitleOrnament />
+        <p className="subtitle">
+          下载最新的补丁文件放入游戏客户端 <b>Data</b> 目录；「更新公告」查看本批次的更新内容。
         </p>
-      </div>
 
-      {treeQuery.isLoading && (
-        <div className="card">
-          <div className="card-body flex items-center justify-center gap-2 py-10 text-sm text-text-secondary">
-            <Loader2 className="h-4 w-4 animate-spin" /> 加载中...
+        {treeQuery.isLoading && (
+          <p className="loading">正在召唤补丁列表...</p>
+        )}
+
+        {treeQuery.isError && (
+          <p className="error-box">
+            补丁列表加载失败：
+            {treeQuery.error instanceof Error
+              ? treeQuery.error.message
+              : "未知错误"}
+          </p>
+        )}
+
+        {!treeQuery.isLoading && !treeQuery.isError && batches.length === 0 && (
+          <div className="empty-state">
+            <span className="empty-ornament">◆ ◇ ◆</span>
+            <p>暂无补丁</p>
           </div>
-        </div>
-      )}
+        )}
 
-      {treeQuery.isError && (
-        <div className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
-          补丁列表加载失败：
-          {treeQuery.error instanceof Error
-            ? treeQuery.error.message
-            : "未知错误"}
-        </div>
-      )}
-
-      {!treeQuery.isLoading && !treeQuery.isError && batches.length === 0 && (
-        <div className="card">
-          <div className="card-body">
-            <div className="empty-state">
-              <Package className="mb-4 h-12 w-12 text-text-tertiary" />
-              <h3>暂无可下载的补丁</h3>
-              <p>管理员发布补丁后会出现在这里。</p>
+        {!treeQuery.isLoading && !treeQuery.isError && batches.length > 0 && (
+          <>
+            <div className="patch-list">
+              {latest.map((entry, index) => (
+                <PatchCard
+                  key={entry.meta.batch}
+                  entry={entry}
+                  isLatest={index === 0}
+                  {...shared}
+                />
+              ))}
             </div>
-          </div>
-        </div>
-      )}
-
-      {latest.map((entry) => (
-        <BatchCard
-          key={entry.meta.batch}
-          entry={entry}
-          isAdmin={isAdmin}
-          onChangelog={setChangelogBatch}
-          onOffline={setOfflineBatch}
-        />
-      ))}
-
-      {history.length > 0 && (
-        <div className="card">
-          <div className="card-body">
-            <button
-              type="button"
-              className="flex w-full items-center gap-2 text-sm font-medium text-text-secondary"
-              onClick={() => setHistoryOpen((open) => !open)}
-            >
-              {historyOpen ? (
-                <ChevronDown className="h-4 w-4" />
-              ) : (
-                <ChevronRight className="h-4 w-4" />
-              )}
-              历史批次（{history.length}）
-            </button>
-            {historyOpen && (
-              <div className="mt-2 space-y-2">
-                {history.map((entry) => (
-                  <BatchCard
-                    key={entry.meta.batch}
-                    entry={entry}
-                    isAdmin={isAdmin}
-                    onChangelog={setChangelogBatch}
-                    onOffline={setOfflineBatch}
-                  />
-                ))}
-              </div>
+            {history.length > 0 && (
+              <details className="history-block">
+                <summary>
+                  📜 历史补丁
+                  <span className="hist-count">{history.length} 个</span>
+                </summary>
+                <div className="history-list">
+                  {history.map((entry) => (
+                    <HistoryRow key={entry.meta.batch} entry={entry} {...shared} />
+                  ))}
+                </div>
+              </details>
             )}
-          </div>
-        </div>
-      )}
+          </>
+        )}
+
+        <p className="footer-note">仅供内测使用</p>
+      </div>
 
       {changelogBatch && (
         <ChangelogDialog
