@@ -154,7 +154,7 @@ export function AiConfigCard() {
             协议端点，用于补丁构建时 AI 起草 changelog；未配置或生成失败时自动回退代码模板
           </div>
         </div>
-        <span className={`badge ${configured ? "badge-green" : "badge-gray"}`}>
+        <span className={`badge ${configured ? "badge-success" : "badge-gray"}`}>
           {configured ? "已配置" : "未配置"}
         </span>
       </div>

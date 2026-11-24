@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { CopyButton } from "@/shared/components/CopyButton";
-import { formatBytes } from "@/features/dbc/lib/columns";
+import { formatBytes } from "@/shared/format";
 import { useMpqArchives, useMpqFiles } from "@/features/mpq/hooks/useMpqViewer";
 import type { MpqFileEntry } from "@/shared/types";
 

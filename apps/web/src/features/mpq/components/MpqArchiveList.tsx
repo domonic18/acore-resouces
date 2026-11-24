@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FileText, Search, Trash2 } from "lucide-react";
 import { cn } from "@/shared/utils";
-import { formatBytes } from "@/features/dbc/lib/columns";
+import { formatBytes } from "@/shared/format";
 import { useMpqArchives } from "@/features/mpq/hooks/useMpqViewer";
 import { useDeleteMpqArchive } from "@/features/mpq/hooks/useDeleteMpqArchive";
 import { DeleteArchiveDialog } from "@/features/mpq/components/DeleteArchiveDialog";
@@ -146,7 +146,7 @@ export function MpqArchiveList({
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                 <ObfuscationBadge level={item.obfuscation} />
                 {item.published && (
-                  <span className="badge badge-green">已上架</span>
+                  <span className="badge badge-success">已上架</span>
                 )}
                 <span className="badge badge-gray">
                   {item.source === "dist" ? "dist" : "构建产物"}

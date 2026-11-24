@@ -159,10 +159,6 @@
   @apply text-sm font-medium;
 }
 
-.preview-toolbar {
-  @apply mt-3 flex gap-2;
-}
-
 .file-tree {
   @apply text-sm;
 }

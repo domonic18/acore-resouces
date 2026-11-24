@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { cn } from "@/shared/utils";
-import { formatBytes } from "@/features/dbc/lib/columns";
+import { formatBytes } from "@/shared/format";
 import { useDbcFiles } from "@/features/dbc/hooks/useDbcViewer";
 
 interface DbcFileListProps {
